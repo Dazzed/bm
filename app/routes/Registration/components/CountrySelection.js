@@ -53,7 +53,7 @@ export default class CountrySelection extends Component {
             style={styles_2.countryStyle}
             onPress={this.props.updateRegistrationParams.bind(this, { country: null })}
           >
-            <Image source={checkBoxBlue} style={styles_2.imageStyle} /> {country.label}
+            <Image source={checkBoxBlue} style={styles_2.imageStyle} /> <Text style={{color: '#147CE0'}}>{country.label}</Text>
           </Text>
         );
       } else {
@@ -71,7 +71,6 @@ export default class CountrySelection extends Component {
   }
 
   render() {
-    console.log('props ~>', this.props)
     return (
       <View>
         <ScrollView style={{maxHeight: '85%'}}>

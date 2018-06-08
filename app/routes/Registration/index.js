@@ -47,6 +47,10 @@ class RegistrationPage extends React.Component {
     this.setState({ colors: colors() });
   }
 
+  componentWillUnmount() {
+    this.props.resetRegistrationParams();
+  }
+
   setColor(value) {
     setTheme(value);
     this.setState({ activeColor: value, colors: colors() });
@@ -57,7 +61,6 @@ class RegistrationPage extends React.Component {
   };
 
   render() {
-    console.log('props ~>', this.props)
     const { navigate } = this.props.navigation;
     return (
       <View>
