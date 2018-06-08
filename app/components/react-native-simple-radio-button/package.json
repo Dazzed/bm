@@ -1,0 +1,96 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "react-native-simple-radio-button",
+        "scope": null,
+        "escapedName": "react-native-simple-radio-button",
+        "name": "react-native-simple-radio-button",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/stiltsdesigns/Documents/stiltsdesignstudio/toptal/bluemartini/build/LostAvenue"
+    ]
+  ],
+  "_from": "react-native-simple-radio-button@latest",
+  "_id": "react-native-simple-radio-button@2.5.0-alpha.1",
+  "_inCache": true,
+  "_location": "/react-native-simple-radio-button",
+  "_nodeVersion": "5.2.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/react-native-simple-radio-button-2.5.0-alpha.1.tgz_1487407306588_0.0029372305143624544"
+  },
+  "_npmUser": {
+    "name": "moschan",
+    "email": "kaityo02@gmail.com"
+  },
+  "_npmVersion": "3.3.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "react-native-simple-radio-button",
+    "scope": null,
+    "escapedName": "react-native-simple-radio-button",
+    "name": "react-native-simple-radio-button",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-simple-radio-button/-/react-native-simple-radio-button-2.5.0-alpha.1.tgz",
+  "_shasum": "59d1d6a3b2db4eafc36ab675348f4e6bb89303de",
+  "_shrinkwrap": null,
+  "_spec": "react-native-simple-radio-button",
+  "_where": "/Users/stiltsdesigns/Documents/stiltsdesignstudio/toptal/bluemartini/build/LostAvenue",
+  "author": {
+    "name": "moschan",
+    "email": "kota.frsw＠gmail.com",
+    "url": "http://moschan.com/blog/"
+  },
+  "bugs": {
+    "url": "https://github.com/moschan/react-native-simple-radio-button/issues"
+  },
+  "dependencies": {},
+  "description": "simple and useful animated radio button component for React Native",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "59d1d6a3b2db4eafc36ab675348f4e6bb89303de",
+    "tarball": "https://registry.npmjs.org/react-native-simple-radio-button/-/react-native-simple-radio-button-2.5.0-alpha.1.tgz"
+  },
+  "gitHead": "18df154a9fe13b77c1ca01526a87d357cf613834",
+  "homepage": "https://github.com/moschan/react-native-simple-radio-button#readme",
+  "keywords": [
+    "react-component",
+    "react-native",
+    "ios",
+    "android",
+    "form",
+    "button",
+    "radio-button"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "moschan",
+      "email": "kaityo02@gmail.com"
+    }
+  ],
+  "name": "react-native-simple-radio-button",
+  "optionalDependencies": {},
+  "readme": "# react-native-simple-radio-button\n> simple and useful radio button component for React Native\n\n[![npm](https://img.shields.io/npm/v/react-native-simple-radio-button.svg)]()[![npm](https://img.shields.io/npm/l/react-native-simple-radio-button.svg)]()\n\n[![NPM](https://nodei.co/npm/react-native-simple-radio-button.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-native-simple-radio-button/)\n\n\nDemo\n---\n\n![Demo](./doc/ver1.3_demo.gif)\n\n\n## Installation\n\nin Cli\n\n```sh\nnpm i react-native-simple-radio-button --save\n```\n\n\n# Getting started\n\n```js\nimport RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';\n\n\nvar radio_props = [\n  {label: 'param1', value: 0 },\n  {label: 'param2', value: 1 }\n];\n\nvar RadioButtonProject = React.createClass({\n  getInitialState: function() {\n    return {\n      value: 0,\n    }\n  },\n  render: function() {\n    return (\n      <View>\n        <RadioForm\n          radio_props={radio_props}\n          initial={0}\n          onPress={(value) => {this.setState({value:value})}}\n        />\n      </View>\n    );\n  }\n});\n```\n\nBasic\n---\n\n```js\n<RadioForm\n  radio_props={radio_props}\n  initial={0}\n  onPress={(value) => {this.setState({value:value})}}\n/>\n```\n\nAdvanced\n---\n\n```js\n<RadioForm\n  radio_props={this.state.types}\n  initial={0}\n  formHorizontal={false}\n  labelHorizontal={true}\n  buttonColor={'#2196f3'}\n  animation={true}\n  onPress={(value) => {this.setState({value:value})}}\n/>\n```\n\nPro\n---\n\n```js\n<RadioForm\n  formHorizontal={true}\n  animation={true}\n>\n  <RadioButton labelHorizontal={true} key={i} >\n    {/*  You can set RadioButtonLabel before RadioButtonInput */}\n    <RadioButtonInput\n      obj={obj}\n      index={i}\n      isSelected={this.state.value3Index === i}\n      onPress={onPress}\n      borderWidth={1}\n      buttonInnerColor={'#e74c3c'}\n      buttonOuterColor={this.state.value3Index === i ? '#2196f3' : '#000'}\n      buttonSize={40}\n      buttonOuterSize={80}\n      buttonStyle={{}}\n      buttonWrapStyle={{marginLeft: 10}}\n    />\n    <RadioButtonLabel\n      obj={obj}\n      index={i}\n      labelHorizontal={true}\n      onPress={onPress}\n      labelStyle={{fontSize: 20, color: '#2ecc71'}}\n      labelWrapStyle={{}}\n    />\n  </RadioButton>\n</RadioForm>\n```\n\n# Methods\n\n## updateIsActiveIndex\nupdate active radio button\n\n# Props\n\n## RadioForm Component\n### radio_props (Default: `[]`) _*required_\nradio button value and label array\n\n### onPress _*required_\ncallback when radio button clicked.\n\n### initial (Default: `0`)\ninitial selected\n\n### buttonColor(Default: '#2196f3')\nchange radio button color\n\n```js\n<RadioForm\n  radio_props={radio_props}\n  initial={0}\n  buttonColor={'#50C900'}\n/>\n```\n\n![Demo](./doc/button_color.jpg)\n\n### labelColor(Default: '#000')\nchange label color\n\n```js\n<RadioForm\n  radio_props={radio_props}\n  initial={0}\n  labelColor={'#50C900'}\n/>\n```\n\n\n### formHorizontal(Default: false)\nchange form position\n\n```js\n<RadioForm\n  radio_props={radio_props}\n  initial={0}\n  formHorizontal={true}\n/>\n```\n\n![Demo](./doc/form_horizontal.jpg)\n\n\n### labelHorizontal(Default: true)\nchange label position\n\n```js\n<RadioForm\n  radio_props={radio_props}\n  initial={0}\n  labelHorizontal={false}\n/>\n```\n\n![Demo](./doc/label_horizontal.jpg)\n\n### animation (Default: `true`)\nif you pass false, animation of radio button is disabled\n\n![Demo](./doc/demo_1.gif)\n\n### animation (Default: `true`)\nif you pass false, animation of radio button is disabled\n\n![Demo](./doc/demo_1.gif)\n\n\n## RadioButton Component\n### isSelected\nIf you pass `true` to this param, that button change to selected status.\n\n### labelHorizontal\nchange label position to horizontal\n\n### buttonColor\nThe button color\n\n### labelColor\nThe label color\n\n### style\nThe label style\n\n## onPress _*required_\ncallback when radio button clicked.\n\n\n# RadioButtonInput\n### isSelected\n### onPress\n### buttonInnerColor\nThe button inner color\n\n### buttonOuterColor\nThe button inner color\n\n### buttonSize\nThe button size. Width and height will be same length.\n\n### buttonOuterSize\nThe button size of outer. Width and height will be same length.\n\n### buttonStyle\nCustom button style\n\n### buttonWrapStyle\nCustom style for view of button's outside\n\n# RadioButtonLabel\n### labelHorizontal\nIf you pass true, the button and label will be aligned horizontally.\n\n### labelStyle\nIf you pass style, you can change label text style as you want\n\n### labelWrapStyle\nIf you pass style, you can change label wrapper view style as you want\n\n### onPress _*required_\ncallback when radio button clicked.\n\n\n# Contributing\nOf course! Welcome :)\n\nYou can use following command in `example` dir:\n\n```\nnpm run sync\n```\n\nDuring running this command, when you change source to implement/fix something, these changes will sync to `example/node_modules/react-native-simple-radio-button/`. You can check your change using example project easily.\n\n\n# License\nMIT\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moschan/react-native-simple-radio-button.git"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "version": "2.5.0-alpha.1"
+}
