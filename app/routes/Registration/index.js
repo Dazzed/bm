@@ -30,7 +30,8 @@ import fonts from '../../style/fonts';
 import { selectRegistrationPage } from './selectors';
 import * as registerActions from '../../store/actions/registration';
 
-import CountrySelection from './components/CountrySelection';
+// import CountrySelection from './components/CountrySelection';
+import NameSelection from './components/NameSelection';
 
 class RegistrationPage extends React.Component {
   static navigationOptions = {
@@ -63,7 +64,7 @@ class RegistrationPage extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View>
+      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
@@ -72,7 +73,7 @@ class RegistrationPage extends React.Component {
                 style={styles.backImg}
               />
             </TouchableOpacity>
-            <Text style={[styles.mainCta, fonts.gothamBld]}>Basic Info</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.mainCta, fonts.gothamBld]}>Basic Info</Text>
             <TouchableOpacity style={styles.rightCta} onPress={() => { this.props.navigation.goBack() }}>
               <Image
                 source={require('../../images/close.png')}
@@ -81,7 +82,7 @@ class RegistrationPage extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <CountrySelection {...this.props} {...this.state} />
+        <NameSelection {...this.props} {...this.state} />
       </View>
     );
   }

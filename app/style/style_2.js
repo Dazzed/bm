@@ -7,8 +7,8 @@ var colors = require('./colors')
 
 const styles = StyleSheet.create({
   registrationPageTitle: {
-    paddingTop: 50,
-    paddingBottom: 50,
+    paddingTop: 40,
+    paddingBottom: 10,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 20
@@ -31,8 +31,11 @@ const styles = StyleSheet.create({
   countryStyle: {
     paddingTop: 20,
     paddingBottom: 20,
-    borderBottomColor: 'black',
-    borderBottomWidth: 10,
+    marginLeft: 10,
+  },
+  countryStyleSelected: {
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   naturalizedImage: {
     width: 15,

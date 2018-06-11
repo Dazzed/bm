@@ -48,26 +48,51 @@ export default class CountrySelection extends Component {
     return countriesList.map((country, i) => {
       if (selectedCountry && country.value === selectedCountry.value) {
         return (
-          <Text
+          <View
+            flexDirection="row"
             key={`country_${i}`}
-            style={styles_2.countryStyle}
+            style={styles_2.countryStyleSelected}
             onPress={this.props.updateRegistrationParams.bind(this, { country: null })}
           >
-            <Image source={checkBoxBlue} style={styles_2.imageStyle} /> <Text style={{color: '#147CE0'}}>{country.label}</Text>
-          </Text>
+            <Image source={checkBoxBlue} style={styles_2.imageStyle} /> <Text style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 10, marginLeft: 5, color: '#147CE0'}}>{country.label}</Text>
+          </View>
         );
       } else {
         return (
-          <Text
-            key={`country_${i}`}
+          <View 
+            flexDirection="row"
             style={styles_2.countryStyle}
-            onPress={this.props.updateRegistrationParams.bind(this, { country })}
+            key={`country_${i}`}
           >
-            {country.label}
-          </Text>
+            <Text style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 10,
+              marginLeft: 25, color: '#147CE0' }}
+              onPress={this.props.updateRegistrationParams.bind(this, { country })}
+              >{country.label}</Text>
+          </View>
         );
       }
-    });
+      // <RadioForm
+      //   radio_props={sector_props}
+      //   initial={this.state.sectorOption}
+      //   formHorizontal={false}
+      //   labelHorizontal={true}
+      //   borderWidth={1}
+      //   buttonColor={this.state.colors['blue']}
+      //   buttonOuterColor={this.state.colors['lightGray']}
+      //   buttonSize={22}
+      //   buttonOuterSize={20}
+      //   animation={false}
+      //   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+      //   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+      //   labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+      //   onPress={(value) => { this.hideSector(value) }}
+      //   style={scanner.radioField}
+      // />
+        });
   }
 
   render() {
