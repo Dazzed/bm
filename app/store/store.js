@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import illustration from '../images/illustration.png';
+import illustrationDark from '../images/illustration_dark.png';
 
 var themeColor = true
 
@@ -21,7 +23,8 @@ export function colors() {
 		    darkSlate: 	'#323943',
 		    blue: 		'#00CEFF',
 		    green: 		'#41EF89',
-		    red: 		'#FF5D71',
+			red: 		'#FF5D71',
+			illustration: illustration
 		}
 
 	} else {
@@ -35,7 +38,8 @@ export function colors() {
 		    darkSlate: 	'#FFFFFF',
 		    blue: 		'#00CEFF',
 		    green: 		'#41EF89',
-		    red: 		'#FF5D71',
+			red: 		'#FF5D71',
+			illustration: illustrationDark
 		}
 	}	
 	return _colors;	

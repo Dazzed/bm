@@ -92,7 +92,7 @@ class HomeScreen extends React.Component {
           <TouchableHighlight
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
             onPress={() => navigate('Registration')}>
-            <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>JOIN 1,347,25 TRADERS</Text>
+            <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>JOIN 1,347,254 TRADERS</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={[{ backgroundColor: this.state.colors['darkGray'] }, { borderColor: this.state.colors['darkGray'] }, styles.fullBtnGray]}

@@ -1,4 +1,7 @@
 import {setTheme, getTheme} from '../store/store';
+import illustration from '../images/illustration.png';
+import illustrationDark from '../images/illustration_dark.png';
+
 console.log('colors', getTheme());
 var theme = getTheme();
 if(theme == false) {
@@ -12,7 +15,8 @@ if(theme == false) {
 	    darkSlate: 	'#323943',
 	    blue: 		'#00CEFF',
 	    green: 		'#41EF89',
-	    red: 		'#FF5D71',
+		red: 		'#FF5D71',
+		illustration: illustrationDark
 	}
 
 } else {
@@ -25,7 +29,8 @@ if(theme == false) {
 	    darkSlate: 	'#FFFFFF',
 	    blue: 		'#00CEFF',
 	    green: 		'#41EF89',
-	    red: 		'#FF5D71',
+		red: 		'#FF5D71',
+		illustration: illustration
 	}
 }
 
