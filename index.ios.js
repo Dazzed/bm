@@ -30,7 +30,7 @@ import fonts from './app/style/fonts';
 
 import FadeInView from './app/components/fadein';
 import AppNav from './app/routes/appnav';
-import SignIn from './app/routes/signin';
+import Login from './app/routes/Login';
 import Registration from './app/routes/Registration';
 import Chart from './app/routes/chart';
 import Scanner from './app/routes/scanner';
@@ -81,13 +81,13 @@ class HomeScreen extends React.Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, styles.tagline, fonts.hindGunturLt]}>
             The premier stock trading platform with zero commisions.
         </Text>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
             onPress={() => navigate('AppNav')}>
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
               PREVIEW THE APP
-          </Text>
-          </TouchableHighlight>
+            </Text>
+          </TouchableHighlight> */}
           <Text style={[{ color: this.state.colors['lightGray'] }, styles.legal, fonts.hindGunturRg]}>By using BluMartini you agree to our <Text style={[styles.legalLink, fonts.hindGunturRg]} onPress={() => this.showTerms()}>Terms & Conditions</Text></Text>
           <TouchableHighlight
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
@@ -96,7 +96,7 @@ class HomeScreen extends React.Component {
           </TouchableHighlight>
           <TouchableHighlight
             style={[{ backgroundColor: this.state.colors['darkGray'] }, { borderColor: this.state.colors['darkGray'] }, styles.fullBtnGray]}
-            onPress={() => navigate('SignIn')}>
+            onPress={() => navigate('Login')}>
             <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER? SIGN IN</Text>
           </TouchableHighlight>
           <Modal
@@ -112,7 +112,7 @@ class HomeScreen extends React.Component {
 
 const LostAvenue = StackNavigator({
   Home: { screen: HomeScreen },
-  SignIn: { screen: SignIn },
+  Login: { screen: Login },
   Registration: { screen: Registration },
   AppNav: { screen: AppNav },
 }, {

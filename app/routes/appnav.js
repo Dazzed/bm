@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- 
-*/
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -28,7 +22,7 @@ import Watchlists from './watchlists';
 import Trending from './trending';
 import Scanner from './scanner';
 import Settings from './settings';
-import SignIn from './signin';
+// import SignIn from './signin';
 import Chart from './chart';
 import Search from './search';
 

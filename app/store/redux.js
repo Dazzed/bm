@@ -7,6 +7,7 @@ import {
 import thunk from 'redux-thunk';
 
 import registration from './reducers/registration';
+import globalData from './reducers/global';
 
 // actions.js
 export const activateGeod = geod => ({
@@ -32,7 +33,8 @@ export const geod = (state = {}, action) => {
 
 export const reducers = combineReducers({
   geod,
-  registration
+  registration,
+  globalData
 });
 
 // store.js
