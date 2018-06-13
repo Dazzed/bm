@@ -51,7 +51,7 @@ class RegistrationPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', behavior: 'padding' };
+    this.state = { email: '', behavior: 'padding', step: 1 };
   }
 
   componentWillMount() {
@@ -71,20 +71,69 @@ class RegistrationPage extends React.Component {
     this.setState({ behavior: segment.toLowerCase() });
   };
 
+  renderStepComponent = () => {
+    const propsToPass = {
+      ...this.props,
+      ...this.state,
+      onForwardStep: this.onForwardStep
+    }
+    switch (this.state.step) {
+      case 1:
+        return <NameSelection  {...propsToPass} />;
+      case 2:
+        return <AddressSelection {...propsToPass} />;
+      case 3:
+        return <PhoneSelection {...propsToPass} />;
+      case 4:
+        return <DateOfBirthSelection {...propsToPass} />;
+      case 5:
+        return <SocialSecurityNumberSelection {...propsToPass} />;
+      case 6:
+        return <MaritalStatusSelection {...propsToPass} />;
+      case 7:
+        return <DependentSelection {...propsToPass} />;
+      case 8:
+        return <EmploymentStatusSelection {...propsToPass} />;
+      case 9:
+        return <InvestmentExperienceSelection {...propsToPass} />;
+      case 10:
+        return <AccountSelection {...propsToPass} />;
+      case 11:
+        return <Declaration {...propsToPass} />;
+    }
+  }
+
+  onForwardStep = () => {
+    if (this.state.step === 11) {
+      alert('Registered!');
+      this.props.navigation.navigate('AppNav', { color: this.state.activeColor });
+    } else {
+      this.setState(({ step }) => ({ step: step + 1 }));
+    }
+  }
+
+  onBackwardStep = () => {
+    if (this.state.step === 1) {
+      this.props.navigation.goBack();
+    } else {
+      this.setState(({ step }) => ({ step: step - 1 }));
+    }
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.onBackwardStep}>
               <Image
                 source={require('../../images/back.png')}
                 style={styles.backImg}
               />
             </TouchableOpacity>
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.mainCta, fonts.gothamBld]}>Basic Info</Text>
-            <TouchableOpacity style={styles.rightCta} onPress={() => { this.props.navigation.goBack() }}>
+            <TouchableOpacity style={styles.rightCta} onPress={() => this.props.navigation.goBack()}>
               <Image
                 source={require('../../images/close.png')}
                 style={styles.closeImg}
@@ -92,7 +141,7 @@ class RegistrationPage extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Declaration {...this.props} {...this.state} />
+        {this.renderStepComponent()}
       </View>
     );
   }

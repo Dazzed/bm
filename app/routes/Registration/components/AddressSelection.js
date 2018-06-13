@@ -26,7 +26,6 @@ import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
-let showWhyWeAsk = true;
 const state_list = [
     { "label": "Alabama", "value": 0 },
     { "label": "Alaska", "value": 1 },
@@ -83,16 +82,15 @@ const state_list = [
 
 export default class AddressSelection extends Component {
     static propTypes = {
-        // prop: PropTypes
+        onForwardStep: PropTypes.func.isRequired,
     }
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            isStateVisible: false,
-            stateOption: 0
-        };
-    };
+    state = {
+        showWhyWeAsk: false,
+        isStateVisible: false,
+        stateOption: 0
+    }
+
     hideState(value) {
         if (value) {
             this.setState({ isStateVisible: false, stateOption: value })
@@ -100,16 +98,17 @@ export default class AddressSelection extends Component {
             this.setState({ isStateVisible: false })
         }
     };
+
     showState() {
         this.setState({ isStateVisible: true })
     }
 
-    componentWillMount() {
-        // console.log(COUNTRY_LIST);
+    toggleWhyWeAsk = () => {
+        this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
 
     whyWeAsk = () => {
-        if (showWhyWeAsk) {
+        if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
@@ -133,10 +132,10 @@ export default class AddressSelection extends Component {
                         ADDRESS
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
                             Why we ask
                         </Text>
-                        <Image source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
+                        <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
                     </View>
                     {this.whyWeAsk()}
                     <View style={[styles_2.registrationFormView]}>
@@ -204,10 +203,10 @@ export default class AddressSelection extends Component {
                         <TextInput
                             style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
                         />
-                        
+
                     </View>
                 </ScrollView>
-                <TouchableHighlight style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
+                <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: -10 }]}>NEXT</Text>
                 </TouchableHighlight>
             </View>
