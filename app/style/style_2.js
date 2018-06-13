@@ -151,6 +151,19 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     // color: colors.lightGray,
   },
+  numContainer: {
+    // backgroundColor: colors.white,
+    marginTop: 15,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    // borderTopColor: colors.borderGray,
+    flex: 2,
+    flexDirection: 'column',
+  },
+  digitContainer: {
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 15,
+  },
 
 });
 module.exports = styles;

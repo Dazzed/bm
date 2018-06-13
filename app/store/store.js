@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import illustration from '../images/illustration.png';
 import illustrationDark from '../images/illustration_dark.png';
+import deleteImg from '../images/delete.png';
+import deleteImgDark from '../images/delete_dark.png';
 
 var themeColor = true
 
@@ -24,7 +26,8 @@ export function colors() {
 		    blue: 		'#00CEFF',
 		    green: 		'#41EF89',
 			red: 		'#FF5D71',
-			illustration: illustration
+			illustration: illustration,
+			deleteImg: deleteImg
 		}
 
 	} else {
@@ -39,7 +42,8 @@ export function colors() {
 		    blue: 		'#00CEFF',
 		    green: 		'#41EF89',
 			red: 		'#FF5D71',
-			illustration: illustrationDark
+			illustration: illustrationDark,
+			deleteImg: deleteImgDark
 		}
 	}	
 	return _colors;	

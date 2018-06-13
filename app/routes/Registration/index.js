@@ -33,6 +33,7 @@ import * as registerActions from '../../store/actions/registration';
 // import CountrySelection from './components/CountrySelection';
 import NameSelection from './components/NameSelection';
 import AddressSelection from './components/AddressSelection';
+import PhoneSelection from './components/PhoneSelection';
 
 class RegistrationPage extends React.Component {
   static navigationOptions = {
@@ -83,7 +84,7 @@ class RegistrationPage extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <AddressSelection {...this.props} {...this.state} />
+        <PhoneSelection {...this.props} {...this.state} />
       </View>
     );
   }
