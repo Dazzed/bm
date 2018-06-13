@@ -60,6 +60,13 @@ const numbers = StyleSheet.create({
     // color: colors.darkSlate,
     fontSize: 32
   },
+  numbers_right: {
+    flex: 1,
+    textAlign: 'center',
+    marginTop: -10,
+    // color: colors.darkSlate,
+    fontSize: 32
+  },
   selectTxt: {
     // color: colors.white,
     fontSize: 13,
