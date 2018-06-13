@@ -12,6 +12,7 @@ export function startLoggingIn() {
 export function loginAction({ email, password }) {
   return async (dispatch, getState) => {
     try {
+      dispatch(startLoggingIn());
       const body = {
         email: email.toLowerCase(),
         password
