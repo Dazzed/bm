@@ -29,7 +29,7 @@ import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
 let showWhyWeAsk = false;
-export default class PhoneSelection extends Component {
+export default class DateOfBirthSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,9 +41,9 @@ export default class PhoneSelection extends Component {
         // prop: PropTypes
     }
 
-    formatPhone(numb) {
+    formatDate(numb) {
         var numbers = numb.replace(/\D/g, '');
-        var char = { 3: '-', 6: '-' };
+        var char = { 2: '/', 4: '/' };
         numb = '';
         for (var i = 0; i < numbers.length; i++) {
             numb += (char[i] || '') + numbers[i];
@@ -56,18 +56,18 @@ export default class PhoneSelection extends Component {
             curNums = num;
         } else {
             curNums = this.state.numField + '' + num;
-            if (curNums.length > 12) {
+            if (curNums.length > 10) {
                 curNums = this.state.numField;
             }
         }
-        curNums = this.formatPhone(curNums)
+        curNums = this.formatDate(curNums)
         this.setState({ numField: curNums });
     }
     removeNum(num) {
         if (this.state.numField) {
             var delNums = this.state.numField;
             delNums = delNums.substr(0, delNums.length - 1);
-            delNums = this.formatPhone(delNums);
+            delNums = this.formatDate(delNums);
             this.setState({ numField: delNums })
         }
     }
@@ -82,7 +82,7 @@ export default class PhoneSelection extends Component {
                 <View style={[styles_2.whyWeAskView]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
                         Uncle Sam requires all brokerages to collect this info for identification verification
-                    </Text>
+                                </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
                 </View>
             );
@@ -95,7 +95,7 @@ export default class PhoneSelection extends Component {
             <View>
                 <View style={[{ margin: 20 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '27%', borderRadius: 1.5 }]}></View>
+                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '36%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '77%' }}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
@@ -109,8 +109,8 @@ export default class PhoneSelection extends Component {
                     </View>
                     {this.whyWeAsk()}
                     <View style={[styles_2.registrationFormView]}>
-                        <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
-                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]} maxLength={12} editable={false}
+                        <TextInput placeholder="dd/mm/yyyy" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
+                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]} maxLength={10} editable={false}
                         />
                     </View>
                     <View style={[{ backgroundColor: this.props.colors['white'] }, { borderTopColor: this.props.colors['borderGray'] }, styles_2.numContainer]}>

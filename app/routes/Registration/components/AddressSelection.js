@@ -124,7 +124,11 @@ export default class AddressSelection extends Component {
     render() {
         return (
             <View>
-                <ScrollView style={{ height: '82%' }}>
+                <View style={[{ margin: 20 }]}>
+                    <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
+                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '18%', borderRadius: 1.5 }]}></View>
+                </View>
+                <ScrollView style={{ height: '77%' }}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         ADDRESS
                     </Text>
@@ -204,7 +208,7 @@ export default class AddressSelection extends Component {
                     </View>
                 </ScrollView>
                 <TouchableHighlight style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>NEXT</Text>
+                    <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: -10 }]}>NEXT</Text>
                 </TouchableHighlight>
             </View>
         )

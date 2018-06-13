@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   whyWeAskView: {
     flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', paddingTop: 2.5, paddingLeft: 2.5, paddingRight: 5, paddingBottom: 3 
   },
-  whyWeAskText: { margin: 25, lineHeight: 30, fontSize: 18 },
+  whyWeAskText: { margin: 30, lineHeight: 30, fontSize: 20 },
   registrationFormView: { flex: 1, flexDirection: 'column', margin: 20 },
   registrationFormLabel: { margin: 5, marginTop: 20, lineHeight: 20, fontSize: 14 },
   registrationFormField: { height: 40, fontSize: 25, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
@@ -164,6 +164,15 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingTop: 15,
   },
+  radioLabelWrap: {
+    width: 50,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    height: 70
+    // borderBottomColor: colors.borderGray    
+  },
+  progressActual: {
+    backgroundColor: '#00ceff',
+  }
 
 });
 module.exports = styles;

@@ -34,6 +34,14 @@ import * as registerActions from '../../store/actions/registration';
 import NameSelection from './components/NameSelection';
 import AddressSelection from './components/AddressSelection';
 import PhoneSelection from './components/PhoneSelection';
+import DateOfBirthSelection from './components/DateOfBirthSelection';
+import SocialSecurityNumberSelection from './components/SocialSecurityNumberSelection';
+import MaritalStatusSelection from './components/MaritalStatusSelection';
+import DependentSelection from './components/DependentSelection';
+import EmploymentStatusSelection from './components/EmploymentStatusSelection';
+import InvestmentExperienceSelection from './components/InvestmentExperienceSelection';
+import AccountSelection from './components/AccountSelection';
+import Declaration from './components/Declaration';
 
 class RegistrationPage extends React.Component {
   static navigationOptions = {
@@ -66,7 +74,7 @@ class RegistrationPage extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
@@ -84,7 +92,7 @@ class RegistrationPage extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <PhoneSelection {...this.props} {...this.state} />
+        <Declaration {...this.props} {...this.state} />
       </View>
     );
   }

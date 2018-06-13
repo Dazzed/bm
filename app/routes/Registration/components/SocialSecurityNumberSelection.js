@@ -28,8 +28,8 @@ import numbers from '../../../style/numbers';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
-let showWhyWeAsk = false;
-export default class PhoneSelection extends Component {
+let showWhyWeAsk = true;
+export default class SocialSecurityNumberSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -43,7 +43,7 @@ export default class PhoneSelection extends Component {
 
     formatPhone(numb) {
         var numbers = numb.replace(/\D/g, '');
-        var char = { 3: '-', 6: '-' };
+        var char = { 3: '-', 5: '-' };
         numb = '';
         for (var i = 0; i < numbers.length; i++) {
             numb += (char[i] || '') + numbers[i];
@@ -56,7 +56,7 @@ export default class PhoneSelection extends Component {
             curNums = num;
         } else {
             curNums = this.state.numField + '' + num;
-            if (curNums.length > 12) {
+            if (curNums.length > 11) {
                 curNums = this.state.numField;
             }
         }
@@ -68,7 +68,7 @@ export default class PhoneSelection extends Component {
             var delNums = this.state.numField;
             delNums = delNums.substr(0, delNums.length - 1);
             delNums = this.formatPhone(delNums);
-            this.setState({ numField: delNums })
+            this.setState({ numField: delNums})
         }
     }
 
@@ -81,7 +81,7 @@ export default class PhoneSelection extends Component {
             return (
                 <View style={[styles_2.whyWeAskView]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-                        Uncle Sam requires all brokerages to collect this info for identification verification
+                        All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here: <Text style={{color: "#18c3ff"}}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>
                     </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
                 </View>
@@ -95,11 +95,11 @@ export default class PhoneSelection extends Component {
             <View>
                 <View style={[{ margin: 20 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '27%', borderRadius: 1.5 }]}></View>
+                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '45%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '77%' }}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        PHONE NUMBER
+                        SOCIAL SECURITY NUMBER
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
@@ -109,8 +109,8 @@ export default class PhoneSelection extends Component {
                     </View>
                     {this.whyWeAsk()}
                     <View style={[styles_2.registrationFormView]}>
-                        <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
-                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]} maxLength={12} editable={false}
+                        <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
+                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]} maxLength={111} editable={false}
                         />
                     </View>
                     <View style={[{ backgroundColor: this.props.colors['white'] }, { borderTopColor: this.props.colors['borderGray'] }, styles_2.numContainer]}>
