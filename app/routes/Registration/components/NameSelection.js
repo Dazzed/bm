@@ -28,16 +28,20 @@ import { Label } from 'native-base';
 
 let showWhyWeAsk = false;
 export default class NameSelection extends Component {
-    static propTypes = {
-        // prop: PropTypes
+    state = {
+        showWhyWeAsk: false
     }
 
-    componentWillMount() {
-        // console.log(COUNTRY_LIST);
+    static propTypes = {
+        onForwardStep: PropTypes.func.isRequired,
+    }
+
+    toggleWhyWeAsk = () => {
+        this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
 
     whyWeAsk = () => {
-        if (this.showWhyWeAsk) {
+        if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
@@ -45,7 +49,7 @@ export default class NameSelection extends Component {
                                 </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
                 </View>
-            );            
+            );
         } else {
         }
     }
@@ -62,10 +66,10 @@ export default class NameSelection extends Component {
                         NAME
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
                             Why we ask
                         </Text>
-                        <Image source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
+                        <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
                     </View>
                     {this.whyWeAsk()}
                     <View style={[styles_2.registrationFormView]}>
@@ -79,7 +83,7 @@ export default class NameSelection extends Component {
                         />
                     </View>
                 </ScrollView>
-                <TouchableHighlight style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, {marginTop: 15}]}>
+                <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: -10 }]}>NEXT</Text>
                 </TouchableHighlight>
             </View>

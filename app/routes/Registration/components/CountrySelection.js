@@ -30,7 +30,7 @@ import checkBoxOutline from '../../../images/checkbox_outline.png';
 
 export default class CountrySelection extends Component {
   static propTypes = {
-    // prop: PropTypes
+    onForwardStep: PropTypes.func.isRequired,
   }
 
   componentWillMount() {

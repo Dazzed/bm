@@ -38,7 +38,7 @@ let linkList = [
 
 export default class Declaration extends Component {
     static propTypes = {
-        // prop: PropTypes
+        onForwardStep: PropTypes.func.isRequired,
     }
 
     componentWillMount() {
@@ -81,7 +81,7 @@ export default class Declaration extends Component {
                         {this.renderLinks()}
                    </View>
                 </ScrollView>
-                <TouchableHighlight style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
+                <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, {marginTop: -10}]}>I AGREE</Text>
                 </TouchableHighlight>
             </View>

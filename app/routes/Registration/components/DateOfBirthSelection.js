@@ -28,17 +28,14 @@ import numbers from '../../../style/numbers';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
-let showWhyWeAsk = false;
 export default class DateOfBirthSelection extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            numField: ''
-        };
+    state = {
+        showWhyWeAsk: false,
+        numField: ''
     }
 
     static propTypes = {
-        // prop: PropTypes
+        onForwardStep: PropTypes.func.isRequired,
     }
 
     formatDate(numb) {
@@ -72,12 +69,12 @@ export default class DateOfBirthSelection extends Component {
         }
     }
 
-    componentWillMount() {
-        // console.log(COUNTRY_LIST);
+    toggleWhyWeAsk = () => {
+        this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
 
     whyWeAsk = () => {
-        if (showWhyWeAsk) {
+        if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
@@ -99,13 +96,13 @@ export default class DateOfBirthSelection extends Component {
                 </View>
                 <ScrollView style={{ height: '77%' }}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        PHONE NUMBER
+                        DATE OF BIRTH
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
                             Why we ask
                         </Text>
-                        <Image source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
+                        <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
                     </View>
                     {this.whyWeAsk()}
                     <View style={[styles_2.registrationFormView]}>
@@ -144,7 +141,7 @@ export default class DateOfBirthSelection extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <TouchableHighlight style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
+                <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: -10 }]}>NEXT</Text>
                 </TouchableHighlight>
             </View>
