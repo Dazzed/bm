@@ -10,7 +10,10 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
+    lineHeight: 24,
+    paddingTop: 24
+
   },
   fullBtn: {
     marginTop: 25,
@@ -55,6 +58,7 @@ const styles = StyleSheet.create({
   registrationFormView: { flex: 1, flexDirection: 'column', marginLeft: 40, marginRight: 40, marginBottom: 20 },
   registrationFormLabel: { margin: 4, marginTop: 25, lineHeight: 18, fontSize: 12 },
   registrationFormField: { height: 30, fontSize: 24, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
+  registrationFormKeypadField: {fontSize: 36, height: 45},
   halfModal: {
     position: 'absolute',
     top: 45,
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
     height: 6,
     position: 'absolute',
     right: 20,
-    top: 30,
+    top: 10,
     zIndex: 1
   },
   downArrowOpen: {
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // backgroundColor: colors.white,
     right: 0,
-    top: 76,
+    top: 176,
     width: '100%',
     height: 69,
     padding: 20,
@@ -113,9 +117,9 @@ const styles = StyleSheet.create({
   },
   lastTradeModal: {
     // backgroundColor: colors.white,
-    height: 500,
+    height: 400,
     position: 'absolute',
-    top: 145,
+    top: 245,
     left: 0,
     right: 0
   },
@@ -169,8 +173,19 @@ const styles = StyleSheet.create({
   radioLabelWrap: {
     width: 50,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    height: 70
+    height: 60
     // borderBottomColor: colors.borderGray    
+  },
+  radioLabel: {
+    fontSize: 16,
+    paddingLeft: 25,
+    paddingTop: 6,
+    paddingBottom: 6,
+    marginBottom: 2,
+    // color: colors.lightGray
+  },
+  activeRadioLabel: {
+    // color: colors.darkGray
   },
   progressActual: {
     backgroundColor: '#00ceff',

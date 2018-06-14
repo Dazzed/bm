@@ -25,7 +25,7 @@ const numbers = StyleSheet.create({
     borderWidth:2,
     borderColor: colors.blue,
     borderRadius: 5,
-    maxHeight: 50,
+    maxHeight: 60,
     paddingBottom: 0,
     marginBottom: 30
   },
@@ -58,14 +58,14 @@ const numbers = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     // color: colors.darkSlate,
-    fontSize: 32
+    fontSize: 33
   },
   numbers_right: {
     flex: 1,
     textAlign: 'center',
     marginTop: -10,
     // color: colors.darkSlate,
-    fontSize: 32
+    fontSize: 33
   },
   selectTxt: {
     // color: colors.white,

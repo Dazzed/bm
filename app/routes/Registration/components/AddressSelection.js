@@ -123,92 +123,93 @@ export default class AddressSelection extends Component {
     render() {
         return (
             <View>
-                <View style={[{ margin: 20 }]}>
+                <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '18%', borderRadius: 1.5 }]}></View>
                 </View>
-                <ScrollView style={{ height: '77%' }}>
+                <ScrollView style={{ height: '72%' }}>
                     <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         ADDRESS
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
                             WHY WE ASK
                         </Text>
                         <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
                     </View>
                     {this.whyWeAsk()}
-                    <View style={[styles_2.registrationFormView]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
-                        <TextInput
-                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                        />
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
-                        <TextInput
-                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                        />
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
-                        <TextInput
-                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                        />
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>STATE</Text>
-
-                        <View style={styles_2.subMenuRow}>
-                            <TouchableOpacity style={[{ borderBottomColor: this.props.colors['borderGray'] }]} onPress={() => { this.showState() }}>
-                                <Image
-                                    source={require('../../../images/arrowblue.png')}
-                                    style={[styles_2.downArrow]}
-                                />
-                                <TextInput value={state_list[this.state.stateOption].label} editable={false}
-                                    style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                                />
-                            </TouchableOpacity>
-                            <Modal
-                                isVisible={this.state.isStateVisible}
-                                animationIn={'fadeIn'}
-                                animationOut={'fadeOut'}
-                                style={styles_2.fullModal}
-                                onModalHide={() => { this.hideState() }}>
-                                <View style={[{ backgroundColor: this.props.colors['white'] }, styles_2.subMenuFullModal]}>
-                                    <Image
+                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
+                        <View style={[styles_2.registrationFormView]}>
+                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
+                            <TextInput
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            />
+                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
+                            <TextInput
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            />
+                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
+                            <TextInput
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            />
+                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]} onPress={() => { this.showState() }}>STATE</Text>
+                            <View style={styles_2.subMenuRow}>
+                                <TouchableOpacity style={[{ borderBottomColor: this.props.colors['borderGray'] }]} onPress={() => { this.showState() }}>
+                                    <Image onPress={() => { this.showState() }}
                                         source={require('../../../images/arrowblue.png')}
                                         style={[styles_2.downArrow]}
                                     />
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, styles_2.subMenuTitle, fonts.hindGunturBd]}>STATE</Text>
-                                </View>
-                                <View style={[{ backgroundColor: this.props.colors['white'] }, styles_2.lastTradeModal]}>
-                                    <ScrollView style={styles_2.stateRadio}>
-                                        <RadioForm
-                                            radio_props={state_list}
-                                            initial={this.state.stateOption}
-                                            formHorizontal={false}
-                                            labelHorizontal={true}
-                                            borderWidth={1}
-                                            buttonColor={this.props.colors['blue']}
-                                            buttonOuterColor={this.props.colors['lightGray']}
-                                            buttonSize={22}
-                                            buttonOuterSize={20}
-                                            animation={false}
-                                            labelStyle={[{ color: this.props.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
-                                            radioLabelActive={[{ color: this.props.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-                                            labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles.radioLabelWrap]}
-                                            onPress={(value) => { this.hideState(value) }}
-                                            style={styles_2.radioField}
-                                        />
-                                    </ScrollView>
-                                </View>
-                            </Modal>
+                                    <TextInput value={state_list[this.state.stateOption].label} editable={false} onPress={() => { this.showState() }}
+                                        style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                                    />
+                                </TouchableOpacity>
+                                <Modal
+                                    isVisible={this.state.isStateVisible}
+                                    animationIn={'fadeIn'}
+                                    animationOut={'fadeOut'}
+                                    style={styles_2.fullModal}
+                                    onModalHide={() => { this.hideState() }}>
+                                    <View style={[{ backgroundColor: this.props.colors['white'] }, styles_2.subMenuFullModal]}>
+                                        { //<Image source={require('../../../images/arrowblue.png')} style={[styles_2.downArrow]}/>
+                                        }
+                                        <Text style={[{ color: this.props.colors['darkSlate'] }, styles_2.subMenuTitle, fonts.hindGunturBd]}>STATE</Text>
+                                    </View>
+                                    <View style={[{ backgroundColor: this.props.colors['white'] }, styles_2.lastTradeModal]}>
+                                        <ScrollView style={styles_2.stateRadio}>
+                                            <RadioForm
+                                                radio_props={state_list}
+                                                initial={this.state.stateOption}
+                                                formHorizontal={false}
+                                                labelHorizontal={true}
+                                                borderWidth={1}
+                                                buttonColor={this.props.colors['blue']}
+                                                buttonOuterColor={this.props.colors['lightGray']}
+                                                buttonSize={22}
+                                                buttonOuterSize={20}
+                                                animation={false}
+                                                labelStyle={[{ color: this.props.colors['lightGray'] }, styles_2.radioLabel, fonts.hindGunturRg]}
+                                                radioLabelActive={[{ color: this.props.colors['darkGray'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
+                                                labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.radioLabelWrap]}
+                                                onPress={(value) => { this.hideState(value) }}
+                                                style={styles_2.radioField}
+                                            />
+                                        </ScrollView>
+                                    </View>
+                                </Modal>
+                            </View>
+                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>ZIP CODE</Text>
+                            <TextInput
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            />
                         </View>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>ZIP CODE</Text>
-                        <TextInput
-                            style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                        />
-
                     </View>
                 </ScrollView>
-                <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { marginTop: 15 }]}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: -10 }]}>NEXT</Text>
-                </TouchableHighlight>
+                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, marginBottom: 15, shadowColor: '#10121a', height: 105 }}>
+                    <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
+                    </TouchableHighlight>
+                    <Text> </Text>
+                </View>
             </View>
         )
     }
