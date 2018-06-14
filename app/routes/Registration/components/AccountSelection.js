@@ -69,7 +69,7 @@ export default class AccountSelection extends Component {
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
                         <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg]}>
-                            Why we ask
+                            WHY WE ASK
                         </Text>
                         <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
                     </View>

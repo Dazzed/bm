@@ -7,22 +7,21 @@ var colors = require('./colors')
 
 const styles = StyleSheet.create({
   registrationPageTitle: {
-    paddingTop: 40,
     paddingBottom: 10,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 20
   },
   fullBtn: {
-    paddingTop: 20,
+    marginTop: 25,
     // backgroundColor: colors.green,
     borderRadius: 5,
     borderWidth: 0.5,
     // borderColor: colors.green,
     flex: 1,
-    maxHeight: 60,
     width: 320,
-    marginLeft: 25
+    marginLeft: 25,
+    marginRight: 25
   },
   imageStyle: {
     width: 25,
@@ -46,13 +45,16 @@ const styles = StyleSheet.create({
   whyWeAsk: {
     flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderColor: "#9a9ea8", borderWidth: 1, width: 125, alignContent: 'center', marginLeft: '50%', left: -62.5, borderRadius: 15, paddingTop: 1, paddingLeft: 5, paddingRight: 5, paddingBottom: 0    
   },
+  whyWeAskLabel: {
+    fontSize: 11
+  },
   whyWeAskView: {
     flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', paddingTop: 2.5, paddingLeft: 2.5, paddingRight: 5, paddingBottom: 3 
   },
   whyWeAskText: { margin: 30, lineHeight: 30, fontSize: 20 },
-  registrationFormView: { flex: 1, flexDirection: 'column', margin: 20 },
-  registrationFormLabel: { margin: 5, marginTop: 20, lineHeight: 20, fontSize: 14 },
-  registrationFormField: { height: 40, fontSize: 25, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
+  registrationFormView: { flex: 1, flexDirection: 'column', marginLeft: 40, marginRight: 40, marginBottom: 20 },
+  registrationFormLabel: { margin: 4, marginTop: 25, lineHeight: 18, fontSize: 12 },
+  registrationFormField: { height: 30, fontSize: 24, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
   halfModal: {
     position: 'absolute',
     top: 45,
