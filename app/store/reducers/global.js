@@ -4,6 +4,7 @@ const initialState = {
   isAuthenticated: false,
   isAuthenticating: false,
   currentUser: null,
+  loginErrorPresent: false
 }
 
 export default (state = initialState, action) => {
@@ -12,6 +13,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAuthenticating: true,
+        loginErrorPresent: false
       };
     case `${PREFIX}_SET_CURRENT_USER`:
       return {
@@ -24,6 +26,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAuthenticating: false,
+        loginErrorPresent: true
       }
   }
   return state;

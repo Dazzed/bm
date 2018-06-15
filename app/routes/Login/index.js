@@ -107,6 +107,9 @@ class SignIn extends React.Component {
               secureTextEntry={true}
             />
           </View>
+          <View style={{marginTop: 10, display: this.props.globalData.loginErrorPresent ? 'flex' : 'none'}}>
+            <Text style={{color: 'red'}}>Invalid credentials</Text>
+          </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
             onPress={() => alert('Enable touch Id')}>

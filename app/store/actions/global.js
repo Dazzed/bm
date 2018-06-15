@@ -41,7 +41,6 @@ export function authSuccess(access_token, id) {
 }
 
 export function authFailure() {
-  alert('Invalid credentials');
   return {
     type: `${PREFIX}_AUTH_FAILURE`
   };
