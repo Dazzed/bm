@@ -33,7 +33,10 @@ export default class AccountSelection extends Component {
     }
 
     state = {
-        showWhyWeAsk: false
+        showWhyWeAsk: false,
+        emailClass: styles_2.registrationFormFieldInActive,
+        passwordClass: styles_2.registrationFormFieldInActive
+
     }
 
     toggleWhyWeAsk = () => {
@@ -56,9 +59,19 @@ export default class AccountSelection extends Component {
         }
     }
 
+    onFocus = (item) => {
+        this.setState({ [item]: styles_2.registrationFormFieldActive })
+    }
+
+    onBlur = (item) => {
+        this.setState({ [item]: styles_2.registrationFormFieldInActive })
+    }
+
     render() {
         return (
-            <View>
+            <KeyboardAvoidingView
+                behavior={this.props.behavior}
+                style={styles_2.section}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '90%', borderRadius: 1.5 }]}></View>
@@ -77,23 +90,23 @@ export default class AccountSelection extends Component {
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>EMAIL</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('emailClass')} onFocus={() => this.onFocus('emailClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]} keyboardType="email-address" autoCapitalize='none'
                             />
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('passwordClass')} onFocus={() => this.onFocus('passwordClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]} secureTextEntry={true}
                             />
                         </View>
                     </View>
                 </ScrollView>
-                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, marginBottom: 15, shadowColor: '#10121a', height: 105 }}>
+                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

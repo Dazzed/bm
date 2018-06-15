@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
+    Button,
     ScrollView,
     KeyboardAvoidingView,
     AppRegistry,
@@ -29,7 +30,9 @@ import { Label } from 'native-base';
 let showWhyWeAsk = false;
 export default class NameSelection extends Component {
     state = {
-        showWhyWeAsk: false
+        showWhyWeAsk: false,
+        firstNameClass: styles_2.registrationFormFieldInActive,
+        lastNameClass: styles_2.registrationFormFieldInActive
     }
 
     static propTypes = {
@@ -39,7 +42,12 @@ export default class NameSelection extends Component {
     toggleWhyWeAsk = () => {
         this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
-
+    startSearch() {
+        alert(this.state.text);
+    }
+    addTagToInput(event) {
+        this.state = { text: this.state.text + " " + this.U9 };
+    }
     whyWeAsk = () => {
         if (this.state.showWhyWeAsk) {
             return (
@@ -53,10 +61,20 @@ export default class NameSelection extends Component {
         } else {
         }
     }
+    
+    onFocus = (item) => {
+        this.setState({ [item]: styles_2.registrationFormFieldActive })
+    }
+
+    onBlur = (item) => {
+        this.setState({ [item]: styles_2.registrationFormFieldInActive })
+    }
 
     render() {
         return (
-            <View>
+            <KeyboardAvoidingView
+                behavior={this.props.behavior}
+                style={styles_2.section}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '9%', borderRadius: 1.5 }]}></View>
@@ -75,23 +93,23 @@ export default class NameSelection extends Component {
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>FIRST NAME</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('firstNameClass')} onFocus={() => this.onFocus('firstNameClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.firstNameClass]}
                             />
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>LAST NAME</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('lastNameClass')} onFocus={() => this.onFocus('lastNameClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.lastNameClass]}
                             />
                         </View>
                     </View>
                 </ScrollView>
-                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, marginBottom: 15, shadowColor: '#10121a', height: 105 }}>
+                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

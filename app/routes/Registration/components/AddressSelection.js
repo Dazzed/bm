@@ -88,7 +88,11 @@ export default class AddressSelection extends Component {
     state = {
         showWhyWeAsk: false,
         isStateVisible: false,
-        stateOption: 0
+        stateOption: 0,
+        addressOneClass: styles_2.registrationFormFieldInActive,
+        addressTwoClass: styles_2.registrationFormFieldInActive,
+        cityClass: styles_2.registrationFormFieldInActive,
+        zipClass: styles_2.registrationFormFieldInActive
     }
 
     hideState(value) {
@@ -120,9 +124,19 @@ export default class AddressSelection extends Component {
         }
     }
 
+    onFocus = (item) => {
+        this.setState({ [item]: styles_2.registrationFormFieldActive })
+    }
+
+    onBlur = (item) => {
+        this.setState({ [item]: styles_2.registrationFormFieldInActive })
+    }
+
     render() {
         return (
-            <View>
+            <KeyboardAvoidingView
+                behavior={this.props.behavior}
+                style={styles_2.section}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '18%', borderRadius: 1.5 }]}></View>
@@ -141,27 +155,27 @@ export default class AddressSelection extends Component {
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('addressOneClass')} onFocus={() => this.onFocus('addressOneClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressOneClass]}
                             />
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('addressTwoClass')} onFocus={() => this.onFocus('addressTwoClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressTwoClass]}
                             />
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('cityClass')} onFocus={() => this.onFocus('cityClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.cityClass]}
                             />
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]} onPress={() => { this.showState() }}>STATE</Text>
                             <View style={styles_2.subMenuRow}>
-                                <TouchableOpacity style={[{ borderBottomColor: this.props.colors['borderGray'] }]} onPress={() => { this.showState() }}>
+                                <TouchableOpacity style={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.registrationFormFieldDropDown]} onPress={() => { this.showState() }}>
                                     <Image onPress={() => { this.showState() }}
                                         source={require('../../../images/arrowblue.png')}
                                         style={[styles_2.downArrow]}
                                     />
-                                    <TextInput value={state_list[this.state.stateOption].label} editable={false} onPress={() => { this.showState() }}
+                                    <Text onPress={() => { this.showState() }}
                                         style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                                    />
+                                    >{state_list[this.state.stateOption].label}</Text>
                                 </TouchableOpacity>
                                 <Modal
                                     isVisible={this.state.isStateVisible}
@@ -198,19 +212,19 @@ export default class AddressSelection extends Component {
                                 </Modal>
                             </View>
                             <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>ZIP CODE</Text>
-                            <TextInput
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                            <TextInput onBlur={() => this.onBlur('zipClass')} onFocus={() => this.onFocus('zipClass')} 
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.zipClass]}
                             />
                         </View>
                     </View>
                 </ScrollView>
-                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, marginBottom: 15, shadowColor: '#10121a', height: 105 }}>
+                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

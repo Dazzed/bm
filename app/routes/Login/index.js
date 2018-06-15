@@ -96,7 +96,7 @@ class SignIn extends React.Component {
             <TextInput style={[{ color: this.state.colors['lightGray'] }, styles.input, fonts.hindGunturRg]}
               placeholder="your@email.com"
               onChangeText={(email) => this.setState({ email })}
-              keyboardType="email-address"
+              keyboardType="email-address" autoCapitalize='none'
             />
           </View>
           <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
@@ -115,7 +115,7 @@ class SignIn extends React.Component {
             </Text>
           </TouchableOpacity>
           <Text style={[{ color: this.state.colors['lightGray'] }, styles.details, fonts.hindGunturRg]}>
-            Forgot username/password?
+            Forgot password?
           </Text>
           <TouchableOpacity
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}

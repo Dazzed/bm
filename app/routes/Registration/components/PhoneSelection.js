@@ -31,7 +31,8 @@ import { Label } from 'native-base';
 export default class PhoneSelection extends Component {
     state = {
         showWhyWeAsk: false,
-        numField: ''
+        numField: '',
+        numFieldClass: styles_2.registrationFormFieldInActive
     }
 
     static propTypes = {
@@ -58,8 +59,9 @@ export default class PhoneSelection extends Component {
                 curNums = this.state.numField;
             }
         }
+        // this.setState
         curNums = this.formatPhone(curNums)
-        this.setState({ numField: curNums });
+        this.setState({ numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
     }
 
     removeNum(num) {
@@ -67,6 +69,9 @@ export default class PhoneSelection extends Component {
             var delNums = this.state.numField;
             delNums = delNums.substr(0, delNums.length - 1);
             delNums = this.formatPhone(delNums);
+            if (delNums === '') {
+                this.setState({ numFieldClass: styles_2.registrationFormFieldInActive });
+            }
             this.setState({ numField: delNums })
         }
     }
@@ -91,7 +96,9 @@ export default class PhoneSelection extends Component {
 
     render() {
         return (
-            <View>
+            <KeyboardAvoidingView
+                behavior={this.props.behavior}
+                style={styles_2.section}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '27%', borderRadius: 1.5 }]}></View>
@@ -110,7 +117,7 @@ export default class PhoneSelection extends Component {
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField]} maxLength={12} editable={false}
+                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={12} editable={false}
                             />
                         </View>
                         <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white']  }, styles_2.numContainer]}>
@@ -145,13 +152,13 @@ export default class PhoneSelection extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, marginBottom: 15, shadowColor: '#10121a', height: 105 }}>
+                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

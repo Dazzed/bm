@@ -6,6 +6,12 @@ import {
 var colors = require('./colors')
 
 const styles = StyleSheet.create({
+  section: {
+    flex: 1,
+    flexDirection: 'column',
+    // justifyContent: 'center',
+    // alignItems: 'center'
+  },
   registrationPageTitle: {
     paddingBottom: 10,
     textAlign: 'center',
@@ -58,6 +64,10 @@ const styles = StyleSheet.create({
   registrationFormView: { flex: 1, flexDirection: 'column', marginLeft: 40, marginRight: 40, marginBottom: 20 },
   registrationFormLabel: { margin: 4, marginTop: 25, lineHeight: 18, fontSize: 12 },
   registrationFormField: { height: 30, fontSize: 24, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
+  registrationFormFieldDropDown: { height: 38, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
+  registrationFormFieldActive: { borderBottomColor: '#00ceff' },
+  registrationFormFieldInActive: { borderBottomColor: '#d3d3d8' },
+
   registrationFormKeypadField: {fontSize: 36, height: 45},
   halfModal: {
     position: 'absolute',
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
     height: 6,
     position: 'absolute',
     right: 20,
-    top: 10,
+    top: 15,
     zIndex: 1
   },
   downArrowOpen: {
@@ -169,6 +179,12 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     paddingTop: 15,
+  },
+  activeNumber: {
+    color: '#ffffff'
+  },
+  inactiveNumber: {
+    color: '#888888'
   },
   radioLabelWrap: {
     width: 50,
