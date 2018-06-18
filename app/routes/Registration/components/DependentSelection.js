@@ -34,7 +34,9 @@ export default class DependentSelection extends Component {
         super(props);
         this.state = {
             numField: '',
-            numFieldClass: styles_2.registrationFormFieldInActive
+            numFieldClass: styles_2.registrationFormFieldInActive,
+            formValid: false,
+            formValidClass: styles_2.formInvalid
         };
     }
 
@@ -52,14 +54,20 @@ export default class DependentSelection extends Component {
                 curNums = this.state.numField;
             }
         }
-        this.setState({ numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
+        this.setState({
+            numField: curNums, numFieldClass: styles_2.registrationFormFieldActive, formValid: true,
+            formValidClass: styles_2.formValid
+ });
     }
     removeNum(num) {
         if (this.state.numField) {
             var delNums = this.state.numField;
             delNums = delNums.substr(0, delNums.length - 1);
             if (delNums === '') {
-                this.setState({ numFieldClass: styles_2.registrationFormFieldInActive });
+                this.setState({
+                    numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
+                    formValidClass: styles_2.formInvalid
+                });
             }
             this.setState({ numField: delNums })
         }
@@ -75,13 +83,13 @@ export default class DependentSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '63%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle,{paddingTop: 20}]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle,{paddingTop: 20}]}>
                         NUMBER OF DEPENDENTS
                     </Text>
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XX" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
+                            <TextInput placeholder="XX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
                             />
                         </View>
                         <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white'] }, styles_2.numContainer]}>
@@ -117,7 +125,7 @@ export default class DependentSelection extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[ styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>

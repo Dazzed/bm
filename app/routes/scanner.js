@@ -111,11 +111,13 @@ class NumPad extends React.Component {
 
   }
   removeNum(num) {
-    var delNums = this.state.numField;
-    var newNums = delNums.substr(0, delNums.length - 1);
-    console.log('delete',newNums)
-    this.setState({numField: newNums})
-    this.props.setPrice(newNums);
+    if (this.state.numField !== null) {
+      var delNums = this.state.numField.toString();
+      var newNums = delNums.substr(0, delNums.length - 1);
+      console.log('delete',newNums)
+      this.setState({numField: newNums})
+      this.props.setPrice(newNums);
+    }
   }
   render() {
     return(
@@ -152,9 +154,10 @@ class NumPad extends React.Component {
           <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturLt]}></Text>
           <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturLt]} onPress={() => {this.addNum(0); }}>0</Text>
           <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturLt]} onPress={() => {this.removeNum(); }}>
-            <Image 
-              source={require('../images/delete.png')}
-              style={styles.deleteNumImg}
+            <Text> </Text>
+            <Image
+              source={this.state.colors['deleteImg']}
+              style={{ width: 40, height: 26 }}
             />
           </Text>
         </View>

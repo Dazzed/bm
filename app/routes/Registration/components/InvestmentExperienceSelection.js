@@ -67,7 +67,7 @@ export default class InvestmentExperienceSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '81%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
                         INVESTMENT EXPERIENCE
                     </Text>
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>
@@ -84,7 +84,7 @@ export default class InvestmentExperienceSelection extends Component {
                                     buttonSize={22}
                                     buttonOuterSize={20}
                                     animation={false}
-                                    labelStyle={[{ color: this.props.colors['realWhite'] }, styles_2.radioLabel, fonts.hindGunturRg]}
+                                    labelStyle={[{ color: this.props.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                                     radioLabelActive={[{ color: this.props.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                                     labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.radioLabelWrap]}
                                     onPress={(value) => { this.hideInvestmentStatusOption(value) }}

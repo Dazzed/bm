@@ -123,9 +123,10 @@ class OrderBuy extends React.Component {
               <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturRg]}></Text>
               <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturRg]} onPress={() => {this.addNum(0); }}>0</Text>
               <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturRg]} onPress={() => {this.removeNum(); }}>
-                <Image 
-                  source={require('../images/delete.png')}
-                  style={styles.deleteNumImg}
+                <Text> </Text>
+                <Image
+                  source={this.state.colors['deleteImg']}
+                  style={{ width: 40, height: 26 }}
                 />
               </Text>
             </View>

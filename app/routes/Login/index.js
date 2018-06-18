@@ -108,7 +108,7 @@ class SignIn extends React.Component {
             />
           </View>
           <View style={{marginTop: 10, display: this.props.globalData.loginErrorPresent ? 'flex' : 'none'}}>
-            <Text style={{color: 'red'}}>Invalid credentials</Text>
+            <Text style={{ color: 'red' }}>Error invalid email/password</Text>
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}

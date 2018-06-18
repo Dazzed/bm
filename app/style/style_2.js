@@ -32,6 +32,14 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25
   },
+  formValid: {
+    backgroundColor: '#41EF89', 
+    borderColor: '#41EF89'
+  },
+  formInvalid: {
+    backgroundColor: '#c4c6cb',
+    borderColor: '#c4c6cb'
+  },
   imageStyle: {
     width: 25,
     height: 25
@@ -63,7 +71,7 @@ const styles = StyleSheet.create({
   whyWeAskText: { margin: 30, lineHeight: 30, fontSize: 20 },
   registrationFormView: { flex: 1, flexDirection: 'column', marginLeft: 40, marginRight: 40, marginBottom: 20 },
   registrationFormLabel: { margin: 4, marginTop: 25, lineHeight: 18, fontSize: 12 },
-  registrationFormField: { height: 30, fontSize: 24, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
+  registrationFormField: { fontSize: 24, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
   registrationFormFieldDropDown: { height: 38, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
   registrationFormFieldActive: { borderBottomColor: '#00ceff' },
   registrationFormFieldInActive: { borderBottomColor: '#d3d3d8' },

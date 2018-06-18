@@ -90,13 +90,13 @@ export default class DateOfBirthSelection extends Component {
         numField: '',
         numFieldClass: styles_2.registrationFormFieldInActive,
 
-        oneClass: styles_2.activeNumber,
+        oneClass: { color: this.props.colors['darkSlate'] },
         oneDisabled: false,
 
-        twoClass: styles_2.activeNumber,
+        twoClass: { color: this.props.colors['darkSlate'] },
         twoDisabled: false,
 
-        threeClass: styles_2.activeNumber,
+        threeClass: { color: this.props.colors['darkSlate'] },
         threeDisabled: false,
 
         fourClass: styles_2.inactiveNumber,
@@ -117,8 +117,12 @@ export default class DateOfBirthSelection extends Component {
         nineClass: styles_2.inactiveNumber,
         nineDisabled: true,
 
-        zeroClass: styles_2.activeNumber,
-        zeroDisabled: false      
+        zeroClass: { color: this.props.colors['darkSlate'] },
+        zeroDisabled: false,
+        
+        formValid: false,
+        formValidClass: styles_2.formInvalid
+
     }
 
     static propTypes = {
@@ -144,9 +148,16 @@ export default class DateOfBirthSelection extends Component {
                 if (curNums.length > 10) {
                     curNums = this.state.numField;
                 }
+                if (curNums.length === 10) {
+                    this.setState({
+                        formValid: true,
+                        formValidClass: styles_2.formValid
+                    })
+                }
             }
             curNums = this.formatDate(curNums)
-            await this.setState({ numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
+            await this.setState({
+                numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
             this.setNumbersState()
         }
     }
@@ -156,23 +167,29 @@ export default class DateOfBirthSelection extends Component {
             delNums = delNums.substr(0, delNums.length - 1);
             delNums = this.formatDate(delNums);
             if (delNums === '') {
-                await this.setState({ numFieldClass: styles_2.registrationFormFieldInActive });
+                await this.setState({
+                    numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
+                    formValidClass: styles_2.formInvalid });
             }
             await this.setState({ numField: delNums })
         }
+        this.setState({
+            formValid: false,
+            formValidClass: styles_2.formInvalid
+        })            
         this.setNumbersState()
     }
 
     setNumbersState = () => {
         if (this.state.numField === null || this.state.numField === '') {
             this.setState({
-                oneClass: styles_2.activeNumber,
+                oneClass: { color: this.props.colors['darkSlate'] },
                 oneDisabled: false,
 
-                twoClass: styles_2.activeNumber,
+                twoClass: { color: this.props.colors['darkSlate'] },
                 twoDisabled: false,
 
-                threeClass: styles_2.activeNumber,
+                threeClass: { color: this.props.colors['darkSlate'] },
                 threeDisabled: false,
 
                 fourClass: styles_2.inactiveNumber,
@@ -193,7 +210,7 @@ export default class DateOfBirthSelection extends Component {
                 nineClass: styles_2.inactiveNumber,
                 nineDisabled: true,
 
-                zeroClass: styles_2.activeNumber,
+                zeroClass: { color: this.props.colors['darkSlate'] },
                 zeroDisabled: false      
             })
         } else {
@@ -205,7 +222,7 @@ export default class DateOfBirthSelection extends Component {
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(async (item) => {
             await this.setState({
                 [numberDisabled[item]]: false,
-                [numberClass[item]]: styles_2.activeNumber
+                [numberClass[item]]: { color: this.props.colors['darkSlate'] }
             });
         });
 
@@ -227,7 +244,7 @@ export default class DateOfBirthSelection extends Component {
         if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
                         Uncle Sam requires all brokerages to collect this info for identification verification
                                 </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
@@ -247,11 +264,11 @@ export default class DateOfBirthSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '36%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         DATE OF BIRTH
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
                             WHY WE ASK
                         </Text>
                         <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
@@ -259,8 +276,8 @@ export default class DateOfBirthSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="dd/mm/yyyy" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={10} editable={false}
+                            <TextInput placeholder="dd/mm/yyyy" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={10} editable={false}
                             />
                         </View>
                         <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white'] }, styles_2.numContainer]}>
@@ -296,7 +313,7 @@ export default class DateOfBirthSelection extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>

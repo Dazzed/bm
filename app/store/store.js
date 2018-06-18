@@ -19,7 +19,7 @@ export function setTheme(color) {
 export function colors() {
 	if(themeColor == false) {
 		var _colors = {
-		    realWhite: 	'#ffffff',
+			realWhite: 	'#ffffff',
 		    white: 		'#ffffff',
 		    contentBg: 	'#F8F9FB',
 		    darkGray: 	'#3D4356',

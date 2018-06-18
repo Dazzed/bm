@@ -92,7 +92,13 @@ export default class AddressSelection extends Component {
         addressOneClass: styles_2.registrationFormFieldInActive,
         addressTwoClass: styles_2.registrationFormFieldInActive,
         cityClass: styles_2.registrationFormFieldInActive,
-        zipClass: styles_2.registrationFormFieldInActive
+        zipClass: styles_2.registrationFormFieldInActive,
+        addressOne: '',
+        addressTwo: '',
+        city: '',
+        zip: '',
+        formValid: false,
+        formValidClass: styles_2.formInvalid
     }
 
     hideState(value) {
@@ -115,7 +121,7 @@ export default class AddressSelection extends Component {
         if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
                         Uncle Sam requires all brokerages to collect this info for identification verification
                     </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
@@ -132,6 +138,26 @@ export default class AddressSelection extends Component {
         this.setState({ [item]: styles_2.registrationFormFieldInActive })
     }
 
+    onTextChange = async (event, field) => {
+        const { text } = event.nativeEvent;
+        await this.setState({
+            [field]: text
+        });
+        if (this.state.addressOne !== null && this.state.addressOne !== '' && 
+            this.state.zip !== null && this.state.zip !== '' && 
+            this.state.city !== null && this.state.city !== '') {
+            await this.setState({
+                formValid: true,
+                formValidClass: styles_2.formValid
+            })
+        } else {
+            await this.setState({
+                formValid: false,
+                formValidClass: styles_2.formInvalid
+            })
+        }
+    }
+
     render() {
         return (
             <KeyboardAvoidingView
@@ -142,11 +168,11 @@ export default class AddressSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '18%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         ADDRESS
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
                             WHY WE ASK
                         </Text>
                         <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
@@ -154,19 +180,19 @@ export default class AddressSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
                             <TextInput onBlur={() => this.onBlur('addressOneClass')} onFocus={() => this.onFocus('addressOneClass')} 
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressOneClass]}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressOneClass]} onChange={(event) => this.onTextChange(event, 'addressOne')}
                             />
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
                             <TextInput onBlur={() => this.onBlur('addressTwoClass')} onFocus={() => this.onFocus('addressTwoClass')} 
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressTwoClass]}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressTwoClass]}
                             />
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
                             <TextInput onBlur={() => this.onBlur('cityClass')} onFocus={() => this.onFocus('cityClass')} 
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.cityClass]}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.cityClass]} onChange={(event) => this.onTextChange(event, 'city')}
                             />
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]} onPress={() => { this.showState() }}>STATE</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]} onPress={() => { this.showState() }}>STATE</Text>
                             <View style={styles_2.subMenuRow}>
                                 <TouchableOpacity style={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.registrationFormFieldDropDown]} onPress={() => { this.showState() }}>
                                     <Image onPress={() => { this.showState() }}
@@ -174,7 +200,7 @@ export default class AddressSelection extends Component {
                                         style={[styles_2.downArrow]}
                                     />
                                     <Text onPress={() => { this.showState() }}
-                                        style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                                        style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
                                     >{state_list[this.state.stateOption].label}</Text>
                                 </TouchableOpacity>
                                 <Modal
@@ -202,7 +228,7 @@ export default class AddressSelection extends Component {
                                                 buttonOuterSize={20}
                                                 animation={false}
                                                 labelStyle={[{ color: this.props.colors['lightGray'] }, styles_2.radioLabel, fonts.hindGunturRg]}
-                                                radioLabelActive={[{ color: this.props.colors['darkGray'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
+                                                radioLabelActive={[{ color: this.props.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                                                 labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.radioLabelWrap]}
                                                 onPress={(value) => { this.hideState(value) }}
                                                 style={styles_2.radioField}
@@ -211,15 +237,15 @@ export default class AddressSelection extends Component {
                                     </View>
                                 </Modal>
                             </View>
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>ZIP CODE</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>ZIP CODE</Text>
                             <TextInput onBlur={() => this.onBlur('zipClass')} onFocus={() => this.onFocus('zipClass')} 
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.zipClass]}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.zipClass]} onChange={(event) => this.onTextChange(event, 'zip')}
                             />
                         </View>
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>

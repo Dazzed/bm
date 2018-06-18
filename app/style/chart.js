@@ -79,7 +79,7 @@ const chart = StyleSheet.create({
     alignItems: 'flex-start'
   },
   wrapper: {
-    marginLeft: '8%',
+    marginLeft: '4%',
     width: '92%',
     padding: 20,
     marginBottom: 70

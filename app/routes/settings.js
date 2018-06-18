@@ -92,6 +92,7 @@ class Settings extends React.Component {
   }
   setColor(value) {
     setTheme(value);
+    this.setState({ colors: colors() });
     this.setState({darkTheme: value});
   }
   render() {
@@ -225,14 +226,6 @@ class Settings extends React.Component {
               onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
               value={false} />
           </View>
-          <View style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, settings.field]}>
-            <Text style={[{color: this.state.colors['darkSlate']}, settings.inputLabel, fonts.hindGunturRg]}>Briefing.com</Text>
-             <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
-              value={false} />
-          </View>
-
         </ScrollView>
         <Modal 
           isVisible={this.state.isSearchVisible}

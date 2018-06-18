@@ -35,8 +35,11 @@ export default class AccountSelection extends Component {
     state = {
         showWhyWeAsk: false,
         emailClass: styles_2.registrationFormFieldInActive,
-        passwordClass: styles_2.registrationFormFieldInActive
-
+        passwordClass: styles_2.registrationFormFieldInActive,
+        formValid: false,
+        email: '',
+        password: '',
+        formValidClass: styles_2.formInvalid
     }
 
     toggleWhyWeAsk = () => {
@@ -47,7 +50,7 @@ export default class AccountSelection extends Component {
         if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
                         •	All of your data is 256-bit encrypted and stored securely.
                         {"\n"}{"\n"}
                         •	We do not sell your personal information, and your contact info will not be used for advertising; we will only contact you with important updates about your BluMartini trading account.
@@ -66,6 +69,23 @@ export default class AccountSelection extends Component {
     onBlur = (item) => {
         this.setState({ [item]: styles_2.registrationFormFieldInActive })
     }
+    onTextChange = async (event, field) => {
+        const { text } = event.nativeEvent;
+        await this.setState({
+            [field]: text
+        });
+        if (this.state.email !== null && this.state.email !== '' && this.state.password !== null && this.state.password !== '') {
+            await this.setState({
+                formValid: true,
+                formValidClass: styles_2.formValid
+            })
+        } else {
+            await this.setState({
+                formValid: false,
+                formValidClass: styles_2.formInvalid
+            })
+        }
+    }
 
     render() {
         return (
@@ -77,11 +97,11 @@ export default class AccountSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '90%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         ACCOUNT DETAILS
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
                             WHY WE ASK
                         </Text>
                         <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
@@ -89,19 +109,19 @@ export default class AccountSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>EMAIL</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>EMAIL</Text>
                             <TextInput onBlur={() => this.onBlur('emailClass')} onFocus={() => this.onFocus('emailClass')} 
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]} keyboardType="email-address" autoCapitalize='none'
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]} keyboardType="email-address" autoCapitalize='none' onChange={(event) => this.onTextChange(event, 'email')}
                             />
-                            <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
+                            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
                             <TextInput onBlur={() => this.onBlur('passwordClass')} onFocus={() => this.onFocus('passwordClass')} 
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]} secureTextEntry={true}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]} secureTextEntry={true} onChange={(event) => this.onTextChange(event, 'password')}
                             />
                         </View>
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[ styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>

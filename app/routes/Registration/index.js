@@ -42,6 +42,7 @@ import EmploymentStatusSelection from './components/EmploymentStatusSelection';
 import InvestmentExperienceSelection from './components/InvestmentExperienceSelection';
 import AccountSelection from './components/AccountSelection';
 import Declaration from './components/Declaration';
+import Thankyou from './components/Thankyou';
 
 class RegistrationPage extends React.Component {
   static navigationOptions = {
@@ -100,13 +101,15 @@ class RegistrationPage extends React.Component {
         return <AccountSelection {...propsToPass} />;
       case 11:
         return <Declaration {...propsToPass} />;
+      case 12:
+        return <Thankyou {...propsToPass} />;
     }
   }
 
   onForwardStep = () => {
-    if (this.state.step === 11) {
-      alert('Registered!');
-      this.props.navigation.navigate('AppNav', { color: this.state.activeColor });
+    if (this.state.step === 12) {
+      // alert('Registered!');
+      this.props.navigation.navigate('Login', { color: this.state.activeColor });
     } else {
       this.setState(({ step }) => ({ step: step + 1 }));
     }

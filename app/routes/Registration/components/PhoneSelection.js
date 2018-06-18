@@ -32,7 +32,9 @@ export default class PhoneSelection extends Component {
     state = {
         showWhyWeAsk: false,
         numField: '',
-        numFieldClass: styles_2.registrationFormFieldInActive
+        numFieldClass: styles_2.registrationFormFieldInActive,
+        formValid: false,
+        formValidClass: styles_2.formInvalid
     }
 
     static propTypes = {
@@ -58,10 +60,17 @@ export default class PhoneSelection extends Component {
             if (curNums.length > 12) {
                 curNums = this.state.numField;
             }
+            if (curNums.length === 12) {
+                this.setState({
+                    formValid: true,
+                    formValidClass: styles_2.formValid
+                })
+            }
         }
         // this.setState
         curNums = this.formatPhone(curNums)
-        this.setState({ numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
+        this.setState({
+            numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
     }
 
     removeNum(num) {
@@ -70,10 +79,16 @@ export default class PhoneSelection extends Component {
             delNums = delNums.substr(0, delNums.length - 1);
             delNums = this.formatPhone(delNums);
             if (delNums === '') {
-                this.setState({ numFieldClass: styles_2.registrationFormFieldInActive });
+                this.setState({
+                    numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
+                    formValidClass: styles_2.formInvalid });
             }
             this.setState({ numField: delNums })
-        }
+        } 
+        this.setState({
+            formValid: false,
+            formValidClass: styles_2.formInvalid
+        })            
     }
 
     toggleWhyWeAsk = () => {
@@ -84,7 +99,7 @@ export default class PhoneSelection extends Component {
         if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView]}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
                         Uncle Sam requires all brokerages to collect this info for identification verification
                     </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
@@ -104,11 +119,11 @@ export default class PhoneSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '27%', borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         PHONE NUMBER
                     </Text>
                     <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
+                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
                             WHY WE ASK
                         </Text>
                         <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
@@ -116,8 +131,8 @@ export default class PhoneSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['realWhite']} value={this.state.numField}
-                                style={[{ color: this.props.colors['realWhite'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={12} editable={false}
+                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={12} editable={false}
                             />
                         </View>
                         <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white']  }, styles_2.numContainer]}>
@@ -153,7 +168,7 @@ export default class PhoneSelection extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
