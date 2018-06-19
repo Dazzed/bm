@@ -7,6 +7,12 @@ import rightArrow from '../images/right_arrow.png';
 import rightArrowDark from '../images/right_arrow_dark.png';
 import documentImage from '../images/document.png';
 import documentImageDark from '../images/document_dark.png';
+import addImage from '../images/add.png';
+import addImageDark from '../images/add_dark.png';
+import searchCancelImage from '../images/searchcancel.png';
+import searchCancelImageDark from '../images/searchcancel_dark.png';
+import logoImage from '../images/logo.png';
+import logoImageDark from '../images/logo_dark.png';
 
 var themeColor = true
 
@@ -31,11 +37,14 @@ export function colors() {
 		    blue: 		'#00CEFF',
 		    green: 		'#41EF89',
 			red: 		'#FF5D71',
+			progressFull: '#d8d8d8',
 			illustration: illustration,
 			deleteImg: deleteImg,
 			rightArrow: rightArrow,
 			documentImage: documentImage,
-			progressFull: '#d8d8d8',
+			addImage: addImage,
+			searchCancelImage: searchCancelImage,
+			logoImage: logoImage
 		}
 
 	} else {
@@ -55,7 +64,10 @@ export function colors() {
 			illustration: illustrationDark,
 			deleteImg: deleteImgDark,
 			rightArrow: rightArrowDark,
-			documentImage: documentImageDark
+			documentImage: documentImageDark,
+			addImage: addImageDark,
+			searchCancelImage: searchCancelImageDark,
+			logoImage: logoImageDark
 		}
 	}	
 	return _colors;	

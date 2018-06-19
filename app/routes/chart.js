@@ -244,10 +244,7 @@ class Chart extends Component {
                 />
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightCta} onPress={() => this.addSymbol('AAPL')}>
-              <Image 
-                source={require('../images/add.png')}
-                style={styles.addImg}
-              />
+                <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
             </TouchableOpacity>
           </View>
         </View>
@@ -345,15 +342,15 @@ class Chart extends Component {
             <View style={chart.timeWrap}>
             <Tabs selected={this.state.page} style={chart.timePeriod}
                   selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=>this.setState({page:el.props.name})}>
-                <Text name='1m' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>1m</Text>
-                <Text name='5m' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>5m</Text>
-                <Text name='30m' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]} selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelectedBig]}>30m</Text>
-                <Text name='1H' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>1H</Text>
-                <Text name='1D' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>1D</Text>
-                <Text name='1W' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>1W</Text>
-                <Text name='1M' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>1M</Text>
-                <Text name='1Y' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]}>1Y</Text>
-                <Text name='ALL' style={[{color: this.state.colors['lightGray']}, chart.time, fonts.hindGunturRg]} selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+                  <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
+                  <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
+                  <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
+                  <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
+                  <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
+                  <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
+                  <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
+                  <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
+                  <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
             </Tabs>
 
             </View>
@@ -629,10 +626,7 @@ class Chart extends Component {
             </View>
           </View>
           <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol('AAPL')}>
-            <Image 
-              source={require('../images/add.png')}
-              style={styles.addImg}
-            />
+           <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
           </TouchableOpacity>
 
         </View>

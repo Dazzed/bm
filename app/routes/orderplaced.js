@@ -51,7 +51,7 @@ class OrderPlaced extends React.Component {
           <View style={order.placeDetails}>
             <View style={styles.landingIcon}>
               <Image 
-                source={require('../images/logo.png')}
+                source={this.state.colors['logoImage']}
                 style={styles.appIcon}
               />
             </View>

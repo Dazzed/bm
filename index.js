@@ -68,7 +68,7 @@ class HomeScreen extends React.Component {
       <View style={[{backgroundColor: this.state.colors['white']}, styles.container]}>
         <View style={styles.landingIcon}>
           <Image 
-            source={require('./app/images/logo.png')}
+            source={this.state.colors['logoImage']}
             style={styles.appIcon}
           />
         </View>

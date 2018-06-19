@@ -95,6 +95,7 @@ class SignIn extends React.Component {
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
             <TextInput style={[{ color: this.state.colors['lightGray'] }, styles.input, fonts.hindGunturRg]}
               placeholder="your@email.com"
+              value="sameep.dev@gmail.co"
               onChangeText={(email) => this.setState({ email })}
               keyboardType="email-address" autoCapitalize='none'
             />

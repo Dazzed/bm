@@ -162,15 +162,12 @@ class Search extends React.Component {
                 onPress={() => this.goToChart(data)}>
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg]}>{data['name']}</Text>
+                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image 
-                        source={require('../images/add.png')}
-                        style={styles.addImg}
-                      />
+                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
                     </TouchableOpacity>
                   </View>
                 </View>    
@@ -190,15 +187,12 @@ class Search extends React.Component {
                 onPress={() => this.goToChart(data)}>
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg]}>{data['name']}</Text>
+                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image 
-                        source={require('../images/add.png')}
-                        style={styles.addImg}
-                      />
+                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
                     </TouchableOpacity>
                   </View>
                 </View>    
@@ -218,15 +212,12 @@ class Search extends React.Component {
                 onPress={() => this.goToChart(data)}>
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg]}>{data['name']}</Text>
+                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image 
-                        source={require('../images/add.png')}
-                        style={styles.addImg}
-                      />
+                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
                     </TouchableOpacity>
                   </View>
                 </View>    
@@ -246,15 +237,12 @@ class Search extends React.Component {
                 onPress={() => this.goToChart(data)}>
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg]}>{data['name']}</Text>
+                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image 
-                        source={require('../images/add.png')}
-                        style={styles.addImg}
-                      />
+                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
                     </TouchableOpacity>
                   </View>
                 </View>    
@@ -276,7 +264,7 @@ class Search extends React.Component {
                   source={require('../images/search.png')}
                   style={search.searchingImg}
                 />
-                <TextInput style={[{color: this.state.colors['darkGray']}, search.leftInput, fonts.hindGunturBd]}
+                <TextInput style={[{color: this.state.colors['darkSlate']}, search.leftInput, fonts.hindGunturBd]}
                   placeholder="Search Stocks"
                   keyboardType="default"
                   autoFocus={true}
@@ -285,10 +273,7 @@ class Search extends React.Component {
                   />
                 <View style={[search.searchcancel, {opacity: this.state.showCancel}]}>
                  <TouchableOpacity onPress={() => this.showSearchPreset('presets')}>
-                   <Image 
-                      source={require('../images/searchcancel.png')}
-                      style={search.searchcancelImg}
-                    />
+                  <Image source={this.state.colors['searchCancelImage']} style={{ width: 23, height: 23 }} />
                 </TouchableOpacity> 
                 </View>     
             </View>
