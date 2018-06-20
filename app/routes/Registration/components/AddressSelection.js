@@ -27,57 +27,58 @@ import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
 const state_list = [
-    { "label": "Alabama", "value": 0 },
-    { "label": "Alaska", "value": 1 },
-    { "label": "Arizona", "value": 2 },
-    { "label": "Arkansas", "value": 3 },
-    { "label": "California", "value": 4 },
-    { "label": "Colorado", "value": 5 },
-    { "label": "Connecticut", "value": 6 },
-    { "label": "Delaware", "value": 7 },
-    { "label": "District of Columbia", "value": 8 },
-    { "label": "Florida", "value": 9 },
-    { "label": "Georgia", "value": 10 },
-    { "label": "Hawaii", "value": 11 },
-    { "label": "Idaho", "value": 12 },
-    { "label": "Illinois", "value": 13 },
-    { "label": "Indiana", "value": 14 },
-    { "label": "Iowa", "value": 15 },
-    { "label": "Kansa", "value": 16 },
-    { "label": "Kentucky", "value": 17 },
-    { "label": "Lousiana", "value": 18 },
-    { "label": "Maine", "value": 19 },
-    { "label": "Maryland", "value": 20 },
-    { "label": "Massachusetts", "value": 21 },
-    { "label": "Michigan", "value": 22 },
-    { "label": "Minnesota", "value": 23 },
-    { "label": "Mississippi", "value": 24 },
-    { "label": "Missouri", "value": 25 },
-    { "label": "Montana", "value": 26 },
-    { "label": "Nebraska", "value": 27 },
-    { "label": "Nevada", "value": 28 },
-    { "label": "New Hampshire", "value": 29 },
-    { "label": "New Jersey", "value": 30 },
-    { "label": "New Mexico", "value": 31 },
-    { "label": "New York", "value": 32 },
-    { "label": "North Carolina", "value": 33 },
-    { "label": "North Dakota", "value": 34 },
-    { "label": "Ohio", "value": 35 },
-    { "label": "Oklahoma", "value": 36 },
-    { "label": "Oregon", "value": 37 },
-    { "label": "Pennsylvania", "value": 38 },
-    { "label": "Rhode Island", "value": 39 },
-    { "label": "South Carolina", "value": 40 },
-    { "label": "South Dakota", "value": 41 },
-    { "label": "Tennessee", "value": 42 },
-    { "label": "Texas", "value": 43 },
-    { "label": "Utah", "value": 44 },
-    { "label": "Vermont", "value": 45 },
-    { "label": "Virginia", "value": 46 },
-    { "label": "Washington", "value": 47 },
-    { "label": "West Virginia", "value": 48 },
-    { "label": "Wisconsin", "value": 49 },
-    { "label": "Wyoming", "value": 50 }
+    { "label": "Select", "value": 0},
+    { "label": "Alabama", "value": 1 },
+    { "label": "Alaska", "value": 2 },
+    { "label": "Arizona", "value": 3 },
+    { "label": "Arkansas", "value": 4 },
+    { "label": "California", "value": 5 },
+    { "label": "Colorado", "value": 6 },
+    { "label": "Connecticut", "value": 7 },
+    { "label": "Delaware", "value": 8 },
+    { "label": "District of Columbia", "value": 9 },
+    { "label": "Florida", "value": 10 },
+    { "label": "Georgia", "value": 11 },
+    { "label": "Hawaii", "value": 12 },
+    { "label": "Idaho", "value": 13 },
+    { "label": "Illinois", "value": 14 },
+    { "label": "Indiana", "value": 15 },
+    { "label": "Iowa", "value": 16 },
+    { "label": "Kansa", "value": 17 },
+    { "label": "Kentucky", "value": 18 },
+    { "label": "Lousiana", "value": 19 },
+    { "label": "Maine", "value": 20 },
+    { "label": "Maryland", "value": 21 },
+    { "label": "Massachusetts", "value": 22 },
+    { "label": "Michigan", "value": 23 },
+    { "label": "Minnesota", "value": 24 },
+    { "label": "Mississippi", "value": 25 },
+    { "label": "Missouri", "value": 26 },
+    { "label": "Montana", "value": 27 },
+    { "label": "Nebraska", "value": 28 },
+    { "label": "Nevada", "value": 29 },
+    { "label": "New Hampshire", "value": 30 },
+    { "label": "New Jersey", "value": 31 },
+    { "label": "New Mexico", "value": 32 },
+    { "label": "New York", "value": 33 },
+    { "label": "North Carolina", "value": 34 },
+    { "label": "North Dakota", "value": 35 },
+    { "label": "Ohio", "value": 36 },
+    { "label": "Oklahoma", "value": 37 },
+    { "label": "Oregon", "value": 38 },
+    { "label": "Pennsylvania", "value": 39 },
+    { "label": "Rhode Island", "value": 40 },
+    { "label": "South Carolina", "value": 41 },
+    { "label": "South Dakota", "value": 42 },
+    { "label": "Tennessee", "value": 43 },
+    { "label": "Texas", "value": 44 },
+    { "label": "Utah", "value": 45 },
+    { "label": "Vermont", "value": 46 },
+    { "label": "Virginia", "value": 47 },
+    { "label": "Washington", "value": 48 },
+    { "label": "West Virginia", "value": 49 },
+    { "label": "Wisconsin", "value": 50 },
+    { "label": "Wyoming", "value": 51 }
 ];
 
 export default class AddressSelection extends Component {
@@ -96,16 +97,31 @@ export default class AddressSelection extends Component {
         addressOne: '',
         addressTwo: '',
         city: '',
+        state: 'Select',
         zip: '',
         formValid: false,
         formValidClass: styles_2.formInvalid
     }
 
-    hideState(value) {
+    async hideState(value) {
         if (value) {
-            this.setState({ isStateVisible: false, stateOption: value })
+            await this.setState({ isStateVisible: false, stateOption: value, state: state_list[value].label })
         } else {
-            this.setState({ isStateVisible: false })
+            await this.setState({ isStateVisible: false })
+        }
+        if (this.state.addressOne !== null && this.state.addressOne !== '' &&
+            this.state.zip !== null && this.state.zip !== '' &&
+            this.state.state !== null && this.state.state !== '' && this.state.state !== 'Select' &&
+            this.state.city !== null && this.state.city !== '') {
+            await this.setState({
+                formValid: true,
+                formValidClass: styles_2.formValid
+            })
+        } else {
+            await this.setState({
+                formValid: false,
+                formValidClass: styles_2.formInvalid
+            })
         }
     };
 
@@ -145,6 +161,7 @@ export default class AddressSelection extends Component {
         });
         if (this.state.addressOne !== null && this.state.addressOne !== '' && 
             this.state.zip !== null && this.state.zip !== '' && 
+            this.state.state !== null && this.state.state !== '' && this.state.state !== 'Select' && 
             this.state.city !== null && this.state.city !== '') {
             await this.setState({
                 formValid: true,
