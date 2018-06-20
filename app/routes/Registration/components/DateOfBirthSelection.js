@@ -55,31 +55,31 @@ const numberClass = [
 ];
 
 const disabledList = {
-    "0": {
+    "3": {
        "0": [4,5,6,7,8,9] 
     },
-    "1": {
+    "4": {
         "0": [0],
         "1": [],
         "2": [],
         "3": [2, 3, 4, 5, 6, 7, 8, 9]
     },
     "2": {
-        "0": [2, 3, 4, 5, 6, 7, 8, 9],
-        "1": [2, 3, 4, 5, 6, 7, 8, 9],
-        "2": [2, 3, 4, 5, 6, 7, 8, 9],
-        "3": [2, 3, 4, 5, 6, 7, 8, 9],
-        "4": [2, 3, 4, 5, 6, 7, 8, 9],
-        "5": [2, 3, 4, 5, 6, 7, 8, 9],
-        "6": [2, 3, 4, 5, 6, 7, 8, 9],
-        "7": [2, 3, 4, 5, 6, 7, 8, 9],
-        "8": [2, 3, 4, 5, 6, 7, 8, 9],
-        "9": [2, 3, 4, 5, 6, 7, 8, 9]
+        "0": [4, 5, 6, 7, 8, 9],
+        "1": [4, 5, 6, 7, 8, 9],
+        "2": [4, 5, 6, 7, 8, 9],
+        "3": [4, 5, 6, 7, 8, 9],
+        "4": [4, 5, 6, 7, 8, 9],
+        "5": [4, 5, 6, 7, 8, 9],
+        "6": [4, 5, 6, 7, 8, 9],
+        "7": [4, 5, 6, 7, 8, 9],
+        "8": [4, 5, 6, 7, 8, 9],
+        "9": [4, 5, 6, 7, 8, 9],
     },
-    "3": {
+    "0": {
         "/": [2,3,4,5,6,7,8,9]
     },
-    "4": {
+    "1": {
         "0": [0],
         "1": [3,4,5,6,7,8,9]
     }
@@ -93,11 +93,11 @@ export default class DateOfBirthSelection extends Component {
         oneClass: { color: this.props.colors['darkSlate'] },
         oneDisabled: false,
 
-        twoClass: { color: this.props.colors['darkSlate'] },
-        twoDisabled: false,
+        twoClass: styles_2.inactiveNumber,
+        twoDisabled: true,
 
-        threeClass: { color: this.props.colors['darkSlate'] },
-        threeDisabled: false,
+        threeClass: styles_2.inactiveNumber,
+        threeDisabled: true,
 
         fourClass: styles_2.inactiveNumber,
         fourDisabled: true,
@@ -186,11 +186,11 @@ export default class DateOfBirthSelection extends Component {
                 oneClass: { color: this.props.colors['darkSlate'] },
                 oneDisabled: false,
 
-                twoClass: { color: this.props.colors['darkSlate'] },
-                twoDisabled: false,
+                twoClass: styles_2.inactiveNumber,
+                twoDisabled: true,
 
-                threeClass: { color: this.props.colors['darkSlate'] },
-                threeDisabled: false,
+                threeClass: styles_2.inactiveNumber,
+                threeDisabled: true,
 
                 fourClass: styles_2.inactiveNumber,
                 fourDisabled: true,
@@ -211,7 +211,7 @@ export default class DateOfBirthSelection extends Component {
                 nineDisabled: true,
 
                 zeroClass: { color: this.props.colors['darkSlate'] },
-                zeroDisabled: false      
+                zeroDisabled: false     
             })
         } else {
             this.updateState(this.state.numField.length, this.state.numField[this.state.numField.length -1])
@@ -276,7 +276,7 @@ export default class DateOfBirthSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="dd/mm/yyyy" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                            <TextInput placeholder="mm/dd/yyyy" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={10} editable={false}
                             />
                         </View>
