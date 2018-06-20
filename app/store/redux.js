@@ -45,6 +45,6 @@ export function configureStore(initialState = {}) {
     applyMiddleware(thunk)
   )
   return store;
-};
+}
 
 export const store = configureStore();

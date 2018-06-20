@@ -1,7 +1,10 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 import config from '../../config';
 
 export const PREFIX = 'APP_GLOBAL';
+
+const THEME_KEY = '@Blu:isDarkThemeActive';
 
 export function startLoggingIn() {
   return {
@@ -43,5 +46,36 @@ export function authSuccess(access_token, id) {
 export function authFailure() {
   return {
     type: `${PREFIX}_AUTH_FAILURE`
+  };
+}
+
+export function setThemeFromLocal() {
+  return async dispatch => {
+    const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);
+    if (isDarkThemeActive) {
+      return dispatch({
+        type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+        payload: true
+      });
+    }
+  };
+}
+
+export function toggleTheme() {
+  return async dispatch => {
+    const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);
+    if (isDarkThemeActive) {
+      await AsyncStorage.removeItem(THEME_KEY);
+      return dispatch({
+        type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+        payload: false
+      });
+    } else {
+      await AsyncStorage.setItem(THEME_KEY, 'true');
+      return dispatch({
+        type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+        payload: true
+      });
+    }
   };
 }

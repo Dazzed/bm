@@ -4,7 +4,8 @@ const initialState = {
   isAuthenticated: false,
   isAuthenticating: false,
   currentUser: null,
-  loginErrorPresent: false
+  loginErrorPresent: false,
+  isDarkThemeActive: false
 }
 
 export default (state = initialState, action) => {
@@ -27,7 +28,12 @@ export default (state = initialState, action) => {
         ...state,
         isAuthenticating: false,
         loginErrorPresent: true
-      }
+      };
+    case `${PREFIX}_SET_THEME_FROM_LOCAL`:
+      return {
+        ...state,
+        isDarkThemeActive: action.payload
+      };
   }
   return state;
 };

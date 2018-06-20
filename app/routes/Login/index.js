@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import {
   KeyboardAvoidingView,
-  AppRegistry,
-  StyleSheet,
-  Animated,
   Text,
   TextInput,
   View,
   Image,
-  Alert,
   TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -20,7 +16,7 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { setTheme, getTheme, colors } from '../../store/store';
+import { setTheme, colors } from '../../store/store';
 
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
@@ -30,25 +26,25 @@ import {
   selectGlobalData
 } from '../../selectors';
 
-class SignIn extends React.Component {
+class SignIn extends Component {
   static navigationOptions = {
     title: 'Sign In',
     header: null
   }
   constructor(props) {
     super(props);
-    this.state = { email: '', behavior: 'padding' };
+    this.state = { email: 'sameep.dev@gmail.com', password: 'abcd1234', behavior: 'padding', colors: colors() };
   }
-  componentWillMount() {
-    this.setState({ colors: colors() });
-  }
+
   setColor(value) {
     setTheme(value);
     this.setState({ activeColor: value, colors: colors() });
   }
+
   onSegmentChange = (segment: String) => {
     this.setState({ behavior: segment.toLowerCase() });
   };
+
   _signIn = () => {
     // Alert.alert(
     //   'Enable Touch ID',
@@ -95,7 +91,7 @@ class SignIn extends React.Component {
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
             <TextInput style={[{ color: this.state.colors['lightGray'] }, styles.input, fonts.hindGunturRg]}
               placeholder="your@email.com"
-              value="sameep.dev@gmail.co"
+              value={this.state.email}
               onChangeText={(email) => this.setState({ email })}
               keyboardType="email-address" autoCapitalize='none'
             />
@@ -104,11 +100,12 @@ class SignIn extends React.Component {
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.inputLabel, fonts.hindGunturMd]}>PASSWORD</Text>
             <TextInput style={[{ color: this.state.colors['lightGray'] }, styles.input, fonts.hindGunturRg]}
               placeholder="password"
+              value={this.state.password}
               onChangeText={(password) => this.setState({ password })}
               secureTextEntry={true}
             />
           </View>
-          <View style={{marginTop: 10, display: this.props.globalData.loginErrorPresent ? 'flex' : 'none'}}>
+          <View style={{ marginTop: 10, display: this.props.globalData.loginErrorPresent ? 'flex' : 'none' }}>
             <Text style={{ color: 'red' }}>Error invalid email/password</Text>
           </View>
           <TouchableOpacity

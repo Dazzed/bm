@@ -17,60 +17,69 @@ import logoImageDark from '../images/logo_dark.png';
 var themeColor = false
 
 export function setTheme(color) {
-  themeColor = color;
-  console.log('setTheme: ', themeColor);
-  colors();
+	themeColor = color;
+	console.log('setTheme: ', themeColor);
+	colors();
 }
 
-export function colors() {
-	if(themeColor == false) {
-		var _colors = {
-			realWhite: 	'#ffffff',
-		    white: 		'#ffffff',
-		    contentBg: 	'#F8F9FB',
-		    darkGray: 	'#3D4356',
-		    lightGray: 	'#9EA1AA',
-		    grayTwo: 	'#CBCCD2',
-		    borderGray: '#E2E3E6',
-		    darkSlate: 	'#323943',
-			inactiveDarkSlate: 	'#dddddd',
-		    blue: 		'#00CEFF',
-		    green: 		'#41EF89',
-			red: 		'#FF5D71',
-			progressFull: '#d8d8d8',
-			illustration: illustration,
-			deleteImg: deleteImg,
-			rightArrow: rightArrow,
-			documentImage: documentImage,
-			addImage: addImage,
-			searchCancelImage: searchCancelImage,
-			logoImage: logoImage
-		}
+const LIGHT_THEME = {
+	realWhite: '#ffffff',
+	white: '#ffffff',
+	contentBg: '#F8F9FB',
+	darkGray: '#3D4356',
+	lightGray: '#9EA1AA',
+	grayTwo: '#CBCCD2',
+	borderGray: '#E2E3E6',
+	darkSlate: '#323943',
+	inactiveDarkSlate: '#dddddd',
+	blue: '#00CEFF',
+	green: '#41EF89',
+	red: '#FF5D71',
+	progressFull: '#d8d8d8',
+	illustration: illustration,
+	deleteImg: deleteImg,
+	rightArrow: rightArrow,
+	documentImage: documentImage,
+	addImage: addImage,
+	searchCancelImage: searchCancelImage,
+	logoImage: logoImage
+};
 
-	} else {
-		var _colors = {
-		    realWhite: 	'#ffffff',
-		    white: 		'#2B324F',
-		    contentBg: 	'#1E243B',
-		    darkGray: 	'#9EA1AA',
-		    lightGray: 	'#767B8B',
-		    borderGray: '#767B8B',    
-		    darkSlate: 	'#FFFFFF',
-			inactiveDarkSlate: 	'#dddddd',
-		    blue: 		'#00CEFF',
-		    green: 		'#41EF89',
-			red: 		'#FF5D71',
-			progressFull: '#3d435c',
-			illustration: illustrationDark,
-			deleteImg: deleteImgDark,
-			rightArrow: rightArrowDark,
-			documentImage: documentImageDark,
-			addImage: addImageDark,
-			searchCancelImage: searchCancelImageDark,
-			logoImage: logoImageDark
+const DARK_THEME = {
+	realWhite: '#ffffff',
+	white: '#2B324F',
+	contentBg: '#1E243B',
+	darkGray: '#9EA1AA',
+	lightGray: '#767B8B',
+	borderGray: '#767B8B',
+	darkSlate: '#FFFFFF',
+	inactiveDarkSlate: '#dddddd',
+	blue: '#00CEFF',
+	green: '#41EF89',
+	red: '#FF5D71',
+	progressFull: '#3d435c',
+	illustration: illustrationDark,
+	deleteImg: deleteImgDark,
+	rightArrow: rightArrowDark,
+	documentImage: documentImageDark,
+	addImage: addImageDark,
+	searchCancelImage: searchCancelImageDark,
+	logoImage: logoImageDark
+};
+
+export function colors(isDarkThemeActive) {
+	if (isDarkThemeActive === true || isDarkThemeActive === false) {
+		if (isDarkThemeActive) {
+			return DARK_THEME;
+		} else {
+			return LIGHT_THEME;
 		}
-	}	
-	return _colors;	
+	}
+	if (themeColor == false) {
+		return LIGHT_THEME;
+	} else {
+		return DARK_THEME;
+	}
 }
 
 export function getTheme() {
