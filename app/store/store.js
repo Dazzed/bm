@@ -14,7 +14,7 @@ import searchCancelImageDark from '../images/searchcancel_dark.png';
 import logoImage from '../images/logo.png';
 import logoImageDark from '../images/logo_dark.png';
 
-var themeColor = true
+var themeColor = false
 
 export function setTheme(color) {
   themeColor = color;
