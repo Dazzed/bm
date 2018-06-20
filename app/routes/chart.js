@@ -1,10 +1,5 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   KeyboardAvoidingView,
   AppRegistry,
@@ -20,6 +15,7 @@ import {
   Dimensions,
   Alert
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import Modal from '../components/react-native-modal'
 import Orientation from 'react-native-orientation';
@@ -40,6 +36,7 @@ import chart from '../style/chart';
 import chartland from '../style/chartlandscape';
 import order from '../style/order';
 import fonts from '../style/fonts';
+import { selectGlobalData } from '../selectors';
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -85,7 +82,8 @@ class Chart extends Component {
       indicators: ['ICHI'],
       indicatorCnt: 0,
       isDisabled: false,
-      stockChange: false
+      stockChange: false,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
     this.orientationDidChange = this._orientationDidChange.bind(this);
     this.hideNews = this.hideNews.bind(this);
@@ -93,6 +91,7 @@ class Chart extends Component {
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
   }
+
   _orientationDidChange(orientation) {
     if (orientation == 'LANDSCAPE') {
       this.setState({ orientation: 'landscape' })
@@ -105,6 +104,7 @@ class Chart extends Component {
       }
     }
   }
+
   addSymbol(sym){
     Alert.alert(
       '',
@@ -116,18 +116,30 @@ class Chart extends Component {
       { cancelable: true }
     )
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
-  }
+
   componentDidMount(){
     Orientation.unlockAllOrientations();   
     Orientation.addOrientationListener(this.orientationDidChange);
     console.log(getTheme());
   }
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+  }
+
   componentWillUnmount() {
     Orientation.lockToPortrait();    
     Orientation.removeOrientationListener(this.orientationDidChange);
   }
+
   showOrder(orderType){
     if(this.state.orientation == 'landscape') {
       this.setState({ isRotateVisible: true, orderType: orderType })
@@ -994,7 +1006,14 @@ class Chart extends Component {
     );
   }
 }
- 
- 
-module.exports = Chart;
 
+Chart.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(Chart);

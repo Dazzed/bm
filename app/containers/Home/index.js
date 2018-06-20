@@ -31,8 +31,9 @@ class HomeScreen extends Component {
     super(props);
     this.state = {
       isTermsVisible: false,
-      colors: colors()
-    }
+      colors: colors(props.globalData.isDarkThemeActive)
+    };
+    props.setThemeFromLocal();
   }
 
   showTerms() {
@@ -45,6 +46,18 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     Orientation.lockToPortrait();
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
 
   render() {
@@ -96,6 +109,8 @@ class HomeScreen extends Component {
 
 HomeScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
+  setThemeFromLocal: PropTypes.func.isRequired,
+  globalData: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

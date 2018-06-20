@@ -1,10 +1,6 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   AppRegistry,
   StyleSheet,
@@ -17,9 +13,10 @@ import {
   TabPane,
   Dimensions,
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import Modal from 'react-native-modal'
-import {setTheme, getTheme, colors} from '../store/store';
+import { setTheme, getTheme, colors } from '../store/store';
 
 import Tabs from 'react-native-tabs';
 import AccountBal from '../routes/accountbalances';
@@ -31,8 +28,9 @@ import styles from '../style/style';
 import account from '../style/account';
 import fonts from '../style/fonts';
 import navstyle from '../style/nav';
+import { selectGlobalData } from '../selectors';
 
-class Account extends React.Component {
+class Account extends Component {
   static navigationOptions = {
     title: 'Account',
     header: null,
@@ -40,91 +38,112 @@ class Account extends React.Component {
     tabBarIcon: ({ tintColor }) => (
       <Image
         source={require('../images/accounts.png')}
-        style={[navstyle.icon, {tintColor: tintColor}]}
+        style={[navstyle.icon, { tintColor: tintColor }]}
       />
-    ),    
+    ),
   };
-  constructor(props){
+
+  constructor(props) {
     super(props);
     this.state = {
-      page:'balances',
+      page: 'balances',
       isSearchVisible: false,
-      todaysChange: ['+13.7%','+1.50']
+      todaysChange: ['+13.7%', '+1.50'],
+      colors: colors(props.globalData.isDarkThemeActive)
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
+
   getTabView() {
     switch (this.state.page) {
       case 'balances':
-        return <AccountBal/>
-        break;
+        return <AccountBal />
       case 'history':
-        return <AccountHist/>
-        break;
+        return <AccountHist />
       case 'positions':
-        return <AccountPos/>
-        break;
+        return <AccountPos />
     }
   }
+
   showSearch() {
-    this.setState({isSearchVisible:true});
+    this.setState({ isSearchVisible: true });
   }
+
   hideSearch() {
-    this.setState({isSearchVisible:false});
+    this.setState({ isSearchVisible: false });
   }
+
   render() {
     return (
-      <View style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
+      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
             <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
-              <Text style={[{color: this.state.colors['lightGray']}, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
-                <Image 
-                  source={require('../images/search.png')}
-                  style={styles.searchImg}
-                />
+              <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
+              <Image
+                source={require('../images/search.png')}
+                style={styles.searchImg}
+              />
             </TouchableOpacity>
-            <View style={styles.rightCta}></View>            
+            <View style={styles.rightCta}></View>
           </View>
         </View>
-        <View style={[{backgroundColor: this.state.colors['white']}, account.topContainer]}>
-          <View style={[{backgroundColor: this.state.colors['white']}, account.valueContainer]}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, account.topContainer]}>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, account.valueContainer]}>
             <View style={account.values}>
-              <Text style={[{color: this.state.colors['lightGray']}, account.acctVal, fonts.hindGunturRg]}>ACCOUNT VALUE</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.accValNum, fonts.hindGunturRg]}>$5,485.00</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, account.acctVal, fonts.hindGunturRg]}>ACCOUNT VALUE</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>$5,485.00</Text>
             </View>
             <View style={account.changeContainer}>
-              <Text style={[{color: this.state.colors['lightGray']}, account.change, fonts.hindGunturRg]}>TODAY'S CHANGE</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, account.change, fonts.hindGunturRg]}>TODAY'S CHANGE</Text>
               <View style={account.changeWrap}>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.changeNum, fonts.hindGunturRg]}>+385.59</Text>
-                <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['white']},  styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({myButtonOpacity: 0.5})}>+7.03%</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>+385.59</Text>
+                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>+7.03%</Text>
               </View>
             </View>
           </View>
-          <Tabs selected={this.state.page} style={[{backgroundColor:this.state.colors['white']}, account.tabBtns]}
-                selectedStyle={{color:this.state.colors['blue']}} onSelect={el=>this.setState({page:el.props.name})}>
-              <Text name="balances" style={[{color: this.state.colors['lightGray']}, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth:1,borderBottomColor:this.state.colors['blue']}}>Balances</Text>
-              <Text name="positions" style={[{color: this.state.colors['lightGray']}, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth:1,borderBottomColor:this.state.colors['blue']}}>Positions</Text>
-              <Text name="history" style={[{color: this.state.colors['lightGray']}, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth:1,borderBottomColor:this.state.colors['blue']}}>History</Text>
+          <Tabs selected={this.state.page} style={[{ backgroundColor: this.state.colors['white'] }, account.tabBtns]}
+            selectedStyle={{ color: this.state.colors['blue'] }} onSelect={el => this.setState({ page: el.props.name })}>
+            <Text name="balances" style={[{ color: this.state.colors['lightGray'] }, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>Balances</Text>
+            <Text name="positions" style={[{ color: this.state.colors['lightGray'] }, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>Positions</Text>
+            <Text name="history" style={[{ color: this.state.colors['lightGray'] }, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>History</Text>
           </Tabs>
         </View>
-        <ScrollView style={[{backgroundColor: this.state.colors['contentBg']}, account.tabContainer]}>
+        <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, account.tabContainer]}>
           {this.getTabView()}
         </ScrollView>
-        <Modal 
+        <Modal
           isVisible={this.state.isSearchVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'} >
-          <Search hideSearch={this.hideSearch} navigation={this.props.navigation}/>
+          <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
         </Modal>
       </View>
     );
   }
 }
 
-export default Account;
+Account.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(Account);

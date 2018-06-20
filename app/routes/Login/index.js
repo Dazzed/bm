@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   KeyboardAvoidingView,
   Text,
@@ -7,7 +8,6 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -31,9 +31,31 @@ class SignIn extends Component {
     title: 'Sign In',
     header: null
   }
+
   constructor(props) {
     super(props);
-    this.state = { email: 'sameep.dev@gmail.com', password: 'abcd1234', behavior: 'padding', colors: colors() };
+    this.state = {
+      email: 'sameep.dev@gmail.com',
+      password: 'abcd1234',
+      behavior: 'padding',
+      colors: colors(props.globalData.isDarkThemeActive)
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+    if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
+      const { navigate } = this.props.navigation;
+      navigate('AppNav', { color: this.state.activeColor })
+    }
   }
 
   setColor(value) {
@@ -59,13 +81,6 @@ class SignIn extends Component {
       return;
     }
     this.props.loginAction({ email: this.state.email, password: this.state.password });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
-      const { navigate } = this.props.navigation;
-      navigate('AppNav', { color: this.state.activeColor })
-    }
   }
 
   render() {
@@ -136,6 +151,7 @@ class SignIn extends Component {
 SignIn.propTypes = {
   globalData: PropTypes.object.isRequired,
   loginAction: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

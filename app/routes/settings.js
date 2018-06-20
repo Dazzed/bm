@@ -57,7 +57,7 @@ class Settings extends Component {
       isAutoLogVisible: false,
       autoLog: 3,
       numField: null,
-      colors: props.globalData.isDarkThemeActive
+      colors: colors(props.globalData.isDarkThemeActive)
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);

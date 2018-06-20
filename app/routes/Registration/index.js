@@ -28,6 +28,9 @@ import styles from '../../style/style';
 import fonts from '../../style/fonts';
 
 import { selectRegistrationPage } from './selectors';
+import {
+  selectGlobalData
+} from '../../selectors';
 import * as registerActions from '../../store/actions/registration';
 
 // import CountrySelection from './components/CountrySelection';
@@ -52,11 +55,24 @@ class RegistrationPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: '', behavior: 'padding', step: 1 };
+    this.state = { 
+      email: '', 
+      behavior: 'padding', 
+      step: 1,
+      colors: colors(props.globalData.isDarkThemeActive)
+    };
   }
 
-  componentWillMount() {
-    this.setState({ colors: colors() });
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
 
   componentWillUnmount() {
@@ -151,12 +167,14 @@ class RegistrationPage extends React.Component {
 }
 
 RegistrationPage.propTypes = {
+  globalData: PropTypes.object.isRequired,
   updateRegistrationParams: PropTypes.func.isRequired,
   resetRegistrationParams: PropTypes.func.isRequired,
   registrationPage: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
+  globalData: selectGlobalData(state),
   registrationPage: selectRegistrationPage(state)
 });
 
