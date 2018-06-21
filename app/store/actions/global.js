@@ -5,6 +5,7 @@ import config from '../../config';
 export const PREFIX = 'APP_GLOBAL';
 
 const THEME_KEY = '@Blu:isDarkThemeActive';
+const API_URL = config['staging'];
 
 export function startLoggingIn() {
   return {
@@ -20,7 +21,7 @@ export function loginAction({ email, password }) {
         email: email.toLowerCase(),
         password
       };
-      let authDetails = await axios.post(`${config['staging']}/api/users/login`, body);
+      let authDetails = await axios.post(`${API_URL}/api/users/login`, body);
       dispatch(authSuccess(authDetails.data.id, authDetails.data.userId));
     } catch (e) {
       console.log('Error in loginAction', e);
@@ -32,7 +33,7 @@ export function loginAction({ email, password }) {
 export function authSuccess(access_token, id) {
   return async (dispatch) => {
     try {
-      const currentUser = await axios.get(`${config['staging']}/api/users/${id}?access_token=${access_token}`);
+      const currentUser = await axios.get(`${API_URL}/api/users/${id}?access_token=${access_token}`);
       dispatch({
         type: `${PREFIX}_SET_CURRENT_USER`,
         payload: currentUser.data

@@ -73,6 +73,7 @@ class RegistrationPage extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    console.log('updated ~>', this.props.registrationPage);
   }
 
   componentWillUnmount() {
