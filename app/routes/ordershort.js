@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -42,12 +45,20 @@ class OrderShort extends React.Component {
       numField: null,
       orderValidity: 0,
       marketPrice: 153.53,
-      estimatedCost: 0
+      estimatedCost: 0,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
-
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
 
   addNum(num) {
@@ -155,7 +166,7 @@ class OrderShort extends React.Component {
           animationOut={'slideOutDown'}
           style={order.modal}
           onModalHide={() => {this.hideOrderTypes()}}>>
-          <View style={ordertypes.tabContent}>
+          <View style={[ordertypes.tabContent, { backgroundColor: this.state.colors['contentBg'] }]}>
             <RadioForm
               radio_props={validity_props}
               initial={this.state.orderValidity}
@@ -181,4 +192,13 @@ class OrderShort extends React.Component {
   }
 }
 
-export default OrderShort;
+// export default OrderShort;
+OrderShort.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(OrderShort);

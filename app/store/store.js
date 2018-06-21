@@ -75,7 +75,7 @@ export function colors(isDarkThemeActive) {
 			return LIGHT_THEME;
 		}
 	}
-	if (themeColor == false) {
+	if (themeColor === false) {
 		return LIGHT_THEME;
 	} else {
 		return DARK_THEME;
@@ -85,4 +85,3 @@ export function colors(isDarkThemeActive) {
 export function getTheme() {
 	return themeColor;
 }
-

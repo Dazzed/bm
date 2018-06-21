@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -32,7 +35,6 @@ import styles from '../style/style';
 import watchstyle from '../style/watchlist';
 import search from '../style/search';
 import fonts from '../style/fonts';
-
 
 class Search extends React.Component {
   constructor(props) {
@@ -92,7 +94,8 @@ class Search extends React.Component {
         ]),
       page: 'presets',
       showCancel: 0,
-      searchTerm: ''
+      searchTerm: '',
+      colors: colors(props.globalData.isDarkThemeActive)
     };
 
   }
@@ -114,9 +117,18 @@ class Search extends React.Component {
     setTimeout(() => {this.props.hideSearch()}, 0.1)
     this.props.navigation.navigate('Chart', {data: data})
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
+
   showSearchPreset(search) {
     if(search == 'toptech'){
       this.setState({showCancel: 1, page: search, searchTerm: 'Top Tech Companies'});
@@ -133,22 +145,24 @@ class Search extends React.Component {
   getSearchView() {
     switch (this.state.page) {
       case 'presets':
-        return <View style={search.searchPresets}>
-          <ScrollView><View style={search.presetContainer}>
-            <Text style={search.title}>Search by company or symbol</Text>
-            <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('toptech')}}>
-              <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Top Tech Companies</Text>
-            </TouchableOpacity>            
-            <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('biotech')}}>
-              <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Hot Biotech Companies</Text>
-            </TouchableOpacity>            
-            <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('crypto')}}>
-              <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Best Cryptocurrencies</Text>
-            </TouchableOpacity>            
-            <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('cannabis')}}>
-              <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Top Cannabis Stocks</Text>
-            </TouchableOpacity>            
-          </View></ScrollView>   
+        return <View style={[search.searchPresets, { backgroundColor: this.state.colors['contentBg']}]}>
+          <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }]}>
+            <View style={[{ backgroundColor: this.state.colors['contentBg'] }, search.presetContainer]}>
+              <Text style={search.title}>Search by company or symbol</Text>
+              <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('toptech')}}>
+                <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Top Tech Companies</Text>
+              </TouchableOpacity>            
+              <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('biotech')}}>
+                <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Hot Biotech Companies</Text>
+              </TouchableOpacity>            
+              <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('crypto')}}>
+                <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Best Cryptocurrencies</Text>
+              </TouchableOpacity>            
+              <TouchableOpacity style={styles.bluebtn} onPress={() => {this.showSearchPreset('cannabis')}}>
+                <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Top Cannabis Stocks</Text>
+              </TouchableOpacity>            
+            </View>
+          </ScrollView>   
         </View>
         break;
       case 'toptech':
@@ -163,7 +177,7 @@ class Search extends React.Component {
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
                     <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
@@ -188,7 +202,7 @@ class Search extends React.Component {
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
                     <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
@@ -213,7 +227,7 @@ class Search extends React.Component {
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
                     <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
@@ -238,7 +252,7 @@ class Search extends React.Component {
                 <View style={watchstyle.touchable}>
                   <View style={search.symDetails}>
                     <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['name']}</Text>
+                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
                     <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
@@ -266,6 +280,7 @@ class Search extends React.Component {
                 />
                 <TextInput style={[{color: this.state.colors['darkSlate']}, search.leftInput, fonts.hindGunturBd]}
                   placeholder="Search Stocks"
+                  placeholderTextColor={this.state.colors['lightGray']}
                   keyboardType="default"
                   autoFocus={true}
                   value={this.state.searchTerm}
@@ -284,7 +299,7 @@ class Search extends React.Component {
             </View>   
           </View>
         </View>
-        <ScrollView>
+        <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }]}>
         {this.getSearchView()}
         </ScrollView>
       </View>
@@ -292,4 +307,14 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+// export default Search;
+Search.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(Search);

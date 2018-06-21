@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   AppRegistry,
   StyleSheet,
@@ -18,11 +19,12 @@ import {
 } from 'react-native';
 
 import {setTheme, getTheme, colors} from '../store/store';
+import { connect } from 'react-redux';
 
 import styles from '../style/style';
 import account from '../style/account';
 import fonts from '../style/fonts';
-
+import { selectGlobalData } from '../selectors';
 class AccountPos extends React.Component {
   static navigationOptions = {
     title: 'AccountPos',
@@ -33,12 +35,23 @@ class AccountPos extends React.Component {
     super(props);
     this.state = {
       applChg: false,
-      tslaChg: false
+      tslaChg: false,
+      colors: colors(props.globalData.isDarkThemeActive)
     }
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
-  }  
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+  }
+
   render() {
     return (
       <View style={[{backgroundColor: this.state.colors['contentBg']}, account.tabContent]}>
@@ -100,4 +113,13 @@ class AccountPos extends React.Component {
   }
 }
 
-export default AccountPos;
+// export default AccountPos;
+AccountPos.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(AccountPos);

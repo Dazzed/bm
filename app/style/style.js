@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     top: 15,
     textAlign: 'center',
-    color: colors.darkSlate
+    // color: colors.darkSlate
   },
   mainOption: {
     height: 25,

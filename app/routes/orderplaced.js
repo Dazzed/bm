@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -33,21 +36,30 @@ class OrderPlaced extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isScanVisible: false,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
 
   render() {
     return(
-      <View>
+      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={[{borderBottomColor: this.state.colors['lightGray']}, order.menuBorder]}>
-          <View style={styles.menuContainer}>
-            <Text style={[{color: this.state.colors['darkSlate']},styles.boldTitleConf, fonts.hindGunturBd]}>Order Placed</Text>
-          </View>
+          <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order Placed</Text>
         </View>
-        <View style={order.tabContent}>
+        <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
           <View style={order.placeDetails}>
             <View style={styles.landingIcon}>
               <Image 
@@ -65,7 +77,7 @@ class OrderPlaced extends React.Component {
               </TouchableHighlight>
             </View>
           </View>
-          <View style={order.shareContainer}>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, order.shareContainer]}>
             <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => {this.props.hideOrderPlaced()}}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON STOCKTWITS</Text>
             </TouchableHighlight>            
@@ -79,4 +91,13 @@ class OrderPlaced extends React.Component {
   }
 }
 
-export default OrderPlaced;
+// export default OrderPlaced;
+OrderPlaced.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(OrderPlaced);

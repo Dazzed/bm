@@ -71,7 +71,7 @@ const search = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   presetContainer: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
     flex: 2,
     flexDirection: 'column',
     alignItems: 'center',

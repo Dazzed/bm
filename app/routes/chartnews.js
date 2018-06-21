@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -21,26 +24,35 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal'
-
 import Tabs from 'react-native-tabs';
 import {setTheme, getTheme, colors} from '../store/store';
 
 import styles from '../style/style';
 import chartnews from '../style/chartnews';
 import fonts from '../style/fonts';
-
 // var colors = require('../style/colors')
 
 class ChartNews extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      isScanVisible: false
+      isScanVisible: false,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
-  }  
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+  }
+
   render() {
     return (
       <View style={[{backgroundColor: this.state.colors['white']}, styles.container]}>
@@ -122,4 +134,14 @@ class ChartNews extends React.Component {
   }
 }
 
-export default ChartNews;
+// export default ChartNews;
+ChartNews.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(ChartNews);

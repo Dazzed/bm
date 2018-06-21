@@ -417,7 +417,8 @@ class Scanner extends React.Component {
         { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', change: '+1.45' },
       ]),
       isSearchVisible: false,
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
+      isUpdatingState: false
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
@@ -431,7 +432,11 @@ class Scanner extends React.Component {
       globalData: currentGlobalData
     } = this.props;
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
-      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+      this.setState({ isUpdatingState: true }, () => {
+        this.setState({
+          colors: colors(currentGlobalData.isDarkThemeActive), isUpdatingState: false
+        });
+      });
     }
   }
 
@@ -467,20 +472,22 @@ class Scanner extends React.Component {
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['lightGray'] }, scanner.symbolsTitle, fonts.hindGunturRg]}>HIGH</Text></View>
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['lightGray'] }, scanner.symbolsTitle, fonts.hindGunturRg]}>CURRENT</Text></View>
           </View>
-          <ListView
-            style={scanner.symbolsContainer}
-            dataSource={this.state.dataSource}
-            renderRow={(data) =>
-              <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
-                <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
-                  <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-                </TouchableOpacity>
-                <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$12.40</Text></View>
-                <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$23.12</Text></View>
-                <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$22.98</Text></View>
-              </View>
-            }
-          />
+          {
+            !this.state.isUpdatingState &&
+            <ListView
+              style={scanner.symbolsContainer}
+              dataSource={this.state.dataSource}
+              renderRow={(data) =>
+                <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
+                  <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
+                    <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
+                  </TouchableOpacity>
+                  <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$12.40</Text></View>
+                  <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$23.12</Text></View>
+                  <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$22.98</Text></View>
+                </View>
+              }
+            />}
         </View>
         <Modal
           isVisible={this.state.isSearchVisible}

@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -34,12 +37,21 @@ class Terms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 'presets'
+      page: 'presets',
+      colors: colors(props.globalData.isDarkThemeActive)
     };
-
   }
-  componentWillMount() {
-    this.setState({colors: colors()});
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
 
   render() {
@@ -78,4 +90,13 @@ Metus Nunc dignissim laoreet felis id pharetra. Fusce lobortis est ut dui facili
   }
 }
 
-export default Terms;
+// export default Terms;
+Terms.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(Terms);

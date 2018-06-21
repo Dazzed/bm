@@ -222,6 +222,7 @@ const order = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 5,
+    marginBottom: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
     // borderBottomColor: colors.lightGray
   },
@@ -236,16 +237,16 @@ const order = StyleSheet.create({
   placeTxt: {
     fontSize: 22,
     lineHeight: 35,
-    color: colors.darkSlate,
+    // color: colors.darkSlate,
     marginBottom: -5,
     textAlign: 'center'
   },
  
   confirmContainer: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
     marginTop: 15,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.borderGray,
+    // borderTopWidth: StyleSheet.hairlineWidth,
+    // borderTopColor: colors.borderGray,
     flex: 2,
     flexDirection: 'column',
     paddingTop: 40,
@@ -270,9 +271,9 @@ const order = StyleSheet.create({
     fontSize: 14
   },
   shareContainer: {
-    backgroundColor: colors.white,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.borderGray,
+    // backgroundColor: colors.white,
+    // borderTopWidth: StyleSheet.hairlineWidth,
+    // borderTopColor: colors.borderGray,
     flex: 1,
     flexDirection: 'column',
     paddingTop: 15,
@@ -295,7 +296,7 @@ const order = StyleSheet.create({
     paddingTop: 10,
     borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.darkGray,
+    // borderColor: colors.darkGray,
     opacity: 0.5,
     alignItems: 'center'
   },

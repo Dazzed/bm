@@ -408,7 +408,7 @@ class SubMenu extends React.Component {
                 source={require('../images/arrowblue.png')}
                 style={[trending.downArrow]}
               />
-              <Text style={[trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] },trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
             </View>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
               <ScrollView style={trending.sectorRadio}>
@@ -583,7 +583,7 @@ class Trending extends React.Component {
           </View>
         </View>
         <SubMenu globalData={this.props.globalData} />
-        <View style={trending.scanContainer}>
+        <View style={[{ backgroundColor: this.state.colors['contentBg'] }, trending.scanContainer]}>
           <ListView
             style={trending.symbolsContainer}
             dataSource={this.state.dataSource}

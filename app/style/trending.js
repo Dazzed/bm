@@ -132,7 +132,7 @@ const trending = StyleSheet.create({
   //scan results
   scanContainer: {
     flex: 1,
-    backgroundColor: colors.contentBg
+    // backgroundColor: colors.contentBg
   },
   symbolsContainer: {
     flex: 1,

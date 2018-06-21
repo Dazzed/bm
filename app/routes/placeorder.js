@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -53,18 +56,28 @@ class PlaceOrder extends React.Component {
       isOrderPlaced: false,
       animateOut: 'slideOutRight',
       orderTypeTitle: 0,
-      page:this.props.orderType
+      page:this.props.orderType,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
     this.hideOrderChild = this.props.hideOrder.bind(this);
     this.hideOrderValidity = this.hideOrderValidity.bind(this);
     this.showOrderConfirm = this.showOrderConfirm.bind(this);
     this.hideOrderConfirm = this.hideOrderConfirm.bind(this);
     this.cancelOrderConfirm = this.cancelOrderConfirm.bind(this);
-
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
-  }  
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+  }
+
   getTabView() {
     switch (this.state.page) {
       case 'Buy':
@@ -167,4 +180,13 @@ class PlaceOrder extends React.Component {
   }
 }
 
-export default PlaceOrder;
+// export default PlaceOrder;
+PlaceOrder.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(PlaceOrder);

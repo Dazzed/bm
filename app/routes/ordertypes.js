@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -38,14 +41,24 @@ class OrderTypes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      numField: null
+      numField: null,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
 
   }
 
-  componentWillMount(){
-    this.setState({colors: colors()});
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
+
   showModal(){
     this.setState({ isScanVisible: true })
   }
@@ -93,4 +106,13 @@ class OrderTypes extends React.Component {
   }
 }
 
-export default OrderTypes;
+// export default OrderTypes;
+OrderTypes.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(OrderTypes);

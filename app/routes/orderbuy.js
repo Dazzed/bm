@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -42,12 +45,22 @@ class OrderBuy extends React.Component {
       isTypeVisible: false,
       orderValidity: 0,
       marketPrice: 153.53,
-      estimatedCost: 0
+      estimatedCost: 0,
+      colors: colors(props.globalData.isDarkThemeActive)
     };
   }
-  componentWillMount(){
-    this.setState({colors: colors()});
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
   }
+
   addNum(num) {
     var curNums;
     var cost = 0;
@@ -182,4 +195,13 @@ class OrderBuy extends React.Component {
   }
 }
 
-export default OrderBuy;
+// export default OrderBuy;
+OrderBuy.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(OrderBuy);

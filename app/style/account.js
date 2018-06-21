@@ -159,7 +159,7 @@ const account = StyleSheet.create({
     marginBottom:20,
   },
   sectionFull: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.white,
     marginBottom:20,
     flex: 1
   },

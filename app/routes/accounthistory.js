@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   AppRegistry,
   StyleSheet,
@@ -17,11 +18,12 @@ import {
   TabPane
 } from 'react-native';
 
+import { connect } from 'react-redux';
 import styles from '../style/style';
 import account from '../style/account';
 import fonts from '../style/fonts';
-
 import {setTheme, getTheme, colors} from '../store/store';
+import { selectGlobalData } from '../selectors';
 
 class AccountHist extends React.Component {
   static navigationOptions = {
@@ -29,9 +31,26 @@ class AccountHist extends React.Component {
     header: null,
     gesturesEnabled: false
   };
-  componentWillMount(){
-    this.setState({colors: colors()});
-  }  
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      colors: colors(props.globalData.isDarkThemeActive)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+  }
+
   render() {
     return (
       <View style={account.tabContent}>
@@ -41,7 +60,7 @@ class AccountHist extends React.Component {
           <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySmF, fonts.hindGunturRg]}>QTY</Text>
           <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>TOTAL</Text>
         </View>
-        <View style={account.sectionFull}>
+        <View style={[account.sectionFull,{backgroundColor: this.state.colors['white']}]}>
           <View style={account.symbolRowHistory}>
             <View style={account.symbolWrap}>
               <View style={account.historyTransaction}>
@@ -81,7 +100,7 @@ class AccountHist extends React.Component {
           <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>QTY</Text>
           <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>TOTAL</Text>
         </View>
-        <View style={account.sectionFull}>
+        <View style={[account.sectionFull, { backgroundColor: this.state.colors['white'] }]}>
           <View style={account.symbolRowHistory}>
             <View style={account.symbolWrap}>
               <View style={account.historyTransaction}>
@@ -106,4 +125,13 @@ class AccountHist extends React.Component {
   }
 }
 
-export default AccountHist;
+// export default AccountHist;
+AccountHist.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(AccountHist);

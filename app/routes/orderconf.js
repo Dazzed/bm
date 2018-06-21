@@ -5,6 +5,9 @@
  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { selectGlobalData } from '../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -34,15 +37,23 @@ class OrderConf extends React.Component {
     super(props);
     this.state = {
       isOrderPlaced: false,
-      animateOut: 'slideOutLeft'
+      animateOut: 'slideOutLeft',
+      colors: colors(props.globalData.isDarkThemeActive)
     };
-
     this.hideOrderPlaced = this.hideOrderPlaced.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    const {
+      globalData: prevGlobalData
+    } = prevProps;
+    const {
+      globalData: currentGlobalData
+    } = this.props;
+    if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+  }
 
-  }
-  componentWillMount(){
-    this.setState({colors: colors()});
-  }
   showOrderPlaced() {
     this.setState({ isOrderPlaced: true })
   }
@@ -54,7 +65,7 @@ class OrderConf extends React.Component {
   render() {
     return(
       <View>
-        <View style={[{borderBottomColor: this.state.colors['lightGray']}, order.menuBorder]}>
+        <View style={[{ borderBottomColor: this.state.colors['lightGray'], backgroundColor: this.state.colors['white']}, order.menuBorder]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideOrderConfirm()}>
               <Image 
@@ -66,11 +77,11 @@ class OrderConf extends React.Component {
             <TouchableOpacity style={[styles.rightCta]} onPress={() => {this.props.cancelOrderConfirm()}}>
               <Text style={[{color: this.state.colors['lightGray']}, styles.rightCtaTxt, fonts.hindGunturRg]}>Cancel</Text>
             </TouchableOpacity>
-            <Text style={[styles.boldTitleConf, fonts.hindGunturBd]}>Confirmation</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.boldTitleConf, fonts.hindGunturBd]}>Confirmation</Text>
           </View>
         </View>
-        <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
-          <View style={order.confDetails}>
+        <View style={[{backgroundColor: this.state.colors['white']}, order.tabContent]}>
+          <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.confDetails]}>
             <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>You are buying</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>10 shares of APPL</Text>
             <Text style={order.confSpacing}></Text>
@@ -121,4 +132,13 @@ class OrderConf extends React.Component {
   }
 }
 
-export default OrderConf;
+// export default OrderConf;
+OrderConf.propTypes = {
+  globalData: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  globalData: selectGlobalData(state)
+});
+
+export default connect(mapStateToProps, null)(OrderConf);
