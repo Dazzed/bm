@@ -8,7 +8,7 @@ import Watchlists from './watchlists';
 import Trending from './trending';
 import Scanner from './scanner';
 import Settings from './settings';
-
+import CustomTabBar from './customtabbar';
 import Chart from './chart';
 import { colors } from '../store/store';
 
@@ -44,6 +44,7 @@ const AppNav = TabNavigator({
         paddingTop: 5
       }
     },
+      tabBarComponent: CustomTabBar,
   });
 
 const StackNav = StackNavigator({
