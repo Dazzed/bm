@@ -24,6 +24,7 @@ import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import numbers from '../../../style/numbers';
+import { isDateValid } from '../validation';
 
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
@@ -85,51 +86,67 @@ const disabledList = {
     }
 }
 export default class DateOfBirthSelection extends Component {
-    state = {
-        showWhyWeAsk: false,
-        numField: '',
-        numFieldClass: styles_2.registrationFormFieldInActive,
-
-        oneClass: { color: this.props.colors['darkSlate'] },
-        oneDisabled: false,
-
-        twoClass: styles_2.inactiveNumber,
-        twoDisabled: true,
-
-        threeClass: styles_2.inactiveNumber,
-        threeDisabled: true,
-
-        fourClass: styles_2.inactiveNumber,
-        fourDisabled: true,
-
-        fiveClass: styles_2.inactiveNumber,
-        fiveDisabled: true,
-
-        sixClass: styles_2.inactiveNumber,
-        sixDisabled: true,
-
-        sevenClass: styles_2.inactiveNumber,
-        sevenDisabled: true,
-
-        eightClass: styles_2.inactiveNumber,
-        eightDisabled: true,
-
-        nineClass: styles_2.inactiveNumber,
-        nineDisabled: true,
-
-        zeroClass: { color: this.props.colors['darkSlate'] },
-        zeroDisabled: false,
-        
-        formValid: false,
-        formValidClass: styles_2.formInvalid
-
-    }
-
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+        const {
+            registrationPage: {
+                dateField
+            }
+        } = this.props;
+        const isFormValid = isDateValid(dateField);
+
+        this.state = {
+            showWhyWeAsk: false,
+            dateField: dateField,
+            numFieldClass: styles_2.registrationFormFieldInActive,
+
+            oneClass: { color: this.props.colors['darkSlate'] },
+            oneDisabled: false,
+
+            twoClass: styles_2.inactiveNumber,
+            twoDisabled: true,
+
+            threeClass: styles_2.inactiveNumber,
+            threeDisabled: true,
+
+            fourClass: styles_2.inactiveNumber,
+            fourDisabled: true,
+
+            fiveClass: styles_2.inactiveNumber,
+            fiveDisabled: true,
+
+            sixClass: styles_2.inactiveNumber,
+            sixDisabled: true,
+
+            sevenClass: styles_2.inactiveNumber,
+            sevenDisabled: true,
+
+            eightClass: styles_2.inactiveNumber,
+            eightDisabled: true,
+
+            nineClass: styles_2.inactiveNumber,
+            nineDisabled: true,
+
+            zeroClass: { color: this.props.colors['darkSlate'] },
+            zeroDisabled: false,
+            
+            formValid: isFormValid,
+            formValidClass: styles_2.formInvalid
+        }
+        if (dateField) {
+            this.setNumbersState(dateField);
+        }
     }
 
     formatDate(numb) {
+        console.log(numb);
         var numbers = numb.replace(/\D/g, '');
         var char = { 2: '/', 4: '/' };
         numb = '';
@@ -138,50 +155,62 @@ export default class DateOfBirthSelection extends Component {
         }
         return numb;
     }
-    async addNum(num) {
+    addNum(num) {
         if (!this.state[numberDisabled[num]]) {
             var curNums;
-            if (this.state.numField == null) {
+            if (this.state.dateField == null) {
                 curNums = num;
             } else {
-                curNums = this.state.numField + '' + num;
+                curNums = this.state.dateField + '' + num;
                 if (curNums.length > 10) {
-                    curNums = this.state.numField;
-                }
-                if (curNums.length === 10) {
-                    this.setState({
-                        formValid: true,
-                        formValidClass: styles_2.formValid
-                    })
+                    curNums = this.state.dateField;
                 }
             }
-            curNums = this.formatDate(curNums)
-            await this.setState({
-                numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
-            this.setNumbersState()
+            curNums = this.formatDate(curNums.toString());
+
+            this.props.updateRegistrationParams({
+                dateField: curNums
+            });
+            this.setState({
+                dateField: curNums, numFieldClass: styles_2.registrationFormFieldActive
+            });
+            const isFormValid = isDateValid(curNums);
+            this.setState({
+                formValid: isFormValid,
+                formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+            });
+            this.setNumbersState(curNums)
         }
     }
-    async removeNum() {
-        if (this.state.numField) {
-            var delNums = this.state.numField;
+    removeNum() {
+        if (this.state.dateField) {
+            var delNums = this.state.dateField;
             delNums = delNums.substr(0, delNums.length - 1);
-            delNums = this.formatDate(delNums);
+            delNums = this.formatDate(delNums.toString());
             if (delNums === '') {
-                await this.setState({
+                this.setState({
                     numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
                     formValidClass: styles_2.formInvalid });
             }
-            await this.setState({ numField: delNums })
+            this.setState({ dateField: delNums })
         }
+
+        this.props.updateRegistrationParams({
+            dateField: delNums
+        });
         this.setState({
-            formValid: false,
-            formValidClass: styles_2.formInvalid
-        })            
-        this.setNumbersState()
+            dateField: delNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isDateValid(delNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });
+        this.setNumbersState(delNums)
     }
 
-    setNumbersState = () => {
-        if (this.state.numField === null || this.state.numField === '') {
+    setNumbersState = (num) => {
+        if (num === null || num === '') {
             this.setState({
                 oneClass: { color: this.props.colors['darkSlate'] },
                 oneDisabled: false,
@@ -214,21 +243,21 @@ export default class DateOfBirthSelection extends Component {
                 zeroDisabled: false     
             })
         } else {
-            this.updateState(this.state.numField.length, this.state.numField[this.state.numField.length -1])
+            this.updateState(num.length, num[num.length -1])
         }
     }
 
     updateState = (len, numb) => {
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(async (item) => {
-            await this.setState({
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => {
+            this.setState({
                 [numberDisabled[item]]: false,
                 [numberClass[item]]: { color: this.props.colors['darkSlate'] }
             });
         });
 
         if (len < 5) {
-            disabledList[len][numb].map(async (item) => {
-                await this.setState({
+            disabledList[len][numb].map((item) => {
+                this.setState({
                     [numberDisabled[item]]: true,
                     [numberClass[item]]: styles_2.inactiveNumber
                 });
@@ -276,7 +305,7 @@ export default class DateOfBirthSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="mm/dd/yyyy" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                            <TextInput placeholder="mm/dd/yyyy" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.dateField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={10} editable={false}
                             />
                         </View>

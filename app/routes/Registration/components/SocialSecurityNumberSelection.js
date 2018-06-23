@@ -27,18 +27,31 @@ import numbers from '../../../style/numbers';
 
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
+import { isSsnValid } from '../validation';
 
 export default class SocialSecurityNumberSelection extends Component {
-    state = {
-        showWhyWeAsk: false,
-        numField: '',
-        numFieldClass: styles_2.registrationFormFieldInActive,
-        formValid: false,
-        formValidClass: styles_2.formInvalid
-    }
-
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+        const {
+            registrationPage: {
+                ssnField
+            }
+        } = this.props;
+        const isFormValid = isSsnValid(ssnField);
+        this.state = {
+            showWhyWeAsk: false,
+            numFieldClass: styles_2.registrationFormFieldInActive,
+            formValid: isFormValid,
+            ssnField: ssnField || '',
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        }
     }
 
     formatSSN(numb) {
@@ -52,27 +65,30 @@ export default class SocialSecurityNumberSelection extends Component {
     }
     addNum(num) {
         var curNums;
-        if (this.state.numField == null) {
+        if (this.state.ssnField == null) {
             curNums = num;
         } else {
-            curNums = this.state.numField + '' + num;
+            curNums = this.state.ssnField + '' + num;
             if (curNums.length > 11) {
-                curNums = this.state.numField;
-            }
-            if (curNums.length === 11) {
-                this.setState({
-                    formValid: true,
-                    formValidClass: styles_2.formValid
-                })
+                curNums = this.state.ssnField;
             }
         }
         curNums = this.formatSSN(curNums)
+        this.props.updateRegistrationParams({
+            ssnField: curNums
+        });
         this.setState({
-            numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
+            ssnField: curNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isSsnValid(curNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });
     }
     removeNum(num) {
-        if (this.state.numField) {
-            var delNums = this.state.numField;
+        if (this.state.ssnField) {
+            var delNums = this.state.ssnField;
             delNums = delNums.substr(0, delNums.length - 1);
             delNums = this.formatSSN(delNums);
             if (delNums === '') {
@@ -80,12 +96,20 @@ export default class SocialSecurityNumberSelection extends Component {
                     numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
                     formValidClass: styles_2.formInvalid });
             }
-            this.setState({ numField: delNums})
+            this.setState({ ssnField: delNums})
         }
+        this.props.updateRegistrationParams({
+            ssnField: delNums
+        });
         this.setState({
-            formValid: false,
-            formValidClass: styles_2.formInvalid
-        })            
+            ssnField: delNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isSsnValid(delNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });
+   
     }
 
     toggleWhyWeAsk = () => {
@@ -128,7 +152,7 @@ export default class SocialSecurityNumberSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.ssnField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
                            />
                         </View>

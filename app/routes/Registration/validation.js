@@ -17,3 +17,23 @@ export const isPresent = param => {
   }
   return false;
 };
+
+export const isPhoneValid = param => {
+  if (typeof param === 'string') {
+    return (param.length === 12)
+  }
+  return false;
+}
+export const isDateValid = param => {
+  if (typeof param === 'string') {
+    return (param.length === 10)
+  }
+  return false;
+}
+
+export const isSsnValid = param => {
+  if (typeof param === 'string') {
+    return (param.length === 11)
+  }
+  return false;
+};

@@ -24,21 +24,34 @@ import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import numbers from '../../../style/numbers';
+import { isPhoneValid } from '../validation';
 
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
 export default class PhoneSelection extends Component {
-    state = {
-        showWhyWeAsk: false,
-        numField: '',
-        numFieldClass: styles_2.registrationFormFieldInActive,
-        formValid: false,
-        formValidClass: styles_2.formInvalid
-    }
-
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+        const {
+            registrationPage: {
+                phoneField
+            }
+        } = this.props;
+        const isFormValid = isPhoneValid(phoneField);
+        this.state = {
+            showWhyWeAsk: false,
+            numFieldClass: styles_2.registrationFormFieldInActive,
+            formValid: isFormValid,
+            phoneField: phoneField || '',
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        }
     }
 
     formatPhone(numb) {
@@ -53,29 +66,32 @@ export default class PhoneSelection extends Component {
 
     addNum(num) {
         var curNums;
-        if (this.state.numField == null) {
+        if (this.state.phoneField == null) {
             curNums = num;
         } else {
-            curNums = this.state.numField + '' + num;
+            curNums = this.state.phoneField + '' + num;
             if (curNums.length > 12) {
-                curNums = this.state.numField;
-            }
-            if (curNums.length === 12) {
-                this.setState({
-                    formValid: true,
-                    formValidClass: styles_2.formValid
-                })
+                curNums = this.state.phoneField;
             }
         }
         // this.setState
         curNums = this.formatPhone(curNums)
+        this.props.updateRegistrationParams({
+            phoneField: curNums
+        });
         this.setState({
-            numField: curNums, numFieldClass: styles_2.registrationFormFieldActive });
+            phoneField: curNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isPhoneValid(curNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });
     }
 
     removeNum(num) {
-        if (this.state.numField) {
-            var delNums = this.state.numField;
+        if (this.state.phoneField) {
+            var delNums = this.state.phoneField;
             delNums = delNums.substr(0, delNums.length - 1);
             delNums = this.formatPhone(delNums);
             if (delNums === '') {
@@ -83,12 +99,20 @@ export default class PhoneSelection extends Component {
                     numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
                     formValidClass: styles_2.formInvalid });
             }
-            this.setState({ numField: delNums })
+            this.setState({ phoneField: delNums })
         } 
+
+        this.props.updateRegistrationParams({
+            phoneField: delNums
+        });
         this.setState({
-            formValid: false,
-            formValidClass: styles_2.formInvalid
-        })            
+            phoneField: delNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isPhoneValid(delNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });            
     }
 
     toggleWhyWeAsk = () => {
@@ -104,8 +128,7 @@ export default class PhoneSelection extends Component {
                     </Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
                 </View>
-            );
-        } else {
+            );            
         }
     }
 
@@ -131,7 +154,7 @@ export default class PhoneSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.phoneField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={12} editable={false}
                             />
                         </View>
