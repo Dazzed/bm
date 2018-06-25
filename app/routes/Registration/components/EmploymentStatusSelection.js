@@ -39,24 +39,43 @@ const status_list = [
 export default class EmploymentStatusSelection extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
     }
+
     constructor(props) {
         super(props);
+        const {
+            registrationPage: {
+                employmentStatus
+            }
+        } = this.props;
+        if (employmentStatus === null) {
+            this.state = {
+                employmentStatus: 0
+            }
+        } else {
+            this.state = {
+                employmentStatus: employmentStatus
+            }
+        }
+    }
 
-        this.state = {
-            statusOption: 0
-        };
-    };
     hideStatus(value) {
         if (value) {
-            this.setState({ statusOption: value })
+            this.props.updateRegistrationParams({
+                employmentStatus: value
+            });
+            this.setState({
+                employmentStatus: value
+            });
         } else {
             this.setState({})
+            this.props.updateRegistrationParams({
+                employmentStatus: 0
+            });
         }
-    };
-
-    componentWillMount() {
-        // console.log(COUNTRY_LIST);
     }
 
     render() {
@@ -77,7 +96,7 @@ export default class EmploymentStatusSelection extends Component {
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm
                                     radio_props={status_list}
-                                    initial={this.state.statusOption}
+                                    initial={this.state.employmentStatus}
                                     formHorizontal={false}
                                     labelHorizontal={true}
                                     borderWidth={1}

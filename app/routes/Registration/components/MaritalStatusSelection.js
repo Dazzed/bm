@@ -38,24 +38,42 @@ const status_list = [
 export default class MaritalStatusSelection extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
     }
+
     constructor(props) {
         super(props);
-
-        this.state = {
-            statusOption: 0
-        };
-    };
+        const {
+            registrationPage: {
+                maritalStatus
+            }
+        } = this.props;
+        if (maritalStatus === null) {
+            this.state = {
+                maritalStatus: 0
+            }
+        } else {
+            this.state = {
+                maritalStatus: maritalStatus
+            }
+        }
+    }
     hideStatus(value) {
         if (value) {
-            this.setState({ statusOption: value })
+            this.props.updateRegistrationParams({
+                maritalStatus: value
+            });
+            this.setState({
+                maritalStatus: value
+            });
         } else {
             this.setState({ })
+            this.props.updateRegistrationParams({
+                maritalStatus: 0
+            });
         }
-    };
-
-    componentWillMount() {
-        // console.log(COUNTRY_LIST);
     }
 
     render() {
@@ -76,7 +94,7 @@ export default class MaritalStatusSelection extends Component {
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm
                                     radio_props={status_list}
-                                    initial={this.state.statusOption}
+                                    initial={this.state.maritalStatus}
                                     formHorizontal={false}
                                     labelHorizontal={true}
                                     borderWidth={1}

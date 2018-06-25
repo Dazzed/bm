@@ -33,7 +33,7 @@ import {
 } from '../../selectors';
 import * as registerActions from '../../store/actions/registration';
 
-// import CountrySelection from './components/CountrySelection';
+import CountrySelection from './components/CountrySelection';
 import NameSelection from './components/NameSelection';
 import AddressSelection from './components/AddressSelection';
 import PhoneSelection from './components/PhoneSelection';
@@ -58,7 +58,7 @@ class RegistrationPage extends React.Component {
     this.state = { 
       email: '', 
       behavior: 'padding', 
-      step: 1,
+      step: 0,
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
@@ -96,6 +96,8 @@ class RegistrationPage extends React.Component {
       onForwardStep: this.onForwardStep
     }
     switch (this.state.step) {
+      case 0:
+        return <CountrySelection  {...propsToPass} />;
       case 1:
         return <NameSelection  {...propsToPass} />;
       case 2:
@@ -133,7 +135,7 @@ class RegistrationPage extends React.Component {
   }
 
   onBackwardStep = () => {
-    if (this.state.step === 1) {
+    if (this.state.step === 0) {
       this.props.navigation.goBack();
     } else {
       this.setState(({ step }) => ({ step: step - 1 }));

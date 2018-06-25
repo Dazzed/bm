@@ -16,105 +16,114 @@ import {
   TouchableOpacity,
   TouchableHighlight
 } from 'react-native';
-
+import Modal from 'react-native-modal';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 
-import styles_1 from '../../../style/style';
+import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 
-import countriesList from '../../../store/countryList';
-
 import checkBoxBlue from '../../../images/checkbox_blue.png';
 import checkBoxOutline from '../../../images/checkbox_outline.png';
+import { isPresent } from '../validation';
+
+const country_list = [
+  { "label": "UNITED STATES CITIZEN", "value": 0 },
+  { "label": "I am NOT a U.S. Citizen", "value": 1 }
+];
 
 export default class CountrySelection extends Component {
   static propTypes = {
     onForwardStep: PropTypes.func.isRequired,
+    updateRegistrationParams: PropTypes.func.isRequired,
+    colors: PropTypes.object.isRequired,
+    registrationPage: PropTypes.object.isRequired,
   }
 
-  componentWillMount() {
-    // console.log(COUNTRY_LIST);
-  }
-
-  renderCountries = () => {
-    let selectedCountry;
+  constructor(props){
+    super(props);
     const {
-      registrationPage
-    } = this.props;
-    if (registrationPage.country) {
-      selectedCountry = registrationPage.country;
-    };
-    return countriesList.map((country, i) => {
-      if (selectedCountry && country.value === selectedCountry.value) {
-        return (
-          <View
-            flexDirection="row"
-            key={`country_${i}`}
-            style={styles_2.countryStyleSelected}
-            onPress={this.props.updateRegistrationParams.bind(this, { country: null })}
-          >
-            <Image source={checkBoxBlue} style={styles_2.imageStyle} /> <Text style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 10, marginLeft: 5, color: '#147CE0'}}>{country.label}</Text>
-          </View>
-        );
-      } else {
-        return (
-          <View 
-            flexDirection="row"
-            style={styles_2.countryStyle}
-            key={`country_${i}`}
-          >
-            <Text style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 10,
-              marginLeft: 25, color: '#147CE0' }}
-              onPress={this.props.updateRegistrationParams.bind(this, { country })}
-              >{country.label}</Text>
-          </View>
-        );
+      registrationPage: {
+        country
       }
-      // <RadioForm
-      //   radio_props={sector_props}
-      //   initial={this.state.sectorOption}
-      //   formHorizontal={false}
-      //   labelHorizontal={true}
-      //   borderWidth={1}
-      //   buttonColor={this.state.colors['blue']}
-      //   buttonOuterColor={this.state.colors['lightGray']}
-      //   buttonSize={22}
-      //   buttonOuterSize={20}
-      //   animation={false}
-      //   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
-      //   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-      //   labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-      //   onPress={(value) => { this.hideSector(value) }}
-      //   style={scanner.radioField}
-      // />
-        });
-  }
+    } = this.props;
 
+    console.log(typeof country)
+    console.log(country);
+    if (country === null) {
+      this.state = {
+        country: 0
+      }
+    } else {
+      this.state = {
+        country: country
+      }
+    }
+  }
+  hideStatus(value) {
+    if (value) {
+      this.props.updateRegistrationParams({
+        country: value
+      });
+      this.setState({
+        country: value
+      });
+    } else {
+      this.setState({})
+      this.props.updateRegistrationParams({
+        country: 0
+      });
+    }
+  }
   render() {
     return (
-      <View>
-        <ScrollView style={{maxHeight: '85%'}}>
-          <Text style={styles_2.registrationPageTitle}>
+      <KeyboardAvoidingView
+        behavior={this.props.behavior}
+        style={styles_2.section}>
+        <View style={[{ margin: 15 }]}>
+          <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
+          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '54%', borderRadius: 1.5 }]}></View>
+        </View>
+        <ScrollView style={{ height: '72%' }}>
+          <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
             COUNTRY OF CITIZENSHIP
-        </Text>
-          <View style={{ backgroundColor: 'white' }}>
-            {this.renderCountries()}
+          </Text>
+          <View style={[styles_2.whyWeAskView]}>
+            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+              Currently our application only supports United States citizens. If you are not a U.S. citizen, we will reach out and let you know when we can support additional nationalities.
+            </Text>
+          </View>
+          <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>
+            <View style={[styles_2.registrationFormView]}>
+              <View style={styles_2.subMenuRow}>
+                <RadioForm
+                  radio_props={country_list}
+                  initial={this.state.country}
+                  formHorizontal={false}
+                  labelHorizontal={true}
+                  borderWidth={1}
+                  buttonColor={this.props.colors['blue']}
+                  buttonOuterColor={this.props.colors['white']}
+                  buttonSize={22}
+                  buttonOuterSize={20}
+                  animation={false}
+                  labelStyle={[{ color: this.props.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
+                  radioLabelActive={[{ color: this.props.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
+                  labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.radioLabelWrap]}
+                  onPress={(value) => { this.hideStatus(value) }}
+                  style={styles_2.radioField}
+                />
+              </View>
+            </View>
           </View>
         </ScrollView>
-        <Text>
-          <Image source={checkBoxOutline} style={styles_2.naturalizedImage} /> <Text style={{color: this.props.colors['lightGray'], paddingLeft: 50}}>Check If Naturalized</Text>
-        </Text>
-        <TouchableHighlight
-          style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn]}
-        >
-          <Text style={[{ color: this.props.colors['realWhite'] }, styles_1.fullBtnTxt, fonts.hindGunturBd]}>NEXT</Text>
-        </TouchableHighlight>
-      </View>
+        <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
+          <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+            <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
+          </TouchableHighlight>
+          <Text> </Text>
+        </View>
+      </KeyboardAvoidingView>
     )
   }
 }

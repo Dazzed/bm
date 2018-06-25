@@ -25,21 +25,35 @@ import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
+import { isPresent } from '../validation';
 
 let showWhyWeAsk = false;
 export default class AccountSelection extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
     }
 
-    state = {
-        showWhyWeAsk: false,
-        emailClass: styles_2.registrationFormFieldInActive,
-        passwordClass: styles_2.registrationFormFieldInActive,
-        formValid: false,
-        email: '',
-        password: '',
-        formValidClass: styles_2.formInvalid
+    constructor(props) {
+        super(props);
+        const {
+            registrationPage: {
+                email,
+                password
+            }
+        } = this.props;
+        const isFormValid = isPresent(email) && isPresent(password);
+        this.state = {
+            showWhyWeAsk: false,
+            emailClass: styles_2.registrationFormFieldInActive,
+            passwordClass: styles_2.registrationFormFieldInActive,
+            formValid: isFormValid,
+            email: email || '',
+            password: password || '',
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        }
     }
 
     toggleWhyWeAsk = () => {
@@ -58,7 +72,6 @@ export default class AccountSelection extends Component {
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
                 </View>
             );
-        } else {
         }
     }
 
@@ -69,22 +82,20 @@ export default class AccountSelection extends Component {
     onBlur = (item) => {
         this.setState({ [item]: styles_2.registrationFormFieldInActive })
     }
-    onTextChange = async (event, field) => {
+
+    onTextChange = (event, field) => {
         const { text } = event.nativeEvent;
-        await this.setState({
+        this.props.updateRegistrationParams({
             [field]: text
         });
-        if (this.state.email !== null && this.state.email !== '' && this.state.password !== null && this.state.password !== '') {
-            await this.setState({
-                formValid: true,
-                formValidClass: styles_2.formValid
-            })
-        } else {
-            await this.setState({
-                formValid: false,
-                formValidClass: styles_2.formInvalid
-            })
-        }
+        this.setState({
+            [field]: text
+        });
+        const isFormValid = isPresent(this.state.email) && isPresent(this.state.password);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });
     }
 
     render() {
@@ -111,11 +122,11 @@ export default class AccountSelection extends Component {
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>EMAIL</Text>
                             <TextInput onBlur={() => this.onBlur('emailClass')} onFocus={() => this.onFocus('emailClass')} 
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]} keyboardType="email-address" autoCapitalize='none' onChange={(event) => this.onTextChange(event, 'email')}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]} keyboardType="email-address" autoCapitalize='none' onChange={(event) => this.onTextChange(event, 'email')} value={this.state.email}
                             />
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
                             <TextInput onBlur={() => this.onBlur('passwordClass')} onFocus={() => this.onFocus('passwordClass')} 
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]} secureTextEntry={true} onChange={(event) => this.onTextChange(event, 'password')}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]} secureTextEntry={true} onChange={(event) => this.onTextChange(event, 'password')} value={this.state.password}
                             />
                         </View>
                     </View>

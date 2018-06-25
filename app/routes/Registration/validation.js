@@ -37,3 +37,10 @@ export const isSsnValid = param => {
   }
   return false;
 };
+
+export const isDependentValid = param => {
+  if (typeof param === 'string') {
+    return (param.length > 0)
+  }
+  return false;
+};

@@ -27,41 +27,59 @@ import numbers from '../../../style/numbers';
 
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
+import { isDependentValid } from '../validation';
 
 let showWhyWeAsk = false;
 export default class DependentSelection extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            numField: '',
-            numFieldClass: styles_2.registrationFormFieldInActive,
-            formValid: false,
-            formValidClass: styles_2.formInvalid
-        };
-    }
-
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+        const {
+            registrationPage: {
+                dependentField
+            }
+        } = this.props;
+        const isFormValid = isDependentValid(dependentField);
+        this.state = {
+            numFieldClass: styles_2.registrationFormFieldInActive,
+            formValid: isFormValid,
+            dependentField: dependentField || '',
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        }
     }
 
     addNum(num) {
         var curNums;
-        if (this.state.numField == null) {
+        if (this.state.dependentField == null) {
             curNums = num;
         } else {
-            curNums = this.state.numField + '' + num;
+            curNums = this.state.dependentField + '' + num;
             if (curNums.length > 2) {
-                curNums = this.state.numField;
+                curNums = this.state.dependentField;
             }
         }
+
+        this.props.updateRegistrationParams({
+            dependentField: curNums
+        });
         this.setState({
-            numField: curNums, numFieldClass: styles_2.registrationFormFieldActive, formValid: true,
-            formValidClass: styles_2.formValid
- });
+            dependentField: curNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isDependentValid(curNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });
     }
     removeNum(num) {
-        if (this.state.numField) {
-            var delNums = this.state.numField;
+        if (this.state.dependentField) {
+            var delNums = this.state.dependentField;
             delNums = delNums.substr(0, delNums.length - 1);
             if (delNums === '') {
                 this.setState({
@@ -69,8 +87,19 @@ export default class DependentSelection extends Component {
                     formValidClass: styles_2.formInvalid
                 });
             }
-            this.setState({ numField: delNums })
+            this.setState({ dependentField: delNums })
         }
+        this.props.updateRegistrationParams({
+            dependentField: delNums
+        });
+        this.setState({
+            dependentField: delNums, numFieldClass: styles_2.registrationFormFieldActive
+        });
+        const isFormValid = isDependentValid(delNums);
+        this.setState({
+            formValid: isFormValid,
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+        });            
     }
 
     render() {
@@ -88,7 +117,7 @@ export default class DependentSelection extends Component {
                     </Text>
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.numField}
+                            <TextInput placeholder="XX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.dependentField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
                             />
                         </View>

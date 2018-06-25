@@ -37,24 +37,43 @@ const status_list = [
 export default class InvestmentExperienceSelection extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
+        updateRegistrationParams: PropTypes.func.isRequired,
+        colors: PropTypes.object.isRequired,
+        registrationPage: PropTypes.object.isRequired,
     }
+
     constructor(props) {
         super(props);
+        const {
+            registrationPage: {
+                investmentStatus
+            }
+        } = this.props;
+        if (investmentStatus === null) {
+            this.state = {
+                investmentStatus: 0
+            }
+        } else {
+            this.state = {
+                investmentStatus: investmentStatus
+            }
+        }
+    }
 
-        this.state = {
-            investmentStatusOption: 0
-        };
-    };
-    hideInvestmentStatusOption(value) {
+    hideStatus(value) {
         if (value) {
-            this.setState({ investmentStatusOption: value })
+            this.props.updateRegistrationParams({
+                investmentStatus: value
+            });
+            this.setState({
+                investmentStatus: value
+            });
         } else {
             this.setState({})
+            this.props.updateRegistrationParams({
+                investmentStatus: 0
+            });
         }
-    };
-
-    componentWillMount() {
-        // console.log(COUNTRY_LIST);
     }
 
     render() {
@@ -75,7 +94,7 @@ export default class InvestmentExperienceSelection extends Component {
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm
                                     radio_props={status_list}
-                                    initial={this.state.statusOption}
+                                    initial={this.state.investmentStatus}
                                     formHorizontal={false}
                                     labelHorizontal={true}
                                     borderWidth={1}
@@ -87,7 +106,7 @@ export default class InvestmentExperienceSelection extends Component {
                                     labelStyle={[{ color: this.props.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                                     radioLabelActive={[{ color: this.props.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                                     labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.radioLabelWrap]}
-                                    onPress={(value) => { this.hideInvestmentStatusOption(value) }}
+                                    onPress={(value) => { this.hideStatus(value) }}
                                     style={styles_2.radioField}
                                 />
                             </View>
