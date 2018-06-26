@@ -25,7 +25,7 @@ import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
-import { isPresent } from '../validation';
+import { isPresent, validateEmail, validatePassword, isEmailAlreadyInUse } from '../validation';
 
 let showWhyWeAsk = false;
 export default class AccountSelection extends Component {
@@ -52,7 +52,9 @@ export default class AccountSelection extends Component {
             formValid: isFormValid,
             email: email || '',
             password: password || '',
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid,
+            isAsyncValidatingEmail: false,
+            validationErrorMessage: null
         }
     }
 
@@ -89,13 +91,48 @@ export default class AccountSelection extends Component {
             [field]: text
         });
         this.setState({
-            [field]: text
+            [field]: text,
+            validationErrorMessage: null
         });
         const isFormValid = isPresent(this.state.email) && isPresent(this.state.password);
         this.setState({
             formValid: isFormValid,
             formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
         });
+    }
+
+    handleForwardStep = async () => {
+        this.setState({
+            isAsyncValidatingEmail: true
+        });
+        const isEmailFormatValid = validateEmail(this.state.email);
+        const isPasswordFormatValid = validatePassword(this.state.password);
+        let errorsPresent = false;
+        console.log({ isEmailFormatValid, isPasswordFormatValid });
+        if (!isEmailFormatValid) {
+            errorsPresent = true;
+            this.setState({
+                validationErrorMessage: 'Invalid email format'
+            });
+        } else if (await isEmailAlreadyInUse(this.state.email)) {
+            errorsPresent = true;
+            this.setState({
+                validationErrorMessage: 'That email is already in use'
+            });
+        } else if (!isPasswordFormatValid.valid) {
+            errorsPresent = true;
+            this.setState({
+                validationErrorMessage: isPasswordFormatValid.message
+            });
+        }
+        this.setState({
+            isAsyncValidatingEmail: false
+        });
+        if (errorsPresent) {
+            return;
+        } else {
+            this.props.onForwardStep();
+        }
     }
 
     render() {
@@ -121,19 +158,39 @@ export default class AccountSelection extends Component {
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>EMAIL</Text>
-                            <TextInput onBlur={() => this.onBlur('emailClass')} onFocus={() => this.onFocus('emailClass')} 
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]} keyboardType="email-address" autoCapitalize='none' onChange={(event) => this.onTextChange(event, 'email')} value={this.state.email}
+                            <TextInput
+                                onBlur={() => this.onBlur('emailClass')}
+                                onFocus={() => this.onFocus('emailClass')}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.emailClass]}
+                                keyboardType="email-address"
+                                autoCapitalize='none'
+                                onChange={(event) => this.onTextChange(event, 'email')}
+                                value={this.state.email}
                             />
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
-                            <TextInput onBlur={() => this.onBlur('passwordClass')} onFocus={() => this.onFocus('passwordClass')} 
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]} secureTextEntry={true} onChange={(event) => this.onTextChange(event, 'password')} value={this.state.password}
+                            <TextInput
+                                onBlur={() => this.onBlur('passwordClass')}
+                                onFocus={() => this.onFocus('passwordClass')}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.passwordClass]}
+                                secureTextEntry={true}
+                                onChange={(event) => this.onTextChange(event, 'password')}
+                                value={this.state.password}
                             />
+                        </View>
+                        <View style={{ marginTop: 10, display: this.state.validationErrorMessage ? 'flex' : 'none' }}>
+                            <Text style={{ color: 'red' }}>{this.state.validationErrorMessage}</Text>
                         </View>
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[ styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
+                    <TouchableHighlight
+                        disabled={!this.state.formValid}
+                        onPress={this.handleForwardStep}
+                        style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}
+                    >
+                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
+                            NEXT
+                        </Text>
                     </TouchableHighlight>
                     <Text> </Text>
                 </View>

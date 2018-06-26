@@ -47,31 +47,33 @@ export default class MaritalStatusSelection extends Component {
         super(props);
         const {
             registrationPage: {
-                maritalStatus
+                maritalStatusOption
             }
         } = this.props;
-        if (maritalStatus === null) {
+        if (maritalStatusOption === null) {
             this.state = {
-                maritalStatus: 0
+                maritalStatusOption: 0
             }
         } else {
             this.state = {
-                maritalStatus: maritalStatus
+                maritalStatusOption: maritalStatusOption,
             }
         }
     }
     hideStatus(value) {
         if (value) {
             this.props.updateRegistrationParams({
-                maritalStatus: value
+                maritalStatusOption: value,
+                maritalStatus: status_list.find(l => l.value === value).label
             });
             this.setState({
-                maritalStatus: value
+                maritalStatusOption: value
             });
         } else {
             this.setState({ })
             this.props.updateRegistrationParams({
-                maritalStatus: 0
+                maritalStatusOption: 0,
+                maritalStatus: 'Married'
             });
         }
     }
@@ -94,7 +96,7 @@ export default class MaritalStatusSelection extends Component {
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm
                                     radio_props={status_list}
-                                    initial={this.state.maritalStatus}
+                                    initial={this.state.maritalStatusOption}
                                     formHorizontal={false}
                                     labelHorizontal={true}
                                     borderWidth={1}

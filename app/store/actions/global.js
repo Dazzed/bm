@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-import config from '../../config';
+import { API_URL } from '../../config';
 
 export const PREFIX = 'APP_GLOBAL';
 
 const THEME_KEY = '@Blu:isDarkThemeActive';
-const API_URL = config['staging'];
 
 export function startLoggingIn() {
   return {

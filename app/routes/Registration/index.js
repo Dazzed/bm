@@ -76,10 +76,6 @@ class RegistrationPage extends React.Component {
     console.log('updated ~>', this.props.registrationPage);
   }
 
-  componentWillUnmount() {
-    this.props.resetRegistrationParams();
-  }
-
   setColor(value) {
     setTheme(value);
     this.setState({ activeColor: value, colors: colors() });

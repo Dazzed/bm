@@ -63,7 +63,8 @@ export default class InvestmentExperienceSelection extends Component {
     hideStatus(value) {
         if (value) {
             this.props.updateRegistrationParams({
-                investmentStatus: value
+                investmentStatus: value,
+                experience: status_list.find(l => l.value === value).label
             });
             this.setState({
                 investmentStatus: value
@@ -71,7 +72,8 @@ export default class InvestmentExperienceSelection extends Component {
         } else {
             this.setState({})
             this.props.updateRegistrationParams({
-                investmentStatus: 0
+                investmentStatus: 0,
+                experience: 'None'
             });
         }
     }

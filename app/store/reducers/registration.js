@@ -6,7 +6,10 @@ import {
 } from '../actions/registration';
 
 const initialState = {
-  country: null
+  country: null,
+  maritalStatus: 'Married',
+  employment: 'Employed',
+  experience: 'None'
 };
 
 const reducer = {

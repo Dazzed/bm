@@ -65,7 +65,8 @@ export default class EmploymentStatusSelection extends Component {
     hideStatus(value) {
         if (value) {
             this.props.updateRegistrationParams({
-                employmentStatus: value
+                employmentStatus: value,
+                employment: status_list.find(l => l.value === value).label
             });
             this.setState({
                 employmentStatus: value
@@ -73,7 +74,8 @@ export default class EmploymentStatusSelection extends Component {
         } else {
             this.setState({})
             this.props.updateRegistrationParams({
-                employmentStatus: 0
+                employmentStatus: 0,
+                employment: 'Employed'
             });
         }
     }

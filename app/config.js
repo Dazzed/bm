@@ -3,4 +3,4 @@ const config = {
   staging: 'https://blu-api-staging.aws.gigsternetwork.com'
 }
 
-export default config;
+export const API_URL = config['development'];
