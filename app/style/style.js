@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 10,
     width: 300,
-    // color: colors.lightGray
+    // color: colors.white
   },
   switch: {
     margin: 10

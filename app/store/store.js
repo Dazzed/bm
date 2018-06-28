@@ -14,6 +14,8 @@ import searchCancelImageDark from '../images/searchcancel_dark.png';
 import logoImage from '../images/logo.png';
 import logoImageDark from '../images/logo_dark.png';
 
+import { devSettings } from '../devControlPanel';
+
 var themeColor = false
 
 export function setTheme(color) {
@@ -68,6 +70,9 @@ const DARK_THEME = {
 };
 
 export function colors(isDarkThemeActive) {
+	if(devSettings.forceDarkTheme) {
+		return DARK_THEME;
+	}
 	if (isDarkThemeActive === true || isDarkThemeActive === false) {
 		if (isDarkThemeActive) {
 			return DARK_THEME;
@@ -83,5 +88,6 @@ export function colors(isDarkThemeActive) {
 }
 
 export function getTheme() {
+	console.log('get theme', themeColor)
 	return themeColor;
 }

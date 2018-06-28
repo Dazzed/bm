@@ -6,11 +6,11 @@ open `./ios/LostAvenue.xcodeproject`
 
 Press `Start` button
 
-
+Check out file `./app/devControlPanel.js` and modify file
 
 ---
 
-## Known issues
+## Known issues getting started
 
 ### Bundler not responding to changes
 
@@ -20,3 +20,11 @@ Access `Product -> Scheme -> Edit Scheme` in xCode and edit the build configurat
 ### Reload shortcut not working
 
 Fixed with bundler / Relase to Debug setting
+
+
+---
+
+## Reference Docs
+
+### Navitagion Library
+https://reactnavigation.org/

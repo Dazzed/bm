@@ -3,8 +3,14 @@ const devSettings = {
     displayPreviewButtonOnHome: true,
 
     // force navigation on top level navigator
-    firstNavDefaultRoute: 'AppNav'
+    // firstNavDefaultRoute: 'AppNav'
+    firstNavDefaultRoute: 'Login',
+    // firstNavDefaultRoute: 'Home',
+
+    // force dark theme all the time
+    forceDarkTheme: true
 };
+
 // TODO: add production overrides here
 
 
