@@ -18,7 +18,6 @@ import Registration from './app/routes/Registration';
 import HomeScreen from './app/containers/Home';
 
 import { devSettings } from './app/devControlPanel';
-console.log('first', devSettings.firstNavDefaultRoute)
 
 const LostAvenue = StackNavigator({
       Home: { screen: HomeScreen },
