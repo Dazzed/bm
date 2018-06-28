@@ -29,6 +29,7 @@ class HomeScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.displayPreviewButton = true;
     this.state = {
       isTermsVisible: false,
       colors: colors(props.globalData.isDarkThemeActive)
@@ -60,6 +61,22 @@ class HomeScreen extends Component {
     }
   }
 
+  renderAppPreviewButton() {
+    const { navigate } = this.props.navigation;
+    if(this.displayPreviewButton) {
+      return <TouchableHighlight
+        style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
+        onPress={() => navigate('AppNav')}>
+        <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
+          PREVIEW THE APP
+        </Text>
+      </TouchableHighlight>
+    } else {
+      return null;
+    }
+
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -78,13 +95,7 @@ class HomeScreen extends Component {
         <Text style={[{ color: this.state.colors['darkSlate'] }, styles.tagline, fonts.hindGunturLt]}>
           The premier stock trading platform with zero commisions.
         </Text>
-        {/* <TouchableHighlight
-            style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
-            onPress={() => navigate('AppNav')}>
-            <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
-              PREVIEW THE APP
-            </Text>
-          </TouchableHighlight> */}
+        {this.renderAppPreviewButton()}
         <Text style={[{ color: this.state.colors['lightGray'] }, styles.legal, fonts.hindGunturRg]}>By using BluMartini you agree to our <Text style={[styles.legalLink, fonts.hindGunturRg]} onPress={() => this.showTerms()}>Terms & Conditions</Text></Text>
         <TouchableHighlight
           style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}

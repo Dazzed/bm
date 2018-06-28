@@ -17,6 +17,9 @@ import Login from './app/routes/Login';
 import Registration from './app/routes/Registration';
 import HomeScreen from './app/containers/Home';
 
+import { devSettings } from './app/devControlPanel';
+console.log('first', devSettings.firstNavDefaultRoute)
+
 const LostAvenue = StackNavigator({
       Home: { screen: HomeScreen },
       Login: { screen: Login },
@@ -25,6 +28,7 @@ const LostAvenue = StackNavigator({
     }, {
     headerMode: 'screen',
     lazy: true,
+    initialRouteName: devSettings.firstNavDefaultRoute
   });
 
 const WithProvider = () => (
