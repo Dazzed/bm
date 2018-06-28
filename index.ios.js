@@ -18,11 +18,11 @@ import Registration from './app/routes/Registration';
 import HomeScreen from './app/containers/Home';
 
 const LostAvenue = StackNavigator({
-  Home: { screen: HomeScreen },
-  Login: { screen: Login },
-  Registration: { screen: Registration },
-  AppNav: { screen: AppNav },
-}, {
+      Home: { screen: HomeScreen },
+      Login: { screen: Login },
+      Registration: { screen: Registration },
+      AppNav: { screen: AppNav },
+    }, {
     headerMode: 'screen',
     lazy: true,
   });

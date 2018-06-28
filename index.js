@@ -1,3 +1,5 @@
+// THIS FILE IS NOT THE FIRST FILE. Check out Home view
+
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -96,7 +98,7 @@ class HomeScreen extends React.Component {
         <TouchableHighlight 
           style={[{backgroundColor: this.state.colors['darkGray']}, {borderColor: this.state.colors['darkGray']}, styles.fullBtnGray]}
           onPress={() => navigate('SignIn')}>
-            <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER? SIGN IN</Text>
+            <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER?? SIGN IN</Text>
         </TouchableHighlight>
         <Modal 
           isVisible={this.state.isTermsVisible}
