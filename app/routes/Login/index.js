@@ -6,7 +6,8 @@ import {
   TextInput,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions, Platform
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -34,10 +35,14 @@ class SignIn extends Component {
 
   constructor(props) {
     super(props);
+    let d = Dimensions.get('window');
+    const { height, width } = d;
+
     this.state = {
       email: 'sameep.dev@gmail.com',
       password: 'abcd1234',
       behavior: 'padding',
+      bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
@@ -139,7 +144,7 @@ class SignIn extends Component {
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
             onPress={this.handleTouch}>
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
-              ENABLE TOUCH ID
+              ENABLE {this.state.bioId} ID
             </Text>
           </TouchableOpacity>
           <Text style={[{ color: this.state.colors['lightGray'] }, styles.details, fonts.hindGunturRg]}>
