@@ -12,6 +12,7 @@ export default class Deposit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            colors: colors()
         };
     }
 
@@ -22,10 +23,24 @@ export default class Deposit extends React.Component {
 
         console.log('button colors', colors().green)
 
+
+        let textContainer = {
+            width: '100%',
+            height: '100%',
+            backgroundColor: this.state.colors.green,
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+            // borderWidth: 1,
+            // borderColor: 'red'
+        }
+
+        let buttonTextStyle = [styles.fullBtnTxt, fonts.hindGunturBd, {color: this.state.colors.white, marginTop: 7}];
+
         return <View style={{width: '100%', height: buttonHeight}}>
             <TouchableOpacity onPress={this.props.onPress} style={{width: '100%', height: '100%'}}>
-                <View style={{width: '100%', height: '100%', backgroundColor: colors().green, justifyContent: 'center', borderRadius: 5}}>
-                    <Text style={[styles.fullBtnTxt, fonts.hindGunturBd]}>{this.props.title || Button}</Text>
+                <View style={textContainer}>
+                    <Text style={buttonTextStyle}>{this.props.title || Button}</Text>
                 </View>
             </TouchableOpacity>
         </View>

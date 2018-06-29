@@ -34,13 +34,26 @@ export default class AccountSelect extends React.Component {
 
     renderAccountList() {
 
-        let listHeight = 200;
+        let listHeight = 190;
 
-        let accountList = [1, 2, 3];
+        let accountList = [
+            {
+                title: 'MOCK BANK TITLE 1',
+                subtitle: 'SUBTITLE 1'
+            },
+            {
+                title: 'MOCK BANK TITLE 2',
+                subtitle: 'SUBTITLE 2'
+            },
+            {
+                title: 'MOCK BANK TITLE 3',
+                subtitle: 'SUBTITLE 3'
+            }
+        ];
 
         let containerStyle = {
             backgroundColor: this.state.colors.white,
-            margin: 5,
+            marginVertical: 5,
             height: listHeight,
             borderRadius: 5
         }
@@ -67,6 +80,10 @@ export default class AccountSelect extends React.Component {
             fontSize: 20
         }
 
+        let subTitleStyle = {
+            color: this.state.colors.lightGray
+        }
+
         let selectIcon = (i) => {
             if(this.state.selectedAccountIndex === i) {
                 return <Image
@@ -77,21 +94,34 @@ export default class AccountSelect extends React.Component {
             } else {
                 return null
             }
+        }
+
+        let renderDivider = (i) => {
+            if(i < accountList.length - 1) {
+                return <View style={{height: 1, width: '100%', backgroundColor: this.state.colors.lightGray}}></View>
+            } else {
+                return null
+            }
 
         }
 
         return <ScrollView style={containerStyle}>
             {accountList.map((elem, i) => {
+                let thisTitleStyle = {...titleStyle}
+                if(this.state.selectedAccountIndex === i) {
+                    thisTitleStyle.color = this.state.colors.blue
+                }
                 return <View key={i}>
                     <TouchableOpacity onPress={(e) => this.selectAccount(e, i)} style={{height: '100%', width: '100%', ...eachAccountStyle}}>
                         <View style={leftContainer}>
                             {selectIcon(i)}
                         </View>
                         <View style={rightContainer}>
-                            <Text style={titleStyle}>MOCK BANK CHECKING{elem}</Text>
-                            <Text>Saving number</Text>
+                            <Text style={thisTitleStyle}>{elem.title}</Text>
+                            <Text style={subTitleStyle}>{elem.subtitle}</Text>
                         </View>
                     </TouchableOpacity>
+                    {renderDivider(i)}
                 </View>
             })}
         </ScrollView>
@@ -99,13 +129,10 @@ export default class AccountSelect extends React.Component {
 
     render() {
         return <View>
-
             <View style={{marginVertical: 5}}></View>
             <Text style={{textAlign: 'center', fontSize: 20}}>PLEASE SELECT AN ACCOUNT TO DRAW FROM</Text>
             <View style={{marginVertical: 5}}></View>
-
             {this.renderAccountList()}
-
             <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
         </View>
     }

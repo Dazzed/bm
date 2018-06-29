@@ -5,7 +5,7 @@ import Button from './button';
 
 import AccountSelect from './AccountSelect';
 import FundMyAccount from './FundMyAccount';
-
+import Success from './Success';
 
 import {
     StackNavigator
@@ -17,6 +17,9 @@ const StackNav = StackNavigator({
     },
     FundMyAccount: {
         screen: FundMyAccount
+    },
+    Success: {
+        screen: Success
     }
 }, {
     initialRouteName: 'AccountSelect',

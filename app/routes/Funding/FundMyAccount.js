@@ -20,7 +20,9 @@ export default class AccountSelect extends React.Component {
     }
 
     depositPressed() {
-        console.log('depo')
+        console.log('depo', this.props);
+        this.props.navigation.navigate('Success');
+
     }
 
     numberChange(newValue) {
