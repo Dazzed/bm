@@ -11,7 +11,7 @@ import {
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import TouchID from 'react-native-touch-id';
 import {
   StackNavigator,
 } from 'react-navigation';
@@ -66,6 +66,18 @@ class SignIn extends Component {
   onSegmentChange = (segment: String) => {
     this.setState({ behavior: segment.toLowerCase() });
   };
+
+  handleTouch = () => {
+    TouchID.authenticate('Authenticate to access your BluMartini account.', {})
+      .then(success => {
+        // Success code
+        console.log(success);
+      })
+      .catch(error => {
+        // Failure code
+        console.log(error)
+      });
+  }
 
   _signIn = () => {
     // Alert.alert(
@@ -125,7 +137,7 @@ class SignIn extends Component {
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
-            onPress={() => alert('Enable touch Id')}>
+            onPress={this.handleTouch}>
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
               ENABLE TOUCH ID
             </Text>
