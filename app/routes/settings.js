@@ -108,6 +108,15 @@ class Settings extends Component {
     }
   }
 
+  navToDeposit() {
+    this.props.navigation.navigate('Deposit')
+  }
+
+  navToWithdraw() {
+    console.log('===== ', this)
+    this.props.navigation.navigate('Withdraw')
+  }
+
   renderBankingSettings() {
     const {
         globalData: currentGlobalData
@@ -124,7 +133,7 @@ class Settings extends Component {
     return <View>
       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>BANKING</Text>
 
-      <TouchableOpacity onPress={() => console.log('pressed nav button')}>
+      <TouchableOpacity onPress={() => this.navToDeposit()}>
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Deposit Funds</Text>
           <Image
@@ -135,7 +144,7 @@ class Settings extends Component {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => console.log('pressed nav button')}>
+      <TouchableOpacity onPress={() => this.navToWithdraw()}>
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Withdraw Funds</Text>
           <Image

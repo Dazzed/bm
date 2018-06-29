@@ -25,7 +25,7 @@ const LostAvenue = StackNavigator({
       Registration: { screen: Registration },
       AppNav: { screen: AppNav },
     }, {
-    headerMode: 'screen',
+    headerMode: 'none',
     lazy: true,
     initialRouteName: firstNavDefaultRoute
   });

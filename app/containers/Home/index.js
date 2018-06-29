@@ -19,7 +19,7 @@ import Terms from '../../routes/terms';
 import { colors } from '../../store/store';
 import * as globalActions from '../../store/actions/global';
 import { selectGlobalData } from '../../selectors';
-import { devSettings } from '../../devControlPanel';
+import { displayPreviewButtonOnHome } from '../../devControlPanel';
 
 class HomeScreen extends Component {
   static navigationOptions = {
@@ -64,7 +64,7 @@ class HomeScreen extends Component {
 
   renderAppPreviewButton() {
     const { navigate } = this.props.navigation;
-    if(devSettings.displayPreviewButtonOnHome) {
+    if(displayPreviewButtonOnHome) {
       return <TouchableHighlight
         style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
         onPress={() => navigate('AppNav')}>

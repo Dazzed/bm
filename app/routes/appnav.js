@@ -72,7 +72,8 @@ const StackNav = StackNavigator({
   initialRouteName: stackNavDefaultRoute,
   lazy: false,
   animationEnabled: false,
-  headerMode: 'none'
+  mode: 'modal',
+  headerMode: 'float'
 });
 
 export default StackNav;
