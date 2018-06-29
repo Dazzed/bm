@@ -109,12 +109,12 @@ class Settings extends Component {
   }
 
   navToDeposit() {
-    this.props.navigation.navigate('Deposit')
+    this.props.navigation.navigate('FundFlow')
   }
 
   navToWithdraw() {
     console.log('===== ', this)
-    this.props.navigation.navigate('Withdraw')
+    this.props.navigation.navigate('FundFlow')
   }
 
   renderBankingSettings() {

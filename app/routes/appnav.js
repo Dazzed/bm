@@ -11,8 +11,7 @@ import Settings from './settings';
 import CustomTabBar from './customtabbar';
 import Chart from './chart';
 
-import Deposit from './Funding/Deposit';
-import Withdraw from './Funding/Withdraw';
+import FundFLow from './Funding/FundFlow';
 
 import { colors } from '../store/store';
 
@@ -62,11 +61,8 @@ const StackNav = StackNavigator({
   Chart: {
     screen: Chart,
   },
-  Deposit: {
-    screen: Deposit,
-  },
-  Withdraw: {
-    screen: Withdraw,
+  FundFlow: {
+    screen: FundFLow,
   }
 }, {
   initialRouteName: stackNavDefaultRoute,

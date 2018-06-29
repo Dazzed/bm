@@ -12,22 +12,24 @@ import {
 } from 'react-navigation';
 
 const StackNav = StackNavigator({
-    AccountSelect: {
-        screen: AccountSelect,
+        AccountSelect: {
+            screen: AccountSelect,
+        },
+        FundMyAccount: {
+            screen: FundMyAccount
+        },
+        Success: {
+            screen: Success
+        }
     },
-    FundMyAccount: {
-        screen: FundMyAccount
-    },
-    Success: {
-        screen: Success
+    {
+        initialRouteName: 'AccountSelect',
+        lazy: false,
+        animationEnabled: false,
+        mode: 'card',
+        headerMode: 'none'
     }
-}, {
-    initialRouteName: 'AccountSelect',
-    lazy: false,
-    animationEnabled: false,
-    mode: 'card',
-    headerMode: 'none'
-});
+);
 
 export default class Withdraw extends React.Component {
 

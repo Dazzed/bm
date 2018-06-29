@@ -38,8 +38,8 @@ const appNavDefaultTabRoute = 'Account';
 // Scanner
 // Settings
 
-// const stackNavDefaultRoute = 'AppNavTabs';
-const stackNavDefaultRoute = 'Withdraw';
+const stackNavDefaultRoute = 'AppNavTabs';
+// const stackNavDefaultRoute = 'Withdraw';
 
 // AppNavTabs
 // Chart
