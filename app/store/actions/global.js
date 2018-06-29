@@ -61,6 +61,26 @@ export function setThemeFromLocal() {
   };
 }
 
+export function setThemeToDark() {
+  return async dispatch => {
+    await AsyncStorage.setItem(THEME_KEY, 'true');
+    return dispatch({
+      type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+      payload: true
+    });
+  }
+};
+
+export function setThemeToLight() {
+  return async dispatch => {
+    await AsyncStorage.removeItem(THEME_KEY);
+    return dispatch({
+      type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+      payload: false
+    });
+  };
+}
+
 export function toggleTheme() {
   return async dispatch => {
     const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);

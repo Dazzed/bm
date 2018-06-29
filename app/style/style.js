@@ -588,6 +588,14 @@ const styles = StyleSheet.create({
     width: 23,
     height: 23
   },
+  caratImage: {
+    height: 18,
+    width: 15,
+    marginTop: 17,
+    marginRight: 10
+
+
+  }
 
 
 });

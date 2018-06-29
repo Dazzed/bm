@@ -29,6 +29,8 @@ import fonts from '../style/fonts';
 import * as globalActions from '../store/actions/global';
 import { selectGlobalData } from '../selectors';
 
+import { forceDarkTheme } from '../devControlPanel';
+
 var sort_props = [
   { label: '10 minutes', value: 0 },
   { label: '5 minutes', value: 1 },
@@ -91,8 +93,67 @@ class Settings extends Component {
       globalData: currentGlobalData
     } = this.props;
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
-      this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+      this.setState({
+        colors: colors(currentGlobalData.isDarkThemeActive),
+        isDarkThemeActive: currentGlobalData.isDarkThemeActive
+      });
     }
+  }
+
+  componentDidMount() {
+    if(forceDarkTheme) {
+      this.props.setThemeToDark()
+    } else {
+      this.props.setThemeToLight()
+    }
+  }
+
+  renderBankingSettings() {
+    const {
+        globalData: currentGlobalData
+    } = this.props;
+
+
+    let selectedCaratImageSource = null;
+    if(currentGlobalData.isDarkThemeActive) {
+      selectedCaratImageSource = require('../images/right_arrow_dark.png');
+    } else {
+      selectedCaratImageSource = require('../images/right_arrow.png');
+    }
+
+    return <View>
+      <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>BANKING</Text>
+
+      <TouchableOpacity onPress={() => console.log('pressed nav button')}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Deposit Funds</Text>
+          <Image
+              resizeMode={'contain'}
+              source={selectedCaratImageSource}
+              style={styles.caratImage}
+          />
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => console.log('pressed nav button')}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Withdraw Funds</Text>
+          <Image
+              resizeMode={'contain'}
+              source={selectedCaratImageSource}
+              style={styles.caratImage}
+          />
+        </View>
+      </TouchableOpacity>
+
+      <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>My Accounts</Text>
+        <View>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>2</Text>
+        </View>
+      </View>
+
+    </View>
   }
 
   render() {
@@ -115,7 +176,8 @@ class Settings extends Component {
           </View>
         </View>
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, settings.contentBg]}>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFOS</Text>
+          {this.renderBankingSettings()}
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFO</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Email</Text>
             <TextInput style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}

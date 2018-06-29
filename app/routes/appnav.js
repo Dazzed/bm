@@ -10,11 +10,20 @@ import Scanner from './scanner';
 import Settings from './settings';
 import CustomTabBar from './customtabbar';
 import Chart from './chart';
+
+import Deposit from './Funding/Deposit';
+import Withdraw from './Funding/Withdraw';
+
 import { colors } from '../store/store';
+
+import {
+    appNavDefaultTabRoute,
+    stackNavDefaultRoute
+} from '../devControlPanel';
 
 var color = colors();
 
-const AppNav = TabNavigator({
+const AppNavTabs = TabNavigator({
   Account: {
     screen: Account,
   },
@@ -31,7 +40,7 @@ const AppNav = TabNavigator({
     screen: Settings,
   }
 }, {
-  initialRouteName: 'Account',
+  initialRouteName: appNavDefaultTabRoute,
   lazy: false,
   animationEnabled: true,
   tabBarOptions: {
@@ -47,16 +56,23 @@ const AppNav = TabNavigator({
 });
 
 const StackNav = StackNavigator({
-  AppNav: {
-    screen: AppNav,
+  AppNavTabs: {
+    screen: AppNavTabs,
   },
   Chart: {
     screen: Chart,
   },
+  Deposit: {
+    screen: Deposit,
+  },
+  Withdraw: {
+    screen: Withdraw,
+  }
 }, {
-  initialRouteName: 'AppNav',
+  initialRouteName: stackNavDefaultRoute,
   lazy: false,
-  animationEnabled: false
+  animationEnabled: false,
+  headerMode: 'none'
 });
 
 export default StackNav;

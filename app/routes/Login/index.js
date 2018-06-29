@@ -12,10 +12,6 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import {
-  StackNavigator,
-} from 'react-navigation';
-
 import { setTheme, colors } from '../../store/store';
 
 import styles from '../../style/style';

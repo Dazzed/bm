@@ -1,17 +1,76 @@
-const devSettings = {
-    // show or hide preview button on front of app
-    displayPreviewButtonOnHome: true,
+// Master production override
+// before deploying anything, set this to true
+const productionMode = false;
 
-    // force navigation on top level navigator
-    // firstNavDefaultRoute: 'AppNav'
-    firstNavDefaultRoute: 'Login',
-    // firstNavDefaultRoute: 'Home',
 
-    // force dark theme all the time
-    forceDarkTheme: true
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//
+// Play with these settings while developing
+//
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+
+// show or hide preview button on front of app
+const displayPreviewButtonOnHome = true;
+
+
+// force dark theme all the time
+const forceDarkTheme = false;
+// const forceDarkTheme = false;
+
+// force navigation on top level navigator
+const firstNavDefaultRoute = 'AppNav';
+// AppNav
+// Login
+// Home
+
+
+// force navigation on app nav footer control
+// const appNavDefaultTabRoute = 'Settings';
+const appNavDefaultTabRoute = 'Account';
+
+// Account
+// Watchlists
+// Trending
+// Scanner
+// Settings
+
+// const stackNavDefaultRoute = 'AppNavTabs';
+const stackNavDefaultRoute = 'Withdraw';
+
+// AppNavTabs
+// Chart
+// Deposit
+// Withdraw
+
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+//
+// Set all these settings back to production standard before deploying
+//
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+if(productionMode) {
+    displayPreviewButtonOnHome = false;
+    forceDarkTheme = false;
+    firstNavDefaultRoute = 'Home';
+    appNavDefaultTabRoute = 'Account';
+    stackNavDefaultRoute = 'AppNav';
+
+}
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+
+export {
+    displayPreviewButtonOnHome,
+    forceDarkTheme,
+    firstNavDefaultRoute,
+    appNavDefaultTabRoute,
+    stackNavDefaultRoute
 };
-
-// TODO: add production overrides here
-
-
-export { devSettings };
