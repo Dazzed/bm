@@ -52,13 +52,14 @@ export default class AccountSelect extends React.Component {
         ];
 
         let containerStyle = {
-            backgroundColor: this.state.colors.white,
             marginVertical: 5,
             height: listHeight,
-            borderRadius: 5
+            width: '80%',
+            alignSelf: 'center'
         }
 
         let eachAccountStyle = {
+            backgroundColor: this.state.colors.white,
             height: 60,
             // margin: 2,
             padding: 2,
@@ -105,14 +106,30 @@ export default class AccountSelect extends React.Component {
 
         }
 
+        let masterRadius = 5;
+
         return <ScrollView style={containerStyle}>
             {accountList.map((elem, i) => {
                 let thisTitleStyle = {...titleStyle}
                 if(this.state.selectedAccountIndex === i) {
                     thisTitleStyle.color = this.state.colors.blue
                 }
+                let thisAccountStyle = {
+                    height: '100%',
+                    width: '100%',
+                    ...eachAccountStyle,
+                }
+                if(i === 0) {
+                    thisAccountStyle.borderTopLeftRadius = masterRadius;
+                    thisAccountStyle.borderTopRightRadius = masterRadius;
+                }
+                if(i === accountList.length - 1) {
+                    thisAccountStyle.borderBottomLeftRadius = masterRadius;
+                    thisAccountStyle.borderBottomRightRadius = masterRadius;
+                }
+
                 return <View key={i}>
-                    <TouchableOpacity onPress={(e) => this.selectAccount(e, i)} style={{height: '100%', width: '100%', ...eachAccountStyle}}>
+                    <TouchableOpacity onPress={(e) => this.selectAccount(e, i)} style={thisAccountStyle}>
                         <View style={leftContainer}>
                             {selectIcon(i)}
                         </View>
@@ -127,13 +144,32 @@ export default class AccountSelect extends React.Component {
         </ScrollView>
     }
 
+    renderBackgroundImage() {
+        return <Image
+            resizeMode={'contain'}
+            style={{width: '80%', alignSelf: 'flex-end', position: 'relative', right: -10}}
+            source={require('../../images/illustration.png')}
+        />
+    }
+
+    renderButtonAndContent() {
+        return <View style={{flexDirection: 'column', height: '100%'}}>
+            <View style={{flex: 1}}>
+                <View style={{marginVertical: 5}}></View>
+                <Text style={{textAlign: 'center', fontSize: 20}}>PLEASE SELECT AN ACCOUNT TO DRAW FROM</Text>
+                <View style={{marginVertical: 5}}></View>
+                {this.renderAccountList()}
+                {this.renderBackgroundImage()}
+            </View>
+            <View style={{flex: 0}}>
+                <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
+            </View>
+        </View>
+    }
+
     render() {
         return <View>
-            <View style={{marginVertical: 5}}></View>
-            <Text style={{textAlign: 'center', fontSize: 20}}>PLEASE SELECT AN ACCOUNT TO DRAW FROM</Text>
-            <View style={{marginVertical: 5}}></View>
-            {this.renderAccountList()}
-            <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
+            {this.renderButtonAndContent()}
         </View>
     }
 }
