@@ -26,7 +26,6 @@ export default class NumericalSelector extends React.Component {
     }
 
     render() {
-
         let keypadHeight = 250;
 
         let containerStyle = {
@@ -34,18 +33,16 @@ export default class NumericalSelector extends React.Component {
             backgroundColor: 'white'
         }
 
-
-
         let rowStyle = {
-            // height: 30,
-            borderWidth: 1,
-            borderColor: 'green',
+            // borderWidth: 1,
+            // borderColor: 'green',
             flexDirection: 'row',
-            // flex: 1
         }
 
         let keypadStyle = {
-            height: keypadHeight
+            height: keypadHeight,
+            marginTop: 5,
+            marginBottom: 5
         }
 
         let numberStyle = [
@@ -64,7 +61,6 @@ export default class NumericalSelector extends React.Component {
             // borderColor: 'purple',
             height: keypadHeight / 4
         }
-
 
         return <View style={containerStyle}>
             <View style={keypadStyle}>
