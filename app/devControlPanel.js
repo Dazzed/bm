@@ -21,8 +21,8 @@ const forceDarkTheme = false;
 // const forceDarkTheme = false;
 
 // force navigation on top level navigator
-// const firstNavDefaultRoute = 'AppNav';
-const firstNavDefaultRoute = 'Home';
+const firstNavDefaultRoute = 'AppNav';
+// const firstNavDefaultRoute = 'Home';
 // AppNav
 // Login
 // Home
@@ -38,8 +38,8 @@ const appNavDefaultTabRoute = 'Account';
 // Scanner
 // Settings
 
-const stackNavDefaultRoute = 'AppNavTabs';
-// const stackNavDefaultRoute = 'Withdraw';
+// const stackNavDefaultRoute = 'AppNavTabs';
+const stackNavDefaultRoute = 'Withdraw';
 
 // AppNavTabs
 // Chart
