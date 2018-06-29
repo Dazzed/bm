@@ -263,7 +263,9 @@ class Settings extends Component {
           </View>
           <View style={{ marginTop: 5 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} onPress={() => { console.log('am here'); this.props.navigation.navigate('Login', { color: this.state.activeColor }); }}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]}>Logout</Text>
+            <Text onPress={this.props.logoutAction} style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]}>
+              {globalData.isLoggingOut ? 'Loading...' : 'Logout'}
+            </Text>
           </View>
           <View style={{ marginTop: 20 }}></View>
         </ScrollView>
@@ -332,6 +334,7 @@ Settings.propTypes = {
   navigation: PropTypes.object.isRequired,
   globalData: PropTypes.object.isRequired,
   toggleTheme: PropTypes.func.isRequired,
+  logoutAction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

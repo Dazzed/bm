@@ -5,6 +5,7 @@ import { API_URL } from '../../config';
 export const PREFIX = 'APP_GLOBAL';
 
 const THEME_KEY = '@Blu:isDarkThemeActive';
+const ACCESS_TOKEN_KEY = '@Blu:acessToken';
 
 export function startLoggingIn() {
   return {
@@ -13,7 +14,7 @@ export function startLoggingIn() {
 }
 
 export function loginAction({ email, password }) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       dispatch(startLoggingIn());
       const body = {
@@ -21,11 +22,49 @@ export function loginAction({ email, password }) {
         password
       };
       let authDetails = await axios.post(`${API_URL}/api/users/login`, body);
+      await AsyncStorage.setItem(ACCESS_TOKEN_KEY, authDetails.data.id);
       dispatch(authSuccess(authDetails.data.id, authDetails.data.userId));
     } catch (e) {
       console.log('Error in loginAction', e);
       dispatch(authFailure());
     }
+  };
+}
+
+export function logoutAction() {
+  return async (dispatch, getState) => {
+    try {
+      if (getState().globalData.isLoggingOut) {
+        return;
+      }
+      dispatch(startLoggingOut());
+      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+      await axios.post(`${API_URL}/api/users/logout?access_token=${accessToken}`);
+      await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
+      return dispatch(logoutSuccess());
+    } catch (e) {
+      console.log('Error in logoutAction', e);
+      dispatch(logoutFailure());
+    }
+  };
+}
+
+export function startLoggingOut() {
+  return {
+    type: `${PREFIX}_START_LOGGING_OUT`
+  };
+}
+
+export function logoutSuccess() {
+  return {
+    type: `${PREFIX}_LOGOUT_SUCCESS`
+  };
+}
+
+export function logoutFailure() {
+  alert('There was an error logging out. Please try again');
+  return {
+    type: `${PREFIX}_LOGOUT_FAILURE`,
   };
 }
 
