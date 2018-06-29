@@ -67,7 +67,7 @@ class HomeScreen extends Component {
     if(displayPreviewButtonOnHome) {
       return <TouchableHighlight
         style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
-        onPress={() => navigate('AppNav')}>
+        onPress={() => navigate('AppNavTabs')}>
         <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
           PREVIEW THE APP
         </Text>

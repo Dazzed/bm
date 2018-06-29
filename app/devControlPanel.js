@@ -1,6 +1,7 @@
 // Master production override
 // before deploying anything, set this to true
-const productionMode = false;
+// const productionMode = false;
+const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -60,7 +61,7 @@ if(productionMode) {
     forceDarkTheme = false;
     firstNavDefaultRoute = 'Home';
     appNavDefaultTabRoute = 'Account';
-    stackNavDefaultRoute = 'AppNav';
+    stackNavDefaultRoute = 'AppNavTabs';
 
 }
 

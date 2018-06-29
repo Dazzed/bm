@@ -50,7 +50,7 @@ class SignIn extends Component {
     }
     if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
       const { navigate } = this.props.navigation;
-      navigate('AppNav', { color: this.state.activeColor })
+      navigate('AppNavTabs', { color: this.state.activeColor })
     }
   }
 
