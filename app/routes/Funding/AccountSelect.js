@@ -14,12 +14,17 @@ export default class AccountSelect extends React.Component {
         super(props);
         this.state = {
             colors: colors(),
-            selectedAccountIndex: 0
+            selectedAccountIndex: 0,
+            withdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
         }
     }
 
     componentDidMount() {
-        console.log('this', this)
+        let withdrawDepositMode = this.props.navigation.state.params.widthdrawDepositMode
+        console.log('ACCOUNT SELECT', this, withdrawDepositMode)
+        // this.setState({
+        //
+        // })
     }
 
     navToFundAccount() {
@@ -31,6 +36,29 @@ export default class AccountSelect extends React.Component {
             selectedAccountIndex: val
         })
     }
+
+    renderCashAvailable() {
+
+        const numberWithCommas = (x) => {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        if(this.state.withdrawDepositMode === 'withdraw') {
+            let amount = 30000
+            let textStyle = {
+                fontSize: 30,
+                textAlign: 'center'
+            }
+            return <View>
+                <Text style={textStyle}>${numberWithCommas(amount)}</Text>
+                <Text style={textStyle}>AVAILABLE</Text>
+                <View style={{marginVertical: 10}}></View>
+            </View>
+        } else {
+            return null
+        }
+    }
+
 
     renderAccountList() {
 
@@ -152,12 +180,23 @@ export default class AccountSelect extends React.Component {
         />
     }
 
+    renderTopInstruction() {
+        let instruction = null;
+        if(this.state.withdrawDepositMode === 'withdraw') {
+            instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM'
+            return <Text style={{textAlign: 'center', fontSize: 20}}>{instruction}</Text>
+        } else {
+            return null
+        }
+    }
+
     renderButtonAndContent() {
         return <View style={{flexDirection: 'column', height: '100%'}}>
             <View style={{flex: 1}}>
-                <View style={{marginVertical: 5}}></View>
-                <Text style={{textAlign: 'center', fontSize: 20}}>PLEASE SELECT AN ACCOUNT TO DRAW FROM</Text>
-                <View style={{marginVertical: 5}}></View>
+                <View style={{marginVertical: 10}}></View>
+                {this.renderTopInstruction()}
+                <View style={{marginVertical: 10}}></View>
+                {this.renderCashAvailable()}
                 {this.renderAccountList()}
                 {this.renderBackgroundImage()}
             </View>

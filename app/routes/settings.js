@@ -109,12 +109,16 @@ class Settings extends Component {
   }
 
   navToDeposit() {
-    this.props.navigation.navigate('FundFlow')
+    this.props.navigation.navigate('AccountSelect', {
+      widthdrawDepositMode: 'deposit'
+    })
   }
 
   navToWithdraw() {
-    console.log('===== ', this)
-    this.props.navigation.navigate('FundFlow')
+    console.log('===== ', this);
+    this.props.navigation.navigate('AccountSelect', {
+      widthdrawDepositMode: 'withdraw'
+    })
   }
 
   renderBankingSettings() {

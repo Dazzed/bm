@@ -1,7 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
-// const productionMode = false;
-const productionMode = true;
+
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////

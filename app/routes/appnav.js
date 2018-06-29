@@ -11,7 +11,11 @@ import Settings from './settings';
 import CustomTabBar from './customtabbar';
 import Chart from './chart';
 
-import FundFLow from './Funding/FundFlow';
+import AccountSelect from './Funding/AccountSelect';
+import FundMyAccount from './Funding/FundMyAccount';
+import Success from './Funding/Success';
+
+// import FundFLow from './Funding/FundFlow';
 
 import { colors } from '../store/store';
 
@@ -61,15 +65,43 @@ const StackNav = StackNavigator({
   Chart: {
     screen: Chart,
   },
-  FundFlow: {
-    screen: FundFLow,
-  }
+
+  AccountSelect: {
+    screen: AccountSelect
+  },
+  FundMyAccount: {
+    screen: FundMyAccount
+  },
+  Success: {
+    screen: Success
+  },
+
 }, {
   initialRouteName: stackNavDefaultRoute,
   lazy: false,
   animationEnabled: false,
   mode: 'modal',
-  headerMode: 'float'
+  headerMode: 'float',
+  headerTransitionPreset: 'uikit',
+
+  screenInterpolator: sceneProps => {
+    const { layout, position, scene } = sceneProps;
+    const { index } = scene;
+
+    const height = layout.initHeight;
+    const translateY = position.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [height, 0, 0],
+    });
+
+    const opacity = position.interpolate({
+      inputRange: [index - 1, index - 0.99, index],
+      outputRange: [0, .1, 1],
+    });
+
+    return { opacity, transform: [{ translateY }] };
+  }
+
 });
 
 export default StackNav;
