@@ -8,9 +8,14 @@ import {colors} from '../store/store';
 
 const settings = StyleSheet.create({
   field: {
-    // backgroundColor: colors.white,
     borderBottomWidth:0.5,
-    // borderBottomColor: colors.borderGray,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  fieldLink: {
+    borderBottomWidth:0.5,
+    borderTopWidth:0.5,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -33,6 +38,16 @@ const settings = StyleSheet.create({
     fontSize: 14,
     flex: 1,
     textAlign: 'left',
+    paddingTop: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+    height: 50,
+    // color: colors.darkSlate
+  },
+  inputLink: {
+    fontSize: 14,
+    flex: 1,
+    textAlign: 'center',
     paddingTop: 15,
     paddingLeft: 10,
     paddingRight: 10,

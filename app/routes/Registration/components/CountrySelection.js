@@ -69,12 +69,22 @@ export default class CountrySelection extends Component {
         country: value
       });
     } else {
-      this.setState({})
+      this.setState({
+        country: 0
+      })
       this.props.updateRegistrationParams({
         country: 0
       });
     }
   }
+
+  onHandleCountrySelection = () => {
+    if (this.state.country == 1) {
+      this.props.navigation.goBack();
+    } else {
+      this.props.onForwardStep();
+    }
+  };
   render() {
     return (
       <KeyboardAvoidingView
@@ -118,7 +128,7 @@ export default class CountrySelection extends Component {
           </View>
         </ScrollView>
         <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-          <TouchableHighlight onPress={this.props.onForwardStep} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+          <TouchableHighlight onPress={this.onHandleCountrySelection} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
             <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
           </TouchableHighlight>
           <Text> </Text>

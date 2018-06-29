@@ -33,6 +33,7 @@ export function authSuccess(access_token, id) {
   return async (dispatch) => {
     try {
       const currentUser = await axios.get(`${API_URL}/api/users/${id}?access_token=${access_token}`);
+      currentUser.data["access_token"] = access_token;
       dispatch({
         type: `${PREFIX}_SET_CURRENT_USER`,
         payload: currentUser.data

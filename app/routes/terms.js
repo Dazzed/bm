@@ -8,6 +8,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectGlobalData } from '../selectors';
+import axios from 'axios';
+import { API_URL } from '../config';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -15,6 +18,7 @@ import {
   Text,
   TextInput,
   View,
+  WebView,
   ScrollView,
   Image,
   TouchableOpacity,
@@ -38,8 +42,29 @@ class Terms extends React.Component {
     super(props);
     this.state = {
       page: 'presets',
+      commonHtml: ``,  
       colors: colors(props.globalData.isDarkThemeActive)
     };
+  }
+
+  componentDidMount() {
+    // { "where": { "page": "tnc" } }
+    axios.get(`${API_URL}/api/staticContents/findOne?filter={ "where": { "page": "tnc" } }`).then(res => {
+      const style_tag = `<style>
+              @font-face {font-family: 'HindGuntur-Regular';src: url('file:///assets/fonts/HindGuntur-Regular.ttf') format('truetype');};
+               </style><body style="color: ${this.state.colors['darkSlate']}; background: ${this.state.colors['white']}">`;
+      let html = res.data.content;
+      html = html.replace(/<h1/g, '<h1 style="line-height: 1.1; font-family: HindGuntur-Regular; font-size: 88; font-weight:100"');
+      html = html.replace(/<h2/g, '<h2 style="line-height: 1.1; font-family: HindGuntur-Regular; font-size: 72; font-weight:100"');
+      html = html.replace(/<h3/g, '<h3 style="line-height: 1.1; font-family: HindGuntur-Regular; font-size: 64; font-weight:100"');
+      html = html.replace(/<p/g, '<p style="line-height: 1.4; font-family: HindGuntur-Regular; font-size: 48; font-weight:100"');
+      html = html.replace(/<strong>/g, '');
+      html = html.replace(/<\/strong>/g, '');
+      html = style_tag + html + '</body>';
+      this.setState({
+        commonHtml: html
+      })
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -70,15 +95,7 @@ class Terms extends React.Component {
           </View>
         </View>
         <ScrollView style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalContainer]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, styles.legalTitle, fonts.hindGunturRg]}>Privacy</Text>
-          <Text style={[{color: this.state.colors['darkSlate']}, styles.legalTxt, fonts.hindGunturRg]}>
-Consectetur adipiscing elit. Praesent justo turpis, varius quis porttitor nec, finibus id dui. Nullam ac nulla scelerisque, pharetra justo in, tempor urna.
-Integer vitae nisl venenatis, iaculis neque a, euismod massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
-          </Text>
-          <Text style={[{color: this.state.colors['darkSlate']}, styles.legalTitle, fonts.hindGunturRg]}>Sharing your informations</Text>
-          <Text style={[{color: this.state.colors['darkSlate']}, styles.legalTxt, fonts.hindGunturRg]}>
-Metus Nunc dignissim laoreet felis id pharetra. Fusce lobortis est ut dui facilisis vulputate. Suspendisse posuere urna nec dui iaculis, vel posuere augue porttitor. Aliquam ultricies mauris sed turpis laoreet ultricies          
-          </Text>
+         <WebView style={{width: 300, height: 450}} source={{html: this.state.commonHtml}} />
         </ScrollView>
         <View style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalAgree]}>
         <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']},  styles.fullBtn]} onPress={() => this.props.hideTerms()}>

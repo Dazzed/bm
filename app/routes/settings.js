@@ -14,6 +14,10 @@ import {
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Terms from './terms';
+import Faq from './faq';
+import ReportBug from './reportbug';
+import ContactUs from './contactus';
 
 import RadioForm from '../components/react-native-simple-radio-button';
 import { colors } from '../store/store';
@@ -51,6 +55,10 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isTermsVisible: false,
+      isFaqVisible: false,
+      isBugVisible: false,
+      isContactVisible: false,
       trueSwitchIsOn: true,
       falseSwitchIsOn: false,
       isSearchVisible: false,
@@ -61,6 +69,38 @@ class Settings extends Component {
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
+  }
+
+  showContact() {
+    this.setState({ isContactVisible: true })
+  }
+
+  hideContact() {
+    this.setState({ isContactVisible: false })
+  }
+
+  showBug() {
+    this.setState({ isBugVisible: true })
+  }
+
+  hideBug() {
+    this.setState({ isBugVisible: false })
+  }
+
+  showFaq() {
+    this.setState({ isFaqVisible: true })
+  }
+
+  hideFaq() {
+    this.setState({ isFaqVisible: false })
+  }
+
+  showTerms() {
+    this.setState({ isTermsVisible: true })
+  }
+
+  hideTerms() {
+    this.setState({ isTermsVisible: false })
   }
 
   showSearch() {
@@ -96,6 +136,7 @@ class Settings extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     const {
       globalData
     } = this.props;
@@ -166,27 +207,6 @@ class Settings extends Component {
           </TouchableOpacity>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Bank Transfers</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Dividends</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Price Movements</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Orders</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
@@ -213,22 +233,39 @@ class Settings extends Component {
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={false} />
+              value={true} />
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Reuters</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={false} />
+              value={true} />
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Morningstart</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Morningstar</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={false} />
+              value={true} />
           </View>
+          <View style={{ marginTop: 20 }}></View>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showFaq()}>FAQ</Text>
+          </View>
+          <View style={{ marginTop: 5 }}></View>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} >
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showContact()}>Contact us</Text>
+          </View>
+          <View style={{ marginTop: 5 }}></View>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showBug()}>Report a bug</Text>
+          </View>
+          <View style={{ marginTop: 5 }}></View>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} onPress={() => { console.log('am here'); this.props.navigation.navigate('Login', { color: this.state.activeColor }); }}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]}>Logout</Text>
+          </View>
+          <View style={{ marginTop: 20 }}></View>
         </ScrollView>
         <Modal
           isVisible={this.state.isSearchVisible}
@@ -262,7 +299,30 @@ class Settings extends Component {
             />
           </View>
         </Modal>
-
+        <Modal
+          isVisible={this.state.isTermsVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <Terms hideTerms={() => this.hideTerms()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isFaqVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <Faq hideFaq={() => this.hideFaq()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isBugVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <ReportBug hideBug={() => this.hideBug()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isContactVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <ContactUs hideContact={() => this.hideContact()} />
+        </Modal>
       </View>
     );
   }

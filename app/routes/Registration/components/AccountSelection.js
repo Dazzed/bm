@@ -108,7 +108,6 @@ export default class AccountSelection extends Component {
         const isEmailFormatValid = validateEmail(this.state.email);
         const isPasswordFormatValid = validatePassword(this.state.password);
         let errorsPresent = false;
-        console.log({ isEmailFormatValid, isPasswordFormatValid });
         if (!isEmailFormatValid) {
             errorsPresent = true;
             this.setState({
@@ -176,9 +175,9 @@ export default class AccountSelection extends Component {
                                 onChange={(event) => this.onTextChange(event, 'password')}
                                 value={this.state.password}
                             />
-                        </View>
-                        <View style={{ marginTop: 10, display: this.state.validationErrorMessage ? 'flex' : 'none' }}>
-                            <Text style={{ color: 'red' }}>{this.state.validationErrorMessage}</Text>
+                            <View style={{ marginTop: 10, display: this.state.validationErrorMessage ? 'flex' : 'none' }}>
+                                <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error:</Text> {this.state.validationErrorMessage}</Text>
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
