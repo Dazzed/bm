@@ -1,55 +1,63 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-
 import Button from './button';
-import { setTheme, getTheme, colors } from '../../store/store';
-
-
+import { numberWithCommas } from '../../utility';
 import { observer } from 'mobx-react';
-
-import { colorStore } from '../../mobxStores';
+import { colorStore, accountStore } from '../../mobxStores';
 
 
 @observer
 export default class AccountSelect extends React.Component {
 
+    static navigationOptions = ({ navigation }) => {
+        console.log('===== nav optins', navigation, this);
+
+        let title = 'Withdraw Funds';
+        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+            title = 'Fund My Account'
+        }
+        return {
+            title: title,
+        };
+    };
+
     constructor(props) {
         super(props);
         this.state = {
             selectedAccountIndex: 0,
-            withdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
+            withdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode,
         }
     }
 
     componentDidMount() {
         let withdrawDepositMode = this.props.navigation.state.params.widthdrawDepositMode
-        console.log('ACCOUNT SELECT', this, withdrawDepositMode)
+        console.log('ACCOUNT SELECT', this, colorStore)
     }
 
     navToFundAccount() {
-        this.props.navigation.navigate('FundMyAccount')
-    }
-
-    selectAccount(i, val) {
-        this.setState({
-            selectedAccountIndex: val
+        this.props.navigation.navigate('FundMyAccount', {
+            widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
         })
     }
 
-    renderCashAvailable() {
+    selectAccount(i, index) {
+        const { selectAccountByIndex } = accountStore;
+        selectAccountByIndex(index);
+    }
 
-        const numberWithCommas = (x) => {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+    renderCashAvailable() {
+        const { selectedAccount } = accountStore;
+        const { theme } = colorStore;
 
         if(this.state.withdrawDepositMode === 'withdraw') {
-            let amount = 30000
+
             let textStyle = {
                 fontSize: 30,
-                textAlign: 'center'
+                textAlign: 'center',
+                color: theme.darkSlate
             }
             return <View>
-                <Text style={textStyle}>${numberWithCommas(amount)}</Text>
+                <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
             </View>
@@ -64,20 +72,7 @@ export default class AccountSelect extends React.Component {
 
         let listHeight = 300;
 
-        let accountList = [
-            {
-                title: 'MOCK BANK TITLE 1',
-                subtitle: 'SUBTITLE 1'
-            },
-            {
-                title: 'MOCK BANK TITLE 2',
-                subtitle: 'SUBTITLE 2'
-            },
-            {
-                title: 'MOCK BANK TITLE 3',
-                subtitle: 'SUBTITLE 3'
-            }
-        ];
+        const { accountListJS, selectedAccountIndex } = accountStore;
 
         let containerStyle = {
             marginVertical: 5,
@@ -88,14 +83,12 @@ export default class AccountSelect extends React.Component {
 
         let eachAccountStyle = {
             height: 60,
-            // margin: 2,
             padding: 2,
-            backgroundColor: theme.realWhite,
+            backgroundColor: theme.white,
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
             flexDirection: 'row',
-            // zIndex: 1
         }
 
         let leftContainer = {
@@ -107,7 +100,8 @@ export default class AccountSelect extends React.Component {
         }
 
         let titleStyle = {
-            fontSize: 20
+            fontSize: 20,
+            color: theme.darkSlate
         }
 
         let subTitleStyle = {
@@ -115,7 +109,7 @@ export default class AccountSelect extends React.Component {
         }
 
         let selectIcon = (i) => {
-            if(this.state.selectedAccountIndex === i) {
+            if(selectedAccountIndex === i) {
                 return <Image
                     resizeMode="contain"
                     style={{height: 20}}
@@ -127,7 +121,7 @@ export default class AccountSelect extends React.Component {
         }
 
         let renderDivider = (i) => {
-            if(i < accountList.length - 1) {
+            if(i < accountListJS.length - 1) {
                 return <View style={{height: 1, width: '100%', backgroundColor: theme.lightGray}}></View>
             } else {
                 return null
@@ -138,9 +132,9 @@ export default class AccountSelect extends React.Component {
         let masterRadius = 5;
 
         return <ScrollView style={containerStyle}>
-            {accountList.map((elem, i) => {
+            {accountListJS.map((elem, i) => {
                 let thisTitleStyle = {...titleStyle}
-                if(this.state.selectedAccountIndex === i) {
+                if(selectedAccountIndex === i) {
                     thisTitleStyle.color = theme.blue
                 }
                 let thisAccountStyle = {
@@ -152,12 +146,12 @@ export default class AccountSelect extends React.Component {
                     thisAccountStyle.borderTopLeftRadius = masterRadius;
                     thisAccountStyle.borderTopRightRadius = masterRadius;
                 }
-                if(i === accountList.length - 1) {
+                if(i === accountListJS.length - 1) {
                     thisAccountStyle.borderBottomLeftRadius = masterRadius;
                     thisAccountStyle.borderBottomRightRadius = masterRadius;
                 }
 
-                return <View key={i} style={{zIndex: 1, backgroundColor: theme.realWhite, borderRadius: 5}}>
+                return <View key={i} style={{zIndex: 1, backgroundColor: theme.white, borderRadius: 5}}>
                     <TouchableOpacity onPress={(e) => this.selectAccount(e, i)} style={thisAccountStyle}>
                         <View style={leftContainer}>
                             {selectIcon(i)}
@@ -174,25 +168,35 @@ export default class AccountSelect extends React.Component {
     }
 
     renderBackgroundImage() {
-        return <Image
-            resizeMode={'contain'}
-            style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -10, top: '50%', zIndex: 0}}
-            source={require('../../images/illustration.png')}
-        />
+        const { themeType } = colorStore;
+        if(themeType == 'light') {
+            return <Image
+                resizeMode={'contain'}
+                style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -10, top: '50%', zIndex: 0}}
+                source={require('../../images/illustration.png')}
+            />
+        } else {
+            return null;
+        }
     }
 
     renderTopInstruction() {
+        const { theme } = colorStore;
+
         let instruction = null;
         if(this.state.withdrawDepositMode === 'withdraw') {
             instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM';
-            return <Text style={{textAlign: 'center', fontSize: 20}}>{instruction}</Text>
+            return <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{instruction}</Text>
         } else {
             return null
         }
     }
 
+
     renderButtonAndContent() {
-        return <View style={{flexDirection: 'column', height: '100%'}}>
+        const { theme } = colorStore;
+        return <View style={{flexDirection: 'column', height: '100%', backgroundColor: theme.contentBg}}>
+
             <View style={{flex: 1, position: 'relative'}}>
                 {this.renderBackgroundImage()}
                 <View style={{marginVertical: 10}}></View>
@@ -201,9 +205,11 @@ export default class AccountSelect extends React.Component {
                 {this.renderCashAvailable()}
                 {this.renderAccountList()}
             </View>
+
             <View style={{flex: 0}}>
                 <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
             </View>
+
         </View>
     }
 

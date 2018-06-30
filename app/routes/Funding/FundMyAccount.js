@@ -9,26 +9,61 @@ import {
 
 import Button from './button';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
+import { numberWithCommas } from '../../utility';
+import { colorStore } from '../../mobxStores';
+import { observer } from 'mobx-react';
 
-export default class AccountSelect extends React.Component {
+@observer
+export default class FundMyAccount extends React.Component {
+
+    static navigationOptions = ({ navigation }) => {
+        let title = 'Withdraw Funds';
+        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+            title = 'Fund My Account'
+        }
+        return {
+            title: title,
+        };
+    };
+
 
     constructor(props) {
         super(props)
         this.state = {
-            fundingString: ''
+            fundingString: '',
+            accountBalance: '30000',
+            errorRemainingFunds: false
         }
     }
 
     depositPressed() {
-        console.log('depo', this.props);
         this.props.navigation.navigate('Success');
-
     }
 
     numberChange(newValue) {
-        this.setState({
-            fundingString: this.state.fundingString + newValue
-        })
+        if(this.state.fundingString.length >= 8) {
+            return
+        } else {
+
+            // calculate funds remainging error
+            let displayError = false;
+
+            if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+                //
+                let accountBalanceInt = parseInt(this.state.accountBalance);
+                let currentEntryInt = parseInt(this.state.fundingString);
+                if(currentEntryInt > accountBalanceInt) {
+                    displayError = true;
+                }
+            }
+
+            this.setState({
+                fundingString: this.state.fundingString + newValue,
+                errorRemainingFunds: displayError
+            })
+
+
+        }
     }
 
     deleteNumber() {
@@ -43,29 +78,70 @@ export default class AccountSelect extends React.Component {
         })
     }
 
+    renderAmountInAccount() {
+        return <View>
+            <Text>Ammoun</Text>
+        </View>
+    }
 
-    render() {
+    renderInputAmount() {
+        const { theme } = colorStore;
 
         let amountHeight = 100;
 
-        let amountStyle = {
+        let textAmountStyle = {
             fontSize: 40,
+            color: theme.black
         }
 
-        return <View>
-            <Text>Fund Account</Text>
-            <View style={{ justifyContent: 'space-between', alignItems: 'center', height: amountHeight, margin: 5, flexDirection: 'row'}}>
-                <Text style={amountStyle}>$ {this.state.fundingString}</Text>
-                <TouchableOpacity onPress={() => this.clear()}>
-                    <Image
-                        style={{height: 30}}
-                        resizeMode="contain"
-                        source={require('../../images/searchcancel.png')}
-                    />
-                </TouchableOpacity>
+        let underlineStyle = {
+            height: 1,
+            width: '100%',
+            backgroundColor: theme.black
+        }
+
+        if(this.state.errorRemainingFunds) {
+            underlineStyle.backgroundColor = 'red';
+            textAmountStyle.color = 'red';
+        }
+
+        return <View style={{width: '100%', alignSelf: 'center', backgroundColor: theme.realWhite}}>
+            <View style={{width: '80%', alignSelf: 'center'}}>
+
+                <View style={{
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    height: amountHeight,
+                    margin: 5,
+                    flexDirection: 'row',
+                }}>
+                    <Text style={textAmountStyle}>$ {numberWithCommas(this.state.fundingString)}</Text>
+                    <TouchableOpacity style={{flex: 0, justifyContent: 'center', height: '100%'}} onPress={() => this.clear()}>
+                        <Image
+                            style={{height: 30}}
+                            resizeMode="contain"
+                            source={require('../../images/searchcancel.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={underlineStyle}></View>
             </View>
-            <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
-            <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
+        </View>
+    }
+
+    render() {
+        return <View style={{height: '100%'}}>
+            <View style={{flex: 1}}>
+                {this.renderAmountInAccount()}
+            </View>
+
+            <View style={{flex: 0}}>
+                {this.renderInputAmount()}
+                <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
+                <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
+            </View>
+
         </View>
     }
 }

@@ -88,7 +88,7 @@ export function setThemeToLight() {
     await AsyncStorage.removeItem(THEME_KEY);
 
     // do changes in mobx in parrallel
-    colorStore.setTheme('dark');
+    colorStore.setTheme('light');
 
     return dispatch({
       type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
@@ -102,12 +102,14 @@ export function toggleTheme() {
     const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);
     if (isDarkThemeActive) {
       await AsyncStorage.removeItem(THEME_KEY);
+      colorStore.setTheme('light');
       return dispatch({
         type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
         payload: false
       });
     } else {
       await AsyncStorage.setItem(THEME_KEY, 'true');
+      colorStore.setTheme('dark');
       return dispatch({
         type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
         payload: true
