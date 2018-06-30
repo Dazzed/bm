@@ -138,7 +138,7 @@ class EditExperience extends React.Component {
                 <View style={styles_2.subMenuRow}>
                   <RadioForm
                     radio_props={status_list}
-                    initial={this.state.experienceOption}
+                    initial={this.state.experienceOption - 1}
                     formHorizontal={false}
                     labelHorizontal={true}
                     borderWidth={1}

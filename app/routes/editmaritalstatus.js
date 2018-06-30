@@ -129,7 +129,7 @@ class EditMaritalStatus extends React.Component {
                 <View style={styles_2.subMenuRow}>
                   <RadioForm
                     radio_props={status_list}
-                    initial={this.state.maritalStatusOption}
+                    initial={this.state.maritalStatusOption - 1}
                     formHorizontal={false}
                     labelHorizontal={true}
                     borderWidth={1}

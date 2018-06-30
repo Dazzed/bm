@@ -133,7 +133,7 @@ class EditEmployment extends React.Component {
                 <View style={styles_2.subMenuRow}>
                   <RadioForm
                     radio_props={status_list}
-                    initial={this.state.employmentOption}
+                    initial={this.state.employmentOption - 1}
                     formHorizontal={false}
                     labelHorizontal={true}
                     borderWidth={1}
