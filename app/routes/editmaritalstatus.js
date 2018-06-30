@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -77,41 +71,43 @@ class EditMaritalStatus extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.isPatchingUser === true && currentGlobalData.isPatchingUser === false) {
+      this.props.hideMaritalStatus();
+    }
   }
 
-  hideStatus(value) {
+  hideStatus = value => {
     if (value) {
       this.setState({
         maritalStatusOption: value,
         maritalStatus: status_list.find(l => l.value === value).label
       });
-    } else {
-      this.setState({})
     }
   }
 
-  onTextChange = (event, field) => {
-    const { text } = event.nativeEvent;
-    this.setState({
-      [field]: text
-    }, this.validate);
-  }
-
-  updateMaritalStatus = async () => {
+  updateMaritalStatus = () => {
     const user_marital_status = {
       maritalStatus: this.state.maritalStatus
     }
-    const res = await axios.patch(`${API_URL}/api/users/${this.props.globalData.currentUser.id}?access_token=${this.props.globalData.currentUser.access_token}`, user_marital_status);
-    console.log(res);
+    this.props.initiatePatchingUser(user_marital_status);
+  }
+
+  onBackButtonPress = () => {
+    if (this.props.globalData.isPatchingUser) {
+      return;
+    }
     this.props.hideMaritalStatus();
   }
 
   render() {
+    const {
+      globalData
+    } = this.props;
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideMaritalStatus()}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
@@ -145,7 +141,7 @@ class EditMaritalStatus extends React.Component {
                     labelStyle={[{ color: this.state.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                     radioLabelActive={[{ color: this.state.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                     labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles_2.radioLabelWrap]}
-                    onPress={(value) => { this.hideStatus(value) }}
+                    onPress={this.hideStatus}
                     style={styles_2.radioField}
                   />
                 </View>
@@ -154,7 +150,9 @@ class EditMaritalStatus extends React.Component {
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
             <TouchableHighlight onPress={this.updateMaritalStatus} style={[styles_2.fullBtn, { height: 80 }, styles_2.formValid]}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>SAVE</Text>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
+                {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
+              </Text>
             </TouchableHighlight>
             <Text> </Text>
           </View>
@@ -164,9 +162,10 @@ class EditMaritalStatus extends React.Component {
   }
 }
 
-// export default EditMaritalStatus;
 EditMaritalStatus.propTypes = {
   globalData: PropTypes.object.isRequired,
+  initiatePatchingUser: PropTypes.func.isRequired,
+  hideMaritalStatus: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

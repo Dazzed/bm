@@ -239,7 +239,6 @@ class Watchlists extends React.Component {
               this.forceUpdate();
             }}
             rowHasChanged={e => {
-              console.log(e);
               return true;
             }}
             disableSorting={false}

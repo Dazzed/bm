@@ -72,6 +72,9 @@ class EditDependents extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.isPatchingUser === true && currentGlobalData.isPatchingUser === false) {
+      this.props.hideDependents();
+    }
   }
 
   addNum(num) {
@@ -94,6 +97,7 @@ class EditDependents extends React.Component {
       formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
     });
   }
+
   removeNum(num) {
     if (this.state.dependentField) {
       var delNums = this.state.dependentField;
@@ -120,16 +124,25 @@ class EditDependents extends React.Component {
     const user_dependents = {
       dependents: this.state.dependentField
     }
-    const res = await axios.patch(`${API_URL}/api/users/${this.props.globalData.currentUser.id}?access_token=${this.props.globalData.currentUser.access_token}`, user_dependents);
+    this.props.initiatePatchingUser(user_dependents);
+  }
+
+  onBackButtonPress = () => {
+    if (this.props.globalData.isPatchingUser) {
+      return;
+    }
     this.props.hideDependents();
   }
 
   render() {
+    const {
+      globalData
+    } = this.props;
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideDependents()}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
@@ -145,7 +158,7 @@ class EditDependents extends React.Component {
           <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'], paddingTop: 15 }]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 20 }]}>
               NUMBER OF DEPENDENTS
-                    </Text>
+            </Text>
             <View style={[{ backgroundColor: this.state.colors['white'], marginTop: 25, paddingTop: 40 }]}>
               <View style={[styles_2.registrationFormView]}>
                 <TextInput placeholder="XX" placeholderTextColor={this.state.colors['darkSlate']} value={this.state.dependentField}
@@ -186,7 +199,9 @@ class EditDependents extends React.Component {
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
             <TouchableHighlight disabled={!this.state.formValid} onPress={this.updateDependent} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>SAVE</Text>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
+                {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
+              </Text>
             </TouchableHighlight>
             <Text> </Text>
           </View>
@@ -196,11 +211,10 @@ class EditDependents extends React.Component {
   }
 }
 
-
-
-// export default EditDependents;
 EditDependents.propTypes = {
   globalData: PropTypes.object.isRequired,
+  initiatePatchingUser: PropTypes.func.isRequired,
+  hideDependents: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

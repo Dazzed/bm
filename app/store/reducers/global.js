@@ -6,7 +6,8 @@ const initialState = {
   currentUser: null,
   loginErrorPresent: false,
   isDarkThemeActive: false,
-  isLoggingOut: false
+  isLoggingOut: false,
+  isPatchingUser: false
 }
 
 export default (state = initialState, action) => {
@@ -51,6 +52,25 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoggingOut: false
+      };
+    case `${PREFIX}_INITIATE_PATCHING_USER`:
+      return {
+        ...state,
+        isPatchingUser: true
+      };
+    case `${PREFIX}_PATCH_SUCCESS`:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          ...action.payload
+        },
+        isPatchingUser: false
+      };
+    case `${PREFIX}_PATCH_ERROR`:
+      return {
+        ...state,
+        isPatchingUser: false
       };
   }
   return state;

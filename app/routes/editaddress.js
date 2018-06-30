@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -139,6 +133,9 @@ class EditAddress extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.isPatchingUser === true && currentGlobalData.isPatchingUser === false) {
+      this.props.hideAddress();
+    }
   }
 
   hideState = value => {
@@ -194,24 +191,33 @@ class EditAddress extends React.Component {
     }, this.validate);
   }
 
-  updateAddress = async () => {
-    const user_address = {
+  updateAddress = () => {
+    const addressData = {
       address: this.state.address,
       address2: this.state.address2,
       city: this.state.city,
       state: this.state.state,
       zipCode: this.state.zipCode
     } 
-    const res = await axios.patch(`${API_URL}/api/users/${this.props.globalData.currentUser.id}?access_token=${this.props.globalData.currentUser.access_token}`, user_address);
+    this.props.initiatePatchingUser(addressData);
+  }
+
+  onBackButtonPress = () => {
+    if (this.props.globalData.isPatchingUser) {
+      return;
+    }
     this.props.hideAddress();
   }
 
   render() {
+    const {
+      globalData
+    } = this.props;
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideAddress()}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
@@ -310,7 +316,9 @@ class EditAddress extends React.Component {
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
             <TouchableHighlight disabled={!this.state.formValid} onPress={this.updateAddress} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>SAVE</Text>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
+                {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
+              </Text>
             </TouchableHighlight>
             <Text> </Text>
           </View>
@@ -320,11 +328,10 @@ class EditAddress extends React.Component {
   }
 }
 
-
-
-// export default EditAddress;
 EditAddress.propTypes = {
   globalData: PropTypes.object.isRequired,
+  initiatePatchingUser: PropTypes.func.isRequired,
+  hideAddress: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

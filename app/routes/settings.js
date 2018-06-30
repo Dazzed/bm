@@ -85,51 +85,51 @@ class Settings extends Component {
     this.hideSearch = this.hideSearch.bind(this);
   }
 
-  showDependents() {
+  showDependents = () => {
     this.setState({ isDependentsVisible: true })
   }
 
-  hideDependents() {
+  hideDependents = () => {
     this.setState({ isDependentsVisible: false })
   }
 
-  showExperience() {
+  showExperience = () => {
     this.setState({ isExperienceVisible: true })
   }
 
-  hideExperience() {
+  hideExperience = () => {
     this.setState({ isExperienceVisible: false })
   }
 
-  showEmploymentStatus() {
+  showEmploymentStatus = () => {
     this.setState({ isEmploymentStatusVisible: true })
   }
 
-  hideEmploymentStatus() {
+  hideEmploymentStatus = () => {
     this.setState({ isEmploymentStatusVisible: false })
   }
 
-  showMaritalStatus() {
+  showMaritalStatus = () => {
     this.setState({ isMaritalStatusVisible: true })
   }
 
-  hideMaritalStatus() {
+  hideMaritalStatus = () => {
     this.setState({ isMaritalStatusVisible: false })
   }
 
-  showAddress() {
+  showAddress = () => {
     this.setState({ isAddressVisible: true })
   }
 
-  hideAddress() {
+  hideAddress = () => {
     this.setState({ isAddressVisible: false })
   }
 
-  showContact() {
+  showContact = () => {
     this.setState({ isContactVisible: true })
   }
 
-  hideContact() {
+  hideContact = () => {
     this.setState({ isContactVisible: false })
   }
 
@@ -421,39 +421,66 @@ class Settings extends Component {
           animationOut={'slideOutDown'}>
           <ContactUs hideContact={() => this.hideContact()} />
         </Modal>
-
-        <Modal
-          isVisible={this.state.isAddressVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}>
-          <EditAddress hideAddress={() => this.hideAddress()} />
-        </Modal>
-        <Modal
-          isVisible={this.state.isMaritalStatusVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}>
-          <EditMaritalStatus hideMaritalStatus={() => this.hideMaritalStatus()} />
-        </Modal>
-        <Modal
-          isVisible={this.state.isEmploymentStatusVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}>
-          <EditEmploymentStatus hideEmploymentStatus={() => this.hideEmploymentStatus()} />
-        </Modal>
-        <Modal
-          isVisible={this.state.isExperienceVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}>
-          <EditExperience hideExperience={() => this.hideExperience()} />
-        </Modal>
-        <Modal
-          isVisible={this.state.isDependentsVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}>
-          <EditDependents hideDependents={() => this.hideDependents()} />
-        </Modal>
-
-        
+        {
+          this.state.isAddressVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}>
+            <EditAddress
+              hideAddress={this.hideAddress}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+            />
+          </Modal>
+        }
+        {
+          this.state.isMaritalStatusVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}>
+            <EditMaritalStatus
+              hideMaritalStatus={this.hideMaritalStatus}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+            />
+          </Modal>
+        }
+        {
+          this.state.isDependentsVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}>
+            <EditDependents
+              hideDependents={this.hideDependents}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+            />
+          </Modal>
+        }
+        {
+          this.state.isEmploymentStatusVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}>
+            <EditEmploymentStatus
+              hideEmploymentStatus={this.hideEmploymentStatus}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+            />
+          </Modal>
+        }
+        {
+          this.state.isExperienceVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}>
+            <EditExperience
+              hideExperience={this.hideExperience}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+            />
+          </Modal>
+        }
       </View>
     );
   }
@@ -463,7 +490,8 @@ Settings.propTypes = {
   navigation: PropTypes.object.isRequired,
   globalData: PropTypes.object.isRequired,
   toggleTheme: PropTypes.func.isRequired,
-  logoutAction: PropTypes.func.isRequired
+  logoutAction: PropTypes.func.isRequired,
+  initiatePatchingUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

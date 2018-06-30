@@ -76,16 +76,17 @@ class EditExperience extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.isPatchingUser === true && currentGlobalData.isPatchingUser === false) {
+      this.props.hideExperience();
+    }
   }
 
-  hideStatus(value) {
+  hideStatus = value => {
     if (value) {
       this.setState({
         experienceOption: value,
         experience: status_list.find(l => l.value === value).label
       });
-    } else {
-      this.setState({})
     }
   }
 
@@ -100,8 +101,13 @@ class EditExperience extends React.Component {
     const user_experience = {
       experience: this.state.experience
     }
-    const res = await axios.patch(`${API_URL}/api/users/${this.props.globalData.currentUser.id}?access_token=${this.props.globalData.currentUser.access_token}`, user_experience);
-    console.log(res);
+    this.props.initiatePatchingUser(user_experience);
+  }
+
+  onBackButtonPress = () => {
+    if (this.props.globalData.isPatchingUser) {
+      return;
+    }
     this.props.hideExperience();
   }
 
@@ -110,7 +116,7 @@ class EditExperience extends React.Component {
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideExperience()}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
@@ -166,6 +172,8 @@ class EditExperience extends React.Component {
 // export default EditExperience;
 EditExperience.propTypes = {
   globalData: PropTypes.object.isRequired,
+  initiatePatchingUser: PropTypes.func.isRequired,
+  hideExperience: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

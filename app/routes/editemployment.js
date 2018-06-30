@@ -78,16 +78,17 @@ class EditEmployment extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.isPatchingUser === true && currentGlobalData.isPatchingUser === false) {
+      this.props.hideEmploymentStatus();
+    }
   }
 
-  hideStatus(value) {
+  hideStatus = value => {
     if (value) {
       this.setState({
         employmentOption: value,
         employment: status_list.find(l => l.value === value).label
       });
-    } else {
-      this.setState({})
     }
   }
 
@@ -95,8 +96,13 @@ class EditEmployment extends React.Component {
     const user_employment = {
       employment: this.state.employment
     }
-    const res = await axios.patch(`${API_URL}/api/users/${this.props.globalData.currentUser.id}?access_token=${this.props.globalData.currentUser.access_token}`, user_employment);
-    console.log(res);
+    this.props.initiatePatchingUser(user_employment);
+  }
+
+  onBackButtonPress = () => {
+    if (this.props.globalData.isPatchingUser) {
+      return;
+    }
     this.props.hideEmploymentStatus();
   }
 
@@ -105,7 +111,7 @@ class EditEmployment extends React.Component {
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideEmploymentStatus()}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
@@ -139,7 +145,7 @@ class EditEmployment extends React.Component {
                     labelStyle={[{ color: this.state.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                     radioLabelActive={[{ color: this.state.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                     labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles_2.radioLabelWrap]}
-                    onPress={(value) => { this.hideStatus(value) }}
+                    onPress={this.hideStatus}
                     style={styles_2.radioField}
                   />
                 </View>
@@ -158,9 +164,10 @@ class EditEmployment extends React.Component {
   }
 }
 
-// export default EditEmployment;
 EditEmployment.propTypes = {
   globalData: PropTypes.object.isRequired,
+  initiatePatchingUser: PropTypes.func.isRequired,
+  hideEmploymentStatus: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
