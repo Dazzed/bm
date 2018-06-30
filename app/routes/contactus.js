@@ -108,7 +108,7 @@ class ContactUs extends React.Component {
           behavior="padding"
           style={styles_2.section}>
           <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalContainer, { paddingTop: 15 }]}>
-            <Text style={[{ color: this.state.colors['lightGray'] }, styles.legalTxt, fonts.hindGunturRg]}>Your feedback is important to us. This will help us continue to create the best product for you.</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, styles.contactUsTxt, fonts.hindGunturRg]}>Your feedback is very important. This will help us continue to create the best product for you.</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>SUBJECT</Text>
             <TextInput
               style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles.contact_us_subject_field]}
@@ -119,6 +119,7 @@ class ContactUs extends React.Component {
               onChange={(event) => this.onTextChange(event, 'message')}
               multiline={true}
               placeholder="Message"
+              placeholderTextColor={this.state.colors['darkSlate']} 
             />
           </ScrollView>
           <View style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalAgree]}>

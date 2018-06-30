@@ -28,7 +28,7 @@ import checkBoxOutline from '../../../images/checkbox_outline.png';
 import { isPresent } from '../validation';
 
 const country_list = [
-  { "label": "UNITED STATES CITIZEN", "value": 0 },
+  { "label": "U.S. Citizen", "value": 0 },
   { "label": "I am NOT a U.S. Citizen", "value": 1 }
 ];
 
@@ -100,7 +100,7 @@ export default class CountrySelection extends Component {
           </Text>
           <View style={[styles_2.whyWeAskView]}>
             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-              Currently our application only supports United States citizens. If you are not a U.S. citizen, we will reach out and let you know when we can support additional nationalities.
+              Currently our application only supports United States citizens. If you are not a U.S. citizen, we will reach out and let you know when we can support additional countries.
             </Text>
           </View>
           <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>

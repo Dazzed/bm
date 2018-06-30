@@ -12,12 +12,20 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import TouchID from 'react-native-touch-id';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Terms from './terms';
+
 import Faq from './faq';
 import ReportBug from './reportbug';
 import ContactUs from './contactus';
+
+import EditAddress from './editaddress';
+import EditMaritalStatus from './editmaritalstatus';
+import EditEmploymentStatus from './editemployment';
+import EditExperience from './editexperience';
+import EditDependents from './editdependents';
+
 
 import RadioForm from '../components/react-native-simple-radio-button';
 import { colors } from '../store/store';
@@ -55,10 +63,16 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTermsVisible: false,
+      isAddressVisible: false,
+      isMaritalStatusVisible: false,
+      isDependentsVisible: false,
+      isExperienceVisible: false,
+      isEmploymentVisible: false,
+
       isFaqVisible: false,
       isBugVisible: false,
       isContactVisible: false,
+
       trueSwitchIsOn: true,
       falseSwitchIsOn: false,
       isSearchVisible: false,
@@ -69,6 +83,46 @@ class Settings extends Component {
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
+  }
+
+  showDependents() {
+    this.setState({ isDependentsVisible: true })
+  }
+
+  hideDependents() {
+    this.setState({ isDependentsVisible: false })
+  }
+
+  showExperience() {
+    this.setState({ isExperienceVisible: true })
+  }
+
+  hideExperience() {
+    this.setState({ isExperienceVisible: false })
+  }
+
+  showEmploymentStatus() {
+    this.setState({ isEmploymentStatusVisible: true })
+  }
+
+  hideEmploymentStatus() {
+    this.setState({ isEmploymentStatusVisible: false })
+  }
+
+  showMaritalStatus() {
+    this.setState({ isMaritalStatusVisible: true })
+  }
+
+  hideMaritalStatus() {
+    this.setState({ isMaritalStatusVisible: false })
+  }
+
+  showAddress() {
+    this.setState({ isAddressVisible: true })
+  }
+
+  hideAddress() {
+    this.setState({ isAddressVisible: false })
   }
 
   showContact() {
@@ -95,14 +149,6 @@ class Settings extends Component {
     this.setState({ isFaqVisible: false })
   }
 
-  showTerms() {
-    this.setState({ isTermsVisible: true })
-  }
-
-  hideTerms() {
-    this.setState({ isTermsVisible: false })
-  }
-
   showSearch() {
     this.setState({ isSearchVisible: true });
   }
@@ -122,6 +168,22 @@ class Settings extends Component {
       this.setState({ isAutoLogVisible: false });
     }
   }
+
+  handleTouch = (value) => {
+    if (value) {
+      TouchID.authenticate('Authenticate to access your BluMartini account.', {})
+        .then(success => {
+          // Success code
+          console.log(success);
+        })
+        .catch(error => {
+          // Failure code
+          console.log(error)
+        });
+    }
+    this.setState({ falseSwitchIsOn: value })
+  }
+
 
   componentDidUpdate(prevProps) {
     const {
@@ -162,54 +224,65 @@ class Settings extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Email</Text>
-            <TextInput style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}
-              placeholder="your@email.com"
-              onChangeText={(email) => this.setState({ email })}
-              keyboardType="email-address"
-              value="your@email.com"
-            />
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.email}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Mobile</Text>
-            <TextInput style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}
-              placeholder="510.473.2257"
-              onChangeText={(mobile) => this.setState({ mobile })}
-              keyboardType="number-pad"
-              value="510.473.2257"
-            />
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.phone}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Password</Text>
-            <TextInput style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}
-              placeholder="Password"
-              onChangeText={(password) => this.setState({ password })}
-              secureTextEntry={true}
-              value="mypassword"
-            />
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>*********</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Address</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.address}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showAddress()}>{currentUser.address}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Marital status</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.maritalStatus}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showMaritalStatus()}>{currentUser.maritalStatus}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Number of dependents</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.dependents}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showDependents()}>{currentUser.dependents}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Employment status</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.employment}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showEmploymentStatus()}>{currentUser.employment}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Investment experience</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.experience}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showExperience()}>{currentUser.experience}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+            </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Citizenship</Text>
             <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.country}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+            </Text>
           </View>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>COLOR SCHEME</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
@@ -224,7 +297,7 @@ class Settings extends Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Touch ID Log-in</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
+              onValueChange={(value) => this.handleTouch(value)}
               value={this.state.falseSwitchIsOn} />
           </View>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
@@ -328,12 +401,8 @@ class Settings extends Component {
             />
           </View>
         </Modal>
-        <Modal
-          isVisible={this.state.isTermsVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}>
-          <Terms hideTerms={() => this.hideTerms()} />
-        </Modal>
+
+
         <Modal
           isVisible={this.state.isFaqVisible}
           animationIn={'slideInUp'}
@@ -352,6 +421,39 @@ class Settings extends Component {
           animationOut={'slideOutDown'}>
           <ContactUs hideContact={() => this.hideContact()} />
         </Modal>
+
+        <Modal
+          isVisible={this.state.isAddressVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <EditAddress hideAddress={() => this.hideAddress()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isMaritalStatusVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <EditMaritalStatus hideMaritalStatus={() => this.hideMaritalStatus()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isEmploymentStatusVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <EditEmploymentStatus hideEmploymentStatus={() => this.hideEmploymentStatus()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isExperienceVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <EditExperience hideExperience={() => this.hideExperience()} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isDependentsVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <EditDependents hideDependents={() => this.hideDependents()} />
+        </Modal>
+
+        
       </View>
     );
   }

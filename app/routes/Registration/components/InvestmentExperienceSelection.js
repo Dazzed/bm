@@ -30,8 +30,8 @@ let showWhyWeAsk = true;
 const status_list = [
     { "label": "None", "value": 0 },
     { "label": "Some", "value": 1 },
-    { "label": "I know what I’m doing", "value": 2 },
-    { "label": "I’m an expert", "value": 3 }
+    { "label": "I know what I'm doing", "value": 2 },
+    { "label": "I'm an expert", "value": 3 }
 ];
 
 export default class InvestmentExperienceSelection extends Component {

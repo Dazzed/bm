@@ -315,6 +315,13 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     // color: colors.lightGray,
   },
+  contactUsTxt: {
+    marginTop: 5,
+    marginBottom: 0,
+    fontSize: 16,
+    lineHeight: 24,
+    // color: colors.lightGray,
+  },
   legalAgree: {
     flex: 1,
     alignItems: 'center',
@@ -593,20 +600,22 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 0.5,
     borderColor: '#979797',
-    fontSize: 24
+    lineHeight: 1,
+    fontSize: 18
   },
   contact_us_field: {
     height: 140,
     padding: 5,
     borderWidth: 0.5,
     borderColor: '#979797',
-    fontSize: 24
+    fontSize: 18,
+    lineHeight: 1
   },
   contact_us_subject_field: {
     padding: 5,
     borderBottomColor: '#979797', borderBottomWidth: 0.5,
-    fontSize: 24,
-    marginBottom: 10
+    fontSize: 18,
+    marginBottom: 15
   },
 
 });
