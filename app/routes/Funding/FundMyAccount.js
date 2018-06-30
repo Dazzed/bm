@@ -33,7 +33,6 @@ export default class FundMyAccount extends React.Component {
         };
     };
 
-
     constructor(props) {
         super(props)
         this.state = {
@@ -100,7 +99,7 @@ export default class FundMyAccount extends React.Component {
                 textAlign: 'center',
                 color: theme.darkSlate
             }
-            return <View style={{height: '100%', borderWidth: 1, borderColor: 'red', justifyContent: 'center'}}>
+            return <View style={{height: '100%', justifyContent: 'center'}}>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
@@ -134,7 +133,6 @@ export default class FundMyAccount extends React.Component {
 
         return <View style={{width: '100%', alignSelf: 'center', backgroundColor: theme.realWhite}}>
             <View style={{width: '80%', alignSelf: 'center'}}>
-
                 <View style={{
                     justifyContent: 'space-between',
                     alignItems: 'center',
@@ -151,7 +149,6 @@ export default class FundMyAccount extends React.Component {
                         />
                     </TouchableOpacity>
                 </View>
-
                 <View style={underlineStyle}></View>
             </View>
         </View>
@@ -162,13 +159,11 @@ export default class FundMyAccount extends React.Component {
             <View style={{flex: 1}}>
                 {this.renderAmountInAccount()}
             </View>
-
             <View style={{flex: 0}}>
                 {this.renderInputAmount()}
                 <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
                 <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
             </View>
-
         </View>
     }
 }
