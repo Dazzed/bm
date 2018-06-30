@@ -5,15 +5,17 @@ import Button from './button';
 import { setTheme, getTheme, colors } from '../../store/store';
 
 
+import { observer } from 'mobx-react';
+
+import { colorStore } from '../../mobxStores';
 
 
+@observer
 export default class AccountSelect extends React.Component {
-
 
     constructor(props) {
         super(props);
         this.state = {
-            colors: colors(),
             selectedAccountIndex: 0,
             withdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
         }
@@ -22,9 +24,6 @@ export default class AccountSelect extends React.Component {
     componentDidMount() {
         let withdrawDepositMode = this.props.navigation.state.params.widthdrawDepositMode
         console.log('ACCOUNT SELECT', this, withdrawDepositMode)
-        // this.setState({
-        //
-        // })
     }
 
     navToFundAccount() {
@@ -61,8 +60,9 @@ export default class AccountSelect extends React.Component {
 
 
     renderAccountList() {
+        const { theme } = colorStore;
 
-        let listHeight = 190;
+        let listHeight = 300;
 
         let accountList = [
             {
@@ -87,14 +87,15 @@ export default class AccountSelect extends React.Component {
         }
 
         let eachAccountStyle = {
-            backgroundColor: this.state.colors.white,
             height: 60,
             // margin: 2,
             padding: 2,
-            backgroundColor: this.state.colors.white,
+            backgroundColor: theme.realWhite,
             alignItems: 'center',
             justifyContent: 'center',
-            flexDirection: 'row'
+            position: 'relative',
+            flexDirection: 'row',
+            // zIndex: 1
         }
 
         let leftContainer = {
@@ -110,7 +111,7 @@ export default class AccountSelect extends React.Component {
         }
 
         let subTitleStyle = {
-            color: this.state.colors.lightGray
+            color: theme.lightGray
         }
 
         let selectIcon = (i) => {
@@ -127,7 +128,7 @@ export default class AccountSelect extends React.Component {
 
         let renderDivider = (i) => {
             if(i < accountList.length - 1) {
-                return <View style={{height: 1, width: '100%', backgroundColor: this.state.colors.lightGray}}></View>
+                return <View style={{height: 1, width: '100%', backgroundColor: theme.lightGray}}></View>
             } else {
                 return null
             }
@@ -140,7 +141,7 @@ export default class AccountSelect extends React.Component {
             {accountList.map((elem, i) => {
                 let thisTitleStyle = {...titleStyle}
                 if(this.state.selectedAccountIndex === i) {
-                    thisTitleStyle.color = this.state.colors.blue
+                    thisTitleStyle.color = theme.blue
                 }
                 let thisAccountStyle = {
                     height: '100%',
@@ -156,7 +157,7 @@ export default class AccountSelect extends React.Component {
                     thisAccountStyle.borderBottomRightRadius = masterRadius;
                 }
 
-                return <View key={i}>
+                return <View key={i} style={{zIndex: 1, backgroundColor: theme.realWhite, borderRadius: 5}}>
                     <TouchableOpacity onPress={(e) => this.selectAccount(e, i)} style={thisAccountStyle}>
                         <View style={leftContainer}>
                             {selectIcon(i)}
@@ -175,7 +176,7 @@ export default class AccountSelect extends React.Component {
     renderBackgroundImage() {
         return <Image
             resizeMode={'contain'}
-            style={{width: '80%', alignSelf: 'flex-end', position: 'relative', right: -10}}
+            style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -10, top: '50%', zIndex: 0}}
             source={require('../../images/illustration.png')}
         />
     }
@@ -183,7 +184,7 @@ export default class AccountSelect extends React.Component {
     renderTopInstruction() {
         let instruction = null;
         if(this.state.withdrawDepositMode === 'withdraw') {
-            instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM'
+            instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM';
             return <Text style={{textAlign: 'center', fontSize: 20}}>{instruction}</Text>
         } else {
             return null
@@ -192,13 +193,13 @@ export default class AccountSelect extends React.Component {
 
     renderButtonAndContent() {
         return <View style={{flexDirection: 'column', height: '100%'}}>
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, position: 'relative'}}>
+                {this.renderBackgroundImage()}
                 <View style={{marginVertical: 10}}></View>
                 {this.renderTopInstruction()}
                 <View style={{marginVertical: 10}}></View>
                 {this.renderCashAvailable()}
                 {this.renderAccountList()}
-                {this.renderBackgroundImage()}
             </View>
             <View style={{flex: 0}}>
                 <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>

@@ -31,8 +31,8 @@ const firstNavDefaultRoute = 'AppNav';
 
 
 // force navigation on app nav footer control
-// const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Account';
+const appNavDefaultTabRoute = 'Settings';
+// const appNavDefaultTabRoute = 'Account';
 
 // Account
 // Watchlists
@@ -41,7 +41,7 @@ const appNavDefaultTabRoute = 'Account';
 // Settings
 
 const stackNavDefaultRoute = 'AppNavTabs';
-// const stackNavDefaultRoute = 'Withdraw';
+// const stackNavDefaultRoute = 'AccountSelect';
 
 // AppNavTabs
 // Chart

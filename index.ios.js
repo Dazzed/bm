@@ -8,6 +8,9 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
+// init stores
+import './app/mobxStores'
+
 import { Provider } from 'react-redux';
 
 import { store } from './app/store/redux';
