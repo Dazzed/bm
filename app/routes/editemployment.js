@@ -42,12 +42,12 @@ import { isPresent } from './Registration/validation';
 
 import { setTheme, getTheme, colors } from '../store/store';
 const status_list = [
-  { "label": "Employed", "value": 0 },
-  { "label": "Student", "value": 1 },
-  { "label": "Retired", "value": 2 },
-  { "label": "Unemployed", "value": 3 },
-  { "label": "Self-employed", "value": 4 },
-  { "label": "Other", "value": 5 }
+  { "label": "Employed", "value": 1 },
+  { "label": "Student", "value": 2 },
+  { "label": "Retired", "value": 3 },
+  { "label": "Unemployed", "value": 4 },
+  { "label": "Self-employed", "value": 5 },
+  { "label": "Other", "value": 6 }
 ];
 
 class EditEmployment extends React.Component {

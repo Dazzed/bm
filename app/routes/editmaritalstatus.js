@@ -36,11 +36,11 @@ import { isPresent } from './Registration/validation';
 
 import { setTheme, getTheme, colors } from '../store/store';
 const status_list = [
-  { "label": "Married", "value": 0 },
-  { "label": "Divorced", "value": 1 },
-  { "label": "Separated", "value": 2 },
-  { "label": "Widowed", "value": 3 },
-  { "label": "Single", "value": 4 }
+  { "label": "Married", "value": 1 },
+  { "label": "Divorced", "value": 2 },
+  { "label": "Separated", "value": 3 },
+  { "label": "Widowed", "value": 4 },
+  { "label": "Single", "value": 5 }
 ];
 
 class EditMaritalStatus extends React.Component {

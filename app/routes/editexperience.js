@@ -42,10 +42,10 @@ import { isPresent } from './Registration/validation';
 
 import { setTheme, getTheme, colors } from '../store/store';
 const status_list = [
-  { "label": "None", "value": 0 },
-  { "label": "Some", "value": 1 },
-  { "label": "I know what I'm doing", "value": 2 },
-  { "label": "I'm an expert", "value": 3 }
+  { "label": "None", "value": 1 },
+  { "label": "Some", "value": 2 },
+  { "label": "I know what I'm doing", "value": 3 },
+  { "label": "I'm an expert", "value": 4 }
 ];
 
 class EditExperience extends React.Component {
