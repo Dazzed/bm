@@ -10,8 +10,10 @@ import {
 import Button from './button';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
 import { numberWithCommas } from '../../utility';
-import { colorStore } from '../../mobxStores';
+import { colorStore, accountStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
+import { generateHeaderStyles } from '../../utility';
+
 
 @observer
 export default class FundMyAccount extends React.Component {
@@ -21,8 +23,13 @@ export default class FundMyAccount extends React.Component {
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Fund My Account'
         }
+
+        const { theme } = colorStore;
+        let headerStyleToExtend = generateHeaderStyles(theme);
+
         return {
             title: title,
+            ...headerStyleToExtend
         };
     };
 
@@ -45,43 +52,63 @@ export default class FundMyAccount extends React.Component {
             return
         } else {
 
-            // calculate funds remainging error
-            let displayError = false;
-
-            if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-                //
-                let accountBalanceInt = parseInt(this.state.accountBalance);
-                let currentEntryInt = parseInt(this.state.fundingString);
-                if(currentEntryInt > accountBalanceInt) {
-                    displayError = true;
-                }
-            }
-
             this.setState({
                 fundingString: this.state.fundingString + newValue,
+            }, () => {
+                this.calculateError()
+            })
+        }
+    }
+
+    calculateError() {
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+            let displayError = false;
+            let accountBalanceInt = parseInt(this.state.accountBalance);
+            let currentEntryInt = parseInt(this.state.fundingString);
+            if(currentEntryInt > accountBalanceInt) {
+                displayError = true;
+            }
+            this.setState({
                 errorRemainingFunds: displayError
             })
-
-
         }
     }
 
     deleteNumber() {
         this.setState({
-            fundingString: this.state.fundingString.substring(0, this.state.fundingString.length - 1)
+            fundingString: this.state.fundingString.substring(0, this.state.fundingString.length - 1),
+        }, () => {
+            this.calculateError()
         })
     }
 
     clear() {
         this.setState({
-            fundingString: ''
+            fundingString: '',
+            errorRemainingFunds: false
+        }, () => {
+            this.calculateError()
         })
     }
 
     renderAmountInAccount() {
-        return <View>
-            <Text>Ammoun</Text>
-        </View>
+        const { theme } = colorStore;
+        const { selectedAccount } = accountStore;
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+            let textStyle = {
+                fontSize: 30,
+                textAlign: 'center',
+                color: theme.darkSlate
+            }
+            return <View style={{height: '100%', borderWidth: 1, borderColor: 'red', justifyContent: 'center'}}>
+                <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
+                <Text style={textStyle}>AVAILABLE</Text>
+                <View style={{marginVertical: 10}}></View>
+            </View>
+        } else {
+            return null;
+        }
+
     }
 
     renderInputAmount() {
@@ -131,7 +158,7 @@ export default class FundMyAccount extends React.Component {
     }
 
     render() {
-        return <View style={{height: '100%'}}>
+        return <View style={{height: '100%', padding: 5}}>
             <View style={{flex: 1}}>
                 {this.renderAmountInAccount()}
             </View>

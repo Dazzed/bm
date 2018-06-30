@@ -1,12 +1,34 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-
 import Button from './button';
 import { setTheme, getTheme, colors } from '../../store/store';
+import { colorStore } from '../../mobxStores';
+import { generateHeaderStyles } from '../../utility';
 
 
 export default class AccountSelect extends React.Component {
 
+
+//     const { theme } = colorStore;
+//
+// let headerStyleToExtend = generateHeaderStyles(theme);
+//
+// ...headerStyleToExtend
+
+    static navigationOptions = ({ navigation }) => {
+        let title = 'Funds Withdrawn';
+        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+            title = 'Account Funded'
+        }
+
+        const { theme } = colorStore;
+        let headerStyleToExtend = generateHeaderStyles(theme);
+
+        return {
+            title: title,
+            ...headerStyleToExtend
+        };
+    };
 
     constructor(props) {
         super(props);

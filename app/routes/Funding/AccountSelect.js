@@ -4,13 +4,16 @@ import Button from './button';
 import { numberWithCommas } from '../../utility';
 import { observer } from 'mobx-react';
 import { colorStore, accountStore } from '../../mobxStores';
+import { generateHeaderStyles } from '../../utility';
 
 
 @observer
 export default class AccountSelect extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-        console.log('===== nav optins', navigation, this);
+
+        const { theme } = colorStore;
+        let headerStyleToExtend = generateHeaderStyles(theme);
 
         let title = 'Withdraw Funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
@@ -18,6 +21,7 @@ export default class AccountSelect extends React.Component {
         }
         return {
             title: title,
+            ...headerStyleToExtend
         };
     };
 
@@ -195,7 +199,7 @@ export default class AccountSelect extends React.Component {
 
     renderButtonAndContent() {
         const { theme } = colorStore;
-        return <View style={{flexDirection: 'column', height: '100%', backgroundColor: theme.contentBg}}>
+        return <View style={{flexDirection: 'column', height: '100%', backgroundColor: theme.contentBg, padding: 5}}>
 
             <View style={{flex: 1, position: 'relative'}}>
                 {this.renderBackgroundImage()}
