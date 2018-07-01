@@ -10,11 +10,23 @@ import Scanner from './scanner';
 import Settings from './settings';
 import CustomTabBar from './customtabbar';
 import Chart from './chart';
+
+import AccountSelect from './Funding/AccountSelect';
+import FundMyAccount from './Funding/FundMyAccount';
+import Success from './Funding/Success';
+
+// import FundFLow from './Funding/FundFlow';
+
 import { colors } from '../store/store';
+
+import {
+    appNavDefaultTabRoute,
+    stackNavDefaultRoute
+} from '../devControlPanel';
 
 var color = colors();
 
-const AppNav = TabNavigator({
+const AppNavTabs = TabNavigator({
   Account: {
     screen: Account,
   },
@@ -31,7 +43,7 @@ const AppNav = TabNavigator({
     screen: Settings,
   }
 }, {
-  initialRouteName: 'Account',
+  initialRouteName: appNavDefaultTabRoute,
   lazy: false,
   animationEnabled: true,
   tabBarOptions: {
@@ -47,16 +59,49 @@ const AppNav = TabNavigator({
 });
 
 const StackNav = StackNavigator({
-  AppNav: {
-    screen: AppNav,
+  AppNavTabs: {
+    screen: AppNavTabs,
   },
   Chart: {
     screen: Chart,
   },
+
+  AccountSelect: {
+    screen: AccountSelect
+  },
+  FundMyAccount: {
+    screen: FundMyAccount
+  },
+  Success: {
+    screen: Success
+  },
+
 }, {
-  initialRouteName: 'AppNav',
+  initialRouteName: stackNavDefaultRoute,
   lazy: false,
-  animationEnabled: false
+  animationEnabled: false,
+  mode: 'modal',
+  headerMode: 'float',
+  headerTransitionPreset: 'uikit',
+
+  screenInterpolator: sceneProps => {
+    const { layout, position, scene } = sceneProps;
+    const { index } = scene;
+
+    const height = layout.initHeight;
+    const translateY = position.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [height, 0, 0],
+    });
+
+    const opacity = position.interpolate({
+      inputRange: [index - 1, index - 0.99, index],
+      outputRange: [0, .1, 1],
+    });
+
+    return { opacity, transform: [{ translateY }] };
+  }
+
 });
 
 export default StackNav;

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { API_URL } from '../../config';
+import { colorStore } from '../../mobxStores';
 
 export const PREFIX = 'APP_GLOBAL';
 
@@ -96,11 +97,46 @@ export function setThemeFromLocal() {
   return async dispatch => {
     const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);
     if (isDarkThemeActive) {
+
+      // do changes in mobx in parrallel
+      colorStore.setTheme('dark');
+
       return dispatch({
         type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
         payload: true
       });
+    } else {
+      // do changes in mobx in parrallel
+      colorStore.setTheme('light');
     }
+  };
+}
+
+export function setThemeToDark() {
+  return async dispatch => {
+    await AsyncStorage.setItem(THEME_KEY, 'true');
+
+    // do changes in mobx in parrallel
+    colorStore.setTheme('dark');
+
+    return dispatch({
+      type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+      payload: true
+    });
+  }
+};
+
+export function setThemeToLight() {
+  return async dispatch => {
+    await AsyncStorage.removeItem(THEME_KEY);
+
+    // do changes in mobx in parrallel
+    colorStore.setTheme('light');
+
+    return dispatch({
+      type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+      payload: false
+    });
   };
 }
 
@@ -109,12 +145,14 @@ export function toggleTheme() {
     const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);
     if (isDarkThemeActive) {
       await AsyncStorage.removeItem(THEME_KEY);
+      colorStore.setTheme('light');
       return dispatch({
         type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
         payload: false
       });
     } else {
       await AsyncStorage.setItem(THEME_KEY, 'true');
+      colorStore.setTheme('dark');
       return dispatch({
         type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
         payload: true

@@ -595,6 +595,12 @@ const styles = StyleSheet.create({
     width: 23,
     height: 23
   },
+  caratImage: {
+    height: 18,
+    width: 15,
+    marginTop: 17,
+    marginRight: 10
+  },
   report_bug_field: {
     height: 140,
     padding: 5,
@@ -617,6 +623,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15
   },
-
 });
 module.exports = styles;

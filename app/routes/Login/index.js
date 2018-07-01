@@ -12,6 +12,7 @@ import {
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import TouchID from 'react-native-touch-id';
 import {
   StackNavigator,
@@ -59,7 +60,7 @@ class SignIn extends Component {
     }
     if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
       const { navigate } = this.props.navigation;
-      navigate('AppNav', { color: this.state.activeColor })
+      navigate('AppNavTabs', { color: this.state.activeColor })
     }
   }
 
@@ -120,18 +121,20 @@ class SignIn extends Component {
           behavior={this.state.behavior}
           style={styles.formcontainer}>
           <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
-            <Text style={[{ color: this.state.colors['darkGray'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
-            <TextInput style={[{ color: this.state.colors['lightGray'] }, styles.input, fonts.hindGunturRg]}
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
+            <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
               placeholder="your@email.com"
+              placeholderTextColor={this.state.colors['darkSlate']}
               value={this.state.email}
               onChangeText={(email) => this.setState({ email })}
               keyboardType="email-address" autoCapitalize='none'
             />
           </View>
           <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
-            <Text style={[{ color: this.state.colors['darkGray'] }, styles.inputLabel, fonts.hindGunturMd]}>PASSWORD</Text>
-            <TextInput style={[{ color: this.state.colors['lightGray'] }, styles.input, fonts.hindGunturRg]}
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>PASSWORD</Text>
+            <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
               placeholder="password"
+              placeholderTextColor={this.state.colors['darkSlate']}
               value={this.state.password}
               onChangeText={(password) => this.setState({ password })}
               secureTextEntry={true}

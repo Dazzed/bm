@@ -8,6 +8,9 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
+// init stores
+import './app/mobxStores'
+
 import { Provider } from 'react-redux';
 
 import { store } from './app/store/redux';
@@ -17,14 +20,17 @@ import Login from './app/routes/Login';
 import Registration from './app/routes/Registration';
 import HomeScreen from './app/containers/Home';
 
+import { firstNavDefaultRoute } from './app/devControlPanel';
+
 const LostAvenue = StackNavigator({
-  Home: { screen: HomeScreen },
-  Login: { screen: Login },
-  Registration: { screen: Registration },
-  AppNav: { screen: AppNav },
-}, {
-    headerMode: 'screen',
+      Home: { screen: HomeScreen },
+      Login: { screen: Login },
+      Registration: { screen: Registration },
+      AppNav: { screen: AppNav },
+    }, {
+    headerMode: 'none',
     lazy: true,
+    initialRouteName: firstNavDefaultRoute
   });
 
 const WithProvider = () => (
