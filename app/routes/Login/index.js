@@ -6,11 +6,17 @@ import {
   TextInput,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions, Platform
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
+import TouchID from 'react-native-touch-id';
+import {
+  StackNavigator,
+} from 'react-navigation';
 
 import { setTheme, colors } from '../../store/store';
 
@@ -30,10 +36,14 @@ class SignIn extends Component {
 
   constructor(props) {
     super(props);
+    let d = Dimensions.get('window');
+    const { height, width } = d;
+
     this.state = {
       email: 'sameep.dev@gmail.com',
       password: 'abcd1234',
       behavior: 'padding',
+      bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
@@ -62,6 +72,18 @@ class SignIn extends Component {
   onSegmentChange = (segment: String) => {
     this.setState({ behavior: segment.toLowerCase() });
   };
+
+  handleTouch = () => {
+    TouchID.authenticate('Authenticate to access your BluMartini account.', {})
+      .then(success => {
+        // Success code
+        console.log(success);
+      })
+      .catch(error => {
+        // Failure code
+        console.log(error)
+      });
+  }
 
   _signIn = () => {
     // Alert.alert(
@@ -123,9 +145,9 @@ class SignIn extends Component {
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
-            onPress={() => alert('Enable touch Id')}>
+            onPress={this.handleTouch}>
             <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
-              ENABLE TOUCH ID
+              ENABLE {this.state.bioId} ID
             </Text>
           </TouchableOpacity>
           <Text style={[{ color: this.state.colors['lightGray'] }, styles.details, fonts.hindGunturRg]}>

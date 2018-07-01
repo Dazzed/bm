@@ -279,7 +279,6 @@ export default class DateOfBirthSelection extends Component {
                     <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
                 </View>
             );
-        } else {
         }
     }
 
@@ -305,7 +304,7 @@ export default class DateOfBirthSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="mm/dd/yyyy" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.dateField}
+                            <TextInput placeholder="MM/DD/YYYY" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.dateField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={10} editable={false}
                             />
                         </View>

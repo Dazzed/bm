@@ -60,6 +60,9 @@ class HomeScreen extends Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.isAuthenticated === true && currentGlobalData.isAuthenticated === false) {
+      this.props.navigation.navigate('Home');
+    }
   }
 
   renderAppPreviewButton() {

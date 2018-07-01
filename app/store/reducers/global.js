@@ -5,7 +5,9 @@ const initialState = {
   isAuthenticating: false,
   currentUser: null,
   loginErrorPresent: false,
-  isDarkThemeActive: false
+  isDarkThemeActive: false,
+  isLoggingOut: false,
+  isPatchingUser: false
 }
 
 export default (state = initialState, action) => {
@@ -33,6 +35,42 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isDarkThemeActive: action.payload
+      };
+    case `${PREFIX}_START_LOGGING_OUT`:
+      return {
+        ...state,
+        isLoggingOut: true
+      };
+    case `${PREFIX}_LOGOUT_SUCCESS`:
+      return {
+        ...state,
+        isAuthenticated: false,
+        currentUser: null,
+        isLoggingOut: false
+      };
+    case `${PREFIX}_LOGOUT_FAILURE`:
+      return {
+        ...state,
+        isLoggingOut: false
+      };
+    case `${PREFIX}_INITIATE_PATCHING_USER`:
+      return {
+        ...state,
+        isPatchingUser: true
+      };
+    case `${PREFIX}_PATCH_SUCCESS`:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          ...action.payload
+        },
+        isPatchingUser: false
+      };
+    case `${PREFIX}_PATCH_ERROR`:
+      return {
+        ...state,
+        isPatchingUser: false
       };
   }
   return state;
