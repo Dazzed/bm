@@ -22,10 +22,11 @@ export default class RegistrationStore {
             stateOption: 1,
 
             // phone selection
-            phoneField: '',
+            phoneField: '1111111111',
 
             // date of birth
-            
+            dateField: '',
+
 
             maritalStatus: 'Married',
             employment: 'Employed',
