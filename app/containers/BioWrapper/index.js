@@ -60,6 +60,9 @@ export default TargetComponent => {
       const {
         globalData: thizGlobalData
       } = this.props;
+      if (this.state.fromMinimize === true) {
+        return;
+      }
       // if user wants to enable bio after login
       if (prevGlobalData.isAuthenticated === false && thizGlobalData.isAuthenticated === true) {
         if (thizGlobalData.remindBioAfterLoggingIn) {
@@ -96,7 +99,7 @@ export default TargetComponent => {
       } = this.state;
       TouchID.authenticate('Authenticate to access your BluMartini account.', {})
         .then(success => {
-          this.setState({ hasVerifiedBio: true, canRenderTargetComponent: true });
+          this.setState({ hasVerifiedBio: true, canRenderTargetComponent: true, fromMinimize: false });
           if (thizGlobalData.remindBioAfterLoggingIn) {
             this.props.toggleRemindBioProtectionAfterLoggingIn(false);
             this.props.performEnablingBioProtection();
@@ -126,13 +129,16 @@ export default TargetComponent => {
     }
 
     _handleAppStateChange = (nextAppState) => {
+      let statePropsToUpdate = {};
+      let cb = () => false;
       if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-        console.log('App has come to the foreground!')
+        console.log('App has come to the foreground!');
         if (this.props.globalData.hasUserEnabledBioProtection) {
-          this.setState({ canRenderTargetComponent: false, hasVerifiedBio: false }, this.initiateBioAuth);
+          // this.setState({ canRenderTargetComponent: false, hasVerifiedBio: false }, this.initiateBioAuth);
+          statePropsToUpdate = { canRenderTargetComponent: false, hasVerifiedBio: false, fromMinimize: true };
         }
       }
-      this.setState({ appState: nextAppState });
+      this.setState({ appState: nextAppState, ...statePropsToUpdate }, cb);
     }
 
     render() {
