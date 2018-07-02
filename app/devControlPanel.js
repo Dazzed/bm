@@ -23,7 +23,7 @@ const forceDarkTheme = false;
 // const forceDarkTheme = false;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'AppNav';
+const firstNavDefaultRoute = 'Home';
 // const firstNavDefaultRoute = 'Home';
 // AppNav
 // Login

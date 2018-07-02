@@ -172,18 +172,24 @@ class Settings extends Component {
   }
 
   handleTouch = (value) => {
+    // if (value) {
+    //   TouchID.authenticate('Authenticate to access your BluMartini account.', {})
+    //     .then(success => {
+    //       // Success code
+    //       console.log(success);
+    //     })
+    //     .catch(error => {
+    //       // Failure code
+    //       console.log(error)
+    //     });
+    // }
+    // this.setState({ falseSwitchIsOn: value })
     if (value) {
-      TouchID.authenticate('Authenticate to access your BluMartini account.', {})
-        .then(success => {
-          // Success code
-          console.log(success);
-        })
-        .catch(error => {
-          // Failure code
-          console.log(error)
-        });
+      this.props.initiateEnablingBioProtection();
+    } else {
+      this.props.initiateDisablingBioProtection();
     }
-    this.setState({ falseSwitchIsOn: value })
+    console.log(192, value)
   }
 
 
@@ -373,7 +379,7 @@ class Settings extends Component {
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.handleTouch(value)}
-              value={this.state.falseSwitchIsOn} />
+              value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
           <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
@@ -567,6 +573,8 @@ Settings.propTypes = {
   toggleTheme: PropTypes.func.isRequired,
   logoutAction: PropTypes.func.isRequired,
   initiatePatchingUser: PropTypes.func.isRequired,
+  initiateEnablingBioProtection: PropTypes.func.isRequired,
+  initiateDisablingBioProtection: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
