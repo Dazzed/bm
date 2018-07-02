@@ -42,22 +42,13 @@ export default class NameSelection extends Component {
   constructor(props) {
     super(props);
 
-    // const {
-    //   registrationPage: {
-    //     firstName,
-    //     lastName
-    //   }
-    // } = this.props;
-
-    // const isFormValid = isPresent(firstName) && isPresent(lastName);
-    const isFormValid = false;
+    this.checkFormValidity();
 
     this.state = {
       showWhyWeAsk: false,
       firstNameClass: styles_2.registrationFormFieldInActive,
       lastNameClass: styles_2.registrationFormFieldInActive,
-      formValid: isFormValid,
-      formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+      formValid: false,
     }
 
   }
@@ -88,22 +79,24 @@ export default class NameSelection extends Component {
     this.setState({ [item]: styles_2.registrationFormFieldInActive })
   }
 
+  checkFormValidity() {
+    const { registrationDataJS } = registrationStore;
+    return isPresent(registrationDataJS.firstName) && isPresent(registrationDataJS.lastName);
+  }
+
   onTextChange = (event, field) => {
     const { text } = event.nativeEvent;
     this.props.updateRegistrationParams({
       [field]: text
     });
-    // this.setState({
-    //   [field]: text
-    // });
-    // const isFormValid = isPresent(this.state.firstName) && isPresent(this.state.lastName);
-    const isFormValid = true;
+    this.setState({
+      formValid: this.checkFormValidity(),
+    });
 
-    // this.setState({
-    //   formValid: isFormValid,
-    //   formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-    // });
+  }
 
+  getFormValidityClass() {
+    return this.checkFormValidity() ? styles_2.formValid : styles_2.formInvalid
   }
 
   render() {
@@ -153,7 +146,7 @@ export default class NameSelection extends Component {
           <TouchableHighlight
             disabled={!this.state.formValid}
             onPress={this.props.onForwardStep}
-            style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}
+            style={[styles_2.fullBtn, { height: 80 }, this.getFormValidityClass()]}
           >
             <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
           </TouchableHighlight>

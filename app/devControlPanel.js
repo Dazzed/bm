@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -63,7 +63,6 @@ if(productionMode) {
     firstNavDefaultRoute = 'Home';
     appNavDefaultTabRoute = 'Account';
     stackNavDefaultRoute = 'AppNavTabs';
-
 }
 
 ///////////////////////////////////////////////////////////////////////
