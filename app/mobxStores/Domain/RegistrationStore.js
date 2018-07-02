@@ -6,37 +6,36 @@ export default class RegistrationStore {
 
     constructor() {
         this.initRegistrationData = {
-
             // country selection
             country: 0,
 
             // name selection
-            firstName: 'test1',
-            lastName: 'test2',
+            firstName: '',
+            lastName: '',
 
             // address selection
-            address: '1',
-            address2: '1',
-            zip: '1',
-            state: '1',
-            city: '1',
-            zip: '1',
+            address: '',
+            address2: '',
+            zip: '',
+            state: '',
+            city: '',
+            zip: '',
             stateOption: 1,
 
             // phone selection
-            phoneField: '1111111111',
+            phoneField: '',
 
             // date of birth
-            dateField: '01121991',
+            dateField: '',
 
             // ssn
-            ssnField: '123121234',
+            ssnField: '',
 
             // martial status
             maritalStatus: 4,
 
             // dependents
-            dependentField: '1',
+            dependentField: '',
 
             // employment status
             employmentStatus: 0,
@@ -45,11 +44,45 @@ export default class RegistrationStore {
             investmentStatus: 0,
 
             // account setup
+            email: '',
+            password: '',
+        }
+        this.initRegistation()
+    }
+
+    @action initWithTestData = () => {
+        this.registrationData = {
+            // country selection
+            country: 0,
+            // name selection
+            firstName: 'test1',
+            lastName: 'test2',
+            // address selection
+            address: '1',
+            address2: '1',
+            zip: '1',
+            state: '1',
+            city: '1',
+            zip: '1',
+            stateOption: 1,
+            // phone selection
+            phoneField: '1111111111',
+            // date of birth
+            dateField: '01121991',
+            // ssn
+            ssnField: '123121234',
+            // martial status
+            maritalStatus: 4,
+            // dependents
+            dependentField: '1',
+            // employment status
+            employmentStatus: 0,
+            // investment experience
+            investmentStatus: 0,
+            // account setup
             email: 'test44@gmail.com',
             password: 'Password44!',
         }
-
-        this.initRegistation()
     }
 
     @observable registrationData = {};
@@ -83,9 +116,6 @@ export default class RegistrationStore {
 
     @action submitRegistration = () => {
         return new Promise((resolve, reject) => {
-            console.log('SUBMITTING REGISTRATION')
-
-
             let params = {
                 "email": this.registrationData.email,
                 "firstName": this.registrationData.firstName,
@@ -110,30 +140,23 @@ export default class RegistrationStore {
                 // "savingsAccount": ,
                 // "id": ,
             }
-
             console.log('===== PARAMS', params)
-
             createUser(params)
-                .then((res) => {
-                    console.log('create user res', res)
-                    if(res.status === 500 || res.status === 422) {
-                        this.setErrorMessage(res.json.error.message)
-                        reject(res)
-                    } else if(res.ok) {
-                        resolve(res);
-                    } else {
-                        reject(res);
-                    }
-
-                })
-                .catch((err) => {
-                    console.log('create user err', err);
-                    reject();
-                })
-
-
+            .then((res) => {
+                console.log('create user res', res)
+                if(res.status === 500 || res.status === 422) {
+                    this.setErrorMessage(res.json.error.message)
+                    reject(res)
+                } else if(res.ok) {
+                    resolve(res);
+                } else {
+                    reject(res);
+                }
+            })
+            .catch((err) => {
+                console.log('create user err', err);
+                reject();
+            })
         })
-
     }
-
 }
