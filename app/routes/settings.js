@@ -43,6 +43,8 @@ import { selectGlobalData } from '../selectors';
 
 import { forceDarkTheme } from '../devControlPanel';
 
+import { authStore } from '../mobxStores';
+
 var sort_props = [
   { label: '10 minutes', value: 0 },
   { label: '5 minutes', value: 1 },
@@ -277,9 +279,12 @@ class Settings extends Component {
     const {
       globalData
     } = this.props;
-    const {
-      currentUser
-    } = globalData;
+    
+    // const {
+    //   userData
+    // } = globalData;
+
+    const { userData } = authStore;
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
@@ -301,14 +306,14 @@ class Settings extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Email</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.email}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{userData.email}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Mobile</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.phone}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{userData.phone}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
@@ -322,42 +327,42 @@ class Settings extends Component {
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Address</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showAddress()}>{currentUser.address}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showAddress()}>{userData.address}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Marital status</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showMaritalStatus()}>{currentUser.maritalStatus}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showMaritalStatus()}>{userData.maritalStatus}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Number of dependents</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showDependents()}>{currentUser.dependents}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showDependents()}>{userData.dependents}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Employment status</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showEmploymentStatus()}>{currentUser.employment}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showEmploymentStatus()}>{userData.employment}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Investment experience</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showExperience()}>{currentUser.experience}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showExperience()}>{userData.experience}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
               <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
             </Text>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Citizenship</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{currentUser.country}</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{userData.country}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
             </Text>
           </View>
