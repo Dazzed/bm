@@ -5,6 +5,9 @@ export default class RegistrationStore {
     constructor() {
         this.initRegistrationData = {
             country: 0,
+            firstName: '',
+            lastName: '',
+
             maritalStatus: 'Married',
             employment: 'Employed',
             experience: 'None'

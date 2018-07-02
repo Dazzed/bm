@@ -98,7 +98,7 @@ class RegistrationPage extends React.Component {
     // Steps to add
     // funding
 
-    let progressWidthPercentage = parseInt((this.state.step + 1 / this.totalSteps) * 100) + '%';
+    let progressWidthPercentage = parseInt(((this.state.step + 1) / this.totalSteps) * 100) + '%';
 
     switch (this.state.step) {
       case 0:

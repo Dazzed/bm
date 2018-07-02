@@ -36,27 +36,30 @@ export default class NameSelection extends Component {
     onForwardStep: PropTypes.func.isRequired,
     updateRegistrationParams: PropTypes.func.isRequired,
     colors: PropTypes.object.isRequired,
-    registrationPage: PropTypes.object.isRequired,
+    // registrationPage: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
-    const {
-      registrationPage: {
-        firstName,
-        lastName
-      }
-    } = this.props;
-    const isFormValid = isPresent(firstName) && isPresent(lastName);
+
+    // const {
+    //   registrationPage: {
+    //     firstName,
+    //     lastName
+    //   }
+    // } = this.props;
+
+    // const isFormValid = isPresent(firstName) && isPresent(lastName);
+    const isFormValid = false;
+
     this.state = {
       showWhyWeAsk: false,
       firstNameClass: styles_2.registrationFormFieldInActive,
       lastNameClass: styles_2.registrationFormFieldInActive,
       formValid: isFormValid,
-      firstName: firstName || '',
-      lastName: lastName || '',
       formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
     }
+
   }
 
   toggleWhyWeAsk = () => {
@@ -90,17 +93,22 @@ export default class NameSelection extends Component {
     this.props.updateRegistrationParams({
       [field]: text
     });
-    this.setState({
-      [field]: text
-    });
-    const isFormValid = isPresent(this.state.firstName) && isPresent(this.state.lastName);
-    this.setState({
-      formValid: isFormValid,
-      formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-    });
+    // this.setState({
+    //   [field]: text
+    // });
+    // const isFormValid = isPresent(this.state.firstName) && isPresent(this.state.lastName);
+    const isFormValid = true;
+
+    // this.setState({
+    //   formValid: isFormValid,
+    //   formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+    // });
+
   }
 
   render() {
+    const { registrationDataJS } = registrationStore;
+
     return (
       <KeyboardAvoidingView
         behavior={this.props.behavior}
@@ -128,7 +136,7 @@ export default class NameSelection extends Component {
                 onFocus={() => this.onFocus('firstNameClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.firstNameClass]}
                 onChange={(event) => this.onTextChange(event, 'firstName')}
-                value={this.state.firstName}
+                value={registrationDataJS.firstName}
               />
               <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>LAST NAME</Text>
               <TextInput
@@ -136,7 +144,7 @@ export default class NameSelection extends Component {
                 onFocus={() => this.onFocus('lastNameClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.lastNameClass]}
                 onChange={(event) => this.onTextChange(event, 'lastName')}
-                value={this.state.lastName}
+                value={registrationDataJS.lastName}
               />
             </View>
           </View>
