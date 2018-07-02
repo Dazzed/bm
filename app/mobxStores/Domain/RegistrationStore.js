@@ -39,6 +39,9 @@ export default class RegistrationStore {
             // employment status
             employmentStatus: 0,
 
+            // investment experience
+            investmentStatus: 0,
+
             employment: 'Employed',
             experience: 'None'
         }

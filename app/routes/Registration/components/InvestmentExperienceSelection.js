@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,16 +15,11 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-import Modal from 'react-native-modal';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-import up from '../../../images/up.png';
-import down from '../../../images/down.png';
-import { Label } from 'native-base';
-
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 
@@ -44,46 +38,20 @@ export default class InvestmentExperienceSelection extends Component {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
-        registrationPage: PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
-        const {
-            registrationPage: {
-                investmentStatus
-            }
-        } = this.props;
-        if (investmentStatus === null) {
-            this.state = {
-                investmentStatus: 0
-            }
-        } else {
-            this.state = {
-                investmentStatus: investmentStatus
-            }
-        }
     }
 
     hideStatus(value) {
-        if (value) {
-            this.props.updateRegistrationParams({
-                investmentStatus: value,
-                experience: status_list.find(l => l.value === value).label
-            });
-            this.setState({
-                investmentStatus: value
-            });
-        } else {
-            this.setState({})
-            this.props.updateRegistrationParams({
-                investmentStatus: 0,
-                experience: 'None'
-            });
-        }
+        this.props.updateRegistrationParams({
+            investmentStatus: value,
+        });
     }
 
     render() {
+        const { registrationDataJS } = registrationStore;
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
@@ -101,7 +69,8 @@ export default class InvestmentExperienceSelection extends Component {
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm
                                     radio_props={status_list}
-                                    initial={this.state.investmentStatus}
+                                    initial={registrationDataJS.investmentStatus}
+                                    value={registrationDataJS.investmentStatus}
                                     formHorizontal={false}
                                     labelHorizontal={true}
                                     borderWidth={1}
