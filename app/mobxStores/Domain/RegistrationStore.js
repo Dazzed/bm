@@ -1,4 +1,6 @@
 import { observable, action, computed, toJS } from 'mobx';
+import { createUser } from '../../api';
+import { formatDate } from '../../routes/Registration/utility';
 
 export default class RegistrationStore {
 
@@ -9,8 +11,8 @@ export default class RegistrationStore {
             country: 0,
 
             // name selection
-            firstName: '',
-            lastName: '',
+            firstName: 'test1',
+            lastName: 'test2',
 
             // address selection
             address: '1',
@@ -43,8 +45,8 @@ export default class RegistrationStore {
             investmentStatus: 0,
 
             // account setup
-            email: '',
-            password: '',
+            email: 'test22@gmail.com',
+            password: 'Password22!',
         }
 
         this.initRegistation()
@@ -74,10 +76,57 @@ export default class RegistrationStore {
 
     @observable registrationErrorMessage = null;
 
+    @action setErrorMessage = (msg) => {
+        console.log('setting err mesg', msg)
+        this.registrationErrorMessage = msg;
+    }
+
     @action submitRegistration = () => {
         return new Promise((resolve, reject) => {
             console.log('SUBMITTING REGISTRATION')
-            resolve()
+
+
+            let params = {
+                "email": this.registrationData.email,
+                "firstName": this.registrationData.firstName,
+                "lastName": this.registrationData.lastName,
+                "dob": formatDate(this.registrationData.dateField),
+                "address": this.registrationData.address,
+                "address2": this.registrationData.address2,
+                "phone": this.registrationData.phoneField,
+                "socialSecurityNo": this.registrationData.ssnField,
+                "maritalStatus": this.registrationData.maritalStatus,
+                "dependents": this.registrationData.dependentField,
+                "employment": this.registrationData.employmentStatus,
+                "experience": this.registrationData.investmentStatus,
+                "city": this.registrationData.city,
+                "zipCode": this.registrationData.zip,
+                "state": this.registrationData.state,
+                // "country": this.registrationData.country,
+                "naturalized": this.registrationData.country,
+                "password": this.registrationData.password,
+                // "profilePictureUrl": ,
+                // "checkingAccount": ,
+                // "savingsAccount": ,
+                // "id": ,
+            }
+
+            console.log('===== PARAMS', params)
+
+            createUser(params)
+                .then((res) => {
+                    console.log('create user res', res)
+                    if(res.status === 500 || res.status === 422) {
+                        this.setErrorMessage(res.json.error.message)
+                    }
+                    resolve();
+                })
+                .catch((err) => {
+                    console.log('create user err', err);
+                    reject();
+                })
+
+
         })
 
     }

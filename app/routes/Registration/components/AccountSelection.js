@@ -140,6 +140,7 @@ export default class AccountSelection extends Component {
         registrationStore.submitRegistration()
             .then((res) => {
                 console.log('submit res', res)
+                this.props.onForwardStep();
             })
             .catch((err) => {
                 console.log('subimt err', err)
@@ -147,7 +148,6 @@ export default class AccountSelection extends Component {
 
 
 
-        //     this.props.onForwardStep();
 
 
 

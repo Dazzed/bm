@@ -1,9 +1,9 @@
-const { get, post } from './apiUtility';
+import { get, post } from './apiUtility';
 
-const login = (params) => post('/login', params);
-const register = (params) => post('/login', params);
+const login = (params) => post('login', params);
+const createUser = (params) => post('users', params);
 
 export {
     login,
-    register
+    createUser
 }

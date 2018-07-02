@@ -1,7 +1,7 @@
 // import { checkForToken, getToken } from './tokenHandlers';
 
-import config from '../config';
-
+import { API_URL } from '../config';
+console.log('=== config', API_URL)
 
 const rootApiCall = (path, method, body) => {
     return new Promise((resolve) => {
@@ -34,7 +34,7 @@ const rootApiCall = (path, method, body) => {
             };
 
             // extract json from response
-            if (req.response && req.getResponseHeader('Content-Type') === 'application/json') {
+            if (req.response && req.getResponseHeader('Content-Type') === 'application/json; charset=utf-8') {
                 formattedRes.json = JSON.parse(req.responseText);
             }
 
@@ -53,7 +53,7 @@ const rootApiCall = (path, method, body) => {
         //////////////////////////////////////////////////////////////////////////////////
         // handle requests here
 
-        const url = [config.API_URL, path].join('/');
+        const url = [API_URL, 'api', path].join('/');
         req.open(method, url);
 
         req.setRequestHeader('Accept', 'application/json');
@@ -80,18 +80,18 @@ const rootApiCall = (path, method, body) => {
         ///////////////////////////////////////////////////////
         // Log request here
 
-        // const logRequest = {
-        //     token: getToken(),
-        //     url: url,
-        //     body: sendBody,
-        //     fullReq: req
-        // };
-        // console.log('===== - - -  request', logRequest, body);
+        const logRequest = {
+            // token: getToken(),
+            url: url,
+            body: sendBody,
+            fullReq: req
+        };
+        console.log('===== - - -  request', logRequest, body);
 
         ///////////////////////////////////////////////////////
         // finally send it
 
-        // req.send(sendBody);
+        req.send(sendBody);
     });
 };
 const querify = (obj = {}, needsEncoding = false) => {
@@ -104,9 +104,12 @@ const querify = (obj = {}, needsEncoding = false) => {
         : '';
 };
 
-export default {
-    get: (path, ...querifyArgs) => rootApiCall(path + querify(...querifyArgs), 'GET', undefined),
-    post: (path, body) => rootApiCall(path, 'POST', body),
-    put: (path, body) => rootApiCall(path, 'PUT', body),
-    delete: (path, body) => rootApiCall(path, 'DELETE', body)
-};
+const get =  (path, ...querifyArgs) => rootApiCall(path + querify(...querifyArgs), 'GET', undefined);
+const post =  (path, body) => rootApiCall(path, 'POST', body);
+const put =  (path, body) => rootApiCall(path, 'PUT', body);
+
+export {
+    get,
+    post,
+    put,
+}
