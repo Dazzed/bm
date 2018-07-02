@@ -25,7 +25,10 @@ export default class RegistrationStore {
             phoneField: '1111111111',
 
             // date of birth
-            dateField: '',
+            dateField: '01121991',
+
+            // ssn
+            ssnField: '',
 
 
             maritalStatus: 'Married',

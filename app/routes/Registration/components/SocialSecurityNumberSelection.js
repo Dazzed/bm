@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,21 +15,14 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
-import numbers from '../../../style/numbers';
-
-import down from '../../../images/down.png';
-import { Label } from 'native-base';
 import { isSsnValid } from '../validation';
-
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
+import NumericalSelector from '../../../sharedComponents/NumericalSelector';
 
 @observer
 export default class SocialSecurityNumberSelection extends Component {
@@ -38,23 +30,12 @@ export default class SocialSecurityNumberSelection extends Component {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
-        registrationPage: PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
-        const {
-            registrationPage: {
-                ssnField
-            }
-        } = this.props;
-        const isFormValid = isSsnValid(ssnField);
         this.state = {
             showWhyWeAsk: false,
-            numFieldClass: styles_2.registrationFormFieldInActive,
-            formValid: isFormValid,
-            ssnField: ssnField || '',
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
         }
     }
 
@@ -67,53 +48,33 @@ export default class SocialSecurityNumberSelection extends Component {
         }
         return numb;
     }
-    addNum(num) {
-        var curNums;
-        if (this.state.ssnField == null) {
-            curNums = num;
-        } else {
-            curNums = this.state.ssnField + '' + num;
-            if (curNums.length > 11) {
-                curNums = this.state.ssnField;
-            }
-        }
-        curNums = this.formatSSN(curNums)
-        this.props.updateRegistrationParams({
-            ssnField: curNums
-        });
-        this.setState({
-            ssnField: curNums, numFieldClass: styles_2.registrationFormFieldActive
-        });
-        const isFormValid = isSsnValid(curNums);
-        this.setState({
-            formValid: isFormValid,
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-        });
+
+    isFormValid() {
+        const { registrationDataJS } = registrationStore;
+        return isSsnValid(this.formatSSN(registrationDataJS.ssnField));
     }
-    removeNum(num) {
-        if (this.state.ssnField) {
-            var delNums = this.state.ssnField;
-            delNums = delNums.substr(0, delNums.length - 1);
-            delNums = this.formatSSN(delNums);
-            if (delNums === '') {
-                this.setState({
-                    numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
-                    formValidClass: styles_2.formInvalid });
-            }
-            this.setState({ ssnField: delNums})
+
+    getValidFormStyle() {
+        return this.isFormValid() ? styles_2.formValid : styles_2.formInvalid
+    }
+
+    addNum(num) {
+        const { registrationDataJS } = registrationStore;
+        if(registrationDataJS.ssnField.length < 9) {
+            let newVal = registrationDataJS.ssnField + num;
+            this.props.updateRegistrationParams({
+                ssnField: newVal
+            });
         }
-        this.props.updateRegistrationParams({
-            ssnField: delNums
-        });
-        this.setState({
-            ssnField: delNums, numFieldClass: styles_2.registrationFormFieldActive
-        });
-        const isFormValid = isSsnValid(delNums);
-        this.setState({
-            formValid: isFormValid,
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-        });
-   
+    }
+
+    removeNum(num) {
+        const { registrationDataJS } = registrationStore;
+        if(registrationDataJS.ssnField.length > 0) {
+            this.props.updateRegistrationParams({
+                ssnField: registrationDataJS.ssnField.substr(0, registrationDataJS.ssnField.length - 1)
+            });
+        }
     }
 
     toggleWhyWeAsk = () => {
@@ -135,6 +96,7 @@ export default class SocialSecurityNumberSelection extends Component {
     }
 
     render() {
+        const { registrationDataJS } = registrationStore;
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
@@ -156,44 +118,17 @@ export default class SocialSecurityNumberSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.ssnField}
+                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.formatSSN(registrationDataJS.ssnField)}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
                            />
                         </View>
-                        <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white'] }, styles_2.numContainer]}>
-                            <View style={styles_2.digitContainer}>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(1); }}>1</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(2); }}>2</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(3); }}>3</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(4); }}>4</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(5); }}>5</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(6); }}>6</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(7); }}>7</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(8); }}>8</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(9); }}>9</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]}></Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(0); }}>0</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers_right, fonts.hindGunturRg]} onPress={() => { this.removeNum(); }}>
-                                        <Text> </Text>
-                                        <Image
-                                            source={this.props.colors['deleteImg']}
-                                            style={{ width: 40, height: 26 }}
-                                        />
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
+
+                        <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
+
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
+                    <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.getValidFormStyle()]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
