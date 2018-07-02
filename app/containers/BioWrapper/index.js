@@ -38,7 +38,8 @@ export default TargetComponent => {
         bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
         canRenderTargetComponent: false,
         appState: AppState.currentState,
-        touchIdFailCount: 0
+        touchIdFailCount: 0,
+        hasVerifiedBioAfterMinimize: true
       };
     }
 
@@ -61,7 +62,7 @@ export default TargetComponent => {
       } = this.props;
       // if user wants to enable bio after login
       if (prevGlobalData.isAuthenticated === false && thizGlobalData.isAuthenticated === true) {
-        if (thizGlobalData.remindBioAfterLoggingIn) {
+        if (thizGlobalData.remindBioAfterLoggingIn && this.state.hasVerifiedBioAfterMinimize === false) {
           this.initiateBioAuth();
         }
       }
@@ -91,7 +92,7 @@ export default TargetComponent => {
       } = this.state;
       TouchID.authenticate('Authenticate to access your BluMartini account.', {})
         .then(success => {
-          this.setState({ canRenderTargetComponent: true });
+          this.setState({ hasVerifiedBioAfterMinimize: true, canRenderTargetComponent: true });
           if (thizGlobalData.remindBioAfterLoggingIn) {
             this.props.toggleRemindBioProtectionAfterLoggingIn(false);
             this.props.performEnablingBioProtection();
@@ -124,14 +125,14 @@ export default TargetComponent => {
       if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
         console.log('App has come to the foreground!')
         if (this.props.globalData.hasUserEnabledBioProtection) {
-          this.setState({ canRenderTargetComponent: false }, this.initiateBioAuth);
+          this.setState({ canRenderTargetComponent: false, hasVerifiedBioAfterMinimize: false }, this.initiateBioAuth);
         }
       }
       this.setState({ appState: nextAppState });
     }
 
     render() {
-      console.log(`BioWrapper props ~>`, this.props)
+      console.log(`BioWrapper props ~>`, this.props);
       const { canRenderTargetComponent } = this.state;
       return canRenderTargetComponent ? <TargetComponent /> : <View></View>
     }
