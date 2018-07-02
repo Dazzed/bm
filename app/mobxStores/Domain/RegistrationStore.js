@@ -34,8 +34,10 @@ export default class RegistrationStore {
             maritalStatus: 4,
 
             // dependents
-            dependentField: '',
+            dependentField: '1',
 
+            // employment status
+            employmentStatus: 0,
 
             employment: 'Employed',
             experience: 'None'

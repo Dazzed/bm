@@ -57,7 +57,7 @@ class RegistrationPage extends React.Component {
     this.state = { 
       email: '', 
       behavior: 'padding', 
-      step: 6,
+      step: 7,
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
