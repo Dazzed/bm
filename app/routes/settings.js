@@ -189,7 +189,6 @@ class Settings extends Component {
     } else {
       this.props.initiateDisablingBioProtection();
     }
-    console.log(192, value)
   }
 
 

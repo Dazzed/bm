@@ -122,7 +122,7 @@ export default (state = initialState, action) => {
     case `${PREFIX}_ENABLE_BIO_PROTECTION`:
       return {
         ...state,
-        isEnablingBio: true,
+        isEnablingBio: false,
         hasUserEnabledBioProtection: true
       };
     case `${PREFIX}_IS_DISABLING_BIO_PROTECTION`:

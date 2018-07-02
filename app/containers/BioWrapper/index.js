@@ -43,6 +43,7 @@ export default TargetComponent => {
     }
 
     componentDidMount() {
+      console.log('Did mount')
       this.props.initiateProbingForBio();
       AppState.addEventListener('change', this._handleAppStateChange);
     }
