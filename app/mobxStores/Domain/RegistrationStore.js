@@ -4,18 +4,28 @@ export default class RegistrationStore {
 
     constructor() {
         this.initRegistrationData = {
+
+            // country selection
             country: 0,
+
+            // name selection
             firstName: '',
             lastName: '',
 
+            // address selection
+            address: '1',
+            address2: '1',
+            zip: '1',
+            state: '1',
+            city: '1',
+            zip: '1',
+            stateOption: 1,
 
-            address: '',
-            address2: '',
-            zip: '',
-            state: '',
-            city: '',
-            zip: '',
-            stateOption: 0,
+            // phone selection
+            phoneField: '',
+
+            // date of birth
+            
 
             maritalStatus: 'Married',
             employment: 'Employed',
