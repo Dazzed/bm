@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 
 import { store } from './app/store/redux';
 
+import BioWrapper from './app/containers/BioWrapper';
 import AppNav from './app/routes/appnav';
 import Login from './app/routes/Login';
 import Registration from './app/routes/Registration';
@@ -22,16 +23,16 @@ import HomeScreen from './app/containers/Home';
 
 import { firstNavDefaultRoute } from './app/devControlPanel';
 
-const LostAvenue = StackNavigator({
-      Home: { screen: HomeScreen },
-      Login: { screen: Login },
-      Registration: { screen: Registration },
-      AppNav: { screen: AppNav },
-    }, {
+const LostAvenue = BioWrapper(StackNavigator({
+  Home: { screen: HomeScreen },
+  Login: { screen: Login },
+  Registration: { screen: Registration },
+  AppNav: { screen: AppNav },
+}, {
     headerMode: 'none',
     lazy: true,
     initialRouteName: firstNavDefaultRoute
-  });
+  }));
 
 const WithProvider = () => (
   <Provider store={store}>

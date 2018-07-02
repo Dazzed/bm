@@ -25,7 +25,7 @@ const forceDarkTheme = false;
 
 // force navigation on top level navigator
 const firstNavDefaultRoute = 'Home';
-// const firstNavDefaultRoute = 'Registration';
+// const firstNavDefaultRoute = 'Home';
 // AppNav
 // Login
 // Home

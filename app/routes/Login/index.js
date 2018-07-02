@@ -78,15 +78,17 @@ class SignIn extends Component {
   };
 
   handleTouch = () => {
-    TouchID.authenticate('Authenticate to access your BluMartini account.', {})
-      .then(success => {
-        // Success code
-        console.log(success);
-      })
-      .catch(error => {
-        // Failure code
-        console.log(error)
-      });
+    // TouchID.authenticate('Authenticate to access your BluMartini account.', {})
+    //   .then(success => {
+    //     // Success code
+    //     console.log(success);
+    //   })
+    //   .catch(error => {
+    //     // Failure code
+    //     console.log(error)
+    //   });
+    this.props.toggleRemindBioProtectionAfterLoggingIn(true);
+    alert(`You can enable ${this.state.bioId} ID after you login`);
   }
 
   _signIn = () => {
@@ -201,6 +203,7 @@ SignIn.propTypes = {
   globalData: PropTypes.object.isRequired,
   loginAction: PropTypes.func.isRequired,
   navigation: PropTypes.object.isRequired,
+  toggleRemindBioProtectionAfterLoggingIn: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
