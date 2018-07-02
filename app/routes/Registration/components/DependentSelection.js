@@ -31,7 +31,7 @@ import { isDependentValid } from '../validation';
 
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
-
+import NumericalSelector from '../../../sharedComponents/NumericalSelector';
 
 let showWhyWeAsk = false;
 
@@ -41,74 +41,47 @@ export default class DependentSelection extends Component {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
-        registrationPage: PropTypes.object.isRequired,
+        // registrationPage: PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
-        const {
-            registrationPage: {
-                dependentField
-            }
-        } = this.props;
-        const isFormValid = isDependentValid(dependentField);
         this.state = {
             numFieldClass: styles_2.registrationFormFieldInActive,
-            formValid: isFormValid,
-            dependentField: dependentField || '',
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
         }
+    }
+
+
+    isFormValid() {
+        const { registrationDataJS } = registrationStore;
+        return isDependentValid(registrationDataJS.dependentField);
+    }
+
+    getValidFormClass() {
+        return this.isFormValid() === true ? styles_2.formValid : styles_2.formInvalid
     }
 
     addNum(num) {
-        var curNums;
-        if (this.state.dependentField == null) {
-            curNums = num;
-        } else {
-            curNums = this.state.dependentField + '' + num;
-            if (curNums.length > 2) {
-                curNums = this.state.dependentField;
-            }
+        const { registrationDataJS } = registrationStore;
+        if(registrationDataJS.dependentField.length < 2) {
+            let newVal = registrationDataJS.dependentField;
+            this.props.updateRegistrationParams({
+                dependentField: newVal + num
+            });
         }
-
-        this.props.updateRegistrationParams({
-            dependentField: curNums
-        });
-        this.setState({
-            dependentField: curNums, numFieldClass: styles_2.registrationFormFieldActive
-        });
-        const isFormValid = isDependentValid(curNums);
-        this.setState({
-            formValid: isFormValid,
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-        });
     }
-    removeNum(num) {
-        if (this.state.dependentField) {
-            var delNums = this.state.dependentField;
-            delNums = delNums.substr(0, delNums.length - 1);
-            if (delNums === '') {
-                this.setState({
-                    numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
-                    formValidClass: styles_2.formInvalid
-                });
-            }
-            this.setState({ dependentField: delNums })
+
+    removeNum() {
+        const { registrationDataJS } = registrationStore;
+        if(registrationDataJS.dependentField.length > 0) {
+            this.props.updateRegistrationParams({
+                dependentField: registrationDataJS.dependentField.substr(0, registrationDataJS.dependentField.length - 1)
+            });
         }
-        this.props.updateRegistrationParams({
-            dependentField: delNums
-        });
-        this.setState({
-            dependentField: delNums, numFieldClass: styles_2.registrationFormFieldActive
-        });
-        const isFormValid = isDependentValid(delNums);
-        this.setState({
-            formValid: isFormValid,
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-        });            
     }
 
     render() {
+        const { registrationDataJS } = registrationStore;
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
@@ -123,44 +96,15 @@ export default class DependentSelection extends Component {
                     </Text>
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.dependentField}
+                            <TextInput placeholder="XX" placeholderTextColor={this.props.colors['darkSlate']} value={registrationDataJS.dependentField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
                             />
                         </View>
-                        <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white'] }, styles_2.numContainer]}>
-                            <View style={styles_2.digitContainer}>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(1); }}>1</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(2); }}>2</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(3); }}>3</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(4); }}>4</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(5); }}>5</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(6); }}>6</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(7); }}>7</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(8); }}>8</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(9); }}>9</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]}></Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(0); }}>0</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers_right, fonts.hindGunturRg]} onPress={() => { this.removeNum(); }}>
-                                        <Text> </Text>
-                                        <Image
-                                            source={this.props.colors['deleteImg']}
-                                            style={{ width: 40, height: 26 }}
-                                        />
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
+                        <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[ styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
+                    <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[ styles_2.fullBtn, { height: 80 }, this.getValidFormClass()]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
