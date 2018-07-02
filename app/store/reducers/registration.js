@@ -13,14 +13,14 @@ const initialState = {
 };
 
 const reducer = {
-  [updateRegistrationParams]: (state, params) => ({
-    ...state,
-    ...params
-  }),
-  [resetRegistrationParams]: state => ({
-    ...state,
-    ...initialState
-  })
+  // [updateRegistrationParams]: (state, params) => ({
+  //   ...state,
+  //   ...params
+  // }),
+  // [resetRegistrationParams]: state => ({
+  //   ...state,
+  //   ...initialState
+  // })
 };
 
 export default createReducer(reducer, initialState);

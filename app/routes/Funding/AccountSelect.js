@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import Button from './button';
+import Button from '../../sharedComponents/Button1';
 import { numberWithCommas } from '../../utility';
 import { observer } from 'mobx-react';
 import { colorStore, accountStore } from '../../mobxStores';

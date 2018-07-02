@@ -27,72 +27,74 @@ import checkBoxBlue from '../../../images/checkbox_blue.png';
 import checkBoxOutline from '../../../images/checkbox_outline.png';
 import { isPresent } from '../validation';
 
+
+import { observer } from 'mobx-react';
+import { registrationStore } from '../../../mobxStores';
+
 const country_list = [
   { "label": "U.S. Citizen", "value": 0 },
   { "label": "I am NOT a U.S. Citizen", "value": 1 }
 ];
 
+@observer
 export default class CountrySelection extends Component {
   static propTypes = {
     onForwardStep: PropTypes.func.isRequired,
     updateRegistrationParams: PropTypes.func.isRequired,
-    colors: PropTypes.object.isRequired,
-    registrationPage: PropTypes.object.isRequired,
+    colors: PropTypes.object.isRequired
   }
 
   constructor(props){
     super(props);
-    const {
-      registrationPage: {
-        country
-      }
-    } = this.props;
 
-    console.log(typeof country)
-    console.log(country);
-    if (country === null) {
-      this.state = {
-        country: 0
-      }
-    } else {
-      this.state = {
-        country: country
-      }
-    }
+    // const {
+    //   registrationPage: {
+    //     country
+    //   }
+    // } = this.props;
+    //
+    // console.log(typeof country)
+    // console.log(country);
+    //
+    // if (country === null) {
+    //   this.state = {
+    //     country: 0
+    //   }
+    // } else {
+    //   this.state = {
+    //     country: country
+    //   }
+    // }
+
   }
-  hideStatus(value) {
-    if (value) {
-      this.props.updateRegistrationParams({
-        country: value
-      });
-      this.setState({
-        country: value
-      });
-    } else {
-      this.setState({
-        country: 0
-      })
-      this.props.updateRegistrationParams({
-        country: 0
-      });
-    }
+
+  setStatus(value) {
+    console.log('val', value)
+    // let val = value.target.val
+    this.props.updateRegistrationParams({
+      country: value
+    });
   }
 
   onHandleCountrySelection = () => {
-    if (this.state.country == 1) {
+    const { registrationDataJS } = registrationStore;
+    if (registrationDataJS.country === 1) {
       this.props.navigation.goBack();
     } else {
       this.props.onForwardStep();
     }
   };
+
+
   render() {
+    const { registrationDataJS } = registrationStore;
     return (
       <KeyboardAvoidingView
         behavior={this.props.behavior}
         style={styles_2.section}>
         <View style={[{ margin: 15 }]}>
           <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '54%', borderRadius: 1.5 }]}></View>
+          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
         </View>
         <ScrollView style={{ height: '72%' }}>
           <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
@@ -108,7 +110,7 @@ export default class CountrySelection extends Component {
               <View style={styles_2.subMenuRow}>
                 <RadioForm
                   radio_props={country_list}
-                  initial={this.state.country}
+                  initial={registrationDataJS.country}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
@@ -120,7 +122,7 @@ export default class CountrySelection extends Component {
                   labelStyle={[{ color: this.props.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                   radioLabelActive={[{ color: this.props.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                   labelWrapStyle={[{ borderBottomColor: this.props.colors['borderGray'] }, styles_2.radioLabelWrap]}
-                  onPress={(value) => { this.hideStatus(value) }}
+                  onPress={(value) => { this.setStatus(value) }}
                   style={styles_2.radioField}
                 />
               </View>

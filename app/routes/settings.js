@@ -273,12 +273,14 @@ class Settings extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+
     const {
       globalData
     } = this.props;
     const {
       currentUser
     } = globalData;
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>

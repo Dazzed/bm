@@ -43,6 +43,8 @@ import AccountSelection from './components/AccountSelection';
 import Declaration from './components/Declaration';
 import Thankyou from './components/Thankyou';
 
+import { registrationStore } from '../../mobxStores';
+
 class RegistrationPage extends React.Component {
   static navigationOptions = {
     title: 'Registration',
@@ -51,6 +53,7 @@ class RegistrationPage extends React.Component {
 
   constructor(props) {
     super(props);
+    this.totalSteps = 13;
     this.state = { 
       email: '', 
       behavior: 'padding', 
@@ -69,7 +72,9 @@ class RegistrationPage extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+
     console.log('updated ~>', this.props.registrationPage);
+
   }
 
   setColor(value) {
@@ -85,35 +90,43 @@ class RegistrationPage extends React.Component {
     const propsToPass = {
       ...this.props,
       ...this.state,
-      onForwardStep: this.onForwardStep
+      onForwardStep: this.onForwardStep,
+      updateRegistrationParams: registrationStore.updateRegistrationParams
     }
+
+
+    // Steps to add
+    // funding
+
+    let progressWidthPercentage = parseInt((this.state.step + 1 / this.totalSteps) * 100) + '%';
+
     switch (this.state.step) {
       case 0:
-        return <CountrySelection  {...propsToPass} />;
+        return <CountrySelection  progress={progressWidthPercentage} {...propsToPass} />;
       case 1:
-        return <NameSelection  {...propsToPass} />;
+        return <NameSelection  progress={progressWidthPercentage} {...propsToPass} />;
       case 2:
-        return <AddressSelection {...propsToPass} />;
+        return <AddressSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 3:
-        return <PhoneSelection {...propsToPass} />;
+        return <PhoneSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 4:
-        return <DateOfBirthSelection {...propsToPass} />;
+        return <DateOfBirthSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 5:
-        return <SocialSecurityNumberSelection {...propsToPass} />;
+        return <SocialSecurityNumberSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 6:
-        return <MaritalStatusSelection {...propsToPass} />;
+        return <MaritalStatusSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 7:
-        return <DependentSelection {...propsToPass} />;
+        return <DependentSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 8:
-        return <EmploymentStatusSelection {...propsToPass} />;
+        return <EmploymentStatusSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 9:
-        return <InvestmentExperienceSelection {...propsToPass} />;
+        return <InvestmentExperienceSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 10:
-        return <AccountSelection {...propsToPass} />;
+        return <AccountSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 11:
-        return <Declaration {...propsToPass} />;
+        return <Declaration progress={progressWidthPercentage} {...propsToPass} />;
       case 12:
-        return <Thankyou {...propsToPass} />;
+        return <Thankyou progress={progressWidthPercentage} {...propsToPass} />;
     }
   }
 
@@ -165,12 +178,12 @@ RegistrationPage.propTypes = {
   globalData: PropTypes.object.isRequired,
   updateRegistrationParams: PropTypes.func.isRequired,
   resetRegistrationParams: PropTypes.func.isRequired,
-  registrationPage: PropTypes.object.isRequired,
+  // registrationPage: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   globalData: selectGlobalData(state),
-  registrationPage: selectRegistrationPage(state)
+  // registrationPage: selectRegistrationPage(state)
 });
 
 const mapDispatchToProps = bindActionCreators.bind(this, registerActions);

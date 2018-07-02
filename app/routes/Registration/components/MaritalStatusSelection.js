@@ -26,6 +26,10 @@ import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
+import { observer } from 'mobx-react';
+import { registrationStore } from '../../../mobxStores';
+
+
 let showWhyWeAsk = true;
 const status_list = [
     { "label": "Married", "value": 0 },
@@ -35,6 +39,7 @@ const status_list = [
     { "label": "Single", "value": 4 }
 ];
 
+@observer
 export default class MaritalStatusSelection extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
@@ -85,7 +90,7 @@ export default class MaritalStatusSelection extends Component {
                 style={styles_2.section}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '54%', borderRadius: 1.5 }]}></View>
+                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, {paddingTop: 25}]}>

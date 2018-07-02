@@ -33,7 +33,7 @@ export const geod = (state = {}, action) => {
 
 export const reducers = combineReducers({
   geod,
-  registration,
+  // registration,
   globalData
 });
 

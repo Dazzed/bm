@@ -7,7 +7,7 @@ import {
     Image
 } from 'react-native';
 
-import Button from './button';
+import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
 import { numberWithCommas } from '../../utility';
 import { colorStore, accountStore } from '../../mobxStores';

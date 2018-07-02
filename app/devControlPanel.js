@@ -23,16 +23,16 @@ const forceDarkTheme = false;
 // const forceDarkTheme = false;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'AppNav';
 // const firstNavDefaultRoute = 'Home';
+const firstNavDefaultRoute = 'Registration';
 // AppNav
 // Login
 // Home
 
 
 // force navigation on app nav footer control
-const appNavDefaultTabRoute = 'Settings';
-// const appNavDefaultTabRoute = 'Account';
+// const appNavDefaultTabRoute = 'Settings';
+const appNavDefaultTabRoute = 'Account';
 
 // Account
 // Watchlists

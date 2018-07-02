@@ -29,6 +29,10 @@ import { Label } from 'native-base';
 
 let showWhyWeAsk = false;
 
+import { observer } from 'mobx-react';
+import { registrationStore } from '../../../mobxStores';
+
+@observer
 export default class Declaration extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,

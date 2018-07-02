@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import Button from './button';
+import Button from '../../sharedComponents/Button1';
 import { setTheme, getTheme, colors } from '../../store/store';
 import { colorStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';

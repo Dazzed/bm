@@ -5,13 +5,11 @@ import { LIGHT_THEME, DARK_THEME } from '../../style/colorStore';
 export default class ColorStore {
 
     constructor() {
-        console.log('====== COLOR STORE STARTS');
     }
 
     @observable themeType = 'light';
 
     @action setTheme = (theme) => {
-        // console.warn('set theme MOBX = = = = = = ================ ', theme);
         this.themeType = theme;
         this.printTheme();
     }
@@ -28,7 +26,6 @@ export default class ColorStore {
     }
 
     @action returnTheme = () => {
-        console.log('======= return theme')
         if(this.themeType == 'dark') {
             // console.log('===== DARK_THEME', DARK_THEME);
             return DARK_THEME
