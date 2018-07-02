@@ -39,7 +39,7 @@ export default TargetComponent => {
         canRenderTargetComponent: false,
         appState: AppState.currentState,
         touchIdFailCount: 0,
-        hasVerifiedBioAfterMinimize: true
+        hasVerifiedBio: true
       };
     }
 
@@ -62,14 +62,18 @@ export default TargetComponent => {
       } = this.props;
       // if user wants to enable bio after login
       if (prevGlobalData.isAuthenticated === false && thizGlobalData.isAuthenticated === true) {
-        if (thizGlobalData.remindBioAfterLoggingIn && this.state.hasVerifiedBioAfterMinimize === false) {
-          this.initiateBioAuth();
+        if (thizGlobalData.remindBioAfterLoggingIn) {
+          if (this.state.hasVerifiedBio === false) {
+            this.initiateBioAuth();
+          }
         }
       }
       // if user has enabled bio already
       else if (prevGlobalData.isProbingToCheckBio === true && thizGlobalData.isProbingToCheckBio === false) {
         if (thizGlobalData.hasUserEnabledBioProtection === true) {
-          this.initiateBioAuth();
+          if (this.state.hasVerifiedBio === false) {
+            this.initiateBioAuth();
+          }
         } else {
           this.setState({ canRenderTargetComponent: true });
         }
@@ -92,7 +96,7 @@ export default TargetComponent => {
       } = this.state;
       TouchID.authenticate('Authenticate to access your BluMartini account.', {})
         .then(success => {
-          this.setState({ hasVerifiedBioAfterMinimize: true, canRenderTargetComponent: true });
+          this.setState({ hasVerifiedBio: true, canRenderTargetComponent: true });
           if (thizGlobalData.remindBioAfterLoggingIn) {
             this.props.toggleRemindBioProtectionAfterLoggingIn(false);
             this.props.performEnablingBioProtection();
@@ -125,7 +129,7 @@ export default TargetComponent => {
       if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
         console.log('App has come to the foreground!')
         if (this.props.globalData.hasUserEnabledBioProtection) {
-          this.setState({ canRenderTargetComponent: false, hasVerifiedBioAfterMinimize: false }, this.initiateBioAuth);
+          this.setState({ canRenderTargetComponent: false, hasVerifiedBio: false }, this.initiateBioAuth);
         }
       }
       this.setState({ appState: nextAppState });
