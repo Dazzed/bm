@@ -279,10 +279,6 @@ class Settings extends Component {
     const {
       globalData
     } = this.props;
-    
-    // const {
-    //   userData
-    // } = globalData;
 
     const { userData } = authStore;
 
