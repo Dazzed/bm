@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,19 +15,10 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-import up from '../../../images/up.png';
-import numbers from '../../../style/numbers';
-
-import down from '../../../images/down.png';
-import { Label } from 'native-base';
 import { isDependentValid } from '../validation';
-
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import NumericalSelector from '../../../sharedComponents/NumericalSelector';
