@@ -91,44 +91,53 @@ export default class AddressSelection extends Component {
     onForwardStep: PropTypes.func.isRequired,
     colors: PropTypes.object.isRequired,
     updateRegistrationParams: PropTypes.func.isRequired,
-    registrationPage: PropTypes.object.isRequired,
+    // registrationPage: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
+
     const {
-      registrationPage: {
-        address,
-        address2,
-        city,
-        state,
-        zip,
-        // no need to validate stateOption
-        stateOption
-      }
+    //   registrationPage: {
+    //     address,
+    //     address2,
+    //     city,
+    //     state,
+    //     zip,
+    //     // no need to validate stateOption
+    //     stateOption
+    //   }
     } = this.props;
-    const isValid = isPresent({
-      address,
-      address2,
-      city,
-      zip
-    }) && state !== 'Select';
+
+    // const isValid = isPresent({
+    //   address,
+    //   address2,
+    //   city,
+    //   zip
+    // }) && state !== 'Select';
+
     this.state = {
       showWhyWeAsk: false,
-      isStateVisible: false,
-      stateOption: stateOption || 0,
+      isStateListVisible: false,
+      // stateOption: 0,
       addressOneClass: styles_2.registrationFormFieldInActive,
       addressTwoClass: styles_2.registrationFormFieldInActive,
       cityClass: styles_2.registrationFormFieldInActive,
       zipClass: styles_2.registrationFormFieldInActive,
-      address: address || '',
-      address2: address2 || '',
-      city: city || '',
-      state: state || 'Select',
-      zip: zip || '',
-      formValid: isValid,
-      formValidClass: isValid ? styles_2.formValid : styles_2.formInvalid
+
+      // address: address || '',
+      // address2: address2 || '',
+      // city: city || '',
+      // state: state || 'Select',
+      // zip: zip || '',
+      // formValid: isValid,
+      // formValidClass: isValid ? styles_2.formValid : styles_2.formInvalid
+
     };
+  }
+
+  getFormValidClass() {
+    return this.isFormValid() ? styles_2.formValid : styles_2.formInvalid
   }
 
   hideState = value => {
@@ -137,20 +146,13 @@ export default class AddressSelection extends Component {
         stateOption: value,
         state: state_list[value].label
       });
-      this.setState({
-        isStateVisible: false,
-        stateOption: value,
-        state: state_list[value].label
-      }, this.validate);
-    } else {
-      this.setState({
-        isStateVisible: false
-      }, this.validate);
     }
+
+    this.setState({ isStateListVisible: false });
   };
 
   showState() {
-    this.setState({ isStateVisible: true });
+    this.setState({ isStateListVisible: true });
   }
 
   toggleWhyWeAsk = () => this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
@@ -176,24 +178,30 @@ export default class AddressSelection extends Component {
     this.setState({ [item]: styles_2.registrationFormFieldInActive })
   }
 
-  validate = () => {
+
+
+  isFormValid = () => {
+    const { registrationDataJS } = registrationStore;
     const {
       address,
       zip,
       state,
       city
-    } = this.state;
+    } = registrationDataJS;
     const isValid = isPresent({
       address,
       zip,
       state,
       city
-    }) && this.state.state !== 'Select';
-
-    this.setState({
-      formValid: isValid,
-      formValidClass: isValid ? styles_2.formValid : styles_2.formInvalid
     });
+    return isValid;
+
+        // && this.state.state !== 'Select';
+
+    // this.setState({
+    //   formValid: isValid,
+    //   formValidClass: isValid ? styles_2.formValid : styles_2.formInvalid
+    // });
   }
 
   onTextChange = (event, field) => {
@@ -207,6 +215,8 @@ export default class AddressSelection extends Component {
   }
 
   render() {
+    const { registrationDataJS } = registrationStore;
+
     return (
       <KeyboardAvoidingView
         behavior={this.props.behavior}
@@ -234,7 +244,7 @@ export default class AddressSelection extends Component {
                 onFocus={() => this.onFocus('addressOneClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressOneClass]}
                 onChange={(event) => this.onTextChange(event, 'address')}
-                value={this.state.address}
+                value={registrationDataJS.address}
               />
               <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
               <TextInput
@@ -242,7 +252,7 @@ export default class AddressSelection extends Component {
                 onFocus={() => this.onFocus('addressTwoClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressTwoClass]}
                 onChange={(event) => this.onTextChange(event, 'address2')}
-                value={this.state.address2}
+                value={registrationDataJS.address2}
               />
               <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
               <TextInput
@@ -250,7 +260,7 @@ export default class AddressSelection extends Component {
                 onFocus={() => this.onFocus('cityClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.cityClass]}
                 onChange={(event) => this.onTextChange(event, 'city')}
-                value={this.state.city}
+                value={registrationDataJS.city}
               />
               <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]} onPress={() => { this.showState() }}>STATE</Text>
               <View style={styles_2.subMenuRow}>
@@ -261,10 +271,10 @@ export default class AddressSelection extends Component {
                   />
                   <Text onPress={() => { this.showState() }}
                     style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                  >{state_list[this.state.stateOption].label}</Text>
+                  >{state_list[registrationDataJS.stateOption].label}</Text>
                 </TouchableOpacity>
                 <Modal
-                  isVisible={this.state.isStateVisible}
+                  isVisible={this.state.isStateListVisible}
                   animationIn={'fadeIn'}
                   animationOut={'fadeOut'}
                   style={styles_2.fullModal}
@@ -279,7 +289,7 @@ export default class AddressSelection extends Component {
                     <ScrollView style={styles_2.stateRadio}>
                       <RadioForm
                         radio_props={state_list}
-                        initial={this.state.stateOption}
+                        initial={registrationDataJS.stateOption}
                         formHorizontal={false}
                         labelHorizontal={true}
                         borderWidth={1}
@@ -304,13 +314,13 @@ export default class AddressSelection extends Component {
                 onFocus={() => this.onFocus('zipClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.zipClass]}
                 onChange={(event) => this.onTextChange(event, 'zip')}
-                value={this.state.zip}
+                value={registrationDataJS.zip}
               />
             </View>
           </View>
         </ScrollView>
         <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-          <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
+          <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.getFormValidClass()]}>
             <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
           </TouchableHighlight>
           <Text> </Text>

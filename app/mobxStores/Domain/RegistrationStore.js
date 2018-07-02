@@ -8,6 +8,15 @@ export default class RegistrationStore {
             firstName: '',
             lastName: '',
 
+
+            address: '',
+            address2: '',
+            zip: '',
+            state: '',
+            city: '',
+            zip: '',
+            stateOption: 0,
+
             maritalStatus: 'Married',
             employment: 'Employed',
             experience: 'None'
@@ -15,7 +24,7 @@ export default class RegistrationStore {
         this.initRegistation()
     }
 
-    @observable registrationData = {}
+    @observable registrationData = {};
 
     @action initRegistation = () => {
         this.registrationData = this.initRegistrationData;
