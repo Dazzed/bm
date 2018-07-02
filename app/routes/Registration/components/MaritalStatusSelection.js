@@ -68,6 +68,7 @@ export default class MaritalStatusSelection extends Component {
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm
                                     value={registrationDataJS.maritalStatus}
+                                    initial={registrationDataJS.maritalStatus}
                                     radio_props={status_list}
                                     formHorizontal={false}
                                     labelHorizontal={true}

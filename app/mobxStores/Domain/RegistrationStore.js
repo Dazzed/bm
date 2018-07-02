@@ -31,7 +31,7 @@ export default class RegistrationStore {
             ssnField: '123121234',
 
             // martial status
-            maritalStatus: 1,
+            maritalStatus: 2,
 
 
 
