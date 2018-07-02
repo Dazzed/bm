@@ -15,7 +15,8 @@ const productionMode = false;
 
 
 // show or hide preview button on front of app
-const displayPreviewButtonOnHome = true;
+// app requires real data so this is now unuseable
+const displayPreviewButtonOnHome = false;
 
 
 // force dark theme all the time
@@ -23,8 +24,8 @@ const forceDarkTheme = false;
 // const forceDarkTheme = false;
 
 // force navigation on top level navigator
-// const firstNavDefaultRoute = 'Home';
-const firstNavDefaultRoute = 'Registration';
+const firstNavDefaultRoute = 'Home';
+// const firstNavDefaultRoute = 'Registration';
 // AppNav
 // Login
 // Home

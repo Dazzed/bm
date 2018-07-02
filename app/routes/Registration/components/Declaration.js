@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,26 +15,12 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
-import { Label } from 'native-base';
-import axios from 'axios';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-import numbers from '../../../style/numbers';
-import up from '../../../images/up.png';
-import down from '../../../images/down.png';
 import documentImage from '../../../images/document.png';
-import { API_URL } from '../../../config';
-
-import { constructRegistrationParams } from '../selectors';
-
 import { observer } from 'mobx-react';
 import { colorStore, registrationStore } from '../../../mobxStores';
-
 import TermsAndConditions from './documents/TermsAndConditions';
 import PrivacyPolicy from './documents/PrivacyPolicy';
 
@@ -50,7 +35,6 @@ let linkList = [
 export default class Declaration extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
-        // registrationPage: PropTypes.object.isRequired,
         resetRegistrationParams: PropTypes.func.isRequired,
     };
 
@@ -126,23 +110,9 @@ export default class Declaration extends Component {
         })
     }
 
-    initiateRegistration = async () => {
-        try {
-            this.setState({
-                loading: true
-            });
-            const data = constructRegistrationParams(this.props.registrationPage);
-            const result = await axios.post(`${API_URL}/api/users`, data);
-            console.log(result);
-            this.props.resetRegistrationParams();
+    nextView() {
+        console.log('----- this', this)
             this.props.onForwardStep();
-        } catch (error) {
-            this.setState({
-                loading: false
-            });
-            alert('There was an error. Please try again later');
-            console.log(error);
-        }
     }
 
     render() {
@@ -166,7 +136,7 @@ export default class Declaration extends Component {
                 </ScrollView>
                 {this.renderPopOver()}
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.initiateRegistration} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight onPress={() => this.nextView()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
                             {this.state.loading ? 'LOADING...' : 'I AGREE'}
                         </Text>

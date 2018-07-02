@@ -144,7 +144,7 @@ export default class NameSelection extends Component {
         </ScrollView>
         <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
           <TouchableHighlight
-            disabled={!this.state.formValid}
+            disabled={!this.checkFormValidity()}
             onPress={this.props.onForwardStep}
             style={[styles_2.fullBtn, { height: 80 }, this.getFormValidityClass()]}
           >

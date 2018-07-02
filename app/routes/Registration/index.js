@@ -53,11 +53,11 @@ class RegistrationPage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.totalSteps = 13;
+    this.totalSteps = 12;
     this.state = { 
       email: '', 
       behavior: 'padding', 
-      step: 11,
+      step: 0,
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
@@ -91,10 +91,6 @@ class RegistrationPage extends React.Component {
       updateRegistrationParams: registrationStore.updateRegistrationParams
     }
 
-
-    // Steps to add
-    // funding
-
     let progressWidthPercentage = parseInt(((this.state.step + 1) / this.totalSteps) * 100) + '%';
 
     switch (this.state.step) {
@@ -119,18 +115,21 @@ class RegistrationPage extends React.Component {
       case 9:
         return <InvestmentExperienceSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 10:
-        return <AccountSelection progress={progressWidthPercentage} {...propsToPass} />;
-      case 11:
         return <Declaration progress={progressWidthPercentage} {...propsToPass} />;
+      case 11:
+        return <AccountSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 12:
         return <Thankyou progress={progressWidthPercentage} {...propsToPass} />;
     }
   }
 
   onForwardStep = () => {
-    if (this.state.step === 12) {
-      // alert('Registered!');
-      this.props.navigation.navigate('Login', { color: this.state.activeColor });
+    if (this.state.step === this.totalSteps) {
+      this.setState({
+        step: 0
+      }, () => {
+        this.props.navigation.navigate('Login', { color: this.state.activeColor });
+      })
     } else {
       this.setState(({ step }) => ({ step: step + 1 }));
     }

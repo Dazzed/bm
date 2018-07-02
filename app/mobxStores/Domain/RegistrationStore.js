@@ -45,8 +45,8 @@ export default class RegistrationStore {
             investmentStatus: 0,
 
             // account setup
-            email: 'test22@gmail.com',
-            password: 'Password22!',
+            email: 'test44@gmail.com',
+            password: 'Password44!',
         }
 
         this.initRegistation()
@@ -118,8 +118,13 @@ export default class RegistrationStore {
                     console.log('create user res', res)
                     if(res.status === 500 || res.status === 422) {
                         this.setErrorMessage(res.json.error.message)
+                        reject(res)
+                    } else if(res.ok) {
+                        resolve(res);
+                    } else {
+                        reject(res);
                     }
-                    resolve();
+
                 })
                 .catch((err) => {
                     console.log('create user err', err);
