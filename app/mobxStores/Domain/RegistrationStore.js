@@ -28,10 +28,14 @@ export default class RegistrationStore {
             dateField: '01121991',
 
             // ssn
-            ssnField: '',
+            ssnField: '123121234',
+
+            // martial status
+            maritalStatus: 1,
 
 
-            maritalStatus: 'Married',
+
+
             employment: 'Employed',
             experience: 'None'
         }
