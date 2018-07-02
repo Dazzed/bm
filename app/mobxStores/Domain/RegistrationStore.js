@@ -42,9 +42,11 @@ export default class RegistrationStore {
             // investment experience
             investmentStatus: 0,
 
-            employment: 'Employed',
-            experience: 'None'
+            // account setup
+            email: '',
+            password: '',
         }
+
         this.initRegistation()
     }
 
@@ -69,5 +71,15 @@ export default class RegistrationStore {
         return toJS(this.registrationData)
     }
 
+
+    @observable registrationErrorMessage = null;
+
+    @action submitRegistration = () => {
+        return new Promise((resolve, reject) => {
+            console.log('SUBMITTING REGISTRATION')
+            resolve()
+        })
+
+    }
 
 }
