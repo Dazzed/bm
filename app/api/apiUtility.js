@@ -1,7 +1,5 @@
-// import { checkForToken, getToken } from './tokenHandlers';
-
+import { readToken } from './tokenUtility';
 import { API_URL } from '../config';
-console.log('=== config', API_URL)
 
 const rootApiCall = (path, method, body) => {
     return new Promise((resolve) => {
@@ -50,48 +48,83 @@ const rootApiCall = (path, method, body) => {
             }
         };
 
+
+
         //////////////////////////////////////////////////////////////////////////////////
         // handle requests here
 
-        const url = [API_URL, 'api', path].join('/');
-        req.open(method, url);
-
-        req.setRequestHeader('Accept', 'application/json');
-        req.setRequestHeader('Content-Type', 'application/json');
-
-        let sendBody;
-        if ( typeof body === 'object' ) {
-            sendBody = JSON.stringify(body);
-        }
-
         //////////////////////////////////////////////////
-        // Deal with tokens here
-        // let attachToken = true;
-        // if(!checkForToken()) {
-        //     attachToken = false
-        // };
-        // if(path === 'auth/token/create/') {
-        //     attachToken = false;
-        // };
-        //
-        // if(attachToken) {
-        //     req.setRequestHeader('Authorization', 'Token ' + getToken());
-        // }
-        ///////////////////////////////////////////////////////
-        // Log request here
+        // Deal with tokens async grabber
 
-        const logRequest = {
-            // token: getToken(),
-            url: url,
-            body: sendBody,
-            fullReq: req
-        };
-        console.log('===== - - -  request', logRequest, body);
+        let attachToken = true;
+        readToken()
+        .then((token) => {
 
-        ///////////////////////////////////////////////////////
-        // finally send it
 
-        req.send(sendBody);
+            ///////////////////////////////////////////////////////
+            // Setup Url
+
+            let url = [API_URL, 'api', path].join('/');
+
+            ///////////////////////////////////////////////////////
+            // Add Token
+
+            console.log('token read', token)
+            if(token) {
+                // block token on certain paths
+                if(path === 'login') {
+                    attachToken = false;
+                };
+
+                if(attachToken) {
+                    url = url + `?access_token=${token}`
+                    // req.setRequestHeader('Authorization', 'Token ' + token);
+                }
+            }
+
+            ///////////////////////////////////////////////////////
+            // Open Request
+
+            req.open(method, url);
+
+            ///////////////////////////////////////////////////////
+            // Append Headers
+
+            if(method === 'POST') {
+                req.setRequestHeader('Accept', 'application/json');
+                req.setRequestHeader('Content-Type', 'application/json');
+            } else {
+                req.setRequestHeader('Content-Type', 'text/plain');
+            }
+
+
+            ///////////////////////////////////////////////////////
+            // Append Body
+
+            let sendBody;
+            if ( typeof body === 'object' ) {
+                sendBody = JSON.stringify(body);
+            }
+
+
+            ///////////////////////////////////////////////////////
+            // Log Request
+
+            const logRequest = {
+                // token: token,
+                method: method,
+                url: url,
+                body: sendBody,
+                fullReq: req
+            };
+            console.log('===== - - -  request', logRequest, body);
+
+
+            ///////////////////////////////////////////////////////
+            // finally send it!
+
+            req.send(sendBody);
+        })
     });
 };
 const querify = (obj = {}, needsEncoding = false) => {

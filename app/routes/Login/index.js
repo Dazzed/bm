@@ -28,6 +28,10 @@ import {
   selectGlobalData
 } from '../../selectors';
 
+import { authStore } from '../../mobxStores';
+import { observer } from 'mobx-react';
+
+@observer
 class SignIn extends Component {
   static navigationOptions = {
     title: 'Sign In',
@@ -40,8 +44,8 @@ class SignIn extends Component {
     const { height, width } = d;
 
     this.state = {
-      email: 'sameep.dev@gmail.com',
-      password: 'abcd1234',
+      email: 'fogg4444@gmail.com',
+      password: 'Password11!',
       behavior: 'padding',
       bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
       colors: colors(props.globalData.isDarkThemeActive)
@@ -86,19 +90,43 @@ class SignIn extends Component {
   }
 
   _signIn = () => {
-    // Alert.alert(
-    //   'Enable Touch ID',
-    //   '',
-    //   [
-    //     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-    //     {text: 'OK', onPress: () => console.log('OK Pressed')},
-    //   ],
-    //   { cancelable: true } 
-    // )
-    if (this.props.globalData.isAuthenticating) {
-      return;
+    // // Alert.alert(
+    // //   'Enable Touch ID',
+    // //   '',
+    // //   [
+    // //     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+    // //     {text: 'OK', onPress: () => console.log('OK Pressed')},
+    // //   ],
+    // //   { cancelable: true }
+    // // )
+    // if (this.props.globalData.isAuthenticating) {
+    //   return;
+    // }
+    // this.props.loginAction({ email: this.state.email, password: this.state.password });
+
+    console.log('===== SIGNIN');
+
+    let params = {
+      email: this.state.email,
+      password: this.state.password
     }
-    this.props.loginAction({ email: this.state.email, password: this.state.password });
+    authStore.login(params)
+    .then((res) => {
+      console.log('ress', this.props)
+      this.props.navigation.navigate('AppNavTabs')
+    })
+    .catch((err) => {
+      console.log('err', err)
+    })
+  }
+
+  renderLoginError() {
+    const { loginErrorMessage } = authStore;
+    if(loginErrorMessage) {
+      return <View style={{marginVertical: 5}}>
+        <Text style={{color: 'red'}}>Error: {loginErrorMessage}</Text>
+      </View>
+    }
   }
 
   render() {
@@ -153,6 +181,7 @@ class SignIn extends Component {
           <Text style={[{ color: this.state.colors['lightGray'] }, styles.details, fonts.hindGunturRg]}>
             Forgot password?
           </Text>
+          {this.renderLoginError()}
           <TouchableOpacity
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
             // onPress={() => navigate('AppNav', { color: this.state.activeColor })}
