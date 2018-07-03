@@ -29,29 +29,32 @@ import { isPhoneValid } from '../validation';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
 
+import { observer } from 'mobx-react';
+import { registrationStore } from '../../../mobxStores';
+
+@observer
 export default class PhoneSelection extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
-        registrationPage: PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
-        const {
-            registrationPage: {
-                phoneField
-            }
-        } = this.props;
-        const isFormValid = isPhoneValid(phoneField);
         this.state = {
             showWhyWeAsk: false,
             numFieldClass: styles_2.registrationFormFieldInActive,
-            formValid: isFormValid,
-            phoneField: phoneField || '',
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
         }
+    }
+
+    formValid() {
+        const { registrationDataJS } = registrationStore;
+        return registrationDataJS.phoneField.length === 10
+    }
+
+    returnFormValidClass() {
+        return this.formValid() ? styles_2.formValid : styles_2.formInvalid
     }
 
     formatPhone(numb) {
@@ -65,54 +68,26 @@ export default class PhoneSelection extends Component {
     }
 
     addNum(num) {
-        var curNums;
-        if (this.state.phoneField == null) {
-            curNums = num;
-        } else {
-            curNums = this.state.phoneField + '' + num;
-            if (curNums.length > 12) {
-                curNums = this.state.phoneField;
-            }
+        const { registrationDataJS } = registrationStore;
+
+        let inputValue = num + '';
+        let updatedValue = registrationDataJS.phoneField;
+        if (registrationDataJS.phoneField.length < 10) {
+            updatedValue += inputValue;
         }
-        // this.setState
-        curNums = this.formatPhone(curNums)
+
         this.props.updateRegistrationParams({
-            phoneField: curNums
-        });
-        this.setState({
-            phoneField: curNums, numFieldClass: styles_2.registrationFormFieldActive
-        });
-        const isFormValid = isPhoneValid(curNums);
-        this.setState({
-            formValid: isFormValid,
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+            phoneField: updatedValue
         });
     }
 
     removeNum(num) {
-        if (this.state.phoneField) {
-            var delNums = this.state.phoneField;
-            delNums = delNums.substr(0, delNums.length - 1);
-            delNums = this.formatPhone(delNums);
-            if (delNums === '') {
-                this.setState({
-                    numFieldClass: styles_2.registrationFormFieldInActive, formValid: false,
-                    formValidClass: styles_2.formInvalid });
-            }
-            this.setState({ phoneField: delNums })
-        } 
-
-        this.props.updateRegistrationParams({
-            phoneField: delNums
-        });
-        this.setState({
-            phoneField: delNums, numFieldClass: styles_2.registrationFormFieldActive
-        });
-        const isFormValid = isPhoneValid(delNums);
-        this.setState({
-            formValid: isFormValid,
-            formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-        });            
+        const { registrationDataJS } = registrationStore;
+        if(registrationDataJS.phoneField.length >= 1) {
+            this.props.updateRegistrationParams({
+                phoneField: registrationDataJS.phoneField.substr(0, registrationDataJS.phoneField.length - 1)
+            });
+        }
     }
 
     toggleWhyWeAsk = () => {
@@ -133,13 +108,14 @@ export default class PhoneSelection extends Component {
     }
 
     render() {
+        const { registrationDataJS } = registrationStore;
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
                 style={styles_2.section}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '34%', borderRadius: 1.5 }]}></View>
+                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
@@ -154,7 +130,7 @@ export default class PhoneSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.state.phoneField}
+                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.formatPhone(registrationDataJS.phoneField)}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={12} editable={false}
                             />
                         </View>
@@ -191,7 +167,7 @@ export default class PhoneSelection extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight disabled={!this.state.formValid} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
+                    <TouchableHighlight disabled={!this.formValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.returnFormValidClass()]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
                     </TouchableHighlight>
                     <Text> </Text>

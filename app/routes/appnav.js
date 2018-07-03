@@ -14,9 +14,6 @@ import Chart from './chart';
 import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
-
-// import FundFLow from './Funding/FundFlow';
-
 import { colors } from '../store/store';
 
 import {
@@ -25,6 +22,10 @@ import {
 } from '../devControlPanel';
 
 var color = colors();
+
+
+
+
 
 const AppNavTabs = TabNavigator({
   Account: {
@@ -58,6 +59,10 @@ const AppNavTabs = TabNavigator({
   tabBarComponent: CustomTabBar,
 });
 
+
+
+
+
 const StackNav = StackNavigator({
   AppNavTabs: {
     screen: AppNavTabs,
@@ -65,7 +70,6 @@ const StackNav = StackNavigator({
   Chart: {
     screen: Chart,
   },
-
   AccountSelect: {
     screen: AccountSelect
   },
@@ -101,7 +105,8 @@ const StackNav = StackNavigator({
 
     return { opacity, transform: [{ translateY }] };
   }
-
 });
+
+
 
 export default StackNav;

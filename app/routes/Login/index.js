@@ -28,6 +28,11 @@ import {
   selectGlobalData
 } from '../../selectors';
 
+import { authStore, colorStore } from '../../mobxStores';
+import { observer } from 'mobx-react';
+import { autoLogin } from '../../devControlPanel';
+
+@observer
 class SignIn extends Component {
   static navigationOptions = {
     title: 'Sign In',
@@ -40,12 +45,18 @@ class SignIn extends Component {
     const { height, width } = d;
 
     this.state = {
-      email: 'sameep.dev@gmail.com',
-      password: 'abcd1234',
+      email: 'fogg4444@gmail.com',
+      password: 'Password11!',
       behavior: 'padding',
       bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
       colors: colors(props.globalData.isDarkThemeActive)
     };
+  }
+
+  componentDidMount() {
+    if(autoLogin) {
+      this._signIn()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -88,23 +99,64 @@ class SignIn extends Component {
   }
 
   _signIn = () => {
-    // Alert.alert(
-    //   'Enable Touch ID',
-    //   '',
-    //   [
-    //     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-    //     {text: 'OK', onPress: () => console.log('OK Pressed')},
-    //   ],
-    //   { cancelable: true } 
-    // )
-    if (this.props.globalData.isAuthenticating) {
-      return;
+    // // Alert.alert(
+    // //   'Enable Touch ID',
+    // //   '',
+    // //   [
+    // //     {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+    // //     {text: 'OK', onPress: () => console.log('OK Pressed')},
+    // //   ],
+    // //   { cancelable: true }
+    // // )
+    // if (this.props.globalData.isAuthenticating) {
+    //   return;
+    // }
+    // this.props.loginAction({ email: this.state.email, password: this.state.password });
+
+    let params = {
+      email: this.state.email,
+      password: this.state.password
     }
-    this.props.loginAction({ email: this.state.email, password: this.state.password });
+    authStore.login(params)
+    .then((res) => {
+      console.log('ress', this.props)
+      this.props.navigation.navigate('AppNavTabs')
+    })
+    .catch((err) => {
+      console.log('err', err)
+    })
+  }
+
+  navToForgotPassword() {
+    console.log('NAV TO FORGTO PASSOWRS')
+    this.props.navigation.navigate('ForgotPassword');
+  }
+
+  renderLoading() {
+    const { loginLoading } = authStore;
+    const { theme } = colorStore;
+    if(loginLoading) {
+      return <View style={{marginVertical: 5, }}>
+        <Text style={[fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>Loading...</Text>
+      </View>
+    } else {
+      return null;
+    }
+  }
+
+  renderLoginError() {
+    const { loginErrorMessage } = authStore;
+    if(loginErrorMessage) {
+      return <View style={[{marginVertical: 5}]}>
+        <Text style={{color: 'red'}}>Error: {loginErrorMessage}</Text>
+      </View>
+    }
   }
 
   render() {
     const { navigate } = this.props.navigation;
+    const { theme } = colorStore;
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -148,13 +200,17 @@ class SignIn extends Component {
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
             onPress={this.handleTouch}>
-            <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
+            <Text style={[styles.touchOption, fonts.hindGunturMd, { color: theme.darkSlate }]}>
               ENABLE {this.state.bioId} ID
             </Text>
           </TouchableOpacity>
-          <Text style={[{ color: this.state.colors['lightGray'] }, styles.details, fonts.hindGunturRg]}>
-            Forgot password?
-          </Text>
+          <TouchableOpacity onPress={() => this.navToForgotPassword()}>
+            <Text style={[styles.details, fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>
+              Forgot password?
+            </Text>
+          </TouchableOpacity>
+          {this.renderLoginError()}
+          {this.renderLoading()}
           <TouchableOpacity
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
             // onPress={() => navigate('AppNav', { color: this.state.activeColor })}

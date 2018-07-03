@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,22 +15,14 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
-import { Label } from 'native-base';
-import axios from 'axios';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-import numbers from '../../../style/numbers';
-import up from '../../../images/up.png';
-import down from '../../../images/down.png';
 import documentImage from '../../../images/document.png';
-import { API_URL } from '../../../config';
-
-import { constructRegistrationParams } from '../selectors';
+import { observer } from 'mobx-react';
+import { colorStore, registrationStore } from '../../../mobxStores';
+import TermsAndConditions from './documents/TermsAndConditions';
+import PrivacyPolicy from './documents/PrivacyPolicy';
 
 let linkList = [
     { title: "Terms & Conditions", value: 'tnc' },
@@ -40,22 +31,64 @@ let linkList = [
     { title: "Risk Disclosure Notice", value: 'rdn' }
 ]
 
+@observer
 export default class Declaration extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
-        registrationPage: PropTypes.object.isRequired,
         resetRegistrationParams: PropTypes.func.isRequired,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            whichPopOver: null
         };
     }
 
     newWin(win) {
-        alert("OPEN " + win);
+        console.log('set win', win)
+        this.setState({
+            whichPopOver: win,
+        })
+    }
+
+    renderChosenContent() {
+        const { whichPopOver } = this.state;
+        console.log('which', whichPopOver)
+        if(whichPopOver == 'tnc') {
+            return <TermsAndConditions />
+        } else if(whichPopOver == 'pp') {
+            return <PrivacyPolicy />
+        } else if(whichPopOver == 'ca') {
+            return <View>
+                <Text>ca</Text>
+            </View>
+        } else if(whichPopOver == 'rdn') {
+            return <View>
+                <Text>rdn</Text>
+            </View>
+        } else {
+            return null
+        }
+    }
+
+    renderPopOver() {
+        const { theme } = colorStore;
+        if(this.state.whichPopOver) {
+            return <View style={[{position: 'absolute', top: 0, width: '100%', height: '85%', backgroundColor: theme.white}]}>
+                <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.newWin(null)}>
+                    <Image
+                        style={{height: 25, width: 25, margin: 5}}
+                        resizeMode="contain"
+                        source={require('../../../images/close.png')}
+                    />
+                </TouchableOpacity>
+                <ScrollView style={{flex: 1, paddingHorizontal: 5, marginVertical: 5}}>
+                    {this.renderChosenContent()}
+                </ScrollView>
+            </View>
+        }
     }
 
     renderLinks() {
@@ -68,7 +101,7 @@ export default class Declaration extends Component {
                         <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 15, textAlign: 'right' }]} ><Image source={this.props.colors['rightArrow']} style={{ width: 10, height: 18 }} /></Text>
                     </View>
                     {(i < (linkList.length - 1)) &&
-                        <View style={{ display: 'flex', flexDirection: 'row', margin: 9, }}>
+                        <View style={{ display: 'flex', flexDirection: 'row', margin: 9}}>
                             <View style={{ flex: 1 }}> </View>
                             <View style={{ borderBottomColor: "#ffffff20", borderBottomWidth: 1, flex: 9 }}></View>
                         </View>}
@@ -77,33 +110,19 @@ export default class Declaration extends Component {
         })
     }
 
-    initiateRegistration = async () => {
-        try {
-            this.setState({
-                loading: true
-            });
-            const data = constructRegistrationParams(this.props.registrationPage);
-            const result = await axios.post(`${API_URL}/api/users`, data);
-            console.log(result);
-            this.props.resetRegistrationParams();
+    nextView() {
+        console.log('----- this', this)
             this.props.onForwardStep();
-        } catch (error) {
-            this.setState({
-                loading: false
-            });
-            alert('There was an error. Please try again later');
-            console.log(error);
-        }
     }
 
     render() {
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
-                style={styles_2.section}>
+                style={[styles_2.section, {position: 'relative'}]}>
                 <View style={[{ margin: 15 }]}>
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '100%', borderRadius: 1.5 }]}></View>
+                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
@@ -115,8 +134,9 @@ export default class Declaration extends Component {
                         </View>
                     </View>
                 </ScrollView>
+                {this.renderPopOver()}
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={this.initiateRegistration} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight onPress={() => this.nextView()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
                             {this.state.loading ? 'LOADING...' : 'I AGREE'}
                         </Text>

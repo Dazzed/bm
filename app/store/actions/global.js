@@ -10,6 +10,8 @@ const ACCESS_TOKEN_KEY = '@Blu:accessToken';
 const CURRENT_USER_ID_KEY = '@Blu:currentUserId';
 const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled'
 
+import { forceDarkTheme } from '../../devControlPanel';
+
 export function startLoggingIn() {
   return {
     type: `${PREFIX}_START_LOGGING_IN`
@@ -134,19 +136,24 @@ export function authFailure() {
 export function setThemeFromLocal() {
   return async dispatch => {
     const isDarkThemeActive = await AsyncStorage.getItem(THEME_KEY);
+    let payload = false;
     if (isDarkThemeActive) {
-
-      // do changes in mobx in parrallel
-      colorStore.setTheme('dark');
-
-      return dispatch({
-        type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
-        payload: true
-      });
+      payload = true;
     } else {
-      // do changes in mobx in parrallel
+      payload = false;
+    }
+    if(forceDarkTheme) {
+      payload = true;
+    }
+    if(payload) {
+      colorStore.setTheme('dark');
+    } else {
       colorStore.setTheme('light');
     }
+    return dispatch({
+      type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
+      payload: payload
+    });
   };
 }
 

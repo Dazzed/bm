@@ -7,7 +7,7 @@ import {
     Image
 } from 'react-native';
 
-import Button from './button';
+import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
 import { numberWithCommas } from '../../utility';
 import { colorStore, accountStore } from '../../mobxStores';
@@ -43,7 +43,9 @@ export default class FundMyAccount extends React.Component {
     }
 
     depositPressed() {
-        this.props.navigation.navigate('Success');
+        this.props.navigation.navigate('Success', {
+            widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
+        });
     }
 
     numberChange(newValue) {

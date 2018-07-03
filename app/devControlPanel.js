@@ -15,24 +15,24 @@ const productionMode = true;
 
 
 // show or hide preview button on front of app
-const displayPreviewButtonOnHome = true;
+// app requires real data so this is now unuseable
+const displayPreviewButtonOnHome = false;
 
 
 // force dark theme all the time
 const forceDarkTheme = false;
-// const forceDarkTheme = false;
+// const forceDarkTheme = true;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'Home';
-// const firstNavDefaultRoute = 'Home';
+const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
 
 
 // force navigation on app nav footer control
-const appNavDefaultTabRoute = 'Settings';
-// const appNavDefaultTabRoute = 'Account';
+// const appNavDefaultTabRoute = 'Settings';
+const appNavDefaultTabRoute = 'Trending';
 
 // Account
 // Watchlists
@@ -49,6 +49,9 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Withdraw
 
 
+
+const autoLogin = false;
+
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 //
@@ -63,7 +66,7 @@ if(productionMode) {
     firstNavDefaultRoute = 'Home';
     appNavDefaultTabRoute = 'Account';
     stackNavDefaultRoute = 'AppNavTabs';
-
+    autoLogin = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -75,5 +78,6 @@ export {
     forceDarkTheme,
     firstNavDefaultRoute,
     appNavDefaultTabRoute,
-    stackNavDefaultRoute
+    stackNavDefaultRoute,
+    autoLogin
 };

@@ -27,32 +27,30 @@ import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { isPresent } from '../validation';
 
+import { observer } from 'mobx-react';
+import { registrationStore } from '../../../mobxStores';
+
+@observer
 export default class NameSelection extends Component {
   static propTypes = {
     onForwardStep: PropTypes.func.isRequired,
     updateRegistrationParams: PropTypes.func.isRequired,
     colors: PropTypes.object.isRequired,
-    registrationPage: PropTypes.object.isRequired,
+    // registrationPage: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
-    const {
-      registrationPage: {
-        firstName,
-        lastName
-      }
-    } = this.props;
-    const isFormValid = isPresent(firstName) && isPresent(lastName);
+
+    this.checkFormValidity();
+
     this.state = {
       showWhyWeAsk: false,
       firstNameClass: styles_2.registrationFormFieldInActive,
       lastNameClass: styles_2.registrationFormFieldInActive,
-      formValid: isFormValid,
-      firstName: firstName || '',
-      lastName: lastName || '',
-      formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
+      formValid: false,
     }
+
   }
 
   toggleWhyWeAsk = () => {
@@ -81,29 +79,36 @@ export default class NameSelection extends Component {
     this.setState({ [item]: styles_2.registrationFormFieldInActive })
   }
 
+  checkFormValidity() {
+    const { registrationDataJS } = registrationStore;
+    return isPresent(registrationDataJS.firstName) && isPresent(registrationDataJS.lastName);
+  }
+
   onTextChange = (event, field) => {
     const { text } = event.nativeEvent;
     this.props.updateRegistrationParams({
       [field]: text
     });
     this.setState({
-      [field]: text
+      formValid: this.checkFormValidity(),
     });
-    const isFormValid = isPresent(this.state.firstName) && isPresent(this.state.lastName);
-    this.setState({
-      formValid: isFormValid,
-      formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid
-    });
+
+  }
+
+  getFormValidityClass() {
+    return this.checkFormValidity() ? styles_2.formValid : styles_2.formInvalid
   }
 
   render() {
+    const { registrationDataJS } = registrationStore;
+
     return (
       <KeyboardAvoidingView
         behavior={this.props.behavior}
         style={styles_2.section}>
         <View style={[{ margin: 15 }]}>
           <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '17%', borderRadius: 1.5 }]}></View>
+          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
         </View>
         <ScrollView style={{ height: '72%' }}>
           <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
@@ -124,7 +129,7 @@ export default class NameSelection extends Component {
                 onFocus={() => this.onFocus('firstNameClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.firstNameClass]}
                 onChange={(event) => this.onTextChange(event, 'firstName')}
-                value={this.state.firstName}
+                value={registrationDataJS.firstName}
               />
               <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>LAST NAME</Text>
               <TextInput
@@ -132,16 +137,16 @@ export default class NameSelection extends Component {
                 onFocus={() => this.onFocus('lastNameClass')}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.lastNameClass]}
                 onChange={(event) => this.onTextChange(event, 'lastName')}
-                value={this.state.lastName}
+                value={registrationDataJS.lastName}
               />
             </View>
           </View>
         </ScrollView>
         <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
           <TouchableHighlight
-            disabled={!this.state.formValid}
+            disabled={!this.checkFormValidity()}
             onPress={this.props.onForwardStep}
-            style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}
+            style={[styles_2.fullBtn, { height: 80 }, this.getFormValidityClass()]}
           >
             <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
           </TouchableHighlight>

@@ -1,12 +1,12 @@
 import React from 'react';
-
 import { View, Text, TouchableOpacity } from 'react-native';
+import { setTheme, getTheme, colors } from '../store/store';
+import styles from '../style/style';
+import fonts from '../style/fonts';
+import { observer } from 'mobx-react';
+import { colorStore } from '../mobxStores';
 
-import { setTheme, getTheme, colors } from '../../store/store';
-
-import styles from '../../style/style';
-import fonts from '../../style/fonts';
-
+@observer
 export default class Deposit extends React.Component {
 
     constructor(props) {
@@ -16,18 +16,15 @@ export default class Deposit extends React.Component {
         };
     }
 
-
     render() {
-
         let buttonHeight = 70;
 
-        console.log('button colors', colors().green)
-
+        const { theme } = colorStore;
 
         let textContainer = {
             width: '100%',
             height: '100%',
-            backgroundColor: this.state.colors.green,
+            backgroundColor: theme.green,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 5,
@@ -35,12 +32,12 @@ export default class Deposit extends React.Component {
             // borderColor: 'red'
         }
 
-        let buttonTextStyle = [styles.fullBtnTxt, fonts.hindGunturBd, {color: this.state.colors.white, marginTop: 7}];
+        let buttonTextStyle = [styles.fullBtnTxt, fonts.hindGunturBd, {color: theme.white, marginTop: 7}];
 
         return <View style={{width: '100%', height: buttonHeight}}>
             <TouchableOpacity onPress={this.props.onPress} style={{width: '100%', height: '100%'}}>
                 <View style={textContainer}>
-                    <Text style={buttonTextStyle}>{this.props.title || Button}</Text>
+                    <Text style={buttonTextStyle}>{this.props.title || 'Button'}</Text>
                 </View>
             </TouchableOpacity>
         </View>

@@ -29,12 +29,15 @@ import { Label } from 'native-base';
 
 let showWhyWeAsk = false;
 
+import { observer } from 'mobx-react';
+import { registrationStore } from '../../../mobxStores';
+
+@observer
 export default class Declaration extends Component {
     static propTypes = {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
-        registrationPage: PropTypes.object.isRequired,
     }
 
     render() {
@@ -59,7 +62,7 @@ export default class Declaration extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={() => this.props.navigation.goBack()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight onPress={() => this.props.onForwardStep()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>FINISH</Text>
                     </TouchableHighlight>
                     <Text> </Text>
