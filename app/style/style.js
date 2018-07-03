@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
   },
   mainCta: {
     height: 25,
-    width: 150,
-    flex: 1,
+    width: 190,
+    flex: 2,
     textAlign: 'center',
     // color: colors.lightGray,
     fontSize: 14
