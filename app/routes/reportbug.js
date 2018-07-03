@@ -107,11 +107,12 @@ class ReportBug extends React.Component {
         <KeyboardAvoidingView
           behavior="padding"
           style={styles_2.section}>
-          <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalContainer, { paddingTop: 15}]}>
+          <ScrollView ref={component => this.ScrollView_Reference = component} style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalContainer, { paddingTop: 15}]}>
             <Text style={[{ color: this.state.colors['lightGray'] }, styles.legalTxt, fonts.hindGunturRg]}>Your feedback is very important. This will help us continue to create the best product for you.</Text>
             <TextInput
               style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles.report_bug_field]}
               multiline={true}
+              onFocus={() => this.ScrollView_Reference.scrollToEnd()}
               onChange={(event) => this.onTextChange(event, 'message')}
             />
           </ScrollView>

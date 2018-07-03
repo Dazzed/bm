@@ -64,7 +64,7 @@ export default class NameSelection extends Component {
           <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
             Uncle Sam requires all brokerages to collect this info for identification verification
                 </Text>
-          <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+          <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
         </View>
       );
     }
@@ -118,7 +118,7 @@ export default class NameSelection extends Component {
             <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
               WHY WE ASK
             </Text>
-            <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
+            <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
           </View>
           {this.whyWeAsk()}
           <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>

@@ -602,26 +602,29 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   report_bug_field: {
-    height: 140,
+    height: 130,
     padding: 5,
     borderWidth: 0.5,
     borderColor: '#979797',
-    lineHeight: 1,
-    fontSize: 18
+    lineHeight: 16,
+    fontSize: 16
   },
   contact_us_field: {
-    height: 140,
+    height: 130,
     padding: 5,
     borderWidth: 0.5,
     borderColor: '#979797',
-    fontSize: 18,
-    lineHeight: 1
+    fontSize: 16,
+    lineHeight: 16
   },
   contact_us_subject_field: {
     padding: 5,
     borderBottomColor: '#979797', borderBottomWidth: 0.5,
-    fontSize: 18,
-    marginBottom: 15
+    fontSize: 16,
+    marginBottom: 10
   },
+  contact_us_subject_label: {
+    margin: 4, marginTop: 15, lineHeight: 18, fontSize: 12
+  }
 });
 module.exports = styles;

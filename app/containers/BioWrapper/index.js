@@ -16,11 +16,11 @@ import {
   selectGlobalData
 } from '../../selectors';
 
+import LockComponent from './LockComponent';
+
 export default TargetComponent => {
   class BioWrapperHOC extends Component {
     static propTypes = {
-      lockAppWithBio: PropTypes.func.isRequired,
-      unlockAppWithBio: PropTypes.func.isRequired,
       initiateProbingForBio: PropTypes.func.isRequired,
       globalData: PropTypes.object.isRequired,
       cancelEnablingBioProtection: PropTypes.func.isRequired,
@@ -39,12 +39,12 @@ export default TargetComponent => {
         canRenderTargetComponent: false,
         appState: AppState.currentState,
         touchIdFailCount: 0,
-        hasVerifiedBio: true
+        hasVerifiedBio: false,
+        inLockedState: false
       };
     }
 
     componentDidMount() {
-      console.log('Did mount')
       this.props.initiateProbingForBio();
       AppState.addEventListener('change', this._handleAppStateChange);
     }
@@ -99,17 +99,24 @@ export default TargetComponent => {
       } = this.state;
       TouchID.authenticate('Authenticate to access your BluMartini account.', {})
         .then(success => {
-          this.setState({ hasVerifiedBio: true, canRenderTargetComponent: true, fromMinimize: false });
+          let cb = () => false;
           if (thizGlobalData.remindBioAfterLoggingIn) {
-            this.props.toggleRemindBioProtectionAfterLoggingIn(false);
-            this.props.performEnablingBioProtection();
+            cb = () => {
+              this.props.toggleRemindBioProtectionAfterLoggingIn(false);
+              this.props.performEnablingBioProtection();
+            };
           } else if (thizGlobalData.isInititatingBioProtection === true) {
-            this.props.performEnablingBioProtection();
-            this.props.cancelEnablingBioProtection();
+            cb = () => {
+              this.props.performEnablingBioProtection();
+              this.props.cancelEnablingBioProtection();
+            };
           } else if (thizGlobalData.isCancellingBioProtection === true) {
-            this.props.performDisablingBioProtection();
-            this.props.cancelDisablingBioProtection();
+            cb = () => {
+              this.props.performDisablingBioProtection();
+              this.props.cancelDisablingBioProtection();
+            };
           }
+          this.setState({ hasVerifiedBio: true, canRenderTargetComponent: true, fromMinimize: false }, cb);
         })
         .catch(error => {
           // this.initiateBioAuth();
@@ -117,10 +124,17 @@ export default TargetComponent => {
             this.props.toggleRemindBioProtectionAfterLoggingIn(false);
             alert(`You have exceeded the maximum number of attempts to verify your ${this.state.bioId} ID. Please try logging out to enable touch id again`);
             this.setState({ canRenderTargetComponent: true });
+          } else if (thizGlobalData.remindBioAfterLoggingIn && error.name === 'LAErrorUserCancel') {
+            this.props.toggleRemindBioProtectionAfterLoggingIn(false);
+            this.setState({ canRenderTargetComponent: true });
+          } else if (thizGlobalData.hasUserEnabledBioProtection && error.name === 'LAErrorUserCancel') {
+            this.setState({ inLockedState: true });
           } else if (thizGlobalData.isInititatingBioProtection === true) {
             this.props.cancelEnablingBioProtection();
           } else if (thizGlobalData.isCancellingBioProtection === true) {
             this.props.cancelDisablingBioProtection();
+          } else if (this.state.fromMinimize && error.name === 'LAErrorUserCancel') {
+            this.setState({ inLockedState: true });
           } else {
             this.setState(({ touchIdFailCount }) => ({ touchIdFailCount: touchIdFailCount + 1 }), this.initiateBioAuth);
           }
@@ -131,19 +145,27 @@ export default TargetComponent => {
     _handleAppStateChange = (nextAppState) => {
       let statePropsToUpdate = {};
       let cb = () => false;
-      if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-        console.log('App has come to the foreground!');
+      if (this.state.appState.match(/background/) && nextAppState === 'active') {
         if (this.props.globalData.hasUserEnabledBioProtection) {
-          // this.setState({ canRenderTargetComponent: false, hasVerifiedBio: false }, this.initiateBioAuth);
           statePropsToUpdate = { canRenderTargetComponent: false, hasVerifiedBio: false, fromMinimize: true };
+          cb = this.initiateBioAuth;
         }
       }
       this.setState({ appState: nextAppState, ...statePropsToUpdate }, cb);
     }
 
+    onUnlockApp = () => {
+      this.setState({ inLockedState: false }, this.initiateBioAuth);
+    }
+
     render() {
-      console.log(`BioWrapper props ~>`, this.props);
-      const { canRenderTargetComponent } = this.state;
+      const { canRenderTargetComponent, inLockedState } = this.state;
+      const { globalData } = this.props;
+      if (globalData.isLoggingOut) {
+        return <View></View>;
+      } else if (inLockedState) {
+        return <LockComponent onUnlockApp={this.onUnlockApp} globalData={globalData} />;
+      }
       return canRenderTargetComponent ? <TargetComponent /> : <View></View>
     }
   }

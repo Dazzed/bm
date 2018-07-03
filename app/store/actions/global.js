@@ -48,10 +48,47 @@ export function logoutAction() {
       await axios.post(`${API_URL}/api/users/logout?access_token=${accessToken}`);
       await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
       await AsyncStorage.removeItem(CURRENT_USER_ID_KEY);
+      await AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY);
       return dispatch(logoutSuccess());
     } catch (e) {
       console.log('Error in logoutAction', e);
       dispatch(logoutFailure());
+    }
+  };
+}
+
+export function verifyAuth() {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: `${PREFIX}_START_VERIFYING_AUTH`
+      });
+      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+      const userId = await AsyncStorage.getItem(CURRENT_USER_ID_KEY);
+      if (!accessToken || !userId) {
+        return dispatch({
+          type: `${PREFIX}_STOP_VERIFYING_AUTH`
+        });
+      }
+      const { data: currentUser } = await axios.get(`${API_URL}/api/users/${userId}?access_token=${accessToken}`);
+      dispatch({
+        type: `${PREFIX}_SET_CURRENT_USER`,
+        payload: currentUser
+      });
+      dispatch({
+        type: `${PREFIX}_STOP_VERIFYING_AUTH`
+      });
+    } catch (e) {
+      const promises = [
+        AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
+        AsyncStorage.removeItem(CURRENT_USER_ID_KEY),
+        AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY),
+        AsyncStorage.removeItem(THEME_KEY)
+      ];
+      await Promise.all(promises);
+      dispatch({
+        type: `${PREFIX}_STOP_VERIFYING_AUTH`
+      });
     }
   };
 }
@@ -195,18 +232,6 @@ export function toggleRemindBioProtectionAfterLoggingIn(flag) {
   return {
     type: `${PREFIX}_TOGGLE_REMIND_BIO_AFTER_LOGGING_IN`,
     payload: flag
-  };
-}
-
-export function lockAppWithBio() {
-  return {
-    type: `${PREFIX}_LOCK_APP_WITH_BIO`
-  };
-}
-
-export function unlockAppWithBio() {
-  return {
-    type: `${PREFIX}_UNLOCK_APP_WITH_BIO`
   };
 }
 

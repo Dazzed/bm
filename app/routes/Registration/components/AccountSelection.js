@@ -76,7 +76,7 @@ export default class AccountSelection extends Component {
                         {"\n"}{"\n"}
                         •	We do not sell your personal information, and your contact info will not be used for advertising; we will only contact you with important updates about your BluMartini trading account.
                     </Text>
-                    <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+                    <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
                 </View>
             );
         }
@@ -205,7 +205,7 @@ export default class AccountSelection extends Component {
                         <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
                             WHY WE ASK
                         </Text>
-                        <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
+                        <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
                     </View>
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
