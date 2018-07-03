@@ -43,7 +43,9 @@ export default class FundMyAccount extends React.Component {
     }
 
     depositPressed() {
-        this.props.navigation.navigate('Success');
+        this.props.navigation.navigate('Success', {
+            widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
+        });
     }
 
     numberChange(newValue) {
