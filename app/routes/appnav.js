@@ -14,9 +14,6 @@ import Chart from './chart';
 import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
-
-// import FundFLow from './Funding/FundFlow';
-
 import { colors } from '../store/store';
 
 import {

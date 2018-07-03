@@ -28,7 +28,7 @@ import {
   selectGlobalData
 } from '../../selectors';
 
-import { authStore } from '../../mobxStores';
+import { authStore, colorStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 
 @observer
@@ -120,10 +120,26 @@ class SignIn extends Component {
     })
   }
 
+  navToForgotPassword() {
+    console.log('NAV TO FORGTO PASSOWRS')
+  }
+
+  renderLoading() {
+    const { loginLoading } = authStore;
+    const { theme } = colorStore;
+    if(loginLoading) {
+      return <View style={{marginVertical: 5, }}>
+        <Text style={[fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>Loading...</Text>
+      </View>
+    } else {
+      return null;
+    }
+  }
+
   renderLoginError() {
     const { loginErrorMessage } = authStore;
     if(loginErrorMessage) {
-      return <View style={{marginVertical: 5}}>
+      return <View style={[{marginVertical: 5}]}>
         <Text style={{color: 'red'}}>Error: {loginErrorMessage}</Text>
       </View>
     }
@@ -131,6 +147,8 @@ class SignIn extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const { theme } = colorStore;
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -174,14 +192,17 @@ class SignIn extends Component {
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
             onPress={this.handleTouch}>
-            <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>
+            <Text style={[styles.touchOption, fonts.hindGunturMd, { color: theme.darkSlate }]}>
               ENABLE {this.state.bioId} ID
             </Text>
           </TouchableOpacity>
-          <Text style={[{ color: this.state.colors['lightGray'] }, styles.details, fonts.hindGunturRg]}>
-            Forgot password?
-          </Text>
+          <TouchableOpacity onPress={() => this.navToForgotPassword()}>
+            <Text style={[styles.details, fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>
+              Forgot password?
+            </Text>
+          </TouchableOpacity>
           {this.renderLoginError()}
+          {this.renderLoading()}
           <TouchableOpacity
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
             // onPress={() => navigate('AppNav', { color: this.state.activeColor })}

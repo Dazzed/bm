@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 0.5,
     // borderColor: colors.darkGray,
-    opacity: 0.5
+    opacity: 0.9
   },
   bluebtn: {
     flex: 1,
