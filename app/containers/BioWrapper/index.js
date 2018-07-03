@@ -16,6 +16,8 @@ import {
   selectGlobalData
 } from '../../selectors';
 
+import LockComponent from './LockComponent';
+
 export default TargetComponent => {
   class BioWrapperHOC extends Component {
     static propTypes = {
@@ -37,7 +39,8 @@ export default TargetComponent => {
         canRenderTargetComponent: false,
         appState: AppState.currentState,
         touchIdFailCount: 0,
-        hasVerifiedBio: false
+        hasVerifiedBio: false,
+        inLockedState: false
       };
     }
 
@@ -121,10 +124,17 @@ export default TargetComponent => {
             this.props.toggleRemindBioProtectionAfterLoggingIn(false);
             alert(`You have exceeded the maximum number of attempts to verify your ${this.state.bioId} ID. Please try logging out to enable touch id again`);
             this.setState({ canRenderTargetComponent: true });
+          } else if (thizGlobalData.remindBioAfterLoggingIn && error.name === 'LAErrorUserCancel') {
+            this.props.toggleRemindBioProtectionAfterLoggingIn(false);
+            this.setState({ canRenderTargetComponent: true });
+          } else if (thizGlobalData.hasUserEnabledBioProtection && error.name === 'LAErrorUserCancel') {
+            this.setState({ inLockedState: true });
           } else if (thizGlobalData.isInititatingBioProtection === true) {
             this.props.cancelEnablingBioProtection();
           } else if (thizGlobalData.isCancellingBioProtection === true) {
             this.props.cancelDisablingBioProtection();
+          } else if (this.state.fromMinimize && error.name === 'LAErrorUserCancel') {
+            this.setState({ inLockedState: true });
           } else {
             this.setState(({ touchIdFailCount }) => ({ touchIdFailCount: touchIdFailCount + 1 }), this.initiateBioAuth);
           }
@@ -144,11 +154,17 @@ export default TargetComponent => {
       this.setState({ appState: nextAppState, ...statePropsToUpdate }, cb);
     }
 
+    onUnlockApp = () => {
+      this.setState({ inLockedState: false }, this.initiateBioAuth);
+    }
+
     render() {
-      const { canRenderTargetComponent } = this.state;
+      const { canRenderTargetComponent, inLockedState } = this.state;
       const { globalData } = this.props;
       if (globalData.isLoggingOut) {
         return <View></View>;
+      } else if (inLockedState) {
+        return <LockComponent onUnlockApp={this.onUnlockApp} globalData={globalData} />;
       }
       return canRenderTargetComponent ? <TargetComponent /> : <View></View>
     }
