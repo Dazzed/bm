@@ -624,7 +624,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   contact_us_subject_label: {
-    margin: 4, marginTop: 15, lineHeight: 15, fontSize: 12
+    margin: 4, marginTop: 15, lineHeight: 18, fontSize: 12
   }
 });
 module.exports = styles;
