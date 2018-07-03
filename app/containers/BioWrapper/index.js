@@ -136,6 +136,7 @@ export default TargetComponent => {
         if (this.props.globalData.hasUserEnabledBioProtection) {
           // this.setState({ canRenderTargetComponent: false, hasVerifiedBio: false }, this.initiateBioAuth);
           statePropsToUpdate = { canRenderTargetComponent: false, hasVerifiedBio: false, fromMinimize: true };
+          cb = this.initiateBioAuth;
         }
       }
       this.setState({ appState: nextAppState, ...statePropsToUpdate }, cb);
