@@ -146,6 +146,10 @@ export default TargetComponent => {
 
     render() {
       const { canRenderTargetComponent } = this.state;
+      const { globalData } = this.props;
+      if (globalData.isLoggingOut) {
+        return <View></View>;
+      }
       return canRenderTargetComponent ? <TargetComponent /> : <View></View>
     }
   }
