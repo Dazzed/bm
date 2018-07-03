@@ -70,7 +70,7 @@ export default class AccountSelection extends Component {
                         {"\n"}{"\n"}
                         •	We do not sell your personal information, and your contact info will not be used for advertising; we will only contact you with important updates about your BluMartini trading account.
                     </Text>
-                    <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+                    <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
                 </View>
             );
         }

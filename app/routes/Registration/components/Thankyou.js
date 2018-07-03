@@ -54,7 +54,7 @@ export default class Declaration extends Component {
                             <Text style={[{ color: this.props.colors['darkSlate'] }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', marginTop: 15 }]}>
                                 We just sent you a verification email. Please follow the instructions in the email to continue.
                             </Text>
-                            <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+                            <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
                         </View>
                     </View>
                 </ScrollView>

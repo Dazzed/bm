@@ -35,7 +35,6 @@ var scan_props = [
   { label: 'Top volume', value: 0 },
   { label: '% Gainers', value: 1 },
   { label: '% Losers', value: 2 },
-  { label: 'Top ETFs', value: 3 }
 ];
 
 var sector_props = [
