@@ -23,6 +23,10 @@ import {
 
 var color = colors();
 
+
+
+
+
 const AppNavTabs = TabNavigator({
   Account: {
     screen: Account,
@@ -55,6 +59,10 @@ const AppNavTabs = TabNavigator({
   tabBarComponent: CustomTabBar,
 });
 
+
+
+
+
 const StackNav = StackNavigator({
   AppNavTabs: {
     screen: AppNavTabs,
@@ -62,7 +70,6 @@ const StackNav = StackNavigator({
   Chart: {
     screen: Chart,
   },
-
   AccountSelect: {
     screen: AccountSelect
   },
@@ -98,7 +105,8 @@ const StackNav = StackNavigator({
 
     return { opacity, transform: [{ translateY }] };
   }
-
 });
+
+
 
 export default StackNav;

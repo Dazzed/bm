@@ -30,6 +30,7 @@ import {
 
 import { authStore, colorStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
+import { autoLogin } from '../../devControlPanel';
 
 @observer
 class SignIn extends Component {
@@ -50,6 +51,12 @@ class SignIn extends Component {
       bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
       colors: colors(props.globalData.isDarkThemeActive)
     };
+  }
+
+  componentDidMount() {
+    if(autoLogin) {
+      this._signIn()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -106,8 +113,6 @@ class SignIn extends Component {
     // }
     // this.props.loginAction({ email: this.state.email, password: this.state.password });
 
-    console.log('===== SIGNIN');
-
     let params = {
       email: this.state.email,
       password: this.state.password
@@ -124,6 +129,7 @@ class SignIn extends Component {
 
   navToForgotPassword() {
     console.log('NAV TO FORGTO PASSOWRS')
+    this.props.navigation.navigate('ForgotPassword');
   }
 
   renderLoading() {

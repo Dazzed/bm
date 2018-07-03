@@ -82,4 +82,11 @@ export default class ColorStore {
         })
     }
 
+    @action submitForgot = (params) => {
+        return new Promise((resolve, reject) => {
+
+            resolve()
+        })
+    }
+
 }

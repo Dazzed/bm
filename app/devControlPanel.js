@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -24,8 +24,7 @@ const forceDarkTheme = false;
 // const forceDarkTheme = true;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'Home';
-// const firstNavDefaultRoute = 'Home';
+const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
@@ -33,7 +32,7 @@ const firstNavDefaultRoute = 'Home';
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Account';
+const appNavDefaultTabRoute = 'Trending';
 
 // Account
 // Watchlists
@@ -50,6 +49,9 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Withdraw
 
 
+
+const autoLogin = false;
+
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 //
@@ -64,6 +66,7 @@ if(productionMode) {
     firstNavDefaultRoute = 'Home';
     appNavDefaultTabRoute = 'Account';
     stackNavDefaultRoute = 'AppNavTabs';
+    autoLogin = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -75,5 +78,6 @@ export {
     forceDarkTheme,
     firstNavDefaultRoute,
     appNavDefaultTabRoute,
-    stackNavDefaultRoute
+    stackNavDefaultRoute,
+    autoLogin
 };
