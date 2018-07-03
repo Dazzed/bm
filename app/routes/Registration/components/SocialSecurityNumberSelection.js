@@ -12,6 +12,7 @@ import {
     View,
     WebView,
     Image,
+    Linking,
     Alert,
     TouchableOpacity,
     TouchableHighlight
@@ -121,9 +122,9 @@ export default class SocialSecurityNumberSelection extends Component {
             return (
                 <View style={[styles_2.whyWeAskView]}>
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-                        All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here: <Text style={{color: "#18c3ff"}}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>
+                        All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here: <Text style={{color: "#18c3ff"}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>
                     </Text>
-                    <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+                    <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
                 </View>
             );
         } else {
@@ -152,7 +153,7 @@ export default class SocialSecurityNumberSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.state.ssnField}
+                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.state.ssnField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
                            />
                         </View>

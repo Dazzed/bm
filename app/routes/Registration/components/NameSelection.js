@@ -66,7 +66,7 @@ export default class NameSelection extends Component {
           <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
             Uncle Sam requires all brokerages to collect this info for identification verification
                 </Text>
-          <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+          <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
         </View>
       );
     }

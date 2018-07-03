@@ -157,7 +157,7 @@ export default class AddressSelection extends Component {
           <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
             Uncle Sam requires all brokerages to collect this info for identification verification
           </Text>
-          <Image source={this.props.colors['illustration']} style={{ width: 380, height: 159, marginRight: 5 }} />
+          <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
         </View>
       );
     }
@@ -255,7 +255,7 @@ export default class AddressSelection extends Component {
                     style={[styles_2.downArrow]}
                   />
                   <Text onPress={() => { this.showState() }}
-                    style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                    style={[{ color: ((this.state.stateOption === 0) ? this.props.colors['lightGray'] : this.props.colors['darkSlate']) }, fonts.hindGunturRg, styles_2.registrationFormField]}
                   >{state_list[this.state.stateOption].label}</Text>
                 </TouchableOpacity>
                 <Modal
