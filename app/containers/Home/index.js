@@ -48,6 +48,10 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     Orientation.lockToPortrait();
+    if (this.props.globalData.isAuthenticated === true) {
+      this.props.navigation.navigate('AppNavTabs');
+    }
+    this.props.verifyAuth();
   }
 
   componentDidUpdate(prevProps) {
@@ -63,11 +67,14 @@ class HomeScreen extends Component {
     if (prevGlobalData.isAuthenticated === true && currentGlobalData.isAuthenticated === false) {
       this.props.navigation.navigate('Home');
     }
+    if (prevGlobalData.isAuthenticated === false && currentGlobalData.isAuthenticated === true) {
+      this.props.navigation.navigate('AppNavTabs');
+    }
   }
 
   renderAppPreviewButton() {
     const { navigate } = this.props.navigation;
-    if(displayPreviewButtonOnHome) {
+    if (displayPreviewButtonOnHome) {
       return <TouchableHighlight
         style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
         onPress={() => navigate('AppNavTabs')}>
@@ -83,6 +90,20 @@ class HomeScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const { globalData } = this.props;
+    if (globalData.isVerifyingAuth) {
+      return (
+        <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
+          <View style={styles.landingIcon}>
+            <Image
+              source={this.state.colors['logoImage']}
+              style={styles.appIcon}
+            />
+            <Text style={{paddingLeft: 15, paddingTop: 10}}>LOADING...</Text>
+          </View>
+        </View>
+      );
+    }
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={styles.landingIcon}>
@@ -126,6 +147,7 @@ HomeScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
   setThemeFromLocal: PropTypes.func.isRequired,
   globalData: PropTypes.object.isRequired,
+  verifyAuth: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

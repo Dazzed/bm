@@ -117,6 +117,28 @@ class RegistrationPage extends React.Component {
     }
   }
 
+  renderHeadingText = () => {
+    switch (this.state.step) {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+        return 'Basic Info';
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 10:
+        return 'Identity';
+      case 11:
+        return 'Terms & Conditions';
+      case 12:
+        return 'Verify email';
+    }
+  };
+
   onForwardStep = () => {
     if (this.state.step === 12) {
       // alert('Registered!');
@@ -146,7 +168,7 @@ class RegistrationPage extends React.Component {
                 style={styles.backImg}
               />
             </TouchableOpacity>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.mainCta, fonts.gothamBld]}>Basic Info</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.mainCta, fonts.gothamBld]}>{this.renderHeadingText()}</Text>
             <TouchableOpacity style={styles.rightCta} onPress={() => this.props.navigation.goBack()}>
               <Image
                 source={require('../../images/close.png')}

@@ -92,7 +92,7 @@ export default class CountrySelection extends Component {
         style={styles_2.section}>
         <View style={[{ margin: 15 }]}>
           <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '54%', borderRadius: 1.5 }]}></View>
+          <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: '8.5%', borderRadius: 1.5 }]}></View>
         </View>
         <ScrollView style={{ height: '72%' }}>
           <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>

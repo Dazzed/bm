@@ -3,6 +3,7 @@ import { PREFIX } from '../actions/global';
 const initialState = {
   isAuthenticated: false,
   isAuthenticating: false,
+  isVerifyingAuth: false,
   currentUser: null,
   loginErrorPresent: false,
   isDarkThemeActive: false,
@@ -10,7 +11,6 @@ const initialState = {
   isPatchingUser: false,
   // user bio related bool properties
   hasUserEnabledBioProtection: false,
-  isAppLockedWithBio: false,
   isProbingToCheckBio: false,
   isEnablingBio: false,
   isDisablingBio: false,
@@ -41,6 +41,16 @@ export default (state = initialState, action) => {
         isAuthenticating: false,
         loginErrorPresent: true
       };
+    case `${PREFIX}_START_VERIFYING_AUTH`:
+      return {
+        ...state,
+        isVerifyingAuth: true
+      };
+    case `${PREFIX}_STOP_VERIFYING_AUTH`:
+      return {
+        ...state,
+        isVerifyingAuth: false
+      }
     case `${PREFIX}_SET_THEME_FROM_LOCAL`:
       return {
         ...state,
@@ -81,16 +91,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isPatchingUser: false
-      };
-    case `${PREFIX}_LOCK_APP_WITH_BIO`:
-      return {
-        ...state,
-        isAppLockedWithBio: true
-      };
-    case `${PREFIX}_UNLOCK_APP_WITH_BIO`:
-      return {
-        ...state,
-        isAppLockedWithBio: false
       };
     case `${PREFIX}_TOGGLE_REMIND_BIO_AFTER_LOGGING_IN`:
       return {

@@ -113,7 +113,7 @@ export default class NameSelection extends Component {
             <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
               WHY WE ASK
             </Text>
-            <Image onPress={this.toggleWhyWeAsk} source={up} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
+            <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
           </View>
           {this.whyWeAsk()}
           <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
