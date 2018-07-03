@@ -8,6 +8,7 @@ export const PREFIX = 'APP_GLOBAL';
 const THEME_KEY = '@Blu:isDarkThemeActive';
 const ACCESS_TOKEN_KEY = '@Blu:accessToken';
 const CURRENT_USER_ID_KEY = '@Blu:currentUserId';
+const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled'
 
 import { forceDarkTheme } from '../../devControlPanel';
 
@@ -187,5 +188,89 @@ export function initiatePatchingUser(patchData) {
         type: `${PREFIX}_PATCH_ERROR`
       });
     }
+  };
+}
+
+export function toggleRemindBioProtectionAfterLoggingIn(flag) {
+  return {
+    type: `${PREFIX}_TOGGLE_REMIND_BIO_AFTER_LOGGING_IN`,
+    payload: flag
+  };
+}
+
+export function lockAppWithBio() {
+  return {
+    type: `${PREFIX}_LOCK_APP_WITH_BIO`
+  };
+}
+
+export function unlockAppWithBio() {
+  return {
+    type: `${PREFIX}_UNLOCK_APP_WITH_BIO`
+  };
+}
+
+export function initiateProbingForBio() {
+  return async dispatch => {
+    dispatch({
+      type: `${PREFIX}_INITIATE_PROBING_FOR_BIO`
+    });
+    if (await AsyncStorage.getItem(TOUCH_ID_ENABLED_KEY)) {
+      return dispatch({
+        type: `${PREFIX}_SET_BIO_PROTECTION`
+      });
+    } else {
+      return dispatch({
+        type: `${PREFIX}_UNSET_BIO_PROTECTION`
+      });
+    }
+  };
+}
+
+export function initiateEnablingBioProtection() {
+  return {
+    type: `${PREFIX}_INITIATE_ENABLING_BIO_PROTECTION`
+  };
+}
+
+export function cancelEnablingBioProtection() {
+  return {
+    type: `${PREFIX}_CANCEL_ENABLING_BIO_PROTECTION`
+  };
+}
+
+export function initiateDisablingBioProtection() {
+  return {
+    type: `${PREFIX}_INITIATE_DISABLING_BIO_PROTECTION`
+  };
+}
+
+export function cancelDisablingBioProtection() {
+  return {
+    type: `${PREFIX}_CANCEL_DISABLING_BIO_PROTECTION`
+  };
+}
+
+export function performEnablingBioProtection() {
+  return async dispatch => {
+    dispatch({
+      type: `${PREFIX}_IS_ENABLING_BIO_PROTECTION`
+    });
+    await AsyncStorage.setItem(TOUCH_ID_ENABLED_KEY, 'true');
+    return dispatch({
+      type: `${PREFIX}_ENABLE_BIO_PROTECTION`
+    });
+  };
+}
+
+export function performDisablingBioProtection() {
+  return async dispatch => {
+    dispatch({
+      type: `${PREFIX}_IS_DISABLING_BIO_PROTECTION`
+    });
+    await AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY);
+    return dispatch({
+      type: `${PREFIX}_DISABLE_BIO_PROTECTION`
+    });
   };
 }
