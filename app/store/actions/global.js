@@ -46,6 +46,7 @@ export function logoutAction() {
       await axios.post(`${API_URL}/api/users/logout?access_token=${accessToken}`);
       await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
       await AsyncStorage.removeItem(CURRENT_USER_ID_KEY);
+      await AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY);
       return dispatch(logoutSuccess());
     } catch (e) {
       console.log('Error in logoutAction', e);
