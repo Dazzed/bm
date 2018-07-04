@@ -1,34 +1,17 @@
 
-done
-- Error with withdraw limit
--When there is no input within the DOB, SSN, etc. boxes we made a change to make the numbers grey, they are now
-black again
+-Deposit and Withdrawal buttons in settings still don’t work
+I can't reproduce this.
 
--At the end of the flow I am unable to select the I agree button, thus not allowing me to complete the on boarding
-This works fine for me
+Works for me. Please send detailed info on your device. Exact model, etc. Description of how it fails.
+
+-In the on boarding flow, “Alabama” is selected as the state, but it should be “Select”
+Fixed
 
 -In the on boarding flow, the #’ selection is now incorrect
-designs have been revised but they are janky
+I've fixed the styling if that's what you mean... It's gonna be janky becuase all the heights are hard coded.
 
-Deposit and Withdrawal buttons in settings still don’t work
-- Works great for me. I have screenshots to prove it. Please send your exact device model.
+-When there is no input within the DOB, SSN, etc. boxes we made a change to make the numbers grey, they are now black again
+Fixed
 
-
-
-
-getNumFieldClass() {
-  const { theme } = colorStore;
-  const { registrationDataJS } = registrationStore;
-  console.log('get num field class', registrationDataJS.phoneField, registrationDataJS.phoneField.length)
-  if(registrationDataJS.phoneField.length === 0) {
-    return {
-      ...styles_2.registrationFormFieldInActive,
-      color: theme.lightGray
-    }
-  } else {
-    return {
-      ...styles_2.registrationFormFieldActive,
-
-    }
-  }
-}
+-At the end of the flow I am unable to select the I agree button, thus not allowing me to complete the on boarding
+I can't reproduce this. Please provide more detail.
