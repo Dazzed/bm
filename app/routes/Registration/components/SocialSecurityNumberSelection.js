@@ -120,7 +120,7 @@ export default class SocialSecurityNumberSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.formatSSN(registrationDataJS.ssnField)}
+                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatSSN(registrationDataJS.ssnField)}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
                            />
                         </View>
