@@ -63,7 +63,7 @@ export default class MaritalStatusSelection extends Component {
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, {paddingTop: 25}]}>
                         MARITAL STATUS
                     </Text>
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>
+                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, flex: 1, paddingTop: 0 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm

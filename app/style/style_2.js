@@ -69,7 +69,15 @@ const styles = StyleSheet.create({
     flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', paddingTop: 2.5, paddingLeft: 2.5, paddingRight: 5, paddingBottom: 3 
   },
   whyWeAskText: { margin: 30, lineHeight: 30, fontSize: 20 },
-  registrationFormView: { flex: 1, flexDirection: 'column', marginLeft: 40, marginRight: 40, marginBottom: 20 },
+  registrationFormView: {
+    // height: 50,
+    flexDirection: 'column',
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 20,
+    // borderWidth: 1,
+    // borderColor: 'green'
+  },
   registrationFormLabel: { margin: 4, marginTop: 25, lineHeight: 18, fontSize: 12 },
   registrationFormField: { fontSize: 24, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },
   registrationFormFieldDropDown: { height: 38, borderBottomColor: '#d3d3d8', borderBottomWidth: 1, borderTopWidth: 0 },

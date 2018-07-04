@@ -148,26 +148,31 @@ export default class DateOfBirthSelection extends Component {
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
-                <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        DATE OF BIRTH
-                    </Text>
-                    <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
-                            WHY WE ASK
-                        </Text>
-                        <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={{paddingVertical: 40}}>
+                      <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
+                          DATE OF BIRTH
+                      </Text>
+                      <View style={[styles_2.whyWeAsk]}>
+                          <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
+                              WHY WE ASK
+                          </Text>
+                          <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 15, height: 9, marginLeft: 5, marginBottom: 1 }} />
+                      </View>
                     </View>
                     {this.whyWeAsk()}
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
-                        <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="MM/DD/YYYY" placeholderTextColor={this.props.colors['lightGray']} value={this.formatDate(registrationDataJS.dateField)}
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.getNumFieldClass()]} maxLength={10} editable={false}
-                            />
+                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 0, paddingVertical: 40, width: '100%' }]}>
+                        <View>
+                          <View style={[styles_2.registrationFormView]}>
+                              <TextInput placeholder="MM/DD/YYYY" placeholderTextColor={this.props.colors['lightGray']} value={this.formatDate(registrationDataJS.dateField)}
+                                  style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.getNumFieldClass()]} maxLength={10} editable={false}
+                              />
+                          </View>
+                          <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={this.getDisabledList()}/>
                         </View>
-                        <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={this.getDisabledList()}/>
                     </View>
                 </ScrollView>
+  
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.getFormValidClass()]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
