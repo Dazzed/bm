@@ -20,7 +20,7 @@ export default class RegistrationStore {
             state: '',
             city: '',
             zip: '',
-            stateOption: 1,
+            stateOption: 0,
 
             // phone selection
             phoneField: '',
