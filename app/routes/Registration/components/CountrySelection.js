@@ -19,6 +19,7 @@ import {
 import Modal from 'react-native-modal';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 
+
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
@@ -26,7 +27,6 @@ import fonts from '../../../style/fonts';
 import checkBoxBlue from '../../../images/checkbox_blue.png';
 import checkBoxOutline from '../../../images/checkbox_outline.png';
 import { isPresent } from '../validation';
-
 
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
