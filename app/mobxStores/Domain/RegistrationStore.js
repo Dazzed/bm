@@ -48,7 +48,7 @@ export default class RegistrationStore {
             password: '',
         }
         this.initRegistation()
-        this.initWithTestData()
+        // this.initWithTestData()
     }
 
     @action initWithTestData = () => {
