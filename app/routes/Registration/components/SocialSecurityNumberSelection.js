@@ -20,6 +20,7 @@ import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
+import down from '../../../images/down.png';
 import { isSsnValid } from '../validation';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
