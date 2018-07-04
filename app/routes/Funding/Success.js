@@ -64,18 +64,18 @@ export default class AccountSelect extends React.Component {
     }
 
     render() {
-        return <View style={{backgroundColor: this.state.colors.white, alignItems: 'center'}}>
-            <View style={{marginVertical: 5}}></View>
-
+        return <View style={{backgroundColor: this.state.colors.white, alignItems: 'center', flex: 1, padding: 30}}>
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Image
                 style={{height: 100, width: 100}}
                 resizeMode="contain"
                 source={require('../../images/success_image.png')}
             />
-
-            <View style={{marginVertical: 5}}></View>
             {this.renderMessage()}
-            <Button {...this.props} title="START TRADING" onPress={() => this.navToTradingView()}/>
+          </View>
+          <View style={{flex: 0, width: '100%'}}>
+            <Button {...this.props} title="START TRADING" onPress={() => this.navToTradingView()}/>    
+          </View>
         </View>
     }
 }
