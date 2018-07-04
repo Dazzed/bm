@@ -176,7 +176,7 @@ export default class AccountSelect extends React.Component {
         if(themeType == 'light') {
             return <Image
                 resizeMode={'contain'}
-                style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -10, top: '50%', zIndex: 0}}
+                style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -10, top: '60%', zIndex: 0}}
                 source={require('../../images/illustration.png')}
             />
         } else {
@@ -210,7 +210,7 @@ export default class AccountSelect extends React.Component {
                 {this.renderAccountList()}
             </View>
 
-            <View style={{flex: 0}}>
+            <View style={{flex: 0, padding: 30}}>
                 <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
             </View>
 

@@ -1,16 +1,21 @@
-CONFLICT (content): Merge conflict in app/routes/Registration/components/SocialSecurityNumberSelection.js
 
-CONFLICT (content): Merge conflict in app/routes/Registration/components/PhoneSelection.js
-
-CONFLICT (content): Merge conflict in app/routes/Registration/components/DependentSelection.js
-
-CONFLICT (content): Merge conflict in app/routes/Registration/components/DateOfBirthSelection.js
-
-CONFLICT (content): Merge conflict in app/routes/Registration/components/CountrySelection.js
-
-CONFLICT (content): Merge conflict in app/routes/Registration/components/AddressSelection.js
+done
+- Error with withdraw limit
 
 
-CONFLICT (content): Merge conflict in app/routes/Registration/components/AccountSelection.js
 
 
+
+-In the on boarding flow, the #’ selection is now incorrect
+NOT CLEAR ENOUGH TO UNDERSTAND
+
+
+
+Deposit and Withdrawal buttons in settings still don’t work
+
+
+
+-When there is no input within the DOB, SSN, etc. boxes we made a change to make the numbers grey, they are now
+black again
+
+-At the end of the flow I am unable to select the I agree button, thus not allowing me to complete the on boarding

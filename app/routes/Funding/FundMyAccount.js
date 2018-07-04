@@ -112,6 +112,17 @@ export default class FundMyAccount extends React.Component {
 
     }
 
+    renderErrorOrNull() {
+      const { theme } = colorStore;
+      let text = '';
+      if(this.state.errorRemainingFunds) {
+        text = 'Error: Withdraw limit exceeds funds available'
+      }
+      return <View style={{height: 25, alignItems: 'center', backgroundColor: theme.white}}>
+        <Text style={{color: 'red'}}>{text}</Text>
+      </View>
+    }
+
     renderInputAmount() {
         const { theme } = colorStore;
 
@@ -157,14 +168,18 @@ export default class FundMyAccount extends React.Component {
     }
 
     render() {
-        return <View style={{height: '100%', padding: 5}}>
+        return <View style={{height: '100%', padding: 0}}>
             <View style={{flex: 1}}>
                 {this.renderAmountInAccount()}
             </View>
             <View style={{flex: 0}}>
                 {this.renderInputAmount()}
+                {this.renderErrorOrNull()}
                 <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
-                <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
+                <View style={{padding: 30}}>
+                  <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
+                </View>
+                
             </View>
         </View>
     }
