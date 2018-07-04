@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,21 +15,18 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import numbers from '../../../style/numbers';
 import { isPhoneValid } from '../validation';
-
+import NumericalSelector from '../../../sharedComponents/NumericalSelector';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
-
 import { observer } from 'mobx-react';
-import { registrationStore } from '../../../mobxStores';
+import { registrationStore, colorStore } from '../../../mobxStores';
 
 @observer
 export default class PhoneSelection extends Component {
@@ -44,7 +40,7 @@ export default class PhoneSelection extends Component {
         super(props);
         this.state = {
             showWhyWeAsk: false,
-            numFieldClass: styles_2.registrationFormFieldInActive,
+            // numFieldClass: styles_2.registrationFormFieldInActive,
         }
     }
 
@@ -130,40 +126,11 @@ export default class PhoneSelection extends Component {
                     {this.whyWeAsk()}
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['darkSlate']} value={this.formatPhone(registrationDataJS.phoneField)}
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={12} editable={false}
+                            <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatPhone(registrationDataJS.phoneField)}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField]} maxLength={12} editable={false}
                             />
                         </View>
-                        <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white']  }, styles_2.numContainer]}>
-                            <View style={styles_2.digitContainer}>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(1); }}>1</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(2); }}>2</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(3); }}>3</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(4); }}>4</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(5); }}>5</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(6); }}>6</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(7); }}>7</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(8); }}>8</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(9); }}>9</Text>
-                                </View>
-                                <View style={numbers.row}>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]}></Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(0); }}>0</Text>
-                                    <Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers_right, fonts.hindGunturRg]} onPress={() => { this.removeNum(); }}>
-                                        <Text> </Text>
-                                        <Image
-                                            source={this.props.colors['deleteImg']}
-                                            style={{ width: 40, height: 26 }}
-                                        />
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
+                        <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>

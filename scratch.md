@@ -19,3 +19,24 @@ Deposit and Withdrawal buttons in settings still don’t work
 black again
 
 -At the end of the flow I am unable to select the I agree button, thus not allowing me to complete the on boarding
+
+
+
+
+
+getNumFieldClass() {
+  const { theme } = colorStore;
+  const { registrationDataJS } = registrationStore;
+  console.log('get num field class', registrationDataJS.phoneField, registrationDataJS.phoneField.length)
+  if(registrationDataJS.phoneField.length === 0) {
+    return {
+      ...styles_2.registrationFormFieldInActive,
+      color: theme.lightGray
+    }
+  } else {
+    return {
+      ...styles_2.registrationFormFieldActive,
+
+    }
+  }
+}
