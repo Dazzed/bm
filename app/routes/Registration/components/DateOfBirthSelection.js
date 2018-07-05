@@ -99,7 +99,12 @@ export default class DateOfBirthSelection extends Component {
             return disabledList;
         } else if(registrationDataJS.dateField.length < 2) {
             // prevent second digit from being more than 2
+            if(registrationDataJS.dateField[0] === '0') {
             disabledList = [0];
+          } else if(registrationDataJS.dateField[0] === '1') {
+            disabledList = [3, 4, 5, 6, 7, 8, 9];
+          }
+            // disabledList = [0];
             return disabledList
         } else if( registrationDataJS.dateField.length < 3) {
             // prevent third digit from being anything but 0, 1, 2 or 3
