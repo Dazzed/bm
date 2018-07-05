@@ -39,7 +39,7 @@ const status_list = [
   { "label": "Married", "value": 1 },
   { "label": "Divorced", "value": 2 },
   { "label": "Separated", "value": 3 },
-  { "label": "Widowed", "value": 4 },
+  { "label": "Widow", "value": 4 },
   { "label": "Single", "value": 5 }
 ];
 
