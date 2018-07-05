@@ -17,19 +17,14 @@ export default class ColorStore {
         this.accountList = [
             {
                 title: 'MOCK BANK TITLE 1',
-                subtitle: 'SUBTITLE 1',
-                amount: '30000'
+                subtitle: 'Checking 1',
+                amount: '4283'
             },
             {
                 title: 'MOCK BANK TITLE 2',
-                subtitle: 'SUBTITLE 2',
-                amount: '40000'
+                subtitle: 'Savings 2',
+                amount: '52495'
             },
-            {
-                title: 'MOCK BANK TITLE 3',
-                subtitle: 'SUBTITLE 3',
-                amount: '50000'
-            }
         ]
     }
 
