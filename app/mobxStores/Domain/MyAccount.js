@@ -4,15 +4,6 @@ import { observable, action, computed, toJS } from 'mobx';
 export default class MyAccountData {
 
   constructor() {
-    this.setFakeData()
-  }
-
-  @action setFakeData = () => {
-    this.myAccoutData = {
-      totalAccountValue: '5484.00',
-      todaysChange: '+385.58',
-      todaysChangePercentage:'+7.04',
-    }
   }
 
   @observable myAccoutData = null;
@@ -21,9 +12,6 @@ export default class MyAccountData {
     this.myAccoutData = data;
   }
 
-  @computed get myAccoutDataJS() {
-    return toJS(this.myAccoutData)
-  }
 
   @action getMyAccountData = () => {
     let params = {
@@ -35,7 +23,73 @@ export default class MyAccountData {
     })
     .catch((err) => {
       console.log('account data err', err)
-    })
+    });
+  };
+
+@computed get myAccoutDataJS() {
+  return {
+    totalAccountValue: '5484.00',
+    todaysChange: '+385.58',
+    todaysChangePercentage:'+7.04',
   }
+}
+
+@computed get balancesJS() {
+    let balanceData = {
+      investments: {
+        total: '1553.20',
+        securities: '949.40',
+        cash: '2395.45',
+        options: '880'
+      },
+      fundsAvailable: {
+        toTrade: '3890.28',
+        toWithdraw: '1535.29'
+      }
+    }
+    return balanceData;
+  }
+
+  @computed get positionsJS() {
+    let positionData = {
+      equityPositions: [
+        {name: 'apple'},
+        {name: 'tsla'}
+      ],
+      total: {
+        amount: '3890.29',
+        percentageChange: '+1.86'
+      }
+    }
+    return positionData;
+  }
+
+  @computed get historyJS() {
+    let historyData = [
+      {
+        datestamp: '1232132131',
+        values: [{
+          buyOrSell: true,
+          companyName: 'Tesla Motors',
+          companyAbbreviation: 'TSLA'
+        },
+        {
+          buyOrSell: false,
+          companyName: 'Tesla Motors',
+          companyAbbreviation: 'TSLA'
+        }]
+      },
+      {
+        datestamp: '3424234234',
+        values: [{
+          buyOrSell: false,
+          companyName: 'Apple Inc.',
+          companyAbbreviation: 'APPL'
+        }]
+      }
+    ];
+    return historyData;
+  }
+
 
 }

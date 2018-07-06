@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -24,7 +24,8 @@ const displayPreviewButtonOnHome = false;
 const forceDarkTheme = true;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'Home';
+// const firstNavDefaultRoute = 'Home';
+const firstNavDefaultRoute = 'AppNav';
 // AppNav
 // Login
 // Home

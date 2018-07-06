@@ -3,7 +3,7 @@ import {
   StackNavigator
 } from 'react-navigation';
 
-import Account from './account';
+import Account from './Account/account';
 import Watchlists from './watchlists';
 import Trending from './trending';
 import Scanner from './scanner';
@@ -23,10 +23,6 @@ import {
 
 var color = colors();
 
-
-
-
-
 const AppNavTabs = TabNavigator({
   Account: {
     screen: Account,
@@ -45,7 +41,7 @@ const AppNavTabs = TabNavigator({
   }
 }, {
   initialRouteName: appNavDefaultTabRoute,
-  lazy: false,
+  lazy: true,
   animationEnabled: true,
   tabBarOptions: {
     activeTintColor: color['darkSlate'],

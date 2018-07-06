@@ -16,22 +16,25 @@ import {
 import { connect } from 'react-redux';
 
 import Modal from 'react-native-modal'
-import { setTheme, getTheme, colors } from '../store/store';
+import { setTheme, getTheme, colors } from '../../store/store';
 
 import Tabs from 'react-native-tabs';
-import AccountBal from '../routes/accountbalances';
-import AccountHist from '../routes/accounthistory';
-import AccountPos from '../routes/accountpositions';
-import Search from './search';
+import AccountBal from './accountbalances';
+import AccountHist from './accounthistory';
+import AccountPos from './accountpositions';
+import Search from '../search';
 
-import styles from '../style/style';
-import account from '../style/account';
-import fonts from '../style/fonts';
-import navstyle from '../style/nav';
-import { selectGlobalData } from '../selectors';
+import styles from '../../style/style';
+import account from '../../style/account';
+import fonts from '../../style/fonts';
+import navstyle from '../../style/nav';
+import { selectGlobalData } from '../../selectors';
 
 import { observer } from 'mobx-react';
-import { myAccount } from '../mobxStores';
+import { myAccount } from '../../mobxStores';
+
+let SearchImage = '../../images/search.png';
+let TabBarIcon = '../../images/accounts.png';
 
 @observer
 class Account extends Component {
@@ -41,7 +44,7 @@ class Account extends Component {
     gesturesEnabled: false,
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../images/accounts.png')}
+        source={require(TabBarIcon)}
         style={[navstyle.icon, { tintColor: tintColor }]}
       />
     ),
@@ -103,7 +106,7 @@ class Account extends Component {
             <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
               <Image
-                source={require('../images/search.png')}
+                source={require(SearchImage)}
                 style={styles.searchImg}
               />
             </TouchableOpacity>
