@@ -542,7 +542,6 @@ class Trending extends React.Component {
   // }
 
 
-
   addWatchItem() {
     console.log('WATCH ITEM ADD')
   }

@@ -17,25 +17,28 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../components/react-native-simple-radio-button';
 import Modal from 'react-native-modal'
 import SortableListView from 'react-native-sortable-listview'
-import { setTheme, getTheme, colors } from '../store/store';
-import { selectGlobalData } from '../selectors';
+import { setTheme, getTheme, colors } from '../../store/store';
+import { selectGlobalData } from '../../selectors';
 
 import {
   TabNavigator,
 } from 'react-navigation';
 
-import Swipeout from '../components/react-native-swipeout';
-import Search from './search';
+import Swipeout from '../../components/react-native-swipeout';
+import Search from './../search';
 
-import styles from '../style/style';
-import fonts from '../style/fonts';
-import navstyle from '../style/nav';
+import styles from '../../style/style';
+import fonts from '../../style/fonts';
+import navstyle from '../../style/nav';
 
-import watchstyle from '../style/watchlist';
-// import colors from '../style/colors';
+import watchstyle from '../../style/watchlist';
+// import colors from '../../style/colors';
+
+import { watchListStore } from '../../mobxStores';
+import { observer } from 'mobx-react';
 
 var sort_props = [
   { label: 'A-Z', value: 0 },
@@ -44,29 +47,22 @@ var sort_props = [
 ];
 
 
-var dataSource = [
-  { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../images/momo_watch_01.gif'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-  { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../images/momo_watch_02.gif'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-  { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../images/momo_watch_03.gif'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-  { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../images/momo_watch_01.gif'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-  { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../images/momo_watch_04.gif'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-  { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../images/momo_watch_02.gif'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-]
-var order = Object.keys(dataSource);
 var stockChange = true;
 
-function deleteWatch() {
+function deleteWatch(rowToRemove) {
+  const { removeFromWatchlist } = watchListStore;
   Alert.alert(
     'Delete',
     'Are you sure you want to delete this?',
     [
       { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-      { text: 'OK', onPress: () => console.log('OK Pressed') },
+      { text: 'OK', onPress: () => removeFromWatchlist(rowToRemove) },
     ],
     { cancelable: true }
   )
 }
 
+@observer
 class Watchlists extends React.Component {
   static navigationOptions = {
     title: 'Watchlist',
@@ -74,7 +70,7 @@ class Watchlists extends React.Component {
     gesturesEnabled: false,
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../images/watchlist.png')}
+        source={require('../../images/watchlist.png')}
         style={[navstyle.iconBig, { tintColor: tintColor }]}
       />
     ),
@@ -200,14 +196,25 @@ class Watchlists extends React.Component {
     );
 
     return thisRow;
+  }
 
+  onRowMoved(e) {
+    const { onRowMove } = watchListStore;
+    onRowMove(e)
   }
 
   render() {
+    const { watchlistDataJS, watchlistOrderJS } = watchListStore;
+    let dataSource = watchlistDataJS;
+    let order = watchlistOrderJS;
+
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={[styles.menuContainer]}>
+
+            {/*Header*/}
+
             {!this.state.isListEditable &&
               <TouchableOpacity style={styles.leftCta} onPress={() => this.showEdits()}>
                 <Text style={[{ color: this.state.colors['lightGray'] }, styles.leftCtaTxt, fonts.hindGunturRg]}>Edit</Text>
@@ -221,7 +228,7 @@ class Watchlists extends React.Component {
             <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
               <Image
-                source={require('../images/search.png')}
+                source={require('../../images/search.png')}
                 style={styles.searchImg}
               />
             </TouchableOpacity>
@@ -230,13 +237,17 @@ class Watchlists extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Not Editable */}
+
         {!this.state.isListEditable &&
           <SortableListView
             data={dataSource}
             order={order}
             onRowMoved={e => {
-              order.splice(e.to, 0, order.splice(e.from, 1)[0]);
-              this.forceUpdate();
+              console.log('row moved in NON EDITABLE MODE')
+              {/*order.splice(e.to, 0, order.splice(e.from, 1)[0]);*/}
+              {/*this.forceUpdate();*/}
             }}
             rowHasChanged={e => {
               return true;
@@ -246,13 +257,17 @@ class Watchlists extends React.Component {
             renderRow={row => this.renderRow(row)}
           />
         }
+
+        {/* Editable */}
+
         {this.state.isListEditable &&
           <SortableListView
             data={dataSource}
             order={order}
             onRowMoved={e => {
-              order.splice(e.to, 0, order.splice(e.from, 1)[0]);
-              this.forceUpdate();
+              this.onRowMoved(e)
+              {/*order.splice(e.to, 0, order.splice(e.from, 1)[0]);*/}
+              {/*this.forceUpdate();*/}
             }}
             disableSorting={false}
             navigation={this.props.navigation}
@@ -262,10 +277,10 @@ class Watchlists extends React.Component {
                 delayLongPress={500}>
                 <View style={watchstyle.touchable}>
                   <TouchableOpacity style={watchstyle.symDelete}
-                    onPress={() => deleteWatch()}
+                    onPress={() => deleteWatch(row)}
                   >
                     <Image
-                      source={require('../images/dragdelete.png')}
+                      source={require('../../images/dragdelete.png')}
                       style={[watchstyle.dragDelete]}
                     />
                   </TouchableOpacity>
@@ -276,7 +291,7 @@ class Watchlists extends React.Component {
                   <View style={watchstyle.symMomentum}></View>
                   <View style={watchstyle.symCost}>
                     <Image
-                      source={require('../images/drag.png')}
+                      source={require('../../images/drag.png')}
                       style={[watchstyle.drag]}
                     />
                   </View>

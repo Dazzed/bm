@@ -33,7 +33,7 @@ const firstNavDefaultRoute = 'AppNav';
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Trending';
+const appNavDefaultTabRoute = 'Watchlists';
 
 // Account
 // Watchlists
@@ -49,7 +49,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
-const showConsole = false;
+const showConsole = true;
 
 
 const autoLogin = false;

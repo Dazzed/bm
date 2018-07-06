@@ -4,7 +4,7 @@ import {
 } from 'react-navigation';
 
 import Account from './Account/account';
-import Watchlists from './watchlists';
+import Watchlists from './Watchlist/watchlists';
 import Trending from './Trending/trending';
 import Scanner from './scanner';
 import Settings from './settings';
