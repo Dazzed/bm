@@ -78,15 +78,15 @@ const StackNav = StackNavigator({
 }, {
   initialRouteName: stackNavDefaultRoute,
   lazy: false,
-  animationEnabled: false,
+  animationEnabled: true,
   mode: 'modal',
   headerMode: 'float',
   headerTransitionPreset: 'uikit',
-  transitionConfig: () => ({
-    transitionSpec: {
-      duration: 0,
-    },
-  }),
+  // transitionConfig: () => ({
+  //   // transitionSpec: {
+  //   //   duration: 0,
+  //   // },
+  // }),
 });
 
 

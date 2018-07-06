@@ -48,6 +48,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
+const showConsole = false;
 
 
 const autoLogin = false;
@@ -67,6 +68,7 @@ if(productionMode) {
     appNavDefaultTabRoute = 'Account';
     stackNavDefaultRoute = 'AppNavTabs';
     autoLogin = false;
+    showConsole = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -79,5 +81,6 @@ export {
     firstNavDefaultRoute,
     appNavDefaultTabRoute,
     stackNavDefaultRoute,
-    autoLogin
+    autoLogin,
+    showConsole
 };
