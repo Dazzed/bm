@@ -30,6 +30,14 @@ import { isPresent, validateEmail, validatePassword, isEmailAlreadyInUse } from 
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 
+import PasswordChecklist from '../../../sharedComponents/PasswordChecklist';
+
+import {
+    eightCharValidator,
+    upperAndLowercasLettersValidator,
+    atLeastOneNumberValidator
+} from '../utility';
+
 let showWhyWeAsk = false;
 
 @observer
@@ -90,7 +98,19 @@ export default class AccountSelection extends Component {
     }
 
     isFormValid() {
-        return true;
+        const { registrationDataJS } = registrationStore;
+        const { email, password } = registrationDataJS;
+
+        console.log('----- regis', email, password)
+
+        if(email.length === 0) {
+            return false;
+        }
+
+        // if( eightCharValidator(password) && upperAndLowercasLettersValidator(password) && atLeastOneNumberValidator(password) ) {
+        //     return true;
+        // }
+        return false;
     }
 
     getValidFormClass() {
@@ -147,11 +167,6 @@ export default class AccountSelection extends Component {
             })
 
 
-
-
-
-
-
         // this.setState({
         //     isAsyncValidatingEmail: true
         // });
@@ -182,10 +197,8 @@ export default class AccountSelection extends Component {
         // } else {
 
         // }
-
-
-
     }
+
 
     render() {
         const { registrationDataJS } = registrationStore;
@@ -236,6 +249,7 @@ export default class AccountSelection extends Component {
                             </View>
                         </View>
                     </View>
+                    <PasswordChecklist password={registrationDataJS.password}/>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight
