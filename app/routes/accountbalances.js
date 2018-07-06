@@ -26,6 +26,10 @@ import account from '../style/account';
 import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
 
+import { observer } from 'mobx-react';
+import { myAccount } from '../mobxStores';
+
+@observer
 class AccountBal extends React.Component {
   static navigationOptions = {
     title: 'AccountBal',

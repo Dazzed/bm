@@ -25,6 +25,10 @@ import fonts from '../style/fonts';
 import {setTheme, getTheme, colors} from '../store/store';
 import { selectGlobalData } from '../selectors';
 
+import { observer } from 'mobx-react';
+import { myAccount } from '../mobxStores';
+
+@observer
 class AccountHist extends React.Component {
   static navigationOptions = {
     title: 'AccountHist',

@@ -30,6 +30,10 @@ import fonts from '../style/fonts';
 import navstyle from '../style/nav';
 import { selectGlobalData } from '../selectors';
 
+import { observer } from 'mobx-react';
+import { myAccount } from '../mobxStores';
+
+@observer
 class Account extends Component {
   static navigationOptions = {
     title: 'Account',
@@ -87,6 +91,10 @@ class Account extends Component {
   }
 
   render() {
+    
+    const { myAccoutDataJS } = myAccount;
+    const { totalAccountValue, todaysChange, todaysChangePercentage } = myAccoutDataJS;
+    
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -106,13 +114,13 @@ class Account extends Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, account.valueContainer]}>
             <View style={account.values}>
               <Text style={[{ color: this.state.colors['lightGray'] }, account.acctVal, fonts.hindGunturRg]}>ACCOUNT VALUE</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>$5,485.00</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>${totalAccountValue}</Text>
             </View>
             <View style={account.changeContainer}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, account.change, fonts.hindGunturRg]}>TODAY'S CHANGE</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, account.change, fonts.hindGunturRg]}>{"TODAY'S CHANGE"}</Text>
               <View style={account.changeWrap}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>+385.59</Text>
-                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>+7.03%</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>{todaysChange}</Text>
+                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>{todaysChangePercentage}%</Text>
               </View>
             </View>
           </View>
