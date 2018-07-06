@@ -48,7 +48,7 @@ export default class RegistrationStore {
             password: '',
         }
         this.initRegistation()
-        // this.initWithTestData()
+        this.initWithTestData()
     }
 
     @action initWithTestData = () => {
@@ -65,7 +65,7 @@ export default class RegistrationStore {
             state: '1',
             city: '1',
             zip: '1',
-            stateOption: 1,
+            stateOption: 0,
             // phone selection
             phoneField: '1111111111',
             // date of birth
