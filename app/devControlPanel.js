@@ -20,11 +20,11 @@ const displayPreviewButtonOnHome = false;
 
 
 // force dark theme all the time
-const forceDarkTheme = false;
-// const forceDarkTheme = true;
+// const forceDarkTheme = false;
+const forceDarkTheme = true;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'Login';
+const firstNavDefaultRoute = 'Home';
 // AppNav
 // Login
 // Home
@@ -32,7 +32,7 @@ const firstNavDefaultRoute = 'Login';
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Trending';
+const appNavDefaultTabRoute = 'Account';
 
 // Account
 // Watchlists
@@ -48,6 +48,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
+const showConsole = false;
 
 
 const autoLogin = false;
@@ -67,6 +68,7 @@ if(productionMode) {
     appNavDefaultTabRoute = 'Account';
     stackNavDefaultRoute = 'AppNavTabs';
     autoLogin = false;
+    showConsole = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -79,5 +81,6 @@ export {
     firstNavDefaultRoute,
     appNavDefaultTabRoute,
     stackNavDefaultRoute,
-    autoLogin
+    autoLogin,
+    showConsole
 };

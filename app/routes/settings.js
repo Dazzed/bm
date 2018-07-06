@@ -26,7 +26,6 @@ import EditEmploymentStatus from './editemployment';
 import EditExperience from './editexperience';
 import EditDependents from './editdependents';
 
-
 import RadioForm from '../components/react-native-simple-radio-button';
 import { colors } from '../store/store';
 
@@ -224,7 +223,6 @@ class Settings extends Component {
   }
 
   navToWithdraw() {
-    console.log('===== ', this);
     this.props.navigation.navigate('AccountSelect', {
       widthdrawDepositMode: 'withdraw'
     })
@@ -242,10 +240,13 @@ class Settings extends Component {
     } else {
       selectedCaratImageSource = require('../images/right_arrow.png');
     }
+    
+    
+    
+
 
     return <View>
       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>BANKING</Text>
-
       <TouchableOpacity onPress={() => this.navToDeposit()}>
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Deposit Funds</Text>
@@ -302,6 +303,7 @@ class Settings extends Component {
             <View style={styles.rightCta}></View>
           </View>
         </View>
+        
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, settings.contentBg]}>
           {this.renderBankingSettings()}
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
@@ -484,8 +486,8 @@ class Settings extends Component {
             />
           </View>
         </Modal>
-
-
+        
+        
         <Modal
           isVisible={this.state.isFaqVisible}
           animationIn={'slideInUp'}
@@ -564,10 +566,12 @@ class Settings extends Component {
             />
           </Modal>
         }
+
       </View>
     );
   }
 }
+
 
 Settings.propTypes = {
   navigation: PropTypes.object.isRequired,

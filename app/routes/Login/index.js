@@ -119,8 +119,17 @@ class SignIn extends Component {
     }
     authStore.login(params)
     .then((res) => {
-      console.log('ress', this.props)
-      this.props.navigation.navigate('AppNavTabs')
+      console.log('ress', authStore.loginDataJS)
+      
+      if(authStore.loginDataJS.firstLogin) {
+        this.props.navigation.navigate('AccountSelect', {
+          widthdrawDepositMode: 'deposit'
+        });
+      } else {
+        this.props.navigation.navigate('AppNavTabs');
+      }
+      
+      
     })
     .catch((err) => {
       console.log('err', err)

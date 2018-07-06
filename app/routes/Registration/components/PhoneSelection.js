@@ -113,7 +113,9 @@ export default class PhoneSelection extends Component {
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
-                <ScrollView style={{ height: '72%' }}>
+                <ScrollView style={{flex: 1}}>
+                  <View style={{ paddingVertical: 50 }}>
+                  
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
                         PHONE NUMBER
                     </Text>
@@ -124,7 +126,7 @@ export default class PhoneSelection extends Component {
                         <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
                     </View>
                     {this.whyWeAsk()}
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
+                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingVertical: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatPhone(registrationDataJS.phoneField)}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField]} maxLength={12} editable={false}
@@ -132,6 +134,7 @@ export default class PhoneSelection extends Component {
                         </View>
                         <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
                     </View>
+                  </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight disabled={!this.formValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.returnFormValidClass()]}>

@@ -11,10 +11,10 @@ import { generateHeaderStyles } from '../../utility';
 export default class AccountSelect extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-
+    
         const { theme } = colorStore;
         let headerStyleToExtend = generateHeaderStyles(theme);
-
+    
         let title = 'Withdraw Funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Fund My Account'

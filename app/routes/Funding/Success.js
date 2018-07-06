@@ -6,14 +6,7 @@ import { colorStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
 
 
-export default class AccountSelect extends React.Component {
-
-
-//     const { theme } = colorStore;
-//
-// let headerStyleToExtend = generateHeaderStyles(theme);
-//
-// ...headerStyleToExtend
+export default class Success extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         let title = 'Funds Withdrawn';
@@ -43,10 +36,12 @@ export default class AccountSelect extends React.Component {
     }
 
     navToTradingView() {
-        // this.props.navigation.navigate('FundMyAccount')
+        this.props.navigation.navigate('AppNavTabs')
     }
 
     renderMessage() {
+      const { theme } = colorStore;
+      
         let amount = 300
         let message = `You just deposited $${amount}`
 
@@ -57,14 +52,15 @@ export default class AccountSelect extends React.Component {
             message = `You just withdrew $${amount} from your ${bankName} ${accountType} account.`
         }
 
-        return <View style={{marginVertical: 5}}>
-            <Text style={{textAlign: 'center', fontSize: 20}}>{message}</Text>
-            <Text style={{textAlign: 'center', fontSize: 20}}>Cheers!</Text>
+        return <View style={{marginVertical: 5, backgroundColor: theme.contentBg}}>
+            <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{message}</Text>
+            <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>Cheers!</Text>
         </View>
     }
 
     render() {
-        return <View style={{backgroundColor: this.state.colors.white, alignItems: 'center', flex: 1, padding: 30}}>
+      const { theme } = colorStore
+        return <View style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 30}}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Image
                 style={{height: 100, width: 100}}

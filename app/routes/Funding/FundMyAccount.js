@@ -101,7 +101,7 @@ export default class FundMyAccount extends React.Component {
                 textAlign: 'center',
                 color: theme.darkSlate
             }
-            return <View style={{height: '100%', justifyContent: 'center'}}>
+            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.white}}>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
@@ -130,13 +130,13 @@ export default class FundMyAccount extends React.Component {
 
         let textAmountStyle = {
             fontSize: 40,
-            color: theme.black
+            color: theme.darkSlate
         }
 
         let underlineStyle = {
             height: 1,
             width: '100%',
-            backgroundColor: theme.black
+            backgroundColor: theme.darkSlate
         }
 
         if(this.state.errorRemainingFunds) {
@@ -144,7 +144,7 @@ export default class FundMyAccount extends React.Component {
             textAmountStyle.color = 'red';
         }
 
-        return <View style={{width: '100%', alignSelf: 'center', backgroundColor: theme.realWhite}}>
+        return <View style={{width: '100%', alignSelf: 'center', backgroundColor: theme.white}}>
             <View style={{width: '80%', alignSelf: 'center'}}>
                 <View style={{
                     justifyContent: 'space-between',
@@ -168,15 +168,17 @@ export default class FundMyAccount extends React.Component {
     }
 
     render() {
+      const { theme } = colorStore;
+      
         return <View style={{height: '100%', padding: 0}}>
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: theme.contentBg}}>
                 {this.renderAmountInAccount()}
             </View>
             <View style={{flex: 0}}>
                 {this.renderInputAmount()}
                 {this.renderErrorOrNull()}
                 <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
-                <View style={{padding: 30}}>
+                <View style={{padding: 30, backgroundColor: theme.white}}>
                   <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
                 </View>
                 

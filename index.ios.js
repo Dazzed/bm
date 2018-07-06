@@ -1,3 +1,36 @@
+import { showConsole } from './app/devControlPanel';
+
+if (!showConsole) {
+  // eslint-disable-line no-undef
+  [
+    'assert',
+    'clear',
+    'count',
+    'debug',
+    'dir',
+    'dirxml',
+    'error',
+    'exception',
+    'group',
+    'groupCollapsed',
+    'groupEnd',
+    'info',
+    'log',
+    'profile',
+    'profileEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'timeStamp',
+    'trace',
+    'warn',
+  ].forEach(methodName => {
+    console[methodName] = () => {
+      /* noop */
+    };
+  });
+}
+
 // To prevent the annoying remote debugger message
 console.ignoredYellowBox = ['Remote debugger'];
 import React from 'react';
