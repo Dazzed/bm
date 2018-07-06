@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import numbers from '../style/numbers';
 import fonts from '../style/fonts';
 import { setTheme, getTheme, colors } from '../store/store';
+import { colorStore } from '../mobxStores';
 
 export default class NumericalSelector extends React.Component {
 
@@ -36,11 +37,14 @@ export default class NumericalSelector extends React.Component {
 
 
     render() {
+      
+        const { theme } = colorStore;
+
         let keypadHeight = 250;
 
         let containerStyle = {
             height: keypadHeight,
-            backgroundColor: 'white'
+            backgroundColor: theme.white
         }
 
         let rowStyle = {
@@ -57,7 +61,7 @@ export default class NumericalSelector extends React.Component {
 
         let numberStyle = [
             {
-                color: this.state.colors['darkSlate'],
+                color: theme.darkSlate,
                 fontSize: 20
             },
             fonts.hindGunturRg
@@ -75,7 +79,7 @@ export default class NumericalSelector extends React.Component {
         getNumberStyle = (num) => {
             let numberStyle = [
                 {
-                    color: this.state.colors['darkSlate'],
+                    color: theme.darkSlate,
                     fontSize: 20,
                     opacity: this.isDisabled(num) === true ? .2 : 1
                 },
@@ -83,7 +87,7 @@ export default class NumericalSelector extends React.Component {
             ];
             return numberStyle;
         }
-
+        
         return <View style={containerStyle}>
             <View style={keypadStyle}>
                 <View style={rowStyle}>
