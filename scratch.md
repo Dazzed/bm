@@ -8,10 +8,12 @@ Needs to reset all registration data on succesful submit
 DONE
 
 -in the sign on form when nothing is entered the placeholder text should be grey
-
+DONE
 
 -in the deposit flow from settings and login the final screen says “thank you you’ve now withdrawn 300$” there should be a specific screen for deposit and it should display the correct value (not always 300)
 
 -in the withdraw flow form settings the final screen says “thank you you’ve now withdrawn 300$” it should display the value that was withdrawn (not always 300)
 
 -at first login when you go to deposit flow you should see the deposit splash screen asking you if you want to deposit funds, you should not immediately go to deposit flow.
+
+-Text color on Password checklist should respond to dark theme

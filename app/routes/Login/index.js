@@ -187,7 +187,7 @@ class SignIn extends Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
             <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
               placeholder="your@email.com"
-              placeholderTextColor={this.state.colors['darkSlate']}
+              placeholderTextColor={this.state.colors['lightGray']}
               value={this.state.email}
               onChangeText={(email) => this.setState({ email })}
               keyboardType="email-address" autoCapitalize='none'
@@ -197,7 +197,7 @@ class SignIn extends Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>PASSWORD</Text>
             <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
               placeholder="password"
-              placeholderTextColor={this.state.colors['darkSlate']}
+              placeholderTextColor={this.state.colors['lightGray']}
               value={this.state.password}
               onChangeText={(password) => this.setState({ password })}
               secureTextEntry={true}
