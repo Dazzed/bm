@@ -121,10 +121,8 @@ class SignIn extends Component {
     .then((res) => {
       console.log('ress', authStore.loginDataJS)
       
-      if(authStore.loginDataJS.firstLogin) {
-        this.props.navigation.navigate('AccountSelect', {
-          widthdrawDepositMode: 'deposit'
-        });
+      if(authStore.loginDataJS.firstLogin || true) {
+        this.props.navigation.navigate('FundAccountSplash')
       } else {
         this.props.navigation.navigate('AppNavTabs');
       }

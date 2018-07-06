@@ -14,6 +14,9 @@ import Chart from './chart';
 import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
+
+import FundAccountSplash from './Registration/components/FundAccountSplash';
+
 import { colors } from '../store/store';
 
 import {
@@ -71,6 +74,9 @@ const StackNav = StackNavigator({
   Success: {
     screen: Success
   },
+  FundAccountSplash: {
+    screen: FundAccountSplash
+  }
 }, {
   initialRouteName: stackNavDefaultRoute,
   lazy: false,

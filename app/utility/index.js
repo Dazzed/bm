@@ -15,7 +15,6 @@ const generateHeaderStyles = (theme) => {
     }
 };
 
-
 const eightCharValidator = (password) => {
     if(!password) {
         return false;
