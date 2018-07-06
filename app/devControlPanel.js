@@ -24,8 +24,8 @@ const displayPreviewButtonOnHome = false;
 const forceDarkTheme = true;
 
 // force navigation on top level navigator
-// const firstNavDefaultRoute = 'Home';
-const firstNavDefaultRoute = 'Registration';
+const firstNavDefaultRoute = 'Home';
+// const firstNavDefaultRoute = 'Registration';
 // AppNav
 // Login
 // Home
@@ -51,10 +51,9 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-
 const autoLogin = false;
 
-const registrationInitialStep = 2;
+const registrationInitialStep = 0;
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
