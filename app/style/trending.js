@@ -144,6 +144,7 @@ const trending = StyleSheet.create({
     flexDirection: 'row', 
     alignItems: 'flex-start',
     borderBottomWidth:0.5,
+    // width: '100%',
     // borderBottomColor: colors.borderGray,
     paddingTop: 10,
     paddingBottom: 5,

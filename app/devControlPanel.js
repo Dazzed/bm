@@ -33,7 +33,7 @@ const firstNavDefaultRoute = 'AppNav';
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Account';
+const appNavDefaultTabRoute = 'Trending';
 
 // Account
 // Watchlists

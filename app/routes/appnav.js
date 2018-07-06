@@ -5,7 +5,7 @@ import {
 
 import Account from './Account/account';
 import Watchlists from './watchlists';
-import Trending from './trending';
+import Trending from './Trending/trending';
 import Scanner from './scanner';
 import Settings from './settings';
 import CustomTabBar from './customtabbar';
