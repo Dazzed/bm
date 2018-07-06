@@ -32,7 +32,7 @@ export default class Deposit extends React.Component {
             // borderColor: 'red'
         }
 
-        let buttonTextStyle = [styles.fullBtnTxt, fonts.hindGunturBd, {color: theme.darkSlate, marginTop: 7}];
+        let buttonTextStyle = [styles.fullBtnTxt, fonts.hindGunturBd, {color: theme.white, marginTop: 7}];
 
         return <View style={{width: '100%', height: buttonHeight}}>
             <TouchableOpacity onPress={this.props.onPress} style={{width: '100%', height: '100%'}}>

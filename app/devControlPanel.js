@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-const productionMode = false;
-// const productionMode = true;
+// const productionMode = false;
+const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
-const showConsole = true;
+const showConsole = false;
 
 
 const autoLogin = false;
