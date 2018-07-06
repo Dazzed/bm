@@ -7,6 +7,8 @@ export default class Watchlist {
 
   @observable listOrder = ["0", "1", "2", "3", "4", "5"];
 
+  @observable sortByIndex = 0;
+
   @action setWatchlistData = (data) => {
     this.scannerData = data;
   }
@@ -35,6 +37,11 @@ export default class Watchlist {
   @action removeFromWatchlist = (itemToRemove) => {
     console.log('REMOVE THIS', itemToRemove);
 
+  }
+
+  @action sortBy = (sortValue) => {
+    console.log('SORT BY', sortValue)
+    this.sortByIndex = sortValue;
   }
 
   @computed get watchlistOrderJS() {

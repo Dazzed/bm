@@ -84,7 +84,7 @@ class Watchlists extends React.Component {
       isScanVisible: false,
       isSearchVisible: false,
       isSortVisible: false,
-      sortVal: 0,
+      // sortVal: 0,
       colors: colorObj,
       swipeoutBtns: [{
         text: 'Delete',
@@ -136,25 +136,30 @@ class Watchlists extends React.Component {
     console.log('showSort');
     this.setState({ isSortVisible: true })
   }
+
   hideSort(value) {
-    if (value) {
-      this.setState({ isSortVisible: false, sortVal: value })
-    } else {
+    const { sortBy } = watchListStore;
+    // if (value) {
+    //   this.setState({ isSortVisible: false, sortVal: value })
+    // } else {
       this.setState({ isSortVisible: false })
+    // }
+    if(value !== undefined) {
+      sortBy(value)
     }
   }
 
-  showTicker(sym) {
-    Alert.alert(
-      '',
-      'You added ' + sym + ' to your watchlist.',
-      [
-        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ],
-      { cancelable: true }
-    )
-  }
+  // showTicker(sym) {
+  //   Alert.alert(
+  //     '',
+  //     'You added ' + sym + ' to your watchlist.',
+  //     [
+  //       { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
+  //     ],
+  //     { cancelable: true }
+  //   )
+  // }
 
   changeToggle(row) {
     row['stockChange'] = !row['stockChange'];
@@ -204,7 +209,7 @@ class Watchlists extends React.Component {
   }
 
   render() {
-    const { watchlistDataJS, watchlistOrderJS } = watchListStore;
+    const { watchlistDataJS, watchlistOrderJS, sortByIndex } = watchListStore;
     let dataSource = watchlistDataJS;
     let order = watchlistOrderJS;
 
@@ -315,7 +320,8 @@ class Watchlists extends React.Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, watchstyle.bottomModal]}>
             <RadioForm
               radio_props={sort_props}
-              initial={this.state.sortVal}
+              initial={sortByIndex}
+              value={sortByIndex}
               formHorizontal={false}
               labelHorizontal={true}
               borderWidth={1}
