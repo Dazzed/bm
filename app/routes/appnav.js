@@ -59,10 +59,6 @@ const AppNavTabs = TabNavigator({
   tabBarComponent: CustomTabBar,
 });
 
-
-
-
-
 const StackNav = StackNavigator({
   AppNavTabs: {
     screen: AppNavTabs,

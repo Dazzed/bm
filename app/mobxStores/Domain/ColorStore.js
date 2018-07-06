@@ -19,8 +19,8 @@ export default class ColorStore {
         for(let elem in theme) {
             let objElem = theme[elem];
             if(typeof objElem === 'string') {
-                console.log('===', elem)
-                console.log(`%c ${elem}: ${objElem}`, `color: ${objElem}`);
+                // console.log('===', elem)
+                // console.log(`%c ${elem}: ${objElem}`, `color: ${objElem}`);
             }
         }
     }

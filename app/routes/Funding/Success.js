@@ -6,14 +6,7 @@ import { colorStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
 
 
-export default class AccountSelect extends React.Component {
-
-
-//     const { theme } = colorStore;
-//
-// let headerStyleToExtend = generateHeaderStyles(theme);
-//
-// ...headerStyleToExtend
+export default class Success extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         let title = 'Funds Withdrawn';
@@ -43,7 +36,7 @@ export default class AccountSelect extends React.Component {
     }
 
     navToTradingView() {
-        // this.props.navigation.navigate('FundMyAccount')
+        this.props.navigation.navigate('AppNavTabs')
     }
 
     renderMessage() {

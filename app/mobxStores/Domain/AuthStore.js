@@ -8,6 +8,9 @@ export default class ColorStore {
         console.log('====== AUTH STORE');
     }
 
+
+    @observable loginData = null;
+
     @observable userData = null;
 
     @observable loginLoading = false;
@@ -18,8 +21,16 @@ export default class ColorStore {
         this.loginErrorMessage = msg;
     }
 
+    @action setLoginData = (loginData) => {
+        this.loginData = loginData;
+    }
+
     @action setUserData = (userData) => {
         this.userData = userData;
+    }
+
+    @computed get loginDataJS() {
+      return toJS(this.loginData);
     }
 
     @action populateUserById = (id) => {
@@ -29,7 +40,6 @@ export default class ColorStore {
                 console.log('res', res)
                 if(res.ok) {
                     console.log('got user data', res)
-
                     resolve(res)
                 } else {
                     this.setLoginErrorMessage(res.json.error.message)
@@ -52,6 +62,7 @@ export default class ColorStore {
             .then((res) => {
                 console.log('res', res)
                 if(res.ok) {
+                    this.setLoginData(res.json)
                     userId = res.json.userId;
                     return saveToken(res.json.id)
                 } else {
@@ -67,7 +78,6 @@ export default class ColorStore {
                 // nav out
                 if(res.ok) {
                     this.setUserData(res.json)
-                    console.log('----- GET USER DATA and NAVIGATE IN');
                     resolve()
                 } else {
                     this.setLoginErrorMessage(res.json.error.message);
