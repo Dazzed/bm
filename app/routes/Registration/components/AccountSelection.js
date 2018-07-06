@@ -36,7 +36,7 @@ import {
     eightCharValidator,
     upperAndLowercasLettersValidator,
     atLeastOneNumberValidator
-} from '../utility';
+} from '../../../utility';
 
 let showWhyWeAsk = false;
 
@@ -100,16 +100,12 @@ export default class AccountSelection extends Component {
     isFormValid() {
         const { registrationDataJS } = registrationStore;
         const { email, password } = registrationDataJS;
-
-        console.log('----- regis', email, password)
-
         if(email.length === 0) {
             return false;
         }
-
-        // if( eightCharValidator(password) && upperAndLowercasLettersValidator(password) && atLeastOneNumberValidator(password) ) {
-        //     return true;
-        // }
+        if( eightCharValidator(password) && upperAndLowercasLettersValidator(password) && atLeastOneNumberValidator(password) ) {
+            return true;
+        }
         return false;
     }
 
