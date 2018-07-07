@@ -178,6 +178,7 @@ class SignIn extends Component {
             <Text style={styles.rightCta}></Text>
           </View>
         </View>
+
         <KeyboardAvoidingView
           behavior={this.state.behavior}
           style={styles.formcontainer}>
