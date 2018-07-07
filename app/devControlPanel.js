@@ -20,8 +20,8 @@ const displayPreviewButtonOnHome = false;
 
 
 // force dark theme all the time
-// const forceDarkTheme = false;
-const forceDarkTheme = true;
+const forceDarkTheme = false;
+// const forceDarkTheme = true;
 
 // force navigation on top level navigator
 const firstNavDefaultRoute = 'Home';
@@ -30,6 +30,9 @@ const firstNavDefaultRoute = 'Home';
 // Login
 // Home
 
+const registrationInitialStep = 0;
+
+const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
@@ -53,7 +56,7 @@ const showConsole = true;
 
 const autoLogin = false;
 
-const registrationInitialStep = 0;
+
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -62,6 +65,12 @@ const registrationInitialStep = 0;
 //
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
+
+
+// set it even if I forget to set it for production
+if (!__DEV__) {
+    productionMode = true;
+}
 
 if(productionMode) {
     displayPreviewButtonOnHome = false;
@@ -72,6 +81,7 @@ if(productionMode) {
     autoLogin = false;
     showConsole = false;
     registrationInitialStep = 0;
+    fillRegistrationWithFakeData = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -86,5 +96,6 @@ export {
     stackNavDefaultRoute,
     autoLogin,
     showConsole,
-    registrationInitialStep
+    registrationInitialStep,
+    fillRegistrationWithFakeData
 };

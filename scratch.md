@@ -13,15 +13,14 @@ DONE
 
 -at first login when you go to deposit flow you should see the deposit splash screen asking you if you want to deposit funds, you should not immediately go to deposit flow.
 
-
-We are working with banking regulators to allow us to connect to real accounts. As we finalize that approval, we have create a mock account to simulate how easy this process will be.
+We are working with bankding regulators to allow us to connect to real accounts. As we finalize that approval, we have create a mock account to simulate how easy this process will be.
 Integer vitae nisl venenatis, iaculis neque a, euismod massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-
+DONE
 
 
 
 -Text color on Password checklist should respond to dark theme
-
+DONE
 
 
 

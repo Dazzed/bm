@@ -2,6 +2,8 @@ import { observable, action, computed, toJS } from 'mobx';
 import { createUser } from '../../api';
 import { formatDate } from '../../routes/Registration/utility';
 
+import { fillRegistrationWithFakeData } from '../../devControlPanel';
+
 export default class RegistrationStore {
 
     constructor() {
@@ -48,7 +50,10 @@ export default class RegistrationStore {
             password: '',
         }
         this.initRegistation();
-        // this.initWithTestData();
+
+        if(fillRegistrationWithFakeData) {
+            this.initWithTestData();
+        }
     }
 
     @action initWithTestData = () => {

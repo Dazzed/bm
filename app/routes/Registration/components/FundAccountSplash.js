@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import {
     ScrollView,
@@ -17,15 +16,9 @@ import {
     TouchableHighlight
 } from 'react-native';
 
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-import numbers from '../../../style/numbers';
-import up from '../../../images/up.png';
-import down from '../../../images/down.png';
-import { Label } from 'native-base';
 
 let showWhyWeAsk = false;
 
@@ -37,11 +30,6 @@ import { generateHeaderStyles } from '../../../utility';
 
 @observer
 export default class FundAccountSplash extends Component {
-    static propTypes = {
-        // onForwardStep: PropTypes.func.isRequired,
-        // updateRegistrationParams: PropTypes.func.isRequired,
-        // colors: PropTypes.object.isRequired,
-    }
 
     static navigationOptions = ({ navigation }) => {
         let title = '';
@@ -60,7 +48,6 @@ export default class FundAccountSplash extends Component {
           widthdrawDepositMode: 'deposit'
         });
     }
-
 
     render() {
         const { theme } = colorStore;

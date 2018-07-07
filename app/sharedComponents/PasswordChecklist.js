@@ -39,12 +39,13 @@ export default class PasswordChecklist extends React.Component {
 
         let inlineTextStyle = {
             color: theme.darkSlate,
+            fontSize: 16
         }
 
         console.log('validator input', validator(input))
 
-        if(!validator(input)) {
-            inlineTextStyle.color = theme.red
+        if(validator(input)) {
+            inlineTextStyle.color = theme.green
         }
 
         return <View>
@@ -54,25 +55,12 @@ export default class PasswordChecklist extends React.Component {
 
 
     render() {
-        let buttonHeight = 70;
-
         const { theme } = colorStore;
-
-        let textContainer = {
-            width: '100%',
-            height: '100%',
-            backgroundColor: theme.green,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 5,
-            // borderWidth: 1,
-            // borderColor: 'red'
-        }
 
         let password = this.props.password;
 
-        return <View style={{width: '100%', height: buttonHeight, width: 300, alignSelf: 'center', marginVertical: 20}}>
-            <Text>Your password must have:</Text>
+        return <View style={{width: '100%', width: 300, alignSelf: 'center', marginVertical: 20}}>
+            <Text style={{marginVertical: 5, color: theme.darkSlate}}>Your password must have:</Text>
             {this.renderTest(password, '8 or more characters', this.charValidator)}
             {this.renderTest(password, 'Upper & Lowercase Letters', this.casLettersValidator)}
             {this.renderTest(password, 'At least one number', this.oneNumberValidator)}
