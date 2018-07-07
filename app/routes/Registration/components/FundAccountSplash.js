@@ -65,7 +65,7 @@ export default class FundAccountSplash extends Component {
                                 Congratulations!
                             </Text>
                             <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', marginTop: 15 }]}>
-                                We are working with banking regulators to allow us to connect to real accounts. As we finalize that approval, we have create a mock account to simulate how easy this process will be.
+                                We are working with banking regulators to allow us to connect to real accounts. As we finalize that approval, we have created a mock account to simulate how easy this process will be.
                             </Text>
                             <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', marginTop: 15 }]}>
                                 Integer vitae nisl venenatis, iaculis neque a, euismod massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
