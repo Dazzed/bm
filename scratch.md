@@ -23,7 +23,8 @@ DONE
 DONE
 
 
-
 -in the withdraw flow form settings the final screen says “thank you you’ve now withdrawn 300$” it should display the value that was withdrawn (not always 300)
 -in the deposit flow from settings and login the final screen says “thank you you’ve now withdrawn 300$” there should be a specific screen for deposit and it should display the correct value (not always 300)
 WAITING ON API FOR THIS
+
+DONE TEMPORARY

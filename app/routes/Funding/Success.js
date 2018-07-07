@@ -42,7 +42,7 @@ export default class Success extends React.Component {
     renderMessage() {
       const { theme } = colorStore;
       
-        let amount = 300
+        let amount = this.props.navigation.state.params.amount;
         let message = `You just deposited $${amount}`
 
         let bankName = 'BANK MOCK'
