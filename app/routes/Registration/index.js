@@ -42,6 +42,7 @@ import InvestmentExperienceSelection from './components/InvestmentExperienceSele
 import AccountSelection from './components/AccountSelection';
 import Declaration from './components/Declaration';
 import Thankyou from './components/Thankyou';
+import { registrationInitialStep } from '../../devControlPanel';
 
 import { registrationStore } from '../../mobxStores';
 
@@ -57,7 +58,7 @@ class RegistrationPage extends React.Component {
     this.state = { 
       email: '', 
       behavior: 'padding', 
-      step: 0,
+      step: registrationInitialStep,
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }

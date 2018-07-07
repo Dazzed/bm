@@ -3,9 +3,9 @@ import {
   StackNavigator
 } from 'react-navigation';
 
-import Account from './account';
-import Watchlists from './watchlists';
-import Trending from './trending';
+import Account from './Account/account';
+import Watchlists from './Watchlist/watchlists';
+import Trending from './Trending/trending';
 import Scanner from './scanner';
 import Settings from './settings';
 import CustomTabBar from './customtabbar';
@@ -14,6 +14,9 @@ import Chart from './chart';
 import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
+
+import FundAccountSplash from './Registration/components/FundAccountSplash';
+
 import { colors } from '../store/store';
 
 import {
@@ -22,10 +25,6 @@ import {
 } from '../devControlPanel';
 
 var color = colors();
-
-
-
-
 
 const AppNavTabs = TabNavigator({
   Account: {
@@ -45,7 +44,7 @@ const AppNavTabs = TabNavigator({
   }
 }, {
   initialRouteName: appNavDefaultTabRoute,
-  lazy: false,
+  lazy: true,
   animationEnabled: true,
   tabBarOptions: {
     activeTintColor: color['darkSlate'],
@@ -75,6 +74,9 @@ const StackNav = StackNavigator({
   Success: {
     screen: Success
   },
+  FundAccountSplash: {
+    screen: FundAccountSplash
+  }
 }, {
   initialRouteName: stackNavDefaultRoute,
   lazy: false,

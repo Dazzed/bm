@@ -16,20 +16,27 @@ import {
 import { connect } from 'react-redux';
 
 import Modal from 'react-native-modal'
-import { setTheme, getTheme, colors } from '../store/store';
+import { setTheme, getTheme, colors } from '../../store/store';
 
 import Tabs from 'react-native-tabs';
-import AccountBal from '../routes/accountbalances';
-import AccountHist from '../routes/accounthistory';
-import AccountPos from '../routes/accountpositions';
-import Search from './search';
+import AccountBal from './accountbalances';
+import AccountHist from './accounthistory';
+import AccountPos from './accountpositions';
+import Search from '../search';
 
-import styles from '../style/style';
-import account from '../style/account';
-import fonts from '../style/fonts';
-import navstyle from '../style/nav';
-import { selectGlobalData } from '../selectors';
+import styles from '../../style/style';
+import account from '../../style/account';
+import fonts from '../../style/fonts';
+import navstyle from '../../style/nav';
+import { selectGlobalData } from '../../selectors';
 
+import { observer } from 'mobx-react';
+import { myAccount } from '../../mobxStores';
+
+let SearchImage = '../../images/search.png';
+let TabBarIcon = '../../images/accounts.png';
+
+@observer
 class Account extends Component {
   static navigationOptions = {
     title: 'Account',
@@ -37,7 +44,7 @@ class Account extends Component {
     gesturesEnabled: false,
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../images/accounts.png')}
+        source={require(TabBarIcon)}
         style={[navstyle.icon, { tintColor: tintColor }]}
       />
     ),
@@ -87,6 +94,10 @@ class Account extends Component {
   }
 
   render() {
+    
+    const { myAccoutDataJS } = myAccount;
+    const { totalAccountValue, todaysChange, todaysChangePercentage } = myAccoutDataJS;
+    
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -95,7 +106,7 @@ class Account extends Component {
             <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
               <Image
-                source={require('../images/search.png')}
+                source={require(SearchImage)}
                 style={styles.searchImg}
               />
             </TouchableOpacity>
@@ -106,13 +117,13 @@ class Account extends Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, account.valueContainer]}>
             <View style={account.values}>
               <Text style={[{ color: this.state.colors['lightGray'] }, account.acctVal, fonts.hindGunturRg]}>ACCOUNT VALUE</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>$5,485.00</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>${totalAccountValue}</Text>
             </View>
             <View style={account.changeContainer}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, account.change, fonts.hindGunturRg]}>TODAY'S CHANGE</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, account.change, fonts.hindGunturRg]}>{"TODAY'S CHANGE"}</Text>
               <View style={account.changeWrap}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>+385.59</Text>
-                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>+7.03%</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>{todaysChange}</Text>
+                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>{todaysChangePercentage}%</Text>
               </View>
             </View>
           </View>

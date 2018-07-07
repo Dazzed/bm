@@ -23,13 +23,16 @@ import {
 import { connect } from 'react-redux';
 
 import Modal from 'react-native-modal'
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../components/react-native-simple-radio-button';
 
-import fonts from '../style/fonts';
-import navstyle from '../style/nav';
+import fonts from '../../style/fonts';
+import navstyle from '../../style/nav';
 
-import { setTheme, getTheme, colors } from '../store/store';
-import { selectGlobalData } from '../selectors';
+import { setTheme, getTheme, colors } from '../../store/store';
+import { selectGlobalData } from '../../selectors';
+
+import { observer } from 'mobx-react';
+import { trendingStore } from '../../mobxStores';
 
 var scan_props = [
   { label: 'Top volume', value: 0 },
@@ -165,12 +168,13 @@ var industry_consumerdiscretionary = [
 ];
 
 
-import Search from './search';
+import Search from '../search';
 
 
-import styles from '../style/style';
-import trending from '../style/trending';
-import numbers from '../style/numbers';
+import styles from '../../style/style';
+import trending from '../../style/trending';
+import numbers from '../../style/numbers';
+
 var styleDefault;
 
 class SubMenu extends React.Component {
@@ -302,7 +306,7 @@ class SubMenu extends React.Component {
         <View style={trending.subMenuRow}>
           <TouchableOpacity style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.subMenuFull]} onPress={() => { this.showScan() }}>
             <Image
-              source={require('../images/arrow.png')}
+              source={require('../../images/arrow.png')}
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>TRENDING</Text>
@@ -316,7 +320,7 @@ class SubMenu extends React.Component {
             onModalHide={() => { this.hideScan() }}>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.radio]}>
               <Image
-                source={require('../images/arrowblue.png')}
+                source={require('../../images/arrowblue.png')}
                 style={[trending.downArrowOpen]}
               />
               <Text style={[{ color: this.state.colors['darkSlate'] }, trending.radioTitle, fonts.hindGunturBd]}>TRENDING</Text>
@@ -345,7 +349,7 @@ class SubMenu extends React.Component {
         <View style={trending.subMenuRow}>
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
             <Image
-              source={require('../images/arrow.png')}
+              source={require('../../images/arrow.png')}
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
@@ -359,7 +363,7 @@ class SubMenu extends React.Component {
             onModalHide={() => { this.hideSector() }}>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.subMenuLeftModal]}>
               <Image
-                source={require('../images/arrowblue.png')}
+                source={require('../../images/arrowblue.png')}
                 style={[trending.downArrow]}
               />
               <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
@@ -388,7 +392,7 @@ class SubMenu extends React.Component {
           </Modal>
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showIndustry(); }}>
             <Image
-              source={require('../images/arrow.png')}
+              source={require('../../images/arrow.png')}
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
@@ -404,7 +408,7 @@ class SubMenu extends React.Component {
             onModalHide={() => { this.hideIndustry() }}>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.subMenuRightModal]}>
               <Image
-                source={require('../images/arrowblue.png')}
+                source={require('../../images/arrowblue.png')}
                 style={[trending.downArrow]}
               />
               <Text style={[{ color: this.state.colors['darkSlate'] },trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
@@ -440,6 +444,8 @@ class SubMenu extends React.Component {
 SubMenu.propTypes = {
   globalData: PropTypes.object.isRequired,
 };
+
+@observer
 class Trending extends React.Component {
   static navigationOptions = {
     title: 'Trending',
@@ -447,7 +453,7 @@ class Trending extends React.Component {
     gesturesEnabled: false,
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../images/trending.png')}
+        source={require('../../images/trending.png')}
         style={[navstyle.iconBig, { tintColor: tintColor }]}
       />
     ),
@@ -458,12 +464,12 @@ class Trending extends React.Component {
     var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       ds: [
-        { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../images/momentumfpowatchlist.png'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', icon: require('../images/watchlist_added.png'), posNeg: 'green', change: '+1.85', changePerc: '+10.41%', stockChange: true },
-        { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../images/momentumfpowatchlist_down01.png'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', icon: require('../images/add.png'), posNeg: 'red', change: '-3.12', changePerc: '-2.15%', stockChange: true },
-        { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../images/momentumfpowatchlist_01.png'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', icon: require('../images/watchlist_added.png'), posNeg: 'green', change: '+2.01', changePerc: '+2.43%', stockChange: true },
-        { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../images/momentumfpowatchlist_down02.png'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', icon: require('../images/add.png'), posNeg: 'green', change: '+3.10', changePerc: '+1.05%', stockChange: true },
-        { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../images/momentumfpowatchlist_down01.png'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', icon: require('../images/add.png'), posNeg: 'red', change: '-4.43', changePerc: '-5.64%', stockChange: true },
-        { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', icon: require('../images/add.png'), posNeg: 'green', change: '+0.15', changePerc: '+4.04%', stockChange: true },
+        { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../../images/momentumfpowatchlist.png'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+1.85', changePerc: '+10.41%', stockChange: true },
+        { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-3.12', changePerc: '-2.15%', stockChange: true },
+        { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../../images/momentumfpowatchlist_01.png'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+2.01', changePerc: '+2.43%', stockChange: true },
+        { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../../images/momentumfpowatchlist_down02.png'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+3.10', changePerc: '+1.05%', stockChange: true },
+        { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-4.43', changePerc: '-5.64%', stockChange: true },
+        { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+0.15', changePerc: '+4.04%', stockChange: true },
       ],
       dataSource: ds,
       isSearchVisible: false,
@@ -501,49 +507,66 @@ class Trending extends React.Component {
     this.setState({ isSearchVisible: false });
   }
 
-  addWatchItem(sym) {
-    var watchItems = this.state.watchlistItems;
-    var watchVar = watchItems.slice()
-    var exists = false;
-    var newDs = [];
-    newDs = this.state.ds.slice();
+  // addWatchItem(sym) {
+  //   var watchItems = this.state.watchlistItems;
+  //   var watchVar = watchItems.slice()
+  //   var exists = false;
+  //   var newDs = [];
+  //   newDs = this.state.ds.slice();
+  //
+  //   for (var i = 0; i < watchItems.length; i++) {
+  //     if (watchItems[i] == sym) {
+  //       exists = true;
+  //     }
+  //   }
+  //
+  //   if (!exists) {
+  //     watchVar.push(sym)
+  //   }
+  //
+  //   for (var j = 0; j < watchVar.length; j++) {
+  //     for (var i = 0; i < newDs.length; i++) {
+  //       if (newDs[i].sym == watchVar[j]) {
+  //         newDs[i] = { sym: newDs[i].sym, exch: newDs[i].exch, name: newDs[i].name, img: newDs[i].img, vol: newDs[i].vol, price: newDs[i].price, time: newDs[i].time, change: newDs[i].change, icon: require('../../images/watchlist_added.png'), posNeg: newDs[i].posNeg, changePerc: newDs[i].changePerc, stockChange: newDs[i].stockChange }
+  //       }
+  //     }
+  //   }
+  //
+  //   this.setState({
+  //     dataSource: this.state.dataSource.cloneWithRows(newDs),
+  //     ds: newDs,
+  //     watchlistItems: watchVar
+  //   })
+  //
+  //   // console.log(watchVar);
+  // }
 
-    for (var i = 0; i < watchItems.length; i++) {
-      if (watchItems[i] == sym) {
-        exists = true;
-      }
-    }
 
-    if (!exists) {
-      watchVar.push(sym)
-    }
-
-    for (var j = 0; j < watchVar.length; j++) {
-      for (var i = 0; i < newDs.length; i++) {
-        if (newDs[i].sym == watchVar[j]) {
-          newDs[i] = { sym: newDs[i].sym, exch: newDs[i].exch, name: newDs[i].name, img: newDs[i].img, vol: newDs[i].vol, price: newDs[i].price, time: newDs[i].time, change: newDs[i].change, icon: require('../images/watchlist_added.png'), posNeg: newDs[i].posNeg, changePerc: newDs[i].changePerc, stockChange: newDs[i].stockChange }
-        }
-      }
-    }
-
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(newDs),
-      ds: newDs,
-      watchlistItems: watchVar
-    })
-
-    // console.log(watchVar);
+  addWatchItem() {
+    console.log('WATCH ITEM ADD')
+  }
+  removeWatchItem() {
+    console.log('WATCH ITEM REMOVE')
   }
 
-  addSymbol(sym) {
+  addOrRemoveSymbolFromWatchlist(sym, currentWatchStatus) {
+    let message = ''
+    let successFunction = null;
+    if(currentWatchStatus) {
+      message = 'Remote ' + sym + ' from your watchlist.'
+      successFunction = () => this.addWatchItem(sym);
+    } else {
+      message = 'Add ' + sym + ' to your watchlist.'
+      successFunction = () => this.removeWatchItem(sym);
+    }
     Alert.alert(
-      '',
-      'You added ' + sym + ' to your watchlist.',
-      [
-        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        { text: 'OK', onPress: () => { this.addWatchItem(sym) } },
-      ],
-      { cancelable: true }
+        '',
+        message,
+        [
+          { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+          { text: 'OK', onPress: () => { successFunction() } },
+        ],
+        { cancelable: true }
     )
   }
 
@@ -565,6 +588,41 @@ class Trending extends React.Component {
     });
   }
 
+  renderTrendingList() {
+    const { trendingListJS } = trendingStore;
+
+    return <View style={{flex: 1}}>
+      <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
+
+        <Text>Mapping this data to stores</Text>
+
+        {trendingListJS.map((data, i) => {
+          let watchListIconSrc = require('../../images/add.png');
+          if(data.watching) {
+            watchListIconSrc = require('../../images/watchlist_added.png');
+          }
+          return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
+              <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
+              </TouchableOpacity>
+              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
+              <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
+                {data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[elem.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
+              </TouchableOpacity>
+              <View style={trending.addBtn}>
+                <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >
+                  <Image
+                      source={watchListIconSrc} style={styles.addImg} />
+                </TouchableOpacity>
+              </View>
+            </View>)
+          })}
+      </ScrollView>
+    </View>
+  }
+
   render() {
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
@@ -574,7 +632,7 @@ class Trending extends React.Component {
             <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
               <Image
-                source={require('../images/search.png')}
+                source={require('../../images/search.png')}
                 style={styles.searchImg}
               />
             </TouchableOpacity>
@@ -583,31 +641,38 @@ class Trending extends React.Component {
         </View>
         <SubMenu globalData={this.props.globalData} />
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, trending.scanContainer]}>
-          <ListView
-            style={trending.symbolsContainer}
-            dataSource={this.state.dataSource}
-            renderRow={(data) =>
-              <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>
-                <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
-                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-                  <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
-                </TouchableOpacity>
-                <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
+
+          {this.renderTrendingList()}
 
 
-                <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
-                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
-                  {data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
-                </TouchableOpacity>
-                <View style={trending.addBtn}>
-                  <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >
-                    <Image
-                      source={data['icon']} style={styles.addImg} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            }
-          />
+          {/*<ListView*/}
+            {/*style={trending.symbolsContainer}*/}
+            {/*dataSource={this.state.dataSource}*/}
+            {/*renderRow={(data) =>*/}
+              {/*<View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>*/}
+                {/*<TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>*/}
+                  {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>*/}
+                  {/*<Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>*/}
+
+
+                {/*<TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>*/}
+                  {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>*/}
+                  {/*{data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}*/}
+                {/*</TouchableOpacity>*/}
+                {/*<View style={trending.addBtn}>*/}
+                  {/*<TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >*/}
+                    {/*<Image*/}
+                      {/*source={data['icon']} style={styles.addImg} />*/}
+                  {/*</TouchableOpacity>*/}
+                {/*</View>*/}
+              {/*</View>*/}
+            {/*}*/}
+          {/*/>*/}
+
+
+
         </View>
         <Modal
           isVisible={this.state.isSearchVisible}

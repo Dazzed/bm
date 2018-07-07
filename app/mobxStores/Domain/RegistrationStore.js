@@ -2,6 +2,8 @@ import { observable, action, computed, toJS } from 'mobx';
 import { createUser } from '../../api';
 import { formatDate } from '../../routes/Registration/utility';
 
+import { fillRegistrationWithFakeData } from '../../devControlPanel';
+
 export default class RegistrationStore {
 
     constructor() {
@@ -47,8 +49,11 @@ export default class RegistrationStore {
             email: '',
             password: '',
         }
-        this.initRegistation()
-        // this.initWithTestData()
+        this.initRegistation();
+
+        if(fillRegistrationWithFakeData) {
+            this.initWithTestData();
+        }
     }
 
     @action initWithTestData = () => {
@@ -65,7 +70,7 @@ export default class RegistrationStore {
             state: '1',
             city: '1',
             zip: '1',
-            stateOption: 1,
+            stateOption: 2,
             // phone selection
             phoneField: '1111111111',
             // date of birth
@@ -144,11 +149,12 @@ export default class RegistrationStore {
             console.log('===== PARAMS', params)
             createUser(params)
             .then((res) => {
-                console.log('create user res', res)
+                console.log('create user res', res);
                 if(res.status === 500 || res.status === 422) {
                     this.setErrorMessage(res.json.error.message)
                     reject(res)
                 } else if(res.ok) {
+                    this.initRegistation();
                     resolve(res);
                 } else {
                     reject(res);

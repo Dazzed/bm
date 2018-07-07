@@ -181,6 +181,13 @@ export default class AddressSelection extends Component {
   render() {
     const { registrationDataJS } = registrationStore;
 
+    let stateInlineStyle = {
+      color: this.props.colors['darkSlate']
+    }
+    if(registrationDataJS.stateOption === 0) {
+      stateInlineStyle.color = this.props.colors['lightGray']
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={this.props.behavior}
@@ -234,7 +241,7 @@ export default class AddressSelection extends Component {
                            style={[styles_2.downArrow]}
                     />
                     <Text onPress={() => { this.showState() }}
-                          style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
+                          style={[ stateInlineStyle, fonts.hindGunturRg, styles_2.registrationFormField]}
                     >{state_list[registrationDataJS.stateOption].label}</Text>
                   </TouchableOpacity>
                   <Modal

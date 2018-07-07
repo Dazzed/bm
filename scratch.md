@@ -1,17 +1,30 @@
 
--Deposit and Withdrawal buttons in settings still don’t work
-I can't reproduce this.
+-“Select” in the state field should be grey
+DONE
 
-Works for me. Please send detailed info on your device. Exact model, etc. Description of how it fails.
 
--In the on boarding flow, “Alabama” is selected as the state, but it should be “Select”
-Fixed
+-If I fill out the form to enroll a user, verify my email, login, go to settings, logout, go to the enroll flow again, all of my information is still present
+Needs to reset all registration data on succesful submit
+DONE
 
--In the on boarding flow, the #’ selection is now incorrect
-I've fixed the styling if that's what you mean... It's gonna be janky becuase all the heights are hard coded.
+-in the sign on form when nothing is entered the placeholder text should be grey
+DONE
 
--When there is no input within the DOB, SSN, etc. boxes we made a change to make the numbers grey, they are now black again
-Fixed
 
--At the end of the flow I am unable to select the I agree button, thus not allowing me to complete the on boarding
-I can't reproduce this. Please provide more detail.
+-at first login when you go to deposit flow you should see the deposit splash screen asking you if you want to deposit funds, you should not immediately go to deposit flow.
+
+We are working with bankding regulators to allow us to connect to real accounts. As we finalize that approval, we have create a mock account to simulate how easy this process will be.
+Integer vitae nisl venenatis, iaculis neque a, euismod massa. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+DONE
+
+
+
+-Text color on Password checklist should respond to dark theme
+DONE
+
+
+-in the withdraw flow form settings the final screen says “thank you you’ve now withdrawn 300$” it should display the value that was withdrawn (not always 300)
+-in the deposit flow from settings and login the final screen says “thank you you’ve now withdrawn 300$” there should be a specific screen for deposit and it should display the correct value (not always 300)
+WAITING ON API FOR THIS
+
+DONE TEMPORARY
