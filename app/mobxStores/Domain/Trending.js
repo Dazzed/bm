@@ -103,16 +103,24 @@ export default class Trending {
 
   @observable trendingData = [];
 
-  @action setTrendingData = (data) => {
-    this.trendingData = data;
-  }
-
   @observable trendingLoading = false;
 
   @observable displayDecimal = false;
 
+  @observable trendingOption = 0;
+
+  @action setTrendingOption = (newOption) => {
+    this.trendingOption = newOption;
+    this.getTrendingData()
+  }
+
+
   @action setLoading = (newVal) => {
     this.trendingLoading = newVal;
+  }
+
+  @action setTrendingData = (data) => {
+    this.trendingData = data;
   }
 
   @computed get trendingDataJS() {
@@ -124,6 +132,7 @@ export default class Trending {
   }
 
   @action getTrendingData = () => {
+
     let params = {
 
     }
@@ -139,7 +148,7 @@ export default class Trending {
     setTimeout(() => {
       this.setTrendingData(list);
       this.setLoading(false);
-    }, 2000)
+    }, 500)
 
   }
 

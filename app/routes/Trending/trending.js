@@ -185,7 +185,7 @@ class SubMenu extends React.Component {
       isSectorVisible: false,
       isScanVisible: false,
       isIndustryVisible: false,
-      trendingOption: 0,
+      // trendingOption: 0,
       sectorOption: 0,
       industryOption: null,
       currIndustryOptions: null,
@@ -220,9 +220,14 @@ class SubMenu extends React.Component {
     this.setState({ isScanVisible: true })
   }
 
-  hideScan(value) {
+  hideTrendingOptionModal(value) {
+    const { setTrendingOption } = trendingStore;
+    if(value !== undefined) {
+      setTrendingOption(value);
+    }
+
     if (value) {
-      this.setState({ isScanVisible: false, trendingOption: value })
+      this.setState({ isScanVisible: false })
     } else {
       this.setState({ isScanVisible: false })
     }
@@ -301,6 +306,8 @@ class SubMenu extends React.Component {
   }
 
   render() {
+    const { trendingOption } = trendingStore;
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, trending.subMenu]}>
         <View style={trending.subMenuRow}>
@@ -310,14 +317,14 @@ class SubMenu extends React.Component {
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>TRENDING</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{scan_props[this.state.trendingOption].label}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{scan_props[trendingOption].label}</Text>
           </TouchableOpacity>
           <Modal
             isVisible={this.state.isScanVisible}
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}
             style={trending.fullModal}
-            onModalHide={() => { this.hideScan() }}>
+            onModalHide={() => { this.hideTrendingOptionModal() }}>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.radio]}>
               <Image
                 source={require('../../images/arrowblue.png')}
@@ -327,7 +334,7 @@ class SubMenu extends React.Component {
               <View style={trending.scanRadio}>
                 <RadioForm
                   radio_props={scan_props}
-                  initial={this.state.trendingOption}
+                  initial={trendingOption}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
@@ -339,7 +346,7 @@ class SubMenu extends React.Component {
                   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
                   labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.hideScan(value) }}
+                  onPress={(value) => { this.hideTrendingOptionModal(value) }}
                   style={trending.radioField}
                 />
               </View>
@@ -538,8 +545,8 @@ class Trending extends React.Component {
   }
 
   changeToggle() {
-    // const { setDecimalOrPercentage, displayDecimal } = trendingStore;
-    // setDecimalOrPercentage(!displayDecimal);
+    const { setDecimalOrPercentage, displayDecimal } = trendingStore;
+    setDecimalOrPercentage(!displayDecimal);
   }
 
   navigateToChart(data) {
