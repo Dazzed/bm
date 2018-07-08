@@ -51,18 +51,54 @@ export default class MyAccountData {
   }
 
   @computed get positionsJS() {
-    let positionData = {
-      equityPositions: [
-        {name: 'apple'},
-        {name: 'tsla'}
-      ],
-      total: {
-        amount: '3890.29',
-        percentageChange: '+1.86'
+    let positionData = [
+      {
+        companyName: 'Apple Computer',
+        companyAbbreviation: 'APPL',
+        quantity: 10,
+
+        priceChange: '153.53',
+        priceChangePercentage: '9.78',
+        priceChangeDecimal: '+1.85',
+        priceChangeColor: 'green',
+
+        marketValuation: '1535.30',
+        marketChangePercentage: '1535.30',
+        marketChangeDecimal: '+1.85',
+        marketChangeColor: 'green'
+      },
+      {
+        companyName: 'Tesla Motors',
+        companyAbbreviation: 'TSLA',
+        quantity: 11,
+
+        priceChange: '153.53',
+        priceChangePercentage: '9.78',
+        priceChangeDecimal: '-1.85',
+        priceChangeColor: 'red',
+
+        marketValuation: '1535.30',
+        marketChangePercentage: '1535.30',
+        marketChangeDecimal: '-1.85',
+        marketChangeColor: 'red'
+
       }
-    }
+    ]
     return positionData;
   }
+
+  @computed get positionTotalsJS() {
+    return {
+      total: '3890.29',
+      decimalChange: '+1.85',
+      decimalChangeColor: 'red'
+    }
+  }
+
+  // total: {
+  //   amount: '3890.29',
+  //   percentageChange: '+1.86'
+  // }
 
   @computed get historyJS() {
     let historyData = [
