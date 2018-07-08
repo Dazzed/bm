@@ -109,6 +109,21 @@ export default class Trending {
 
   @observable trendingOption = 0;
 
+  @observable industryOption = 0;
+
+  @observable sectorOption = 0;
+
+  @action setSectorOption = (newOption) => {
+    this.sectorOption = newOption;
+    this.industryOption = 0;
+    this.getTrendingData()
+  }
+
+  @action setIndustryOption = (newOption) => {
+    this.industryOption = newOption;
+    this.getTrendingData()
+  }
+
   @action setTrendingOption = (newOption) => {
     this.trendingOption = newOption;
     this.getTrendingData()

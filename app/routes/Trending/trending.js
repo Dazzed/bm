@@ -199,7 +199,8 @@ class SubMenu extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.industryOption == null) {
+    const { industryOption } = trendingStore;
+    if (industryOption == null) {
       styleDefault = { color: this.state.colors['lightGray'] }
     }
   }
@@ -237,76 +238,134 @@ class SubMenu extends React.Component {
     this.setState({ isSectorVisible: true })
   }
 
-  hideSector(value) {
-    console.log('hideSector');
-    switch (value) {
+  getCurrentIndustryOptions() {
+    const { industryOption } = trendingStore;
+    switch (industryOption) {
       case 0:
-        this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: null });
-        styleDefault = trending.inactive
+        return industry_consumerdiscretionary
         break;
       case 1:
-        this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_consumerdiscretionary
         break;
       case 2:
-        this.setState({ currIndustryOptions: industry_consumerstaples, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_consumerstaples
         break;
       case 3:
-        this.setState({ currIndustryOptions: industry_energy, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_energy
         break;
       case 4:
-        this.setState({ currIndustryOptions: industry_financials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_financials
         break;
       case 5:
-        this.setState({ currIndustryOptions: industry_health, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_health
         break;
       case 6:
-        this.setState({ currIndustryOptions: industry_industrials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_industrials
         break;
       case 7:
-        this.setState({ currIndustryOptions: industry_infotech, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_infotech
         break;
       case 8:
-        this.setState({ currIndustryOptions: industry_materials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_materials
         break;
       case 9:
-        this.setState({ currIndustryOptions: industry_realestate, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_realestate
         break;
       case 10:
-        this.setState({ currIndustryOptions: industry_telecomm, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_telecomm
         break;
       case 11:
-        this.setState({ currIndustryOptions: industry_utilities, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_utilities
         break;
     }
   }
 
+  hideSector(value) {
+    const { setSectorOption } = trendingStore;
+
+    if(value === undefined) {
+      this.setState({ isSectorVisible: false });
+      return;
+    }
+
+    setSectorOption(value);
+
+    this.setState({
+      isSectorVisible: false
+    })
+
+    // console.log('hideSector');
+    // switch (value) {
+    //   case 0:
+    //     this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: null });
+    //     styleDefault = trending.inactive
+    //     break;
+    //   case 1:
+    //     this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 2:
+    //     this.setState({ currIndustryOptions: industry_consumerstaples, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 3:
+    //     this.setState({ currIndustryOptions: industry_energy, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 4:
+    //     this.setState({ currIndustryOptions: industry_financials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 5:
+    //     this.setState({ currIndustryOptions: industry_health, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 6:
+    //     this.setState({ currIndustryOptions: industry_industrials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 7:
+    //     this.setState({ currIndustryOptions: industry_infotech, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 8:
+    //     this.setState({ currIndustryOptions: industry_materials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 9:
+    //     this.setState({ currIndustryOptions: industry_realestate, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 10:
+    //     this.setState({ currIndustryOptions: industry_telecomm, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 11:
+    //     this.setState({ currIndustryOptions: industry_utilities, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    // }
+  }
+
   showIndustry() {
-    if (this.state.industryOption != null) {
+    const { industryOption } = trendingStore;
+    if (industryOption != null) {
       this.setState({ isIndustryVisible: true })
     }
   }
 
   hideIndustry(value) {
-    if (value || value == 0) {
-      this.setState({ isIndustryVisible: false, industryOption: value })
-    } else {
+    const { setIndustryOption } = trendingStore;
+    if(value === undefined) {
       this.setState({ isIndustryVisible: false })
+      return;
     }
+    setIndustryOption(value)
+    this.setState({ isIndustryVisible: false })
   }
 
   render() {
-    const { trendingOption } = trendingStore;
+    const { trendingOption, industryOption, sectorOption } = trendingStore;
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, trending.subMenu]}>
@@ -353,6 +412,19 @@ class SubMenu extends React.Component {
             </View>
           </Modal>
         </View>
+
+
+
+
+
+        {/* SECTOR PICKER */}
+
+
+
+
+
+
+
         <View style={trending.subMenuRow}>
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
             <Image
@@ -360,7 +432,7 @@ class SubMenu extends React.Component {
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{sector_props[this.state.sectorOption].label}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{sector_props[sectorOption].label}</Text>
           </TouchableOpacity>
           <Modal
             isVisible={this.state.isSectorVisible}
@@ -379,7 +451,7 @@ class SubMenu extends React.Component {
               <ScrollView style={trending.sectorRadio}>
                 <RadioForm
                   radio_props={sector_props}
-                  initial={this.state.sectorOption}
+                  initial={sectorOption}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
@@ -397,6 +469,15 @@ class SubMenu extends React.Component {
               </ScrollView>
             </View>
           </Modal>
+
+
+
+
+
+
+          {/* INDUSTRY PICKER */}
+
+
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showIndustry(); }}>
             <Image
               source={require('../../images/arrow.png')}
@@ -404,7 +485,7 @@ class SubMenu extends React.Component {
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
-              {this.state.industryOption == null ? 'Select a sector' : this.state.currIndustryOptions[this.state.industryOption].label}
+              {industryOption == null ? 'Select a sector' : this.getCurrentIndustryOptions()[industryOption].label}
             </Text>
           </TouchableOpacity>
           <Modal
@@ -423,8 +504,8 @@ class SubMenu extends React.Component {
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
               <ScrollView style={trending.sectorRadio}>
                 <RadioForm
-                  radio_props={this.state.currIndustryOptions}
-                  initial={this.state.industryOption}
+                  radio_props={this.getCurrentIndustryOptions()}
+                  initial={industryOption}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
