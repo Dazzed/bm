@@ -121,7 +121,7 @@ class SignIn extends Component {
     .then((res) => {
       console.log('ress', authStore.loginDataJS)
       
-      if(authStore.loginDataJS.firstLogin || true) {
+      if(authStore.loginDataJS.firstLogin) {
         this.props.navigation.navigate('FundAccountSplash')
       } else {
         this.props.navigation.navigate('AppNavTabs');
