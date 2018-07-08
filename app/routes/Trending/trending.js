@@ -485,6 +485,8 @@ class Trending extends React.Component {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.state.ds),
     })
+    const { getTrendingData } = trendingStore;
+    getTrendingData()
   }
 
   componentDidUpdate(prevProps) {
@@ -536,8 +538,8 @@ class Trending extends React.Component {
   }
 
   changeToggle() {
-    const { setDecimalOrPercentage, displayDecimal } = trendingStore;
-    setDecimalOrPercentage(!displayDecimal);
+    // const { setDecimalOrPercentage, displayDecimal } = trendingStore;
+    // setDecimalOrPercentage(!displayDecimal);
   }
 
   navigateToChart(data) {
@@ -545,38 +547,48 @@ class Trending extends React.Component {
   }
 
   renderTrendingList() {
-    const { trendingListJS, displayDecimal } = trendingStore;
+    const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
 
-    return <View style={{flex: 1}}>
-      <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
+    if(trendingLoading) {
+      return <View>
+        <Text>Loading...</Text>
+      </View>
+    } else if(trendingDataJS.length === 0) {
+      return <View>
+        <Text>No Results</Text>
+      </View>
+    } else {
+      return <View style={{flex: 1}}>
+        <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
 
-        <Text>Mapping this data to stores</Text>
+          <Text>Mapping this data to stores</Text>
 
-        {trendingListJS.map((data, i) => {
-          let watchListIconSrc = require('../../images/add.png');
-          if(data.watching) {
-            watchListIconSrc = require('../../images/watchlist_added.png');
-          }
-          return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
-              <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
-              </TouchableOpacity>
-              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
-              <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
-                {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
-              </TouchableOpacity>
-              <View style={trending.addBtn}>
-                <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >
-                  <Image
-                      source={watchListIconSrc} style={styles.addImg} />
+          {trendingDataJS.map((data, i) => {
+            let watchListIconSrc = require('../../images/add.png');
+            if(data.watching) {
+              watchListIconSrc = require('../../images/watchlist_added.png');
+            }
+            return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
+                <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
+                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
+                  <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
                 </TouchableOpacity>
-              </View>
-            </View>)
-          })}
-      </ScrollView>
-    </View>
+                <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
+                <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
+                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
+                  {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
+                </TouchableOpacity>
+                <View style={trending.addBtn}>
+                  <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >
+                    <Image
+                        source={watchListIconSrc} style={styles.addImg} />
+                  </TouchableOpacity>
+                </View>
+              </View>)
+            })}
+        </ScrollView>
+      </View>
+    }
   }
 
   render() {
@@ -597,38 +609,7 @@ class Trending extends React.Component {
         </View>
         <SubMenu globalData={this.props.globalData} />
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, trending.scanContainer]}>
-
           {this.renderTrendingList()}
-
-
-          {/*<ListView*/}
-            {/*style={trending.symbolsContainer}*/}
-            {/*dataSource={this.state.dataSource}*/}
-            {/*renderRow={(data) =>*/}
-              {/*<View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>*/}
-                {/*<TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>*/}
-                  {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>*/}
-                  {/*<Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>*/}
-
-
-                {/*<TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>*/}
-                  {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>*/}
-                  {/*{data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}*/}
-                {/*</TouchableOpacity>*/}
-                {/*<View style={trending.addBtn}>*/}
-                  {/*<TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >*/}
-                    {/*<Image*/}
-                      {/*source={data['icon']} style={styles.addImg} />*/}
-                  {/*</TouchableOpacity>*/}
-                {/*</View>*/}
-              {/*</View>*/}
-            {/*}*/}
-          {/*/>*/}
-
-
-
         </View>
         <Modal
           isVisible={this.state.isSearchVisible}
@@ -651,3 +632,30 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, null)(Trending);
+
+
+// {/*<ListView*/}
+// {/*style={trending.symbolsContainer}*/}
+// {/*dataSource={this.state.dataSource}*/}
+// {/*renderRow={(data) =>*/}
+// {/*<View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>*/}
+// {/*<TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>*/}
+// {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>*/}
+// {/*<Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>*/}
+// {/*</TouchableOpacity>*/}
+// {/*<View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>*/}
+//
+//
+// {/*<TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>*/}
+// {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>*/}
+// {/*{data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}*/}
+// {/*</TouchableOpacity>*/}
+// {/*<View style={trending.addBtn}>*/}
+// {/*<TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >*/}
+// {/*<Image*/}
+// {/*source={data['icon']} style={styles.addImg} />*/}
+// {/*</TouchableOpacity>*/}
+// {/*</View>*/}
+// {/*</View>*/}
+// {/*}*/}
+// {/*/>*/}
