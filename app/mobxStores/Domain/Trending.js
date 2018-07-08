@@ -13,26 +13,93 @@ export default class Trending {
     return toJS(this.trendingData)
   }
 
+  @observable displayDecimal = true;
+
+  @action setDecimalOrPercentage = (newVal) => {
+    this.displayDecimal = newVal;
+  }
+
   @computed get trendingListJS() {
     let list = [
       {
-        name: 'Etherem',
         sym: 'ETH',
-        volume: '65.2M',
+        exch: 'NYSE',
+        name: 'Ethereum',
+        vol: '24.9M',
         price: '30.75',
+        time: '12:30 PM PT',
         posNeg: 'green',
-        changePerc: '1.85',
-        watching: true
+        change: '+1.85',
+        changePerc: '+10.41%',
+        stockChange: true,
+        watching: true,
       },
       {
-        name: 'American Midstream',
         sym: 'AMID',
-        volume: '34.2M',
+        exch: 'NYSE',
+        name: 'American Midstream',
+        vol: '65.2M',
         price: '12.45',
+        time: '12:30 PM PT',
         posNeg: 'red',
-        changePerc: '2.12',
-        watching: false
-      }
+        change: '-3.12',
+        changePerc: '-2.15%',
+        stockChange: true,
+        watching: true,
+      },
+      {
+        sym: 'AAPL',
+        exch: 'NASDAQ',
+        name: 'Apple, Inc.',
+        vol: '16.3M',
+        price: '146.19',
+        time: '12:30 PM PT',
+        posNeg: 'green',
+        change: '+2.01',
+        changePerc: '+2.43%',
+        stockChange: true,
+        watching: true,
+      },
+      {
+        sym: 'TSLA',
+        exch: 'NASDAQ',
+        name: 'Tesla Motors, Inc.',
+        vol: '5.3M',
+        price: '378.47',
+        time: '12:30 PM PT',
+        posNeg: 'green',
+        change: '+3.10',
+        changePerc: '+1.05%',
+        stockChange: true,
+        watching: true,
+      },
+      {
+        sym: 'SPH',
+        exch: 'NYSE',
+        name: 'Suburban Propan',
+        vol: '37.9M',
+        price: '24.31',
+        time: '12:30 PM PT',
+        posNeg: 'red',
+        change: '-4.43',
+        changePerc: '-5.64%',
+        stockChange: true,
+        watching: true,
+      },
+      {
+        sym: 'NGG',
+        exch: 'NYSE',
+        name: 'National Grid PLC',
+        vol: '12.4M',
+        price: '64.85',
+        time: '12:30 PM PT',
+        posNeg: 'green',
+        change: '+0.15',
+        changePerc: '+4.04%',
+        stockChange: true,
+        watching: true,
+      },
+
     ]
     return list;
   }

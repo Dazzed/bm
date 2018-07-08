@@ -507,41 +507,6 @@ class Trending extends React.Component {
     this.setState({ isSearchVisible: false });
   }
 
-  // addWatchItem(sym) {
-  //   var watchItems = this.state.watchlistItems;
-  //   var watchVar = watchItems.slice()
-  //   var exists = false;
-  //   var newDs = [];
-  //   newDs = this.state.ds.slice();
-  //
-  //   for (var i = 0; i < watchItems.length; i++) {
-  //     if (watchItems[i] == sym) {
-  //       exists = true;
-  //     }
-  //   }
-  //
-  //   if (!exists) {
-  //     watchVar.push(sym)
-  //   }
-  //
-  //   for (var j = 0; j < watchVar.length; j++) {
-  //     for (var i = 0; i < newDs.length; i++) {
-  //       if (newDs[i].sym == watchVar[j]) {
-  //         newDs[i] = { sym: newDs[i].sym, exch: newDs[i].exch, name: newDs[i].name, img: newDs[i].img, vol: newDs[i].vol, price: newDs[i].price, time: newDs[i].time, change: newDs[i].change, icon: require('../../images/watchlist_added.png'), posNeg: newDs[i].posNeg, changePerc: newDs[i].changePerc, stockChange: newDs[i].stockChange }
-  //       }
-  //     }
-  //   }
-  //
-  //   this.setState({
-  //     dataSource: this.state.dataSource.cloneWithRows(newDs),
-  //     ds: newDs,
-  //     watchlistItems: watchVar
-  //   })
-  //
-  //   // console.log(watchVar);
-  // }
-
-
   addWatchItem() {
     console.log('WATCH ITEM ADD')
   }
@@ -570,26 +535,17 @@ class Trending extends React.Component {
     )
   }
 
-  changeToggle(data) {
-    data['stockChange'] = !data['stockChange'];
+  changeToggle() {
+    const { setDecimalOrPercentage, displayDecimal } = trendingStore;
+    setDecimalOrPercentage(!displayDecimal);
+  }
 
-    var newDs = [];
-    newDs = this.state.ds.slice();
-
-    for (var i = 0; i < newDs.length; i++) {
-      if (newDs[i].sym == data['sym']) {
-        newDs[i] = { sym: newDs[i].sym, exch: newDs[i].exch, name: newDs[i].name, img: newDs[i].img, vol: newDs[i].vol, price: newDs[i].price, time: newDs[i].time, change: newDs[i].change, icon: newDs[i].icon, posNeg: newDs[i].posNeg, changePerc: newDs[i].changePerc, stockChange: data['stockChange'] }
-      }
-    }
-
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(newDs),
-      ds: newDs,
-    });
+  navigateToChart(data) {
+    this.props.navigation.navigate('Chart', { data: data })
   }
 
   renderTrendingList() {
-    const { trendingListJS } = trendingStore;
+    const { trendingListJS, displayDecimal } = trendingStore;
 
     return <View style={{flex: 1}}>
       <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
@@ -602,14 +558,14 @@ class Trending extends React.Component {
             watchListIconSrc = require('../../images/watchlist_added.png');
           }
           return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
-              <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
+              <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
                 <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
               </TouchableOpacity>
               <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
               <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
-                {data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[elem.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
+                {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
               </TouchableOpacity>
               <View style={trending.addBtn}>
                 <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >

@@ -95,11 +95,6 @@ export default class MyAccountData {
     }
   }
 
-  // total: {
-  //   amount: '3890.29',
-  //   percentageChange: '+1.86'
-  // }
-
   @computed get historyJS() {
     let historyData = [
       {
