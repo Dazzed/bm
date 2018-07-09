@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
+import DialIndicator from '../../sharedComponents/DialIndicator';
+
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../components/react-native-simple-radio-button';
 import Modal from 'react-native-modal'
 import SortableListView from 'react-native-sortable-listview'
@@ -181,13 +183,7 @@ class Watchlists extends React.Component {
               <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.coName, fonts.hindGunturRg]}>{row['name']}</Text>
             </View>
             <View style={watchstyle.symMomentum}>
-              <Text style={watchstyle.symMomentumTxt}>
-                <Image source={row['img']} style={watchstyle.momenutmImg} />
-              </Text>
-              <View style={watchstyle.symVolWrap}>
-                <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.vol, fonts.hindGunturRg]}>VOL</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.vol, fonts.hindGunturRg]}>{row['vol']}</Text>
-              </View>
+              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={row['vol']} position={.4} />
             </View>
             <TouchableOpacity style={watchstyle.symCost} onPress={() => this.changeToggle(row)}>
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${row['price']}</Text>
@@ -202,6 +198,8 @@ class Watchlists extends React.Component {
 
     return thisRow;
   }
+  
+
 
   onRowMoved(e) {
     const { onRowMove } = watchListStore;
