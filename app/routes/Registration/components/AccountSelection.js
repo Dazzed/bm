@@ -253,7 +253,6 @@ export default class AccountSelection extends Component {
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.getEmailClass()]}
                                 keyboardType="email-address"
                                 autoCapitalize='none'
-                                placeholder={'Email'}
                                 onChange={(event) => this.onEmailChange(event, 'email')}
                                 value={registrationDataJS.email}
                             />
@@ -266,7 +265,6 @@ export default class AccountSelection extends Component {
                                 onFocus={() => this.onFocus('passwordClass')}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.getPasswordClass()]}
                                 secureTextEntry={true}
-                                placeholder={'Password'}
                                 onChange={(event) => this.onPasswordChange(event, 'password')}
                                 value={registrationDataJS.password}
                             />
