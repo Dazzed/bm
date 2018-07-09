@@ -23,6 +23,7 @@ import { observer } from 'mobx-react';
 import { colorStore, registrationStore } from '../../../mobxStores';
 import TermsAndConditions from './documents/TermsAndConditions';
 import PrivacyPolicy from './documents/PrivacyPolicy';
+import RegistrationHeader from './registrationHeader';
 
 let linkList = [
     { title: "Terms & Conditions", value: 'tnc' },
@@ -125,10 +126,9 @@ export default class Declaration extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        I DECLARE THAT I HAVE READ AND AGREE TO THE FOLLOWING
-                    </Text>
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 22 }]}>
+                  <RegistrationHeader headerText={'I DECLARE THAT I HAVE READ AND AGREE TO THE FOLLOWING'} generalText={null} whyWeAskText={null} extraContent={null} />
+
+                    <View style={[{ backgroundColor: this.props.colors['white'] }]}>
                         <View style={[styles_2.registrationFormView]}>
                             {this.renderLinks()}
                         </View>

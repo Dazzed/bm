@@ -22,7 +22,7 @@ import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
-
+import RegistrationHeader from './registrationHeader';
 
 let showWhyWeAsk = true;
 const status_list = [
@@ -61,10 +61,8 @@ export default class InvestmentExperienceSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
-                        INVESTMENT EXPERIENCE
-                    </Text>
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>
+                    <RegistrationHeader headerText={'INVESTMENT EXPERIENCE'} generalText={null} whyWeAskText={null} />
+                    <View style={[{ backgroundColor: this.props.colors['white'] }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm

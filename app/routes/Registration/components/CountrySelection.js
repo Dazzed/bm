@@ -31,6 +31,8 @@ import { isPresent } from '../validation';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 
+import RegistrationHeader from './registrationHeader';
+
 const country_list = [
   { "label": "U.S. Citizen", "value": 0 },
   { "label": "I am NOT a U.S. Citizen", "value": 1 }
@@ -97,15 +99,8 @@ export default class CountrySelection extends Component {
           <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
         </View>
         <ScrollView style={{ height: '72%' }}>
-          <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
-            COUNTRY OF CITIZENSHIP
-          </Text>
-          <View style={[styles_2.whyWeAskView]}>
-            <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-              Currently our application only supports United States citizens. If you are not a U.S. citizen, we will reach out and let you know when we can support additional countries.
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>
+          <RegistrationHeader headerText={'COUNTRY OF CITIZENSHIP'} generalText={'Currently our application only supports United States citizens. If you are not a U.S. citizen, we will reach out and let you know when we can support additional countries.'} whyWeAskText={null} />
+          <View style={[{ backgroundColor: this.props.colors['white'] }]}>
             <View style={[styles_2.registrationFormView]}>
               <View style={styles_2.subMenuRow}>
                 <RadioForm

@@ -42,16 +42,19 @@ export default class Success extends React.Component {
       const { theme } = colorStore;
       
         let amount = this.props.navigation.state.params.amount;
-        let message = `You just deposited $${amount}`
 
         let bankName = 'BANK MOCK'
         let accountType = 'checking'
 
         let formattedAmount = numberWithCommas(amount);
-
-        if(true) {
-            message = `You just withdrew $${formattedAmount} from your ${bankName} ${accountType} account.`
+        
+        let action = 'withdrawn'
+        
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
+          action = 'deposited'
         }
+
+        let message = `You just withdrew $${formattedAmount} from your ${bankName} ${accountType} account.`
 
         return <View style={{marginVertical: 5, backgroundColor: theme.contentBg}}>
             <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{message}</Text>

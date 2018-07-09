@@ -116,9 +116,9 @@ class RegistrationPage extends React.Component {
       case 9:
         return <InvestmentExperienceSelection progress={progressWidthPercentage} {...propsToPass} />;
       case 10:
-        return <Declaration progress={progressWidthPercentage} {...propsToPass} />;
-      case 11:
         return <AccountSelection progress={progressWidthPercentage} {...propsToPass} />;
+      case 11:
+        return <Declaration progress={progressWidthPercentage} {...propsToPass} />;
       case 12:
         return <Thankyou progress={progressWidthPercentage} {...propsToPass} />;
     }
