@@ -30,7 +30,7 @@ import {
 
 import { authStore, colorStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
-import { autoLogin } from '../../devControlPanel';
+import { autoLogin, forceLoginToFundingEveryTime } from '../../devControlPanel';
 
 @observer
 class SignIn extends Component {
@@ -45,8 +45,8 @@ class SignIn extends Component {
     const { height, width } = d;
 
     this.state = {
-      email: 'fogg4444@gmail.com',
-      password: 'Password11!',
+      email: '',
+      password: '',
       behavior: 'padding',
       bioId: (Platform.OS === 'ios' && (height === 812 || width === 812)) ? 'FACE' : 'TOUCH',
       colors: colors(props.globalData.isDarkThemeActive)
@@ -55,7 +55,12 @@ class SignIn extends Component {
 
   componentDidMount() {
     if(autoLogin) {
-      this._signIn()
+      this.setState({
+        email: 'fogg4444@gmail.com',
+        password: 'Password11!',
+      }, () => {
+        this._signIn()  
+      })
     }
   }
 
@@ -69,10 +74,13 @@ class SignIn extends Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
-    if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
-      const { navigate } = this.props.navigation;
-      navigate('AppNavTabs', { color: this.state.activeColor })
-    }
+    
+    // handle navigation with mobx
+    // if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
+    //   const { navigate } = this.props.navigation;
+    //   navigate('AppNavTabs', { color: this.state.activeColor })
+    // }
+    
   }
 
   setColor(value) {
@@ -125,12 +133,11 @@ class SignIn extends Component {
     .then((res) => {
       console.log('ress', authStore.loginDataJS)
       
-      if(authStore.loginDataJS.firstLogin) {
+      if(authStore.loginDataJS.firstLogin || forceLoginToFundingEveryTime) {
         this.props.navigation.navigate('FundAccountSplash')
       } else {
         this.props.navigation.navigate('AppNavTabs');
       }
-      
       
     })
     .catch((err) => {

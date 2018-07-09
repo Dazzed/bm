@@ -210,7 +210,7 @@ export default class AccountSelect extends React.Component {
             </View>
 
             <View style={{flex: 0, padding: 30}}>
-                <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
+                <Button {...this.props} title="NEXT" onPress={() => this.navToFundAccount()}/>
             </View>
 
         </View>

@@ -57,6 +57,8 @@ const showConsole = true;
 // const autoLogin = false;
 const autoLogin = true;
 
+const forceLoginToFundingEveryTime = true;
+
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -82,6 +84,7 @@ if(productionMode) {
     showConsole = false;
     registrationInitialStep = 0;
     fillRegistrationWithFakeData = false;
+    forceLoginToFundingEveryTime = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -97,5 +100,6 @@ export {
     autoLogin,
     showConsole,
     registrationInitialStep,
-    fillRegistrationWithFakeData
+    fillRegistrationWithFakeData,
+    forceLoginToFundingEveryTime
 };

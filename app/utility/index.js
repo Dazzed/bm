@@ -7,9 +7,8 @@ const generateHeaderStyles = (theme) => {
         headerStyle: {
             backgroundColor: theme.white,
         },
-        // headerTintColor: 'red',
         headerTitleStyle: {
-            fontWeight: 'normal',
+            fontWeight: 'bold',
             color: theme.darkSlate
         }
     }

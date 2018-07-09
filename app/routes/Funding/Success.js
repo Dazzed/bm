@@ -3,8 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Button from '../../sharedComponents/Button1';
 import { setTheme, getTheme, colors } from '../../store/store';
 import { colorStore } from '../../mobxStores';
-import { generateHeaderStyles } from '../../utility';
-
+import { generateHeaderStyles, numberWithCommas } from '../../utility';
 
 export default class Success extends React.Component {
 
@@ -48,8 +47,10 @@ export default class Success extends React.Component {
         let bankName = 'BANK MOCK'
         let accountType = 'checking'
 
+        let formattedAmount = numberWithCommas(amount);
+
         if(true) {
-            message = `You just withdrew $${amount} from your ${bankName} ${accountType} account.`
+            message = `You just withdrew $${formattedAmount} from your ${bankName} ${accountType} account.`
         }
 
         return <View style={{marginVertical: 5, backgroundColor: theme.contentBg}}>

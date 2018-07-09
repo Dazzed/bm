@@ -180,7 +180,7 @@ export default class FundMyAccount extends React.Component {
                 {this.renderErrorOrNull()}
                 <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
                 <View style={{padding: 30, backgroundColor: theme.white}}>
-                  <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
+                  <Button {...this.props} title="FUND MY ACCOUNT" onPress={() => this.depositPressed()}/>
                 </View>
                 
             </View>
