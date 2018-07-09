@@ -71,8 +71,8 @@ export default class NumericalSelector extends React.Component {
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-            // borderWidth: 1,
-            // borderColor: 'purple',
+            borderWidth: 1,
+            borderColor: 'purple',
             height: keypadHeight / 4
         }
 
@@ -94,7 +94,6 @@ export default class NumericalSelector extends React.Component {
                     <TouchableOpacity disabled={this.isDisabled(1)} onPress={() => this.addNumber('1')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(1)}>1</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity disabled={this.isDisabled(2)} onPress={() => this.addNumber('2')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(2)}>2</Text>
                     </TouchableOpacity>
@@ -107,7 +106,6 @@ export default class NumericalSelector extends React.Component {
                     <TouchableOpacity disabled={this.isDisabled(4)} onPress={() => this.addNumber('4')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(4)}>4</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity disabled={this.isDisabled(5)} onPress={() => this.addNumber('5')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(5)}>5</Text>
                     </TouchableOpacity>
@@ -120,7 +118,6 @@ export default class NumericalSelector extends React.Component {
                     <TouchableOpacity disabled={this.isDisabled(7)} onPress={() => this.addNumber('7')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(7)}>7</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity disabled={this.isDisabled(8)} onPress={() => this.addNumber('8')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(8)}>8</Text>
                     </TouchableOpacity>
@@ -131,8 +128,9 @@ export default class NumericalSelector extends React.Component {
 
 
                 <View style={rowStyle}>
-                    <View style={eachNumberStyleOpacityContainer}>
-                    </View>
+                    <TouchableOpacity disabled={this.isDisabled(0)} onPress={() => this.addNumber('.')} style={eachNumberStyleOpacityContainer}>
+                        <Text style={getNumberStyle(0)}>.</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity disabled={this.isDisabled(0)} onPress={() => this.addNumber('0')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle(0)}>0</Text>
                     </TouchableOpacity>
@@ -141,7 +139,6 @@ export default class NumericalSelector extends React.Component {
                             style={{height: '50%'}}
                             resizeMode="contain"
                             source={require('../images/delete.png')}
-
                         />
                     </TouchableOpacity>
                 </View>
@@ -150,35 +147,3 @@ export default class NumericalSelector extends React.Component {
         </View>
     }
 }
-
-
-{/*<View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.props.colors['white']  }, styles_2.numContainer]}>*/}
-    {/*<View style={styles_2.digitContainer}>*/}
-        {/*<View style={numbers.row}>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(1); }}>1</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(2); }}>2</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(3); }}>3</Text>*/}
-        {/*</View>*/}
-        {/*<View style={numbers.row}>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(4); }}>4</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(5); }}>5</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(6); }}>6</Text>*/}
-        {/*</View>*/}
-        {/*<View style={numbers.row}>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(7); }}>7</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(8); }}>8</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(9); }}>9</Text>*/}
-        {/*</View>*/}
-        {/*<View style={numbers.row}>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]}></Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(0); }}>0</Text>*/}
-            {/*<Text style={[{ color: this.props.colors['darkSlate'] }, numbers.numbers_right, fonts.hindGunturRg]} onPress={() => { this.removeNum(); }}>*/}
-                {/*<Text> </Text>*/}
-                {/*<Image*/}
-                    {/*source={this.props.colors['deleteImg']}*/}
-                    {/*style={{ width: 40, height: 26 }}*/}
-                {/*/>*/}
-            {/*</Text>*/}
-        {/*</View>*/}
-    {/*</View>*/}
-{/*</View>*/}
