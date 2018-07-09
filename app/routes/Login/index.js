@@ -99,6 +99,7 @@ class SignIn extends Component {
   }
 
   _signIn = () => {
+
     // // Alert.alert(
     // //   'Enable Touch ID',
     // //   '',
@@ -108,11 +109,14 @@ class SignIn extends Component {
     // //   ],
     // //   { cancelable: true }
     // // )
-    // if (this.props.globalData.isAuthenticating) {
-    //   return;
-    // }
-    // this.props.loginAction({ email: this.state.email, password: this.state.password });
 
+    if (this.props.globalData.isAuthenticating) {
+      return;
+    }
+    
+    this.props.loginAction({ email: this.state.email, password: this.state.password });
+
+    // doing login in parrallel in mobx
     let params = {
       email: this.state.email,
       password: this.state.password
