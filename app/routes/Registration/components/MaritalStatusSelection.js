@@ -26,11 +26,11 @@ import RegistrationHeader from './registrationHeader';
 let showWhyWeAsk = true;
 
 const status_list = [
-    { "label": "Married", "value": 0 },
-    { "label": "Divorced", "value": 1 },
-    { "label": "Separated", "value": 2 },
-    { "label": "Widow", "value": 3 },
-    { "label": "Single", "value": 4 }
+    { "label": "Single", "value": 0 },
+    { "label": "Married", "value": 1 },
+    { "label": "Divorced", "value": 2 },
+    { "label": "Separated", "value": 3 },
+    { "label": "Widow", "value": 4 },
 ];
 
 @observer

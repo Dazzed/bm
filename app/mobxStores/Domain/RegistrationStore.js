@@ -34,7 +34,7 @@ export default class RegistrationStore {
             ssnField: '',
 
             // martial status
-            maritalStatus: 4,
+            maritalStatus: 0,
 
             // dependents
             dependentField: '',
@@ -78,7 +78,7 @@ export default class RegistrationStore {
             // ssn
             ssnField: '123121234',
             // martial status
-            maritalStatus: 4,
+            maritalStatus: 0,
             // dependents
             dependentField: '1',
             // employment status
