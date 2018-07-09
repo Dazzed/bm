@@ -140,7 +140,7 @@ class RegistrationPage extends React.Component {
       case 10:
         return 'Identity';
       case 11:
-        return 'Terms & Conditions';
+        return 'Terms & Policies';
       case 12:
         return 'Verify email';
     }

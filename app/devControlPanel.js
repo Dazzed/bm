@@ -30,7 +30,7 @@ const firstNavDefaultRoute = 'Home';
 // Login
 // Home
 
-const registrationInitialStep = 10;
+const registrationInitialStep = 0;
 
 const fillRegistrationWithFakeData = true;
 
