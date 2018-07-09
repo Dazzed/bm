@@ -17,7 +17,7 @@ export default class Deposit extends React.Component {
     }
 
     render() {
-        let buttonHeight = 50;
+        let buttonHeight = 60;
 
         const { theme } = colorStore;
 
