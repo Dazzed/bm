@@ -186,9 +186,8 @@ export default class AccountSelect extends React.Component {
 
     renderTopInstruction() {
         const { theme } = colorStore;
-
         let instruction = null;
-        if(this.state.withdrawDepositMode === 'withdraw') {
+        if(this.state.withdrawDepositMode === 'deposit') {
             instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM';
             return <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{instruction}</Text>
         } else {
