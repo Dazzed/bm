@@ -6,6 +6,9 @@ WAITING ON API FOR THIS
 DONE TEMPORARY
 
 
+Get REPORT a bug and Contact US working
+DONE
+
 
 1) ALL lists that showing diamonds have text that are not centered or aligned with their respective diamond (country of citizenship, state selections on "address" page, )
 
