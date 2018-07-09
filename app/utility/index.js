@@ -29,20 +29,14 @@ const upperAndLowercasLettersValidator = (password) => {
     if(!password) {
         return false;
     }
-    let hasUppercase = false;
-    let hasLowercase = false;
-    password.split('').every((char) => {
-        if (char == char.toUpperCase() && isNaN(char)) {
-            hasUppercase = true;
-        }
-        if (char == char.toLowerCase() && isNaN(char)){
-            hasLowercase = true;
-        }
-        if(hasUppercase && hasLowercase) {
-            return false;
-        }
-        return true;
-    })
+    function hasLowerCaseSearch(str) {
+        return (/[a-z]/.test(str));
+    }
+    function hasUpperCaseSearch(str) {
+        return (/[A-Z]/.test(str));
+    }
+    let hasUppercase = hasUpperCaseSearch(password);
+    let hasLowercase = hasLowerCaseSearch(password);
     if(hasUppercase && hasLowercase) {
         return true;
     } else {
@@ -50,11 +44,10 @@ const upperAndLowercasLettersValidator = (password) => {
     }
 }
 const atLeastOneNumberValidator = (password) => {
-    console.log('atLeastOneNumberValidator ', password)
+    // console.log('atLeastOneNumberValidator ', password)
     if(!password) {
         return false;
     }
-
     let hasOneNumber = false;
     password.split('').every((i) => {
         if(!isNaN(i)) {
@@ -63,7 +56,6 @@ const atLeastOneNumberValidator = (password) => {
         }
         return true;
     })
-
     if(hasOneNumber) {
         return true;
     } else {

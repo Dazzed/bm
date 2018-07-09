@@ -112,8 +112,44 @@ export default class AccountSelection extends Component {
     }
 
     validationErrorMessage() {
-        const { registrationErrorMessage } = registrationStore;
-        return registrationErrorMessage
+        const { registrationErrorDataJS } = registrationStore;
+        console.warn('registrationDataJS', registrationErrorDataJS)
+        return 'dfsdf'
+        // return registrationErrorMessage
+    }
+    
+    renderEmailErrorMessage() {
+      const { registrationErrorDataJS } = registrationStore;
+      console.log('=============== regis', registrationErrorDataJS)
+      if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'email' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.email.length > 0 ) {
+        return <View style={{ marginTop: 10 }}>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.email[0]}</Text>
+        </View>  
+      } else {
+        return null;
+      }
+    }
+    
+    renderPasswordErrorMessage() {
+      const { registrationErrorDataJS } = registrationStore;
+      if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'password' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.password.length > 0 ) {
+        return <View style={{ marginTop: 10 }}>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.password[0]}</Text>
+        </View>  
+      } else {
+        return null;
+      }  
+    }
+    
+    renderGeneralErrorMessage() {
+      const { registrationErrorDataJS } = registrationStore;
+      if(registrationErrorDataJS && 'message' in registrationErrorDataJS ) {
+        return <View style={{ marginTop: 10 }}>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.message}</Text>
+        </View>  
+      } else {
+        return null;
+      }  
     }
 
     validationErrorMessageExists() {
@@ -221,6 +257,9 @@ export default class AccountSelection extends Component {
                                 onChange={(event) => this.onEmailChange(event, 'email')}
                                 value={registrationDataJS.email}
                             />
+                            
+                            {this.renderEmailErrorMessage()}
+                            
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
                             <TextInput
                                 onBlur={() => this.onBlur('passwordClass')}
@@ -231,9 +270,9 @@ export default class AccountSelection extends Component {
                                 onChange={(event) => this.onPasswordChange(event, 'password')}
                                 value={registrationDataJS.password}
                             />
-                            <View style={{ marginTop: 10, display: this.validationErrorMessageExists() ? 'flex' : 'none' }}>
-                                <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error:</Text> {this.validationErrorMessage()}</Text>
-                            </View>
+                            
+                            {this.renderPasswordErrorMessage()}
+                        
                         </View>
                     </View>
                     <PasswordChecklist password={registrationDataJS.password}/>

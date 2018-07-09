@@ -113,11 +113,15 @@ export default class RegistrationStore {
     }
 
 
-    @observable registrationErrorMessage = null;
+    @observable registrationErrorData = null;
 
-    @action setErrorMessage = (msg) => {
-        console.log('setting err mesg', msg)
-        this.registrationErrorMessage = msg;
+    @computed get registrationErrorDataJS() {
+      return toJS(this.registrationErrorData);
+    }
+
+    @action setErrorData = (data) => {
+        console.log('setting err mesg', data)
+        this.registrationErrorData = data;
     }
 
     @action submitRegistration = () => {
@@ -151,7 +155,7 @@ export default class RegistrationStore {
             .then((res) => {
                 console.log('create user res', res);
                 if(res.status === 500 || res.status === 422) {
-                    this.setErrorMessage(res.json.error.message)
+                    this.setErrorData(res.json.error)
                     reject(res)
                 } else if(res.ok) {
                     this.initRegistation();
