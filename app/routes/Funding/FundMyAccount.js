@@ -115,7 +115,8 @@ export default class FundMyAccount extends React.Component {
                 textAlign: 'center',
                 color: theme.darkSlate
             }
-            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.white}}>
+            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
+                <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
