@@ -132,25 +132,9 @@ export default class RegistrationStore {
     @action submitRegistration = () => {
         return new Promise((resolve, reject) => {
 
-            // let stateName = '';
-            // console.log('----------- options', stateOptionsMap)
-            // stateOptionsMap.every((elem, i) => {
-            //
-            //   console.log('== elem', elem, this.registrationData.state)
-            //
-            //   if(elem.value === this.registrationData.state) {
-            //     console.log('== elem', elem, this.registrationData.state)
-            //     stateName = elem.value;
-            //     return false;
-            //   }
-            //   return true;
-            // })
-            //
-
             // get maritalStatus from index
             let maritalStatusFormatted = '';
             maritalStatusList.every((elem, i) => {
-              console.log('== elem', elem, this.registrationData.maritalStatus)
               if(elem.value === this.registrationData.maritalStatus) {
                 maritalStatusFormatted = elem.label;
                 return false;
@@ -161,7 +145,6 @@ export default class RegistrationStore {
             // get employment status from index
             let employmentStatusFormatted = '';
             employmentStatusList.every((elem, i) => {
-              console.log('== elem', elem, this.registrationData.employmentStatus)
               if(elem.value === this.registrationData.employmentStatus) {
                 employmentStatusFormatted = elem.label;
                 return false;
@@ -172,7 +155,6 @@ export default class RegistrationStore {
             // investment experience
             let investmentStatusFormatted = '';
             investmentStatusList.every((elem, i) => {
-              console.log('== elem', elem, this.registrationData.investmentStatus)
               if(elem.value === this.registrationData.investmentStatus) {
                 investmentStatusFormatted = elem.label;
                 return false;
@@ -204,7 +186,8 @@ export default class RegistrationStore {
                 // "savingsAccount": ,
                 // "id": ,
             }
-            console.log('===== PARAMS', params)
+
+            // console.log('===== PARAMS', params)
 
             createUser(params)
             .then((res) => {
