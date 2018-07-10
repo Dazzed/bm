@@ -49,8 +49,11 @@ class EditMaritalStatus extends React.Component {
     const {
       maritalStatus
     } = this.props.globalData.currentUser;
+    
+    console.log('------------ ', maritalStatus)
+    let maritalStatusAsInt = Number(maritalStatus)
 
-    var result = status_list.find(x => x.label === maritalStatus)
+    var result = status_list.find(x => x.value === maritalStatusAsInt)
     const maritalStatusOption = result.value;
 
     this.state = {
