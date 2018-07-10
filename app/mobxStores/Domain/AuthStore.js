@@ -3,11 +3,8 @@ import { login, getUserById } from '../../api';
 import { saveToken } from '../../api/tokenUtility';
 
 export default class ColorStore {
-
     constructor() {
-        console.log('====== AUTH STORE');
     }
-
 
     @observable loginData = null;
 

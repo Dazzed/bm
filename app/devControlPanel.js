@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -60,9 +60,10 @@ if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }
 
+// when logging in, pretend it's the first time, every time
 const forceLoginToFundingEveryTime = false;
 
-const verifyAuthOnHomeView = false;
+const verifyAuthOnHomeView = true;
 
 
 ///////////////////////////////////////////////////////////////////////

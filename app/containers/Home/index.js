@@ -52,7 +52,7 @@ class HomeScreen extends Component {
       this.props.navigation.navigate('AppNavTabs');
     }
     if(verifyAuthOnHomeView) {
-      this.props.verifyAuth();  
+      this.props.verifyAuth();
     }
   }
 

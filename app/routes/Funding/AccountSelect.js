@@ -6,7 +6,6 @@ import { observer } from 'mobx-react';
 import { colorStore, accountStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
 
-
 @observer
 export default class AccountSelect extends React.Component {
 
@@ -15,9 +14,9 @@ export default class AccountSelect extends React.Component {
         const { theme } = colorStore;
         let headerStyleToExtend = generateHeaderStyles(theme);
     
-        let title = 'Withdraw Funds';
+        let title = 'Withdraw funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund My Account'
+            title = 'Fund my account'
         }
         return {
             title: title,

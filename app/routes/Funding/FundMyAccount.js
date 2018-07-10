@@ -19,9 +19,9 @@ import { generateHeaderStyles } from '../../utility';
 export default class FundMyAccount extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-        let title = 'Withdraw Funds';
+        let title = 'Withdraw funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund My Account'
+            title = 'Fund my account'
         }
 
         const { theme } = colorStore;
@@ -184,7 +184,7 @@ export default class FundMyAccount extends React.Component {
 
     render() {
       const { theme } = colorStore;
-        let buttonTitle = 'FUND MY ACCOUNT';
+        let buttonTitle = 'FUND ACCOUNT';
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
           buttonTitle = 'MAKE WITHDRAW';
         }

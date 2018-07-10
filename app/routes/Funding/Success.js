@@ -8,9 +8,9 @@ import { generateHeaderStyles, numberWithCommas } from '../../utility';
 export default class Success extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-        let title = 'Funds Withdrawn';
+        let title = 'Funds withdrawn';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Account Funded'
+            title = 'Account funded'
         }
 
         const { theme } = colorStore;
