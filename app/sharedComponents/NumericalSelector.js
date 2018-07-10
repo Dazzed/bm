@@ -81,7 +81,7 @@ export default class NumericalSelector extends React.Component {
                 {
                     color: theme.darkSlate,
                     fontSize: 20,
-                    opacity: this.isDisabled(num) === true ? .2 : 1
+                    opacity: this.isDisabled(num) === true ? .4 : 1
                 },
                 fonts.hindGunturRg
             ];
