@@ -11,7 +11,18 @@ import fonts from '../style/fonts';
 import ResponsiveImage from 'react-native-responsive-image';
 import chart from '../style/chart';
 import { LineChart, Grid } from 'react-native-svg-charts'
-import { Svg, Line, Text as TextSvg, Polygon, G, Defs, Use, TSpan } from 'react-native-svg'
+import {
+  Svg,
+  Line,
+  Text as TextSvg,
+  Polygon,
+  G,
+  Defs,
+  Use,
+  TSpan,
+  Rect,
+  Polyline
+} from 'react-native-svg'
 
 
 class HorizontalLine extends React.Component {
@@ -162,15 +173,15 @@ export default class ChartGraph extends React.Component {
     let xPosition = 5;
 
     let textLeftOffset = 5;
-    let textTopOffset = boxHeight * .42;
+    let topOffset = 2;
     
     const generateXLineGroup = (number) => {
-      return <G id="horiz-line">
+      return <G>
           <G>
             <Line
                 key={ 'zero-axis' }
                 x1={ '0%' }
-                x2={ '90%' }
+                x2={ '92%' }
                 y1={ number }
                 y2={ number }
                 stroke={ theme.borderGray }
@@ -181,7 +192,7 @@ export default class ChartGraph extends React.Component {
               fontSize={12}
               fill={theme.borderGray}
               stroke={theme.borderGray}
-              y={number}
+              y={number + topOffset}
               x={'95%'}
               textAnchor="middle"
             >
@@ -192,13 +203,13 @@ export default class ChartGraph extends React.Component {
     }
     
     const generateYLineGroup = (number) => {
-      return <G id="vert-line">
+      return <G>
             <Line
                 key={ 'zero-axis' }
                 x1={ number }
                 x2={ number }
                 y1={ '0%' }
-                y2={ '100%' }
+                y2={ '50%' }
                 stroke={ theme.borderGray }
                 strokeDasharray={ [ 4, 8 ] }
                 strokeWidth={ 1 }
@@ -207,7 +218,7 @@ export default class ChartGraph extends React.Component {
               fontSize={12}
               fill={theme.borderGray}
               stroke={theme.borderGray}
-              y={'50%'}
+              y={'54%'}
               x={number}
               textAnchor="middle"
             >
@@ -216,14 +227,107 @@ export default class ChartGraph extends React.Component {
       </G>
     }
 
-    let barData = [
+    let barDataList = [
       {
-        top: 100,
-        bottom: 
-      }
+        xPosition: 10,
+        hardTop: 100,
+        hardBottom: 10,
+        softTop: 50,
+        softBottom: 100,
+        color: theme.red
+      },
+      {
+        xPosition: 30,
+        hardTop: 200,
+        hardBottom: 80,
+        softTop: 80,
+        softBottom: 40,
+        color: theme.green
+      },
+      {
+        xPosition: 200,
+        hardTop: 300,
+        hardBottom: 80,
+        softTop: 180,
+        softBottom: 90,
+        color: theme.green
+      },
     ]
 
-    const generateBarLine = ()
+    let thinLineWidth = 1;
+    let thickLineWidth = 5;
+
+    const generateBarLine = (params) => {
+      return <G>
+        <Rect
+            x={params.xPosition - (thickLineWidth / 2)}
+            y={params.softTop}
+            width={thickLineWidth}
+            height={params.softBottom - params.softTop}
+            fill={params.color}
+            strokeWidth={'1'}
+            stroke={params.color}
+        />
+        <Rect
+            x={params.xPosition - (thinLineWidth / 2)}
+            y={params.hardTop}
+            width={thinLineWidth}
+            height={params.hardBottom - params.hardTop}
+            fill={params.color}
+            strokeWidth={'1'}
+            stroke={params.color}
+        />
+      </G>
+    }
+    
+    let lineList = [
+      
+      {
+        lineTitle: 'Test line 1',
+        color: theme.red,
+        lineData: [{
+          x: 0, y: 0
+        },
+        {
+          x: 100, y: 100
+        },
+        {
+          x: 150, y: 0
+        }]
+      },
+      
+      {
+        lineTitle: 'Test line 1',
+        color: theme.green,
+        lineData: [{
+          x: 0, y: 30
+        },
+        {
+          x: 50, y: 10
+        },
+        {
+          x: 300, y: 80
+        }]
+      }
+      
+    ]
+    
+    const generateLine = (params) => {
+      let points = "0,0";
+      
+      params.lineData.map((elem, i) => {
+        console.log('each line data', elem);
+        points += ` ${elem.x},${elem.y}`
+      })
+      
+      return <Polyline
+          points={points}
+          fill={'none'}
+          stroke={params.color}
+          strokeWidth={2}
+      />
+    }
+    
     
     return <View style={inlineContainerStyle}>
       <Svg
@@ -237,6 +341,14 @@ export default class ChartGraph extends React.Component {
           return generateXLineGroup(elem)
         })}
 
+        {barDataList.map((elem, i) => {
+          return generateBarLine(elem)
+        })}
+        
+        {lineList.map((elem, i) => {
+          return generateLine(elem)
+        })}
+        
 
       </Svg>
     </View>
