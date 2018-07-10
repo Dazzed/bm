@@ -171,6 +171,17 @@ class Settings extends Component {
       this.setState({ isAutoLogVisible: false });
     }
   }
+  
+  showEmail() {
+    console.log('showEmail');
+  }
+  showPhone() {
+    console.log('showPhone');
+  }
+  showPassword() {
+    console.log('showPassword');
+  }
+  
 
   handleTouch = (value) => {
     // if (value) {
@@ -287,7 +298,8 @@ class Settings extends Component {
       globalData
     } = this.props;
 
-    console.log('GLOooooooobal data', globalData)
+    // console.log('GLOooooooobal data', globalData)
+    // {this.renderOption('Citizenship', globalData.currentUser.country)}
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
@@ -316,18 +328,15 @@ class Settings extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
           
           // TODO: need edit functions. what are we doint here?
-          {this.renderOption('Email', globalData.currentUser.email)}
-          {this.renderOption('Mobile', globalData.currentUser.phone)}
-          {this.renderOption('Password', '***********')}
-          
+          {this.renderOption('Email', globalData.currentUser.email, this.showEmail )}
+          {this.renderOption('Mobile', globalData.currentUser.phone, this.showPhone )}
+          {this.renderOption('Password', '***********', this.showPassword )}
+      
           {this.renderOption('Address', globalData.currentUser.address, this.showAddress)}
-          
           {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.showMaritalStatus)}
           {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.showDependents)}
           {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
-          {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
           {this.renderOption('Investment experience', globalData.currentUser.experience, this.showExperience)}
-          {this.renderOption('Citizenship', globalData.currentUser.country)}
           
           // Color Scheme
           
