@@ -1,9 +1,19 @@
 import { observable, action, computed, toJS } from 'mobx';
 // import { getWatchlistData as getWatchlistDataApi } from '../../api';
+import { get, deleteRequest, post } from '../../api/apiUtility';
+import { sortStringArrayByParam, sortNumberArrayByParam } from '../../utility';
 
 export default class Watchlist {
+  sort_props = [
+    { label: 'NONE', value: 0 },
+    { label: 'A-Z', value: 1 },
+    { label: 'Volume', value: 2 },
+    { label: '% Change', value: 3 }
+  ];
 
-  @observable watchlistData = null;
+  @observable isFetchingWatchlistData = true;
+  @observable deletingRecordId = null;
+  @observable watchlistData = [];
 
   @observable listOrder = ["0", "1", "2", "3", "4", "5"];
 
@@ -13,34 +23,60 @@ export default class Watchlist {
     this.scannerData = data;
   }
 
-  @action getWatchlistData = () => {
-    let params = {}
-    // getWatchlistDataApi(params)
-    // .then((res) => {
-    //   console.log('trending data', res)
-    // })
-    // .catch((err) => {
-    //   console.log('trending data err', err)
-    // })
+  @action getWatchlistData = async () => {
+    try {
+      const { json: watchlistData } = await get('userWatchLists');
+      this.watchlistData = watchlistData;
+      this.isFetchingWatchlistData = false;
+    } catch (e) {
+      this.isFetchingWatchlistData = false;
+      console.log('Error in getWatchlistData', e);
+    }
   }
 
-
-
-  @action saveListOrderChange = (newOrder) => {
-    console.log('save new order change', newOrder)
+  @action onRowMove = async evt => {
+    try {
+      const targetRowId = evt.row.data.id;
+      const indexOfMovingItem = evt.from
+      const indexOfReplacingItem = evt.to;
+      const watchlistDatatoJS = toJS(this.watchlistData);
+      watchlistDatatoJS.move(indexOfMovingItem, indexOfReplacingItem);
+      this.watchlistData = watchlistDatatoJS.map((item, index) => ({
+        ...item,
+        position: index
+      }));
+      const { json: watchlistData } = await post('userWatchLists/reorderPosition', {
+        id: targetRowId,
+        newPosition: indexOfReplacingItem
+      });
+      this.watchlistData = watchlistDatatoJS.map(data => {
+        const {
+          position: thizPosition,
+          id: thizId
+        } = watchlistData.find(d => d.ticker === data.ticker);
+        return {
+          ...data,
+          position: thizPosition,
+          id: thizId
+        };
+      });
+    } catch (e) {
+      console.log('Error in onRowMove', e);
+    }
   }
 
-  @action onRowMove = (e) => {
-    console.log('row moved', e)
-  }
-
-  @action removeFromWatchlist = (itemToRemove) => {
-    console.log('REMOVE THIS', itemToRemove);
-
+  @action removeFromWatchlist = async itemToDelete => {
+    try {
+      this.deletingRecordId = itemToDelete.id;
+      await deleteRequest(`userWatchLists/${itemToDelete.id}`);
+      this.watchlistData = toJS(this.watchlistData).filter(d => d.id !== itemToDelete.id);
+      this.deletingRecordId = null;
+    } catch (e) {
+      console.log('Error in removeFromWatchlist', e);
+    }
   }
 
   @action sortBy = (sortValue) => {
-    console.log('SORT BY', sortValue)
     this.sortByIndex = sortValue;
   }
 
@@ -49,15 +85,17 @@ export default class Watchlist {
   }
 
   @computed get watchlistDataJS() {
-    let listData = [
-      { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../../images/momo_watch_01.gif'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-      { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../../images/momo_watch_02.gif'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-      { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../../images/momo_watch_03.gif'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-      { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../../images/momo_watch_01.gif'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-      { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../../images/momo_watch_04.gif'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-      { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../../images/momo_watch_02.gif'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', change: '+1.45', changePerc: '+10.41%', stockChange: true },
-    ]
-    return listData;
+    switch (this.sortByIndex) {
+      case 0:
+        return sortNumberArrayByParam(toJS(this.watchlistData), 'position');
+      case 1:
+        return sortStringArrayByParam(toJS(this.watchlistData), 'companyName');
+      case 2:
+        return sortNumberArrayByParam(toJS(this.watchlistData), 'avgTotalVolume', 'DESC');
+      case 3:
+        return sortNumberArrayByParam(toJS(this.watchlistData), 'changePercent', 'DESC');
+      default:
+        return toJS(this.watchlistData);
+    }
   }
-
 }

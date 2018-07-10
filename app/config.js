@@ -4,4 +4,4 @@ const config = {
 }
 
 // export const API_URL = config['development'];
-export const API_URL = config['staging'];
+export const API_URL = config['development'];

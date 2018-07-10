@@ -397,7 +397,7 @@ class Settings extends Component {
               value={this.state.trueSwitchIsOn} />
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>MarketWatch</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>MSNBC</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
@@ -411,7 +411,7 @@ class Settings extends Component {
               value={true} />
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Morningstar</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>The Wall Street Journal</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}

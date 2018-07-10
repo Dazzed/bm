@@ -1,3 +1,4 @@
+import './prototypes';
 import { showConsole } from './app/devControlPanel';
 
 if (!showConsole) {
