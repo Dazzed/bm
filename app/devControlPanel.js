@@ -24,8 +24,8 @@ const displayPreviewButtonOnHome = false;
 const forceDarkTheme = false;
 
 // force navigation on top level navigator
-const firstNavDefaultRoute = 'Home';
-// const firstNavDefaultRoute = 'Login';
+// const firstNavDefaultRoute = 'Home';
+const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
@@ -54,14 +54,15 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-const autoLogin = false;
-// const autoLogin = true;
+// const autoLogin = false;
+const autoLogin = true;
 if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }
 
 // when logging in, pretend it's the first time, every time
 const forceLoginToFundingEveryTime = false;
+// const forceLoginToFundingEveryTime = true;
 
 const verifyAuthOnHomeView = true;
 
