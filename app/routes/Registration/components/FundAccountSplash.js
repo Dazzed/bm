@@ -32,7 +32,7 @@ import { generateHeaderStyles } from '../../../utility';
 export default class FundAccountSplash extends Component {
 
     static navigationOptions = ({ navigation }) => {
-        let title = '';
+        let title = 'Fund My Account';
 
         const { theme } = colorStore;
         let headerStyleToExtend = generateHeaderStyles(theme);
@@ -76,7 +76,7 @@ export default class FundAccountSplash extends Component {
                 </ScrollView>
                 <View style={{ backgroundColor: theme.white, shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={() => this.navToFunding()} style={[{ backgroundColor: theme.green, borderColor: theme.green }, styles_2.fullBtn, { height: 80 }]}>
-                        <Text style={[{ color: theme.realWhite }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>FUND ACCOUNT</Text>
+                        <Text style={[{ color: theme.realWhite }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>FUND MY ACCOUNT</Text>
                     </TouchableHighlight>
                     <Text> </Text>
                 </View>

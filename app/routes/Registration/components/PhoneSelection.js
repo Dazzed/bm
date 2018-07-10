@@ -27,6 +27,8 @@ import down from '../../../images/down.png';
 import { Label } from 'native-base';
 import { observer } from 'mobx-react';
 import { registrationStore, colorStore } from '../../../mobxStores';
+import RegistrationHeader from './registrationHeader';
+
 
 @observer
 export default class PhoneSelection extends Component {
@@ -90,19 +92,6 @@ export default class PhoneSelection extends Component {
         this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
 
-    whyWeAsk = () => {
-        if (this.state.showWhyWeAsk) {
-            return (
-                <View style={[styles_2.whyWeAskView]}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-                        Uncle Sam requires all brokerages to collect this info for identification verification
-                    </Text>
-                    <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
-                </View>
-            );            
-        }
-    }
-
     render() {
         const { registrationDataJS } = registrationStore;
         return (
@@ -114,19 +103,8 @@ export default class PhoneSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{flex: 1}}>
-                  <View style={{ paddingVertical: 50 }}>
-                  
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        PHONE NUMBER
-                    </Text>
-                    <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
-                            WHY WE ASK
-                        </Text>
-                        <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
-                    </View>
-                    {this.whyWeAsk()}
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingVertical: 40 }]}>
+                    <RegistrationHeader headerText={'PHONE NUMBER'} generalText={null} whyWeAskText={'Uncle Sam requires all brokerages to collect this info for identification verification'} />
+                    <View style={[{ backgroundColor: this.props.colors['white'], paddingVertical: 40 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatPhone(registrationDataJS.phoneField)}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField]} maxLength={12} editable={false}
@@ -134,7 +112,6 @@ export default class PhoneSelection extends Component {
                         </View>
                         <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
                     </View>
-                  </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight disabled={!this.formValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.returnFormValidClass()]}>

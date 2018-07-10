@@ -70,7 +70,12 @@ export function verifyAuth() {
           type: `${PREFIX}_STOP_VERIFYING_AUTH`
         });
       }
+      
       const { data: currentUser } = await axios.get(`${API_URL}/api/users/${userId}?access_token=${accessToken}`);
+      // const { data: currentUser } = await authStore.populateUserById(userId)
+      console.warn('--- currentUser', currentUser)
+      
+      
       dispatch({
         type: `${PREFIX}_SET_CURRENT_USER`,
         payload: currentUser

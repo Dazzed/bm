@@ -58,62 +58,64 @@ class AccountPos extends React.Component {
     }
   }
 
-  render() {
-    return (
-      <View style={[{backgroundColor: this.state.colors['contentBg']}, account.tabContent]}>
-        <View style={account.titleWrap}>
-          <Text style={[{color: this.state.colors['darkSlate']}, account.sectionTitle, fonts.hindGunturBd]}>EQUITY</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>QTY</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>PRICE/CHG</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUATION</Text>
-        </View>
-        <View style={account.sectionFull}>
-          <View style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>
-            <View style={account.symbolWrap}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>APPL</Text>
-              <Text style={[{color: this.state.colors['lightGray']},account.symbolDets, fonts.hindGunturRg]}>Apple, Inc</Text>
-            </View>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>10</Text>
-            <TouchableOpacity style={account.priceWrapTouch} onPress={() => this.setState({applChg: !this.state.applChg})}>
+  renderHeader() {
+    return <View style={account.titleWrap}>
+      <Text style={[{color: this.state.colors['darkSlate']}, account.sectionTitle, fonts.hindGunturBd]}>EQUITY</Text>
+      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>QTY</Text>
+      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>PRICE/CHG</Text>
+      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUATION</Text>
+    </View>
+  }
+
+  renderList() {
+    const { positionsJS } = myAccount;
+
+    return <View style={account.sectionFull}>
+      {positionsJS.map((elem, i) => {
+        return <View key={'each-position' + i} style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>
+          <View style={account.symbolWrap}>
+            <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
+            <Text style={[{color: this.state.colors['lightGray']},account.symbolDets, fonts.hindGunturRg]}>{elem.companyName}</Text>
+          </View>
+          <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>{elem.quantity}</Text>
+          <TouchableOpacity style={account.priceWrapTouch} onPress={() => this.setState({applChg: !this.state.applChg})}>
             <View style={account.priceWrap}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>$153.53</Text>
-              {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
+              <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>${elem.priceChange}</Text>
+              {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[elem.priceChangeColor]}, {borderColor: this.state.colors[elem.priceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.priceChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[elem.priceChangeColor]}, {borderColor: this.state.colors[elem.priceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.priceChangePercentage}%</Text>}
             </View>
             <View style={account.mktWrap}>
               <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>$1,535.30</Text>
-              {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
+              {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[elem.marketChangeColor]}, {borderColor: this.state.colors[elem.marketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.marketChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[elem.marketChangeColor]}, {borderColor: this.state.colors[elem.marketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.marketChangePercentage}%</Text>}
             </View>
-            </TouchableOpacity>
-          </View>
-          <View style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>
-            <View style={account.symbolWrap}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>TSLA</Text>
-              <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>Tesla Motors</Text>
-            </View>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>10</Text>
-            <TouchableOpacity style={account.priceWrapTouch} onPress={() => this.setState({tslaChg: !this.state.tslaChg})}>
-            <View style={account.priceWrap} onPress={() => this.setState({tslaChg: !this.state.tslaChg})}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>$320.00</Text>
-              {this.state.tslaChg ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+3.12</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>10.41%</Text>}              
-            </View>
-            <View style={account.mktWrap}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>$3,072.00</Text>
-              {this.state.tslaChg ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+130.00</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>10.41%</Text>}              
-            </View>
-            </TouchableOpacity>
-          </View>          
+          </TouchableOpacity>
         </View>
-        <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
-          <View style={account.section}>
-            <View style={account.sectionWrap}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
-              <View style={account.stickyWrap}>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>$3,890.29</Text>
-                <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+      })}
+
+    </View>
+  }
+
+  renderTotal() {
+    const { positionTotalsJS } = myAccount;
+
+   return <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
+     <View style={account.section}>
+       <View style={account.sectionWrap}>
+         <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
+         <View style={account.stickyWrap}>
+           <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionTotalsJS.total}</Text>
+           <Text style={[{backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {borderColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text>
+         </View>
+       </View>
+     </View>
+   </View>
+  }
+
+  render() {
+    return (
+      <View style={[{backgroundColor: this.state.colors['contentBg']}, account.tabContent]}>
+        {this.renderHeader()}
+        {this.renderList()}
+        {this.renderTotal()}
       </View>
     );
   }

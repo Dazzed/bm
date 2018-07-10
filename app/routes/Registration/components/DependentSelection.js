@@ -22,6 +22,8 @@ import { isDependentValid } from '../validation';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import NumericalSelector from '../../../sharedComponents/NumericalSelector';
+import RegistrationHeader from './registrationHeader';
+
 
 let showWhyWeAsk = false;
 
@@ -80,11 +82,9 @@ export default class DependentSelection extends Component {
                     <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
-                <ScrollView style={{ flex: 1, paddingVertical: 40}}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle,{paddingTop: 20}]}>
-                        NUMBER OF DEPENDENTS
-                    </Text>
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25, paddingTop: 40 }]}>
+                <ScrollView style={{ flex: 1 }}>
+                  <RegistrationHeader headerText={'NUMBER OF DEPENDENTS'} generalText={null} whyWeAskText={null} />
+                    <View style={[{ backgroundColor: this.props.colors['white'] }]}>
                         <View style={[styles_2.registrationFormView, {marginTop: 45, paddingBottom: 30}]}>
                             <TextInput placeholder="XX" placeholderTextColor={this.props.colors['lightGray']} value={registrationDataJS.dependentField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}

@@ -1,8 +1,13 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { createUser } from '../../api';
 import { formatDate } from '../../routes/Registration/utility';
-
 import { fillRegistrationWithFakeData } from '../../devControlPanel';
+
+import {
+  maritalStatusList,
+  employmentStatusList,
+  investmentStatusList
+} from '../../constants';
 
 export default class RegistrationStore {
 
@@ -34,7 +39,7 @@ export default class RegistrationStore {
             ssnField: '',
 
             // martial status
-            maritalStatus: 4,
+            maritalStatus: 0,
 
             // dependents
             dependentField: '',
@@ -64,13 +69,13 @@ export default class RegistrationStore {
             firstName: 'test1',
             lastName: 'test2',
             // address selection
-            address: '1',
-            address2: '1',
-            zip: '1',
-            state: '1',
-            city: '1',
-            zip: '1',
-            stateOption: 2,
+            address: '1123 street',
+            address2: '22 line two',
+            zip: '12345',
+            // state: 'California',
+            city: 'LosAngeles',
+            zip: '1234',
+            stateOption: 0,
             // phone selection
             phoneField: '1111111111',
             // date of birth
@@ -78,7 +83,7 @@ export default class RegistrationStore {
             // ssn
             ssnField: '123121234',
             // martial status
-            maritalStatus: 4,
+            maritalStatus: 0,
             // dependents
             dependentField: '1',
             // employment status
@@ -113,15 +118,50 @@ export default class RegistrationStore {
     }
 
 
-    @observable registrationErrorMessage = null;
+    @observable registrationErrorData = null;
 
-    @action setErrorMessage = (msg) => {
-        console.log('setting err mesg', msg)
-        this.registrationErrorMessage = msg;
+    @computed get registrationErrorDataJS() {
+      return toJS(this.registrationErrorData);
+    }
+
+    @action setErrorData = (data) => {
+        console.log('setting err mesg', data)
+        this.registrationErrorData = data;
     }
 
     @action submitRegistration = () => {
         return new Promise((resolve, reject) => {
+
+            // get maritalStatus from index
+            let maritalStatusFormatted = '';
+            maritalStatusList.every((elem, i) => {
+              if(elem.value === this.registrationData.maritalStatus) {
+                maritalStatusFormatted = elem.label;
+                return false;
+              }
+              return true;
+            })
+
+            // get employment status from index
+            let employmentStatusFormatted = '';
+            employmentStatusList.every((elem, i) => {
+              if(elem.value === this.registrationData.employmentStatus) {
+                employmentStatusFormatted = elem.label;
+                return false;
+              }
+              return true;
+            })
+
+            // investment experience
+            let investmentStatusFormatted = '';
+            investmentStatusList.every((elem, i) => {
+              if(elem.value === this.registrationData.investmentStatus) {
+                investmentStatusFormatted = elem.label;
+                return false;
+              }
+              return true;
+            })
+
             let params = {
                 "email": this.registrationData.email,
                 "firstName": this.registrationData.firstName,
@@ -131,10 +171,10 @@ export default class RegistrationStore {
                 "address2": this.registrationData.address2,
                 "phone": this.registrationData.phoneField,
                 "socialSecurityNo": this.registrationData.ssnField,
-                "maritalStatus": this.registrationData.maritalStatus,
+                "maritalStatus": maritalStatusFormatted,
                 "dependents": this.registrationData.dependentField,
-                "employment": this.registrationData.employmentStatus,
-                "experience": this.registrationData.investmentStatus,
+                "employment": employmentStatusFormatted,
+                "experience": investmentStatusFormatted,
                 "city": this.registrationData.city,
                 "zipCode": this.registrationData.zip,
                 "state": this.registrationData.state,
@@ -146,12 +186,14 @@ export default class RegistrationStore {
                 // "savingsAccount": ,
                 // "id": ,
             }
-            console.log('===== PARAMS', params)
+
+            // console.log('===== PARAMS', params)
+
             createUser(params)
             .then((res) => {
                 console.log('create user res', res);
                 if(res.status === 500 || res.status === 422) {
-                    this.setErrorMessage(res.json.error.message)
+                    this.setErrorData(res.json.error)
                     reject(res)
                 } else if(res.ok) {
                     this.initRegistation();

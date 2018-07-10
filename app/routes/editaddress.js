@@ -101,14 +101,29 @@ class EditAddress extends React.Component {
       zipCode,
     } = this.props.globalData.currentUser;
 
-    var result = state_list.find(x => x.label === state)
-    const stateOption = result.value;
+    let stateAsInt = state;
+    if(typeof state !== 'number') {
+      stateAsInt = Number(state);
+    }
 
+    console.log('state as int', stateAsInt)
+
+    let stateOption = 0;
+    
+    state_list.every((elem, i) => {
+      
+      if(elem.value === stateAsInt) {
+        stateOption = elem.value;
+        return false;
+      }
+      return true;
+    })
+    
     this.state = {
       page: 'presets',
       colors: colors(props.globalData.isDarkThemeActive),
       isStateVisible: false,
-      stateOption: stateOption || 0,
+      stateOption: stateOption,
       addressOneClass: styles_2.registrationFormFieldInActive,
       addressTwoClass: styles_2.registrationFormFieldInActive,
       cityClass: styles_2.registrationFormFieldInActive,
@@ -177,7 +192,7 @@ class EditAddress extends React.Component {
       state,
       city
     }) && this.state.state !== 'Select';
-
+  
     this.setState({
       formValid: isValid,
       formValidClass: isValid ? styles_2.formValid : styles_2.formInvalid
@@ -213,6 +228,7 @@ class EditAddress extends React.Component {
     const {
       globalData
     } = this.props;
+    
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>

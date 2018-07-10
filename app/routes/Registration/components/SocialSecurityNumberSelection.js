@@ -25,6 +25,7 @@ import { isSsnValid } from '../validation';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import NumericalSelector from '../../../sharedComponents/NumericalSelector';
+import RegistrationHeader from './registrationHeader';
 
 @observer
 export default class SocialSecurityNumberSelection extends Component {
@@ -97,8 +98,16 @@ export default class SocialSecurityNumberSelection extends Component {
         }
     }
 
+    getSocialSecurityLink() {
+      return (<Text style={{color: "#18c3ff"}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>);
+    }
+
     render() {
         const { registrationDataJS } = registrationStore;
+        
+      
+        
+
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
@@ -108,26 +117,14 @@ export default class SocialSecurityNumberSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
-                    <View style={{paddingVertical: 40}}>
-                      <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                          SOCIAL SECURITY NUMBER
-                      </Text>
-                      <View style={[styles_2.whyWeAsk]}>
-                          <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
-                              WHY WE ASK
-                          </Text>
-                          <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
-                      </View>
-                    </View>
-                    
-                    {this.whyWeAsk()}
+                    <RegistrationHeader headerText={'SOCIAL SECURITY NUMBER'} generalText={null} whyWeAskText={'All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here:'} extraContent={this.getSocialSecurityLink()}/>
                     <View style={[{ backgroundColor: this.props.colors['white'], paddingVertical: 40 }]}>
-                        <View style={[styles_2.registrationFormView]}>
-                            <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatSSN(registrationDataJS.ssnField)}
-                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
-                           />
-                        </View>
-                        <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
+                      <View style={[styles_2.registrationFormView]}>
+                        <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatSSN(registrationDataJS.ssnField)}
+                            style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
+                       />
+                      </View>
+                      <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={[]}/>
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>

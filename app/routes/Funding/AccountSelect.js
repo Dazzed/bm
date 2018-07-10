@@ -6,7 +6,6 @@ import { observer } from 'mobx-react';
 import { colorStore, accountStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
 
-
 @observer
 export default class AccountSelect extends React.Component {
 
@@ -15,9 +14,9 @@ export default class AccountSelect extends React.Component {
         const { theme } = colorStore;
         let headerStyleToExtend = generateHeaderStyles(theme);
     
-        let title = 'Withdraw Funds';
+        let title = 'Withdraw funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund My Account'
+            title = 'Fund my account'
         }
         return {
             title: title,
@@ -126,11 +125,10 @@ export default class AccountSelect extends React.Component {
 
         let renderDivider = (i) => {
             if(i < accountListJS.length - 1) {
-                return <View style={{height: 1, width: '100%', backgroundColor: theme.lightGray}}></View>
+                return <View style={{height: 1, width: '74%', position: 'relative', left: '19%', backgroundColor: theme.borderGray}}></View>
             } else {
                 return null
             }
-
         }
 
         let masterRadius = 5;
@@ -141,18 +139,25 @@ export default class AccountSelect extends React.Component {
                 if(selectedAccountIndex === i) {
                     thisTitleStyle.color = theme.blue
                 }
+                let borderWidth = 1;
                 let thisAccountStyle = {
                     height: '100%',
                     width: '100%',
                     ...eachAccountStyle,
+                    borderLeftWidth: borderWidth,
+                    borderRightWidth: borderWidth,
+                    borderColor: theme.borderGray
                 }
                 if(i === 0) {
                     thisAccountStyle.borderTopLeftRadius = masterRadius;
                     thisAccountStyle.borderTopRightRadius = masterRadius;
+                    thisAccountStyle.borderTopWidth = borderWidth;
+                    thisAccountStyle.borderColor = theme.borderGray;
                 }
                 if(i === accountListJS.length - 1) {
                     thisAccountStyle.borderBottomLeftRadius = masterRadius;
                     thisAccountStyle.borderBottomRightRadius = masterRadius;
+                    thisAccountStyle.borderBottomWidth = 1;
                 }
 
                 return <View key={i} style={{zIndex: 1, backgroundColor: theme.white, borderRadius: 5}}>
@@ -186,9 +191,8 @@ export default class AccountSelect extends React.Component {
 
     renderTopInstruction() {
         const { theme } = colorStore;
-
         let instruction = null;
-        if(this.state.withdrawDepositMode === 'withdraw') {
+        if(this.state.withdrawDepositMode === 'deposit') {
             instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM';
             return <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{instruction}</Text>
         } else {
@@ -211,7 +215,7 @@ export default class AccountSelect extends React.Component {
             </View>
 
             <View style={{flex: 0, padding: 30}}>
-                <Button {...this.props} title="Next" onPress={() => this.navToFundAccount()}/>
+                <Button {...this.props} title="NEXT" onPress={() => this.navToFundAccount()}/>
             </View>
 
         </View>

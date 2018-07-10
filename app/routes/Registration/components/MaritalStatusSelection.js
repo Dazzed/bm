@@ -21,16 +21,12 @@ import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
+import RegistrationHeader from './registrationHeader';
+import { maritalStatusList } from '../../../constants';
 
 let showWhyWeAsk = true;
 
-const status_list = [
-    { "label": "Married", "value": 0 },
-    { "label": "Divorced", "value": 1 },
-    { "label": "Separated", "value": 2 },
-    { "label": "Widow", "value": 3 },
-    { "label": "Single", "value": 4 }
-];
+const status_list = maritalStatusList;
 
 @observer
 export default class MaritalStatusSelection extends Component {
@@ -60,10 +56,8 @@ export default class MaritalStatusSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, {paddingTop: 25}]}>
-                        MARITAL STATUS
-                    </Text>
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, flex: 1, paddingTop: 0 }]}>
+                    <RegistrationHeader headerText={'MARITAL STATUS'} generalText={null} whyWeAskText={null} />
+                    <View style={[{ backgroundColor: this.props.colors['white'], flex: 1 }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm

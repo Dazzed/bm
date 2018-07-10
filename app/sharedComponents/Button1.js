@@ -17,7 +17,7 @@ export default class Deposit extends React.Component {
     }
 
     render() {
-        let buttonHeight = 70;
+        let buttonHeight = 60;
 
         const { theme } = colorStore;
 
@@ -34,8 +34,12 @@ export default class Deposit extends React.Component {
 
         let buttonTextStyle = [styles.fullBtnTxt, fonts.hindGunturBd, {color: theme.realWhite, marginTop: 7}];
 
+        if(this.props.disabled) {
+            textContainer.backgroundColor = theme.inactiveDarkSlate
+        }
+
         return <View style={{width: '100%', height: buttonHeight}}>
-            <TouchableOpacity onPress={this.props.onPress} style={{width: '100%', height: '100%'}}>
+            <TouchableOpacity disabled={this.props.disabled} onPress={this.props.onPress} style={{width: '100%', height: '100%'}}>
                 <View style={textContainer}>
                     <Text style={buttonTextStyle}>{this.props.title || 'Button'}</Text>
                 </View>

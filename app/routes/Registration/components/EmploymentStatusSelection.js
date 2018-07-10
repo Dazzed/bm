@@ -23,16 +23,11 @@ import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
+import RegistrationHeader from './registrationHeader';
+import { employmentStatusList } from '../../../constants';
 
 let showWhyWeAsk = true;
-const status_list = [
-    { "label": "Employed", "value": 0 },
-    { "label": "Student", "value": 1 },
-    { "label": "Retired", "value": 2 },
-    { "label": "Unemployed", "value": 3 },
-    { "label": "Self-employed", "value": 4 },
-    { "label": "Other", "value": 5 }
-];
+const status_list = employmentStatusList;
 
 @observer
 export default class EmploymentStatusSelection extends Component {
@@ -63,10 +58,8 @@ export default class EmploymentStatusSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
-                        EMPLOYMENT STATUS
-                    </Text>
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 20, paddingTop: 0 }]}>
+                    <RegistrationHeader headerText={'EMPLOYMENT STATUS'} generalText={null} whyWeAskText={null} />
+                    <View style={[{ backgroundColor: this.props.colors['white'] }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <View style={styles_2.subMenuRow}>
                                 <RadioForm

@@ -31,6 +31,7 @@ import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 
 import PasswordChecklist from '../../../sharedComponents/PasswordChecklist';
+import RegistrationHeader from './registrationHeader';
 
 import {
     eightCharValidator,
@@ -75,19 +76,16 @@ export default class AccountSelection extends Component {
         this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
 
-    whyWeAsk = () => {
-        if (this.state.showWhyWeAsk) {
-            return (
-                <View style={[styles_2.whyWeAskView]}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-                        •	All of your data is 256-bit encrypted and stored securely.
-                        {"\n"}{"\n"}
-                        •	We do not sell your personal information, and your contact info will not be used for advertising; we will only contact you with important updates about your BluMartini trading account.
-                    </Text>
-                    <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
-                </View>
-            );
-        }
+    whyWeAskContent = () => {
+          return (
+              <View style={[styles_2.whyWeAskView]}>
+                  <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+                      •	All of your data is 256-bit encrypted and stored securely.
+                      {"\n"}{"\n"}
+                      •	We do not sell your personal information, and your contact info will not be used for advertising; we will only contact you with important updates about your BluMartini trading account.
+                  </Text>
+              </View>
+          );
     }
 
     getPasswordClass() {
@@ -114,8 +112,44 @@ export default class AccountSelection extends Component {
     }
 
     validationErrorMessage() {
-        const { registrationErrorMessage } = registrationStore;
-        return registrationErrorMessage
+        const { registrationErrorDataJS } = registrationStore;
+        console.warn('registrationDataJS', registrationErrorDataJS)
+        return 'dfsdf'
+        // return registrationErrorMessage
+    }
+    
+    renderEmailErrorMessage() {
+      const { registrationErrorDataJS } = registrationStore;
+      console.log('=============== regis', registrationErrorDataJS)
+      if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'email' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.email.length > 0 ) {
+        return <View style={{ marginTop: 10 }}>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.email[0]}</Text>
+        </View>  
+      } else {
+        return null;
+      }
+    }
+    
+    renderPasswordErrorMessage() {
+      const { registrationErrorDataJS } = registrationStore;
+      if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'password' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.password.length > 0 ) {
+        return <View style={{ marginTop: 10 }}>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.password[0]}</Text>
+        </View>  
+      } else {
+        return null;
+      }  
+    }
+    
+    renderGeneralErrorMessage() {
+      const { registrationErrorDataJS } = registrationStore;
+      if(registrationErrorDataJS && 'message' in registrationErrorDataJS ) {
+        return <View style={{ marginTop: 10 }}>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.message}</Text>
+        </View>  
+      } else {
+        return null;
+      }  
     }
 
     validationErrorMessageExists() {
@@ -207,17 +241,10 @@ export default class AccountSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        ACCOUNT DETAILS
-                    </Text>
-                    <View style={[styles_2.whyWeAsk]}>
-                        <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
-                            WHY WE ASK
-                        </Text>
-                        <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
-                    </View>
-                    {this.whyWeAsk()}
-                    <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
+                    
+                    <RegistrationHeader headerText={'ACCOUNT DETAILS'} generalText={null} whyWeAskText={null} extraContent={this.whyWeAskContent()} />
+
+                    <View style={[{ backgroundColor: this.props.colors['white'] }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>EMAIL</Text>
                             <TextInput
@@ -226,23 +253,24 @@ export default class AccountSelection extends Component {
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.getEmailClass()]}
                                 keyboardType="email-address"
                                 autoCapitalize='none'
-                                placeholder={'Email'}
                                 onChange={(event) => this.onEmailChange(event, 'email')}
                                 value={registrationDataJS.email}
                             />
+                            
+                            {this.renderEmailErrorMessage()}
+                            
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
                             <TextInput
                                 onBlur={() => this.onBlur('passwordClass')}
                                 onFocus={() => this.onFocus('passwordClass')}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.getPasswordClass()]}
                                 secureTextEntry={true}
-                                placeholder={'Password'}
                                 onChange={(event) => this.onPasswordChange(event, 'password')}
                                 value={registrationDataJS.password}
                             />
-                            <View style={{ marginTop: 10, display: this.validationErrorMessageExists() ? 'flex' : 'none' }}>
-                                <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error:</Text> {this.validationErrorMessage()}</Text>
-                            </View>
+                            
+                            {this.renderPasswordErrorMessage()}
+                        
                         </View>
                     </View>
                     <PasswordChecklist password={registrationDataJS.password}/>

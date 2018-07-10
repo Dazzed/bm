@@ -36,18 +36,13 @@ export default class PasswordChecklist extends React.Component {
 
     renderTest(input, textToDisplay, validator) {
         const { theme } = colorStore;
-
         let inlineTextStyle = {
             color: theme.darkSlate,
             fontSize: 16
         }
-
-        console.log('validator input', validator(input))
-
         if(validator(input)) {
             inlineTextStyle.color = theme.green
         }
-
         return <View>
             <Text style={inlineTextStyle}>{textToDisplay}</Text>
         </View>

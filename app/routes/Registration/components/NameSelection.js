@@ -29,6 +29,7 @@ import { isPresent } from '../validation';
 
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
+import RegistrationHeader from './registrationHeader';
 
 @observer
 export default class NameSelection extends Component {
@@ -55,20 +56,6 @@ export default class NameSelection extends Component {
 
   toggleWhyWeAsk = () => {
     this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
-  }
-
-  whyWeAsk = () => {
-    if (this.state.showWhyWeAsk) {
-      return (
-        <View style={[styles_2.whyWeAskView]}>
-          <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-            Uncle Sam requires all brokerages to collect this info for identification verification
-                </Text>
-          <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
-        </View>
-      );
-    }
-    return null;
   }
 
   onFocus = (item) => {
@@ -111,17 +98,10 @@ export default class NameSelection extends Component {
           <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
         </View>
         <ScrollView style={{ height: '72%' }}>
-          <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-            NAME
-          </Text>
-          <View style={[styles_2.whyWeAsk]}>
-            <Text onPress={this.toggleWhyWeAsk} style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskLabel]}>
-              WHY WE ASK
-            </Text>
-            <Image onPress={this.toggleWhyWeAsk} source={this.state.showWhyWeAsk ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
-          </View>
-          {this.whyWeAsk()}
-          <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 25 }]}>
+          
+          <RegistrationHeader headerText={'NAME'} generalText={null} whyWeAskText={'Uncle Sam requires all brokerages to collect this info for identification verification'} />
+
+          <View style={[{ backgroundColor: this.props.colors['white'] }]}>
             <View style={[styles_2.registrationFormView]}>
               <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>FIRST NAME</Text>
               <TextInput

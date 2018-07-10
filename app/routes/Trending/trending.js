@@ -185,7 +185,7 @@ class SubMenu extends React.Component {
       isSectorVisible: false,
       isScanVisible: false,
       isIndustryVisible: false,
-      trendingOption: 0,
+      // trendingOption: 0,
       sectorOption: 0,
       industryOption: null,
       currIndustryOptions: null,
@@ -199,7 +199,8 @@ class SubMenu extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.industryOption == null) {
+    const { industryOption } = trendingStore;
+    if (industryOption == null) {
       styleDefault = { color: this.state.colors['lightGray'] }
     }
   }
@@ -220,9 +221,14 @@ class SubMenu extends React.Component {
     this.setState({ isScanVisible: true })
   }
 
-  hideScan(value) {
+  hideTrendingOptionModal(value) {
+    const { setTrendingOption } = trendingStore;
+    if(value !== undefined) {
+      setTrendingOption(value);
+    }
+
     if (value) {
-      this.setState({ isScanVisible: false, trendingOption: value })
+      this.setState({ isScanVisible: false })
     } else {
       this.setState({ isScanVisible: false })
     }
@@ -232,75 +238,135 @@ class SubMenu extends React.Component {
     this.setState({ isSectorVisible: true })
   }
 
-  hideSector(value) {
-    console.log('hideSector');
-    switch (value) {
+  getCurrentIndustryOptions() {
+    const { industryOption } = trendingStore;
+    switch (industryOption) {
       case 0:
-        this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: null });
-        styleDefault = trending.inactive
+        return industry_consumerdiscretionary
         break;
       case 1:
-        this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_consumerdiscretionary
         break;
       case 2:
-        this.setState({ currIndustryOptions: industry_consumerstaples, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_consumerstaples
         break;
       case 3:
-        this.setState({ currIndustryOptions: industry_energy, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_energy
         break;
       case 4:
-        this.setState({ currIndustryOptions: industry_financials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_financials
         break;
       case 5:
-        this.setState({ currIndustryOptions: industry_health, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_health
         break;
       case 6:
-        this.setState({ currIndustryOptions: industry_industrials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_industrials
         break;
       case 7:
-        this.setState({ currIndustryOptions: industry_infotech, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_infotech
         break;
       case 8:
-        this.setState({ currIndustryOptions: industry_materials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_materials
         break;
       case 9:
-        this.setState({ currIndustryOptions: industry_realestate, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_realestate
         break;
       case 10:
-        this.setState({ currIndustryOptions: industry_telecomm, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_telecomm
         break;
       case 11:
-        this.setState({ currIndustryOptions: industry_utilities, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-        styleDefault = ''
+        return industry_utilities
         break;
     }
   }
 
+  hideSector(value) {
+    const { setSectorOption } = trendingStore;
+
+    if(value === undefined) {
+      this.setState({ isSectorVisible: false });
+      return;
+    }
+
+    setSectorOption(value);
+
+    this.setState({
+      isSectorVisible: false
+    })
+
+    // console.log('hideSector');
+    // switch (value) {
+    //   case 0:
+    //     this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: null });
+    //     styleDefault = trending.inactive
+    //     break;
+    //   case 1:
+    //     this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 2:
+    //     this.setState({ currIndustryOptions: industry_consumerstaples, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 3:
+    //     this.setState({ currIndustryOptions: industry_energy, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 4:
+    //     this.setState({ currIndustryOptions: industry_financials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 5:
+    //     this.setState({ currIndustryOptions: industry_health, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 6:
+    //     this.setState({ currIndustryOptions: industry_industrials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 7:
+    //     this.setState({ currIndustryOptions: industry_infotech, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 8:
+    //     this.setState({ currIndustryOptions: industry_materials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 9:
+    //     this.setState({ currIndustryOptions: industry_realestate, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 10:
+    //     this.setState({ currIndustryOptions: industry_telecomm, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    //   case 11:
+    //     this.setState({ currIndustryOptions: industry_utilities, isSectorVisible: false, sectorOption: value, industryOption: 0 });
+    //     styleDefault = ''
+    //     break;
+    // }
+  }
+
   showIndustry() {
-    if (this.state.industryOption != null) {
+    const { industryOption } = trendingStore;
+    if (industryOption != null) {
       this.setState({ isIndustryVisible: true })
     }
   }
 
   hideIndustry(value) {
-    if (value || value == 0) {
-      this.setState({ isIndustryVisible: false, industryOption: value })
-    } else {
+    const { setIndustryOption } = trendingStore;
+    if(value === undefined) {
       this.setState({ isIndustryVisible: false })
+      return;
     }
+    setIndustryOption(value)
+    this.setState({ isIndustryVisible: false })
   }
 
   render() {
+    const { trendingOption, industryOption, sectorOption } = trendingStore;
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, trending.subMenu]}>
         <View style={trending.subMenuRow}>
@@ -310,14 +376,14 @@ class SubMenu extends React.Component {
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>TRENDING</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{scan_props[this.state.trendingOption].label}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{scan_props[trendingOption].label}</Text>
           </TouchableOpacity>
           <Modal
             isVisible={this.state.isScanVisible}
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}
             style={trending.fullModal}
-            onModalHide={() => { this.hideScan() }}>
+            onModalHide={() => { this.hideTrendingOptionModal() }}>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.radio]}>
               <Image
                 source={require('../../images/arrowblue.png')}
@@ -327,7 +393,7 @@ class SubMenu extends React.Component {
               <View style={trending.scanRadio}>
                 <RadioForm
                   radio_props={scan_props}
-                  initial={this.state.trendingOption}
+                  initial={trendingOption}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
@@ -339,13 +405,26 @@ class SubMenu extends React.Component {
                   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
                   labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.hideScan(value) }}
+                  onPress={(value) => { this.hideTrendingOptionModal(value) }}
                   style={trending.radioField}
                 />
               </View>
             </View>
           </Modal>
         </View>
+
+
+
+
+
+        {/* SECTOR PICKER */}
+
+
+
+
+
+
+
         <View style={trending.subMenuRow}>
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
             <Image
@@ -353,7 +432,7 @@ class SubMenu extends React.Component {
               style={[trending.downArrow]}
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{sector_props[this.state.sectorOption].label}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{sector_props[sectorOption].label}</Text>
           </TouchableOpacity>
           <Modal
             isVisible={this.state.isSectorVisible}
@@ -372,7 +451,7 @@ class SubMenu extends React.Component {
               <ScrollView style={trending.sectorRadio}>
                 <RadioForm
                   radio_props={sector_props}
-                  initial={this.state.sectorOption}
+                  initial={sectorOption}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
@@ -390,6 +469,15 @@ class SubMenu extends React.Component {
               </ScrollView>
             </View>
           </Modal>
+
+
+
+
+
+
+          {/* INDUSTRY PICKER */}
+
+
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showIndustry(); }}>
             <Image
               source={require('../../images/arrow.png')}
@@ -397,7 +485,7 @@ class SubMenu extends React.Component {
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
-              {this.state.industryOption == null ? 'Select a sector' : this.state.currIndustryOptions[this.state.industryOption].label}
+              {industryOption == null ? 'Select a sector' : this.getCurrentIndustryOptions()[industryOption].label}
             </Text>
           </TouchableOpacity>
           <Modal
@@ -416,8 +504,8 @@ class SubMenu extends React.Component {
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
               <ScrollView style={trending.sectorRadio}>
                 <RadioForm
-                  radio_props={this.state.currIndustryOptions}
-                  initial={this.state.industryOption}
+                  radio_props={this.getCurrentIndustryOptions()}
+                  initial={industryOption}
                   formHorizontal={false}
                   labelHorizontal={true}
                   borderWidth={1}
@@ -485,6 +573,8 @@ class Trending extends React.Component {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(this.state.ds),
     })
+    const { getTrendingData } = trendingStore;
+    getTrendingData()
   }
 
   componentDidUpdate(prevProps) {
@@ -506,41 +596,6 @@ class Trending extends React.Component {
   hideSearch() {
     this.setState({ isSearchVisible: false });
   }
-
-  // addWatchItem(sym) {
-  //   var watchItems = this.state.watchlistItems;
-  //   var watchVar = watchItems.slice()
-  //   var exists = false;
-  //   var newDs = [];
-  //   newDs = this.state.ds.slice();
-  //
-  //   for (var i = 0; i < watchItems.length; i++) {
-  //     if (watchItems[i] == sym) {
-  //       exists = true;
-  //     }
-  //   }
-  //
-  //   if (!exists) {
-  //     watchVar.push(sym)
-  //   }
-  //
-  //   for (var j = 0; j < watchVar.length; j++) {
-  //     for (var i = 0; i < newDs.length; i++) {
-  //       if (newDs[i].sym == watchVar[j]) {
-  //         newDs[i] = { sym: newDs[i].sym, exch: newDs[i].exch, name: newDs[i].name, img: newDs[i].img, vol: newDs[i].vol, price: newDs[i].price, time: newDs[i].time, change: newDs[i].change, icon: require('../../images/watchlist_added.png'), posNeg: newDs[i].posNeg, changePerc: newDs[i].changePerc, stockChange: newDs[i].stockChange }
-  //       }
-  //     }
-  //   }
-  //
-  //   this.setState({
-  //     dataSource: this.state.dataSource.cloneWithRows(newDs),
-  //     ds: newDs,
-  //     watchlistItems: watchVar
-  //   })
-  //
-  //   // console.log(watchVar);
-  // }
-
 
   addWatchItem() {
     console.log('WATCH ITEM ADD')
@@ -570,57 +625,58 @@ class Trending extends React.Component {
     )
   }
 
-  changeToggle(data) {
-    data['stockChange'] = !data['stockChange'];
+  changeToggle() {
+    const { setDecimalOrPercentage, displayDecimal } = trendingStore;
+    setDecimalOrPercentage(!displayDecimal);
+  }
 
-    var newDs = [];
-    newDs = this.state.ds.slice();
-
-    for (var i = 0; i < newDs.length; i++) {
-      if (newDs[i].sym == data['sym']) {
-        newDs[i] = { sym: newDs[i].sym, exch: newDs[i].exch, name: newDs[i].name, img: newDs[i].img, vol: newDs[i].vol, price: newDs[i].price, time: newDs[i].time, change: newDs[i].change, icon: newDs[i].icon, posNeg: newDs[i].posNeg, changePerc: newDs[i].changePerc, stockChange: data['stockChange'] }
-      }
-    }
-
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(newDs),
-      ds: newDs,
-    });
+  navigateToChart(data) {
+    this.props.navigation.navigate('Chart', { data: data })
   }
 
   renderTrendingList() {
-    const { trendingListJS } = trendingStore;
+    const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
 
-    return <View style={{flex: 1}}>
-      <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
+    if(trendingLoading) {
+      return <View>
+        <Text>Loading...</Text>
+      </View>
+    } else if(trendingDataJS.length === 0) {
+      return <View>
+        <Text>No Results</Text>
+      </View>
+    } else {
+      return <View style={{flex: 1}}>
+        <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
 
-        <Text>Mapping this data to stores</Text>
+          <Text>Mapping this data to stores</Text>
 
-        {trendingListJS.map((data, i) => {
-          let watchListIconSrc = require('../../images/add.png');
-          if(data.watching) {
-            watchListIconSrc = require('../../images/watchlist_added.png');
-          }
-          return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
-              <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
-              </TouchableOpacity>
-              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
-              <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
-                {data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[elem.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
-              </TouchableOpacity>
-              <View style={trending.addBtn}>
-                <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >
-                  <Image
-                      source={watchListIconSrc} style={styles.addImg} />
+          {trendingDataJS.map((data, i) => {
+            let watchListIconSrc = require('../../images/add.png');
+            if(data.watching) {
+              watchListIconSrc = require('../../images/watchlist_added.png');
+            }
+            return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
+                <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
+                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
+                  <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
                 </TouchableOpacity>
-              </View>
-            </View>)
-          })}
-      </ScrollView>
-    </View>
+                <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
+                <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
+                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
+                  {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
+                </TouchableOpacity>
+                <View style={trending.addBtn}>
+                  <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >
+                    <Image
+                        source={watchListIconSrc} style={styles.addImg} />
+                  </TouchableOpacity>
+                </View>
+              </View>)
+            })}
+        </ScrollView>
+      </View>
+    }
   }
 
   render() {
@@ -641,38 +697,7 @@ class Trending extends React.Component {
         </View>
         <SubMenu globalData={this.props.globalData} />
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, trending.scanContainer]}>
-
           {this.renderTrendingList()}
-
-
-          {/*<ListView*/}
-            {/*style={trending.symbolsContainer}*/}
-            {/*dataSource={this.state.dataSource}*/}
-            {/*renderRow={(data) =>*/}
-              {/*<View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>*/}
-                {/*<TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>*/}
-                  {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>*/}
-                  {/*<Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>*/}
-
-
-                {/*<TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>*/}
-                  {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>*/}
-                  {/*{data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}*/}
-                {/*</TouchableOpacity>*/}
-                {/*<View style={trending.addBtn}>*/}
-                  {/*<TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >*/}
-                    {/*<Image*/}
-                      {/*source={data['icon']} style={styles.addImg} />*/}
-                  {/*</TouchableOpacity>*/}
-                {/*</View>*/}
-              {/*</View>*/}
-            {/*}*/}
-          {/*/>*/}
-
-
-
         </View>
         <Modal
           isVisible={this.state.isSearchVisible}
@@ -695,3 +720,30 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, null)(Trending);
+
+
+// {/*<ListView*/}
+// {/*style={trending.symbolsContainer}*/}
+// {/*dataSource={this.state.dataSource}*/}
+// {/*renderRow={(data) =>*/}
+// {/*<View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>*/}
+// {/*<TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>*/}
+// {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>*/}
+// {/*<Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>*/}
+// {/*</TouchableOpacity>*/}
+// {/*<View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>*/}
+//
+//
+// {/*<TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>*/}
+// {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>*/}
+// {/*{data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}*/}
+// {/*</TouchableOpacity>*/}
+// {/*<View style={trending.addBtn}>*/}
+// {/*<TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >*/}
+// {/*<Image*/}
+// {/*source={data['icon']} style={styles.addImg} />*/}
+// {/*</TouchableOpacity>*/}
+// {/*</View>*/}
+// {/*</View>*/}
+// {/*}*/}
+// {/*/>*/}

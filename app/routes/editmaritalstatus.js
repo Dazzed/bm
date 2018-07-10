@@ -51,7 +51,10 @@ class EditMaritalStatus extends React.Component {
     } = this.props.globalData.currentUser;
 
     var result = status_list.find(x => x.label === maritalStatus)
-    const maritalStatusOption = result.value;
+    let maritalStatusOption = 0;
+    if('value' in result) {
+      maritalStatusOption = result;
+    }
 
     this.state = {
       page: 'presets',

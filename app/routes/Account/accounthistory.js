@@ -68,7 +68,7 @@ class AccountHist extends React.Component {
     const { historyJS } = myAccount;
     return <View style={{borderWidth: 1, borderColor: 'red'}}>
       {historyJS.map((eachDate, i) => {
-        return <View style={{borderWidth: 1, borderColor: 'blue'}}>
+        return <View key={'eachDate' + i} style={{borderWidth: 1, borderColor: 'blue'}}>
           <View style={account.titleWrap}>
             <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
             <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>COST BASIS</Text>
@@ -77,7 +77,7 @@ class AccountHist extends React.Component {
           </View>
           <View style={[account.sectionFull,{backgroundColor: this.state.colors['white']}]}>
             {eachDate.values.map((elem, i) => {
-              return <View style={account.symbolRowHistory}>
+              return <View key={'eachDateEntry' + i} style={account.symbolRowHistory}>
                 <View style={account.symbolWrap}>
                   <View style={account.historyTransaction}>
                     {renderBuyOrSell(elem.buyOrSell)}

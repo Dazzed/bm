@@ -19,9 +19,9 @@ import { generateHeaderStyles } from '../../utility';
 export default class FundMyAccount extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-        let title = 'Withdraw Funds';
+        let title = 'Withdraw funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund My Account'
+            title = 'Fund my account'
         }
 
         const { theme } = colorStore;
@@ -40,6 +40,19 @@ export default class FundMyAccount extends React.Component {
             accountBalance: '30000',
             errorRemainingFunds: false
         }
+    }
+
+    getDisabledList() {
+      let list = [];
+      let containsDecimal = this.state.fundingString.indexOf('.') !== -1;
+      if(containsDecimal) {
+        list.push('.')
+        let afterDecimalLength = this.state.fundingString.split('.')[1].length
+        if(afterDecimalLength >= 2) {
+             list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']  
+        }
+      }
+      return list;
     }
 
     depositPressed() {
@@ -102,7 +115,8 @@ export default class FundMyAccount extends React.Component {
                 textAlign: 'center',
                 color: theme.darkSlate
             }
-            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.white}}>
+            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
+                <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
@@ -127,11 +141,13 @@ export default class FundMyAccount extends React.Component {
     renderInputAmount() {
         const { theme } = colorStore;
 
-        let amountHeight = 100;
+        let amountHeight = 60;
 
         let textAmountStyle = {
             fontSize: 40,
-            color: theme.darkSlate
+            color: theme.darkSlate,
+            // borderColor: 'green',
+            // borderWidth: 1
         }
 
         let underlineStyle = {
@@ -151,11 +167,14 @@ export default class FundMyAccount extends React.Component {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     height: amountHeight,
-                    margin: 5,
+                    marginHorizontal: 5,
                     flexDirection: 'row',
+                    // borderWidth: 1,
+                    // borderColor: 'red',
+                    marginTop: 10
                 }}>
                     <Text style={textAmountStyle}>$ {numberWithCommas(this.state.fundingString)}</Text>
-                    <TouchableOpacity style={{flex: 0, justifyContent: 'center', height: '100%'}} onPress={() => this.clear()}>
+                    <TouchableOpacity style={{flex: 0, justifyContent: 'center', height: '100%', opacity: .5}} onPress={() => this.clear()}>
                         <Image
                             style={{height: 30}}
                             resizeMode="contain"
@@ -170,7 +189,10 @@ export default class FundMyAccount extends React.Component {
 
     render() {
       const { theme } = colorStore;
-      
+        let buttonTitle = 'FUND ACCOUNT';
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+          buttonTitle = 'MAKE WITHDRAW';
+        }
         return <View style={{height: '100%', padding: 0}}>
             <View style={{flex: 1, backgroundColor: theme.contentBg}}>
                 {this.renderAmountInAccount()}
@@ -178,11 +200,10 @@ export default class FundMyAccount extends React.Component {
             <View style={{flex: 0}}>
                 {this.renderInputAmount()}
                 {this.renderErrorOrNull()}
-                <NumericalSelector onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
+                <NumericalSelector disabledList={this.getDisabledList()} onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
                 <View style={{padding: 30, backgroundColor: theme.white}}>
-                  <Button {...this.props} title="Fund Account" onPress={() => this.depositPressed()}/>
+                  <Button {...this.props} title={buttonTitle} onPress={() => this.depositPressed()}/>
                 </View>
-                
             </View>
         </View>
     }

@@ -209,9 +209,11 @@ const styles = StyleSheet.create({
     // borderBottomColor: colors.borderGray    
   },
   radioLabel: {
+    // borderWidth: 1,
+    // borderColor: 'red',
     fontSize: 16,
     paddingLeft: 25,
-    paddingTop: 6,
+    paddingTop: 21,
     paddingBottom: 6,
     marginBottom: 2,
     // color: colors.lightGray

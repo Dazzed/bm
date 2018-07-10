@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -20,12 +20,12 @@ const displayPreviewButtonOnHome = false;
 
 
 // force dark theme all the time
+// const forceDarkTheme = false;
 const forceDarkTheme = false;
-// const forceDarkTheme = true;
 
 // force navigation on top level navigator
 const firstNavDefaultRoute = 'Home';
-// const firstNavDefaultRoute = 'Registration';
+// const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
@@ -55,7 +55,15 @@ const stackNavDefaultRoute = 'AppNavTabs';
 const showConsole = true;
 
 const autoLogin = false;
+// const autoLogin = true;
+if(autoLogin) {
+  firstNavDefaultRoute = 'Login';
+}
 
+// when logging in, pretend it's the first time, every time
+const forceLoginToFundingEveryTime = false;
+
+const verifyAuthOnHomeView = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -82,6 +90,8 @@ if(productionMode) {
     showConsole = false;
     registrationInitialStep = 0;
     fillRegistrationWithFakeData = false;
+    forceLoginToFundingEveryTime = false;
+    verifyAuthOnHomeView = true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -97,5 +107,7 @@ export {
     autoLogin,
     showConsole,
     registrationInitialStep,
-    fillRegistrationWithFakeData
+    fillRegistrationWithFakeData,
+    forceLoginToFundingEveryTime,
+    verifyAuthOnHomeView
 };

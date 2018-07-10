@@ -58,7 +58,10 @@ class EditEmployment extends React.Component {
     } = this.props.globalData.currentUser;
 
     var result = status_list.find(x => x.label === employment)
-    const employmentOption = result.value;
+    let employmentOption = 0;
+    if(result && 'value' in result) {
+      employmentOption = result.value;
+    }
 
     this.state = {
       page: 'presets',

@@ -56,7 +56,10 @@ class EditExperience extends React.Component {
     } = this.props.globalData.currentUser;
 
     var result = status_list.find(x => x.label === experience)
-    const experienceOption = result.value;
+    let experienceOption = 0;
+    if(result && 'value' in result) {
+      experienceOption = result.value
+    }
 
     this.state = {
       page: 'presets',

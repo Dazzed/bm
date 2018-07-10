@@ -19,7 +19,7 @@ import Terms from '../../routes/terms';
 import { colors } from '../../store/store';
 import * as globalActions from '../../store/actions/global';
 import { selectGlobalData } from '../../selectors';
-import { displayPreviewButtonOnHome } from '../../devControlPanel';
+import { displayPreviewButtonOnHome, verifyAuthOnHomeView } from '../../devControlPanel';
 
 class HomeScreen extends Component {
   static navigationOptions = {
@@ -51,7 +51,9 @@ class HomeScreen extends Component {
     if (this.props.globalData.isAuthenticated === true) {
       this.props.navigation.navigate('AppNavTabs');
     }
-    this.props.verifyAuth();
+    if(verifyAuthOnHomeView) {
+      this.props.verifyAuth();
+    }
   }
 
   componentDidUpdate(prevProps) {
