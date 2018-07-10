@@ -95,10 +95,12 @@ export default class ChartGraph extends React.Component {
 
   constructor(props) {
     super(props);
-    this.height = this.props.height;
-    this.width = this.props.width;
+    
     this.state = {
+      height: 0,
+      width: 0
     }
+    
   }
 
   renderSmallGraph() {
@@ -162,9 +164,16 @@ export default class ChartGraph extends React.Component {
       height: 200
     }
     
-    let gridXArray = [10, 50, 100, 150];
-    let gridYArray = [10, 50, 100, 150]
-
+    let gridXArray = [];
+    let gridYArray = [];
+    
+    let lineCount = 8;
+    
+    for(let i = 0; i < lineCount; i++) {
+      let multiplier = i / lineCount;
+      gridXArray.push(this.state.width * multiplier);
+      gridYArray.push(this.state.height * multiplier);
+    }
 
     let lineYVal = 0;
     let boxWidth = 50;
@@ -176,6 +185,7 @@ export default class ChartGraph extends React.Component {
     let topOffset = 2;
     
     const generateXLineGroup = (number) => {
+      let formattednumber = number.toFixed(1);
       return <G>
           <G>
             <Line
@@ -196,13 +206,14 @@ export default class ChartGraph extends React.Component {
               x={'95%'}
               textAnchor="middle"
             >
-              {number}
+              {formattednumber}
             </TextSvg>
           </G>
       </G>
     }
     
     const generateYLineGroup = (number) => {
+      let formattednumber = number.toFixed(1);
       return <G>
             <Line
                 key={ 'zero-axis' }
@@ -222,7 +233,7 @@ export default class ChartGraph extends React.Component {
               x={number}
               textAnchor="middle"
             >
-              {number}
+              {formattednumber}
             </TextSvg>
       </G>
     }
@@ -281,7 +292,6 @@ export default class ChartGraph extends React.Component {
     }
     
     let lineList = [
-      
       {
         lineTitle: 'Test line 1',
         color: theme.red,
@@ -334,6 +344,7 @@ export default class ChartGraph extends React.Component {
         height={'100%'}
         width={'100%'}
       >
+      
         {gridYArray.map((elem, i) => {
           return generateYLineGroup(elem)
         })}
@@ -348,14 +359,10 @@ export default class ChartGraph extends React.Component {
         {lineList.map((elem, i) => {
           return generateLine(elem)
         })}
-        
 
       </Svg>
     </View>
   }
-
-
-  
 
 
 
@@ -368,6 +375,14 @@ export default class ChartGraph extends React.Component {
     }
   }
 
+  onLayout(event) {
+    const {x, y, width, height} = event.nativeEvent.layout;
+    this.setState({
+      height: height,
+      width: width
+    })
+  }
+
   render() {
     let inlineStyle = {
       // borderWidth: 1,
@@ -376,7 +391,7 @@ export default class ChartGraph extends React.Component {
       height: '100%',
       position: 'relative'
     }
-    return <View style={inlineStyle}>
+    return <View style={inlineStyle} onLayout={(event) => this.onLayout(event)}>
       {this.renderLargeGraphOrSmallGraph()}
     </View>
   }
