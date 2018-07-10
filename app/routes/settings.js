@@ -232,8 +232,6 @@ class Settings extends Component {
     const {
         globalData: currentGlobalData
     } = this.props;
-
-
     let selectedCaratImageSource = null;
     if(currentGlobalData.isDarkThemeActive) {
       selectedCaratImageSource = require('../images/right_arrow_dark.png');
@@ -241,10 +239,6 @@ class Settings extends Component {
       selectedCaratImageSource = require('../images/right_arrow.png');
     }
     
-    
-    
-
-
     return <View>
       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>BANKING</Text>
       <TouchableOpacity onPress={() => this.navToDeposit()}>
@@ -257,7 +251,6 @@ class Settings extends Component {
           />
         </View>
       </TouchableOpacity>
-
       <TouchableOpacity onPress={() => this.navToWithdraw()}>
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Withdraw Funds</Text>
@@ -268,15 +261,23 @@ class Settings extends Component {
           />
         </View>
       </TouchableOpacity>
-
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>My Accounts</Text>
         <View>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>2</Text>
         </View>
       </View>
-
     </View>
+  }
+
+  renderOption(title, data, functionToFire) {
+    return <TouchableOpacity onPress={() => functionToFire()} style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+      <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>{title}</Text>
+      <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{data}</Text>
+      <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+        <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+      </Text>
+    </TouchableOpacity>
   }
 
   render() {
@@ -286,8 +287,11 @@ class Settings extends Component {
       globalData
     } = this.props;
 
-    const { userData } = authStore;
+    console.log('GLOooooooobal data', globalData)
 
+    // const globalData.currentUser = globalData.currentUser;
+    // return null;
+    
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -305,70 +309,27 @@ class Settings extends Component {
         </View>
         
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, settings.contentBg]}>
+          
+          // Banking
+
           {this.renderBankingSettings()}
+          
+          // Account Info
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Email</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{userData.email}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Mobile</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{userData.phone}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Password</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>*********</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Address</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showAddress()}>{userData.address}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Marital status</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showMaritalStatus()}>{userData.maritalStatus}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Number of dependents</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showDependents()}>{userData.dependents}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Employment status</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showEmploymentStatus()}>{userData.employment}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Investment experience</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]} onPress={() => this.showExperience()}>{userData.experience}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-              <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-            </Text>
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Citizenship</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{userData.country}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-            </Text>
-          </View>
+          {this.renderOption('Email', globalData.currentUser.email)}
+          {this.renderOption('Mobile', globalData.currentUser.phone)}
+          {this.renderOption('Password', '***********')}
+          {this.renderOption('Address', globalData.currentUser.address, this.showAddress)}
+          {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.showMaritalStatus)}
+          {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.showDependents)}
+          {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
+          {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
+          {this.renderOption('Investment experience', globalData.currentUser.experience, this.showExperience)}
+          {this.renderOption('Citizenship', globalData.currentUser.country)}
+          
+          // Color Scheme
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>COLOR SCHEME</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Dark Theme</Text>
@@ -377,6 +338,9 @@ class Settings extends Component {
               onValueChange={this.props.toggleTheme}
               value={globalData.isDarkThemeActive} />
           </View>
+          
+          // Touch ID
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>TOUCH ID</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Touch ID Log-in</Text>
@@ -385,11 +349,17 @@ class Settings extends Component {
               onValueChange={(value) => this.handleTouch(value)}
               value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
+          
+          // Auto Log Off
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
           <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
             <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[this.state.autoLog].label} inactivity</Text>
           </TouchableOpacity>
+          
+          // Notifications
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Orders</Text>
@@ -398,6 +368,9 @@ class Settings extends Component {
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
               value={this.state.trueSwitchIsOn} />
           </View>
+          
+          // News Source
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>CNBC</Text>
