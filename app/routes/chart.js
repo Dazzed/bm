@@ -390,9 +390,10 @@ class Chart extends Component {
               <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
         </Tabs>
 
+
         </View>
         <View style={chart.chartWrapper}>
-          <ChartGraph />
+          <ChartGraph viewLargeGraph={false} />
         </View>
 
       </View>
@@ -726,18 +727,21 @@ class Chart extends Component {
            </View>
          </View>
          <View style={chartland.right}>
+           
            <View style={chartland.momentumWrapper}>
+             
              <View style={chartland.momentumInfo}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>MOMENTUM</Text>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
              </View>
-             <Text style={chartland.momentumFPO}>
-             <Image 
-               source={require('../images/momo_chart_landscape.gif')}
-               style={chartland.momenutmImg}
-             />
+             
+             <Text style={chartland.momentumFPO}>   
              </Text>
+             
+             <ChartGraph viewLargeGraph={true} />
+             
            </View>
+           
            <View style={chartland.bidAsksWrapper}>
              <View style={chartland.bid}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>

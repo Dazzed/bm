@@ -40,7 +40,6 @@ class HorizontalLine extends React.Component {
       height={this.props.height}
       width={200}
     >
-
       <Defs>
           <G id="horizontal_line_element">
               <G>
@@ -73,11 +72,7 @@ class HorizontalLine extends React.Component {
               </G>
           </G>
       </Defs>
-
       <Use href="#horizontal_line_element" x={0} y={yVal}/>
-
-
-
     </Svg>
   }
 }
@@ -94,13 +89,6 @@ export default class ChartGraph extends React.Component {
     this.state = {
     }
   }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-  }
-
-  componentDidMount() {
-  }
-
 
   renderSmallGraph() {
     const { theme } = colorStore;
@@ -148,9 +136,32 @@ export default class ChartGraph extends React.Component {
       </View>
     </View>
   }
+  
+
+  renderLargeGraph() {
+    let inlineContainerStyle = {
+      // borderWidth: 1,
+      // borderColor: 'red',
+      flex: 1,
+      height: 200
+    }
+    return <View style={inlineContainerStyle}>
+      <Text>large graph here</Text>
+    </View>
+  }
+  
+  // <Image 
+  //   source={require('../images/momo_chart_landscape.gif')}
+  //   style={chartland.momenutmImg}
+  // />
+
 
   renderLargeGraphOrSmallGraph() {
-    return this.renderSmallGraph()
+    if(this.props.viewLargeGraph) {
+      this.renderLargeGraph()
+    } else {
+      return this.renderSmallGraph()  
+    }
   }
 
   render() {

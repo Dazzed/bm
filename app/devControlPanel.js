@@ -66,6 +66,8 @@ const forceLoginToFundingEveryTime = false;
 
 const verifyAuthOnHomeView = true;
 
+const chosenServer = 'staging';
+
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -93,6 +95,7 @@ if(productionMode) {
     fillRegistrationWithFakeData = false;
     forceLoginToFundingEveryTime = false;
     verifyAuthOnHomeView = true;
+    chosenServer = 'staging';
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -110,5 +113,6 @@ export {
     registrationInitialStep,
     fillRegistrationWithFakeData,
     forceLoginToFundingEveryTime,
-    verifyAuthOnHomeView
+    verifyAuthOnHomeView,
+    chosenServer
 };
