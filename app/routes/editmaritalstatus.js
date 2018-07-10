@@ -35,13 +35,10 @@ import fonts from '../style/fonts';
 import { isPresent } from './Registration/validation';
 
 import { setTheme, getTheme, colors } from '../store/store';
-const status_list = [
-  { "label": "Married", "value": 1 },
-  { "label": "Divorced", "value": 2 },
-  { "label": "Separated", "value": 3 },
-  { "label": "Widow", "value": 4 },
-  { "label": "Single", "value": 5 }
-];
+
+import { maritalStatusList } from '../constants';
+
+const status_list = maritalStatusList;
 
 class EditMaritalStatus extends React.Component {
   constructor(props) {
@@ -50,17 +47,31 @@ class EditMaritalStatus extends React.Component {
       maritalStatus
     } = this.props.globalData.currentUser;
 
-    var result = status_list.find(x => x.label === maritalStatus)
-    let maritalStatusOption = 0;
-    if('value' in result) {
-      maritalStatusOption = result;
-    }
+
+    let maritalStatusOption = '';
+    let maritalStatusText = '';
+    
+    status_list.every((elem, i) => {
+      console.log('elem ', elem, maritalStatus)
+      if(elem.label == maritalStatus) {
+        maritalStatusOption = elem.value;
+        maritalStatusText = elem.label;
+        return false;
+      }
+      return true;
+    })
+    
+    // var result = status_list.find(x => x.label === maritalStatus)
+    // let maritalStatusOption = 0;
+    // if('value' in result) {
+    //   maritalStatusOption = result;
+    // }
 
     this.state = {
       page: 'presets',
       colors: colors(props.globalData.isDarkThemeActive),
       maritalStatusOption: maritalStatusOption,
-      maritalStatus: maritalStatus
+      maritalStatus: maritalStatusText
     };
   }
 
@@ -79,13 +90,19 @@ class EditMaritalStatus extends React.Component {
     }
   }
 
-  hideStatus = value => {
-    if (value) {
+  setMaritalStatus = (value) => {
+      let textStatus = '';
+      status_list.every((elem, i) => {
+        if(value === elem.value) {
+          textStatus = elem.label;
+          return false;
+        }
+        return true;
+      })
       this.setState({
         maritalStatusOption: value,
-        maritalStatus: status_list.find(l => l.value === value).label
+        maritalStatus: textStatus
       });
-    }
   }
 
   updateMaritalStatus = () => {
@@ -132,7 +149,7 @@ class EditMaritalStatus extends React.Component {
                 <View style={styles_2.subMenuRow}>
                   <RadioForm
                     radio_props={status_list}
-                    initial={this.state.maritalStatusOption - 1}
+                    initial={this.state.maritalStatusOption}
                     formHorizontal={false}
                     labelHorizontal={true}
                     borderWidth={1}
@@ -144,7 +161,7 @@ class EditMaritalStatus extends React.Component {
                     labelStyle={[{ color: this.state.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                     radioLabelActive={[{ color: this.state.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                     labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles_2.radioLabelWrap]}
-                    onPress={this.hideStatus}
+                    onPress={this.setMaritalStatus}
                     style={styles_2.radioField}
                   />
                 </View>

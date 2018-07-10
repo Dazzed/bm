@@ -168,8 +168,14 @@ class RegistrationPage extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    
+    let backgroundColor = this.state.colors['contentBg'];
+    if(this.state.step === 12) {
+      backgroundColor = this.state.colors['white'];
+    }
+    
     return (
-      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
+      <View style={[{ backgroundColor: backgroundColor }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackwardStep}>

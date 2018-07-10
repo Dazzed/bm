@@ -282,69 +282,14 @@ class SubMenu extends React.Component {
 
   hideSector(value) {
     const { setSectorOption } = trendingStore;
-
     if(value === undefined) {
       this.setState({ isSectorVisible: false });
       return;
     }
-
     setSectorOption(value);
-
     this.setState({
       isSectorVisible: false
     })
-
-    // console.log('hideSector');
-    // switch (value) {
-    //   case 0:
-    //     this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: null });
-    //     styleDefault = trending.inactive
-    //     break;
-    //   case 1:
-    //     this.setState({ currIndustryOptions: industry_consumerdiscretionary, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 2:
-    //     this.setState({ currIndustryOptions: industry_consumerstaples, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 3:
-    //     this.setState({ currIndustryOptions: industry_energy, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 4:
-    //     this.setState({ currIndustryOptions: industry_financials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 5:
-    //     this.setState({ currIndustryOptions: industry_health, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 6:
-    //     this.setState({ currIndustryOptions: industry_industrials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 7:
-    //     this.setState({ currIndustryOptions: industry_infotech, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 8:
-    //     this.setState({ currIndustryOptions: industry_materials, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 9:
-    //     this.setState({ currIndustryOptions: industry_realestate, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 10:
-    //     this.setState({ currIndustryOptions: industry_telecomm, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    //   case 11:
-    //     this.setState({ currIndustryOptions: industry_utilities, isSectorVisible: false, sectorOption: value, industryOption: 0 });
-    //     styleDefault = ''
-    //     break;
-    // }
   }
 
   showIndustry() {
@@ -415,15 +360,7 @@ class SubMenu extends React.Component {
 
 
 
-
-
         {/* SECTOR PICKER */}
-
-
-
-
-
-
 
         <View style={trending.subMenuRow}>
           <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
@@ -469,10 +406,6 @@ class SubMenu extends React.Component {
               </ScrollView>
             </View>
           </Modal>
-
-
-
-
 
 
           {/* INDUSTRY PICKER */}
@@ -549,17 +482,17 @@ class Trending extends React.Component {
 
   constructor(props) {
     super(props);
-    var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    // var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      ds: [
-        { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../../images/momentumfpowatchlist.png'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+1.85', changePerc: '+10.41%', stockChange: true },
-        { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-3.12', changePerc: '-2.15%', stockChange: true },
-        { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../../images/momentumfpowatchlist_01.png'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+2.01', changePerc: '+2.43%', stockChange: true },
-        { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../../images/momentumfpowatchlist_down02.png'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+3.10', changePerc: '+1.05%', stockChange: true },
-        { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-4.43', changePerc: '-5.64%', stockChange: true },
-        { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+0.15', changePerc: '+4.04%', stockChange: true },
-      ],
-      dataSource: ds,
+      // ds: [
+      //   { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../../images/momentumfpowatchlist.png'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+1.85', changePerc: '+10.41%', stockChange: true },
+      //   { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-3.12', changePerc: '-2.15%', stockChange: true },
+      //   { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../../images/momentumfpowatchlist_01.png'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+2.01', changePerc: '+2.43%', stockChange: true },
+      //   { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../../images/momentumfpowatchlist_down02.png'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+3.10', changePerc: '+1.05%', stockChange: true },
+      //   { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-4.43', changePerc: '-5.64%', stockChange: true },
+      //   { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+0.15', changePerc: '+4.04%', stockChange: true },
+      // ],
+      // dataSource: ds,
       isSearchVisible: false,
       offsetX: new Animated.Value(Dimensions.get('window').width),
       watchlistItems: ['ETH', 'AAPL'],
@@ -570,11 +503,26 @@ class Trending extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(this.state.ds),
-    })
+    // this.setState({
+    //   dataSource: this.state.dataSource.cloneWithRows(this.state.ds),
+    // })
     const { getTrendingData } = trendingStore;
     getTrendingData()
+    
+    let fakeData = {
+      change:"+1.85",
+      changePerc:"+10.41%",
+      exch:"NYSE",
+      name:"Ethereum",
+      posNeg:"green",
+      price:"30.75",
+      stockChange:true,
+      sym:"ETH",
+      time:"12:30 PM PT",
+      vol:"24.9M",
+      watching:true
+    }
+    this.props.navigation.navigate('Chart', {data: fakeData})
   }
 
   componentDidUpdate(prevProps) {
@@ -625,7 +573,7 @@ class Trending extends React.Component {
     )
   }
 
-  changeToggle() {
+  toggleDecimalOrPercentage() {
     const { setDecimalOrPercentage, displayDecimal } = trendingStore;
     setDecimalOrPercentage(!displayDecimal);
   }
@@ -633,7 +581,7 @@ class Trending extends React.Component {
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
-
+  
   renderTrendingList() {
     const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
 
@@ -662,7 +610,7 @@ class Trending extends React.Component {
                   <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
                 </TouchableOpacity>
                 <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
-                <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>
+                <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
                   <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
                   {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
                 </TouchableOpacity>

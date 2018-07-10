@@ -55,8 +55,8 @@ export default class FundAccountSplash extends Component {
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}
-                style={[styles_2.section, {backgroundColor: theme.contentBg}]}>
-                <ScrollView style={{ height: '100%', flex: 1, backgroundColor: theme.contentBg }}>
+                style={[styles_2.section, {backgroundColor: theme.white}]}>
+                <ScrollView style={{ height: '100%', flex: 1, backgroundColor: theme.white }}>
                     {/*<Text style={[{ color: theme.darkSlate }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>*/}
                     {/*</Text>*/}
                     <View style={[{ backgroundColor: theme.white }]}>

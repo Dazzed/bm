@@ -57,7 +57,7 @@ export default class PasswordChecklist extends React.Component {
         return <View style={{width: '100%', width: 300, alignSelf: 'center', marginVertical: 20}}>
             <Text style={{marginVertical: 5, color: theme.darkSlate}}>Your password must have:</Text>
             {this.renderTest(password, '8 or more characters', this.charValidator)}
-            {this.renderTest(password, 'Upper & Lowercase Letters', this.casLettersValidator)}
+            {this.renderTest(password, 'Upper & lowercase letters', this.casLettersValidator)}
             {this.renderTest(password, 'At least one number', this.oneNumberValidator)}
         </View>
     }
