@@ -141,11 +141,13 @@ export default class FundMyAccount extends React.Component {
     renderInputAmount() {
         const { theme } = colorStore;
 
-        let amountHeight = 100;
+        let amountHeight = 60;
 
         let textAmountStyle = {
             fontSize: 40,
-            color: theme.darkSlate
+            color: theme.darkSlate,
+            // borderColor: 'green',
+            // borderWidth: 1
         }
 
         let underlineStyle = {
@@ -165,8 +167,11 @@ export default class FundMyAccount extends React.Component {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     height: amountHeight,
-                    margin: 5,
+                    marginHorizontal: 5,
                     flexDirection: 'row',
+                    // borderWidth: 1,
+                    // borderColor: 'red',
+                    marginTop: 10
                 }}>
                     <Text style={textAmountStyle}>$ {numberWithCommas(this.state.fundingString)}</Text>
                     <TouchableOpacity style={{flex: 0, justifyContent: 'center', height: '100%', opacity: .5}} onPress={() => this.clear()}>
