@@ -125,11 +125,10 @@ export default class AccountSelect extends React.Component {
 
         let renderDivider = (i) => {
             if(i < accountListJS.length - 1) {
-                return <View style={{height: 1, width: '100%', backgroundColor: theme.lightGray}}></View>
+                return <View style={{height: 1, width: '74%', position: 'relative', left: '19%', backgroundColor: theme.borderGray}}></View>
             } else {
                 return null
             }
-
         }
 
         let masterRadius = 5;
@@ -140,18 +139,25 @@ export default class AccountSelect extends React.Component {
                 if(selectedAccountIndex === i) {
                     thisTitleStyle.color = theme.blue
                 }
+                let borderWidth = 1;
                 let thisAccountStyle = {
                     height: '100%',
                     width: '100%',
                     ...eachAccountStyle,
+                    borderLeftWidth: borderWidth,
+                    borderRightWidth: borderWidth,
+                    borderColor: theme.borderGray
                 }
                 if(i === 0) {
                     thisAccountStyle.borderTopLeftRadius = masterRadius;
                     thisAccountStyle.borderTopRightRadius = masterRadius;
+                    thisAccountStyle.borderTopWidth = borderWidth;
+                    thisAccountStyle.borderColor = theme.borderGray;
                 }
                 if(i === accountListJS.length - 1) {
                     thisAccountStyle.borderBottomLeftRadius = masterRadius;
                     thisAccountStyle.borderBottomRightRadius = masterRadius;
+                    thisAccountStyle.borderBottomWidth = 1;
                 }
 
                 return <View key={i} style={{zIndex: 1, backgroundColor: theme.white, borderRadius: 5}}>
