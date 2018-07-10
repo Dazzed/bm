@@ -64,13 +64,17 @@ export default class Success extends React.Component {
 
     render() {
       const { theme } = colorStore
+      let circleSize = 150;
         return <View style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 30}}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Image
-                style={{height: 100, width: 100}}
-                resizeMode="contain"
-                source={require('../../images/success_image.png')}
-            />
+            <View style={{borderWidth: 3, borderColor: theme.green, height: circleSize, width: circleSize, borderRadius: circleSize * .5, alignItems: 'center', justifyContent: 'center'}}>
+              <Image
+                  style={{height: circleSize * .5, width: circleSize * .5, position: 'relative', left: '5%'}}
+                  resizeMode="contain"
+                  source={require('../../images/money_trans_160.png')}
+              />
+            </View>
+            
             {this.renderMessage()}
           </View>
           <View style={{flex: 0, width: '100%'}}>
