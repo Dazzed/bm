@@ -41,6 +41,7 @@ import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
 
 import ChartGraph from '../sharedComponents/ChartGraph';
+import DialIndicator from '../sharedComponents/DialIndicator';
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -410,17 +411,16 @@ class Chart extends Component {
         </View>
 
       </View>
-      <View style={chart.momentumWrapper}>
-        <View style={chart.momentumInfo}>
+      <View style={[chart.momentumWrapper, {width: '100%'}]}>
+        <View style={[chart.momentumInfo, {flex: 1}]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
           <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
         </View>
-        <Text style={chart.momentumFPO}>
-          <Image 
-            source={require('../images/momo_chart_portrait.gif')}
-            style={chart.momenutmImg}
-          />
-        </Text>
+
+        <View style={{ flex: 1}}>
+          <DialIndicator width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+        </View>
+        
       </View>
       <View style={chart.profileWrapper}>
         <View style={chart.statsRow}>
@@ -745,13 +745,9 @@ class Chart extends Component {
                <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
              </View>
              
-             <Text style={chartland.momentumFPO}>   
-               <Image 
-                 source={require('../images/momo_chart_landscape.gif')}
-                 style={chartland.momenutmImg}
-               />
-             </Text>
-             
+             <View style={{ flex: 1}}>
+               <DialIndicator width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+             </View>
              
            </View>
            
