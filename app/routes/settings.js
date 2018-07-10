@@ -289,9 +289,6 @@ class Settings extends Component {
 
     console.log('GLOooooooobal data', globalData)
 
-    // const globalData.currentUser = globalData.currentUser;
-    // return null;
-    
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -317,10 +314,14 @@ class Settings extends Component {
           // Account Info
           
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
+          
+          // TODO: need edit functions. what are we doint here?
           {this.renderOption('Email', globalData.currentUser.email)}
           {this.renderOption('Mobile', globalData.currentUser.phone)}
           {this.renderOption('Password', '***********')}
+          
           {this.renderOption('Address', globalData.currentUser.address, this.showAddress)}
+          
           {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.showMaritalStatus)}
           {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.showDependents)}
           {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
@@ -479,6 +480,8 @@ class Settings extends Component {
           animationOut={'slideOutDown'}>
           <ContactUs hideContact={() => this.hideContact()} />
         </Modal>
+        
+        // Address modal
         {
           this.state.isAddressVisible &&
           <Modal
@@ -491,6 +494,7 @@ class Settings extends Component {
             />
           </Modal>
         }
+        
         {
           this.state.isMaritalStatusVisible &&
           <Modal
