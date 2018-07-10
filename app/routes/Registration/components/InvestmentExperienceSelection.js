@@ -23,14 +23,10 @@ import fonts from '../../../style/fonts';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import RegistrationHeader from './registrationHeader';
+import { investmentStatusList } from '../../../constants'
 
 let showWhyWeAsk = true;
-const status_list = [
-    { "label": "None", "value": 0 },
-    { "label": "Some", "value": 1 },
-    { "label": "I know what I'm doing", "value": 2 },
-    { "label": "I'm an expert", "value": 3 }
-];
+const status_list = investmentStatusList;
 
 @observer
 export default class InvestmentExperienceSelection extends Component {

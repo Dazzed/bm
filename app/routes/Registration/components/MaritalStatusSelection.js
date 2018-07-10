@@ -22,16 +22,11 @@ import fonts from '../../../style/fonts';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import RegistrationHeader from './registrationHeader';
+import { maritalStatusList } from '../../../constants';
 
 let showWhyWeAsk = true;
 
-const status_list = [
-    { "label": "Single", "value": 0 },
-    { "label": "Married", "value": 1 },
-    { "label": "Divorced", "value": 2 },
-    { "label": "Separated", "value": 3 },
-    { "label": "Widow", "value": 4 },
-];
+const status_list = maritalStatusList;
 
 @observer
 export default class MaritalStatusSelection extends Component {

@@ -24,16 +24,10 @@ import fonts from '../../../style/fonts';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import RegistrationHeader from './registrationHeader';
+import { employmentStatusList } from '../../../constants';
 
 let showWhyWeAsk = true;
-const status_list = [
-    { "label": "Employed", "value": 0 },
-    { "label": "Student", "value": 1 },
-    { "label": "Retired", "value": 2 },
-    { "label": "Unemployed", "value": 3 },
-    { "label": "Self-employed", "value": 4 },
-    { "label": "Other", "value": 5 }
-];
+const status_list = employmentStatusList;
 
 @observer
 export default class EmploymentStatusSelection extends Component {

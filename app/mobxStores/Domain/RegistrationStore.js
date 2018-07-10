@@ -1,8 +1,13 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { createUser } from '../../api';
 import { formatDate } from '../../routes/Registration/utility';
-
 import { fillRegistrationWithFakeData } from '../../devControlPanel';
+
+import {
+  maritalStatusList,
+  employmentStatusList,
+  investmentStatusList
+} from '../../constants';
 
 export default class RegistrationStore {
 
@@ -64,13 +69,13 @@ export default class RegistrationStore {
             firstName: 'test1',
             lastName: 'test2',
             // address selection
-            address: '1',
-            address2: '1',
-            zip: '1',
-            state: '1',
-            city: '1',
-            zip: '1',
-            stateOption: 2,
+            address: '1123 street',
+            address2: '22 line two',
+            zip: '12345',
+            // state: 'California',
+            city: 'LosAngeles',
+            zip: '1234',
+            stateOption: 0,
             // phone selection
             phoneField: '1111111111',
             // date of birth
@@ -126,6 +131,55 @@ export default class RegistrationStore {
 
     @action submitRegistration = () => {
         return new Promise((resolve, reject) => {
+
+            // let stateName = '';
+            // console.log('----------- options', stateOptionsMap)
+            // stateOptionsMap.every((elem, i) => {
+            //
+            //   console.log('== elem', elem, this.registrationData.state)
+            //
+            //   if(elem.value === this.registrationData.state) {
+            //     console.log('== elem', elem, this.registrationData.state)
+            //     stateName = elem.value;
+            //     return false;
+            //   }
+            //   return true;
+            // })
+            //
+
+            // get maritalStatus from index
+            let maritalStatusFormatted = '';
+            maritalStatusList.every((elem, i) => {
+              console.log('== elem', elem, this.registrationData.maritalStatus)
+              if(elem.value === this.registrationData.maritalStatus) {
+                maritalStatusFormatted = elem.label;
+                return false;
+              }
+              return true;
+            })
+
+            // get employment status from index
+            let employmentStatusFormatted = '';
+            employmentStatusList.every((elem, i) => {
+              console.log('== elem', elem, this.registrationData.employmentStatus)
+              if(elem.value === this.registrationData.employmentStatus) {
+                employmentStatusFormatted = elem.label;
+                return false;
+              }
+              return true;
+            })
+
+            // investment experience
+            let investmentStatusFormatted = '';
+            investmentStatusList.every((elem, i) => {
+              console.log('== elem', elem, this.registrationData.investmentStatus)
+              if(elem.value === this.registrationData.investmentStatus) {
+                investmentStatusFormatted = elem.label;
+                return false;
+              }
+              return true;
+            })
+
             let params = {
                 "email": this.registrationData.email,
                 "firstName": this.registrationData.firstName,
@@ -135,10 +189,10 @@ export default class RegistrationStore {
                 "address2": this.registrationData.address2,
                 "phone": this.registrationData.phoneField,
                 "socialSecurityNo": this.registrationData.ssnField,
-                "maritalStatus": this.registrationData.maritalStatus,
+                "maritalStatus": maritalStatusFormatted,
                 "dependents": this.registrationData.dependentField,
-                "employment": this.registrationData.employmentStatus,
-                "experience": this.registrationData.investmentStatus,
+                "employment": employmentStatusFormatted,
+                "experience": investmentStatusFormatted,
                 "city": this.registrationData.city,
                 "zipCode": this.registrationData.zip,
                 "state": this.registrationData.state,
@@ -151,6 +205,7 @@ export default class RegistrationStore {
                 // "id": ,
             }
             console.log('===== PARAMS', params)
+
             createUser(params)
             .then((res) => {
                 console.log('create user res', res);
