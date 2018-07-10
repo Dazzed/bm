@@ -26,6 +26,8 @@
     "react-native-simple-radio-button": "^2.7.1",
     "react-native-simple-table": "0.0.2",
     "react-native-sortable-listview": "^0.2.2",
+    "react-native-svg": "^6.4.1",
+    "react-native-svg-charts": "^5.2.0",
     "react-native-swipeout": "^2.1.1",
     "react-native-tabs": "^1.0.9",
     "react-native-touch-id": "^4.0.2",

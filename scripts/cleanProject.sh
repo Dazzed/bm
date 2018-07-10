@@ -30,3 +30,9 @@ yarn install
 
 echo "react-native link"
 react-native link
+
+echo "=============== SEE README FOR SVG BUILD BUG FIX =================================="
+echo "=============== SEE README FOR SVG BUILD BUG FIX =================================="
+echo "=============== SEE README FOR SVG BUILD BUG FIX =================================="
+echo "=============== SEE README FOR SVG BUILD BUG FIX =================================="
+echo "=============== SEE README FOR SVG BUILD BUG FIX =================================="
