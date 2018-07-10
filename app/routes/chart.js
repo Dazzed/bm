@@ -121,9 +121,22 @@ class Chart extends Component {
     )
   }
 
+  forceSetToLandscape() {
+    // Orientation.lockToLandscape()
+    // this.setState({
+    //   orientation: 'landscape'
+    // })
+  }
+
   componentDidMount(){
     Orientation.unlockAllOrientations();   
     Orientation.addOrientationListener(this.orientationDidChange);
+    
+    setTimeout(() => {
+      this.forceSetToLandscape();  
+    }, 1000)
+    
+
     console.log(getTheme());
   }
 
@@ -683,12 +696,9 @@ class Chart extends Component {
        <View style={chartland.chartWrapper}>
          <View style={chartland.leftSide}>
            <View style={chartland.chartFPO}>
-             <ResponsiveImage 
-               source={require('../images/landscapechart_ichi.png')}
-               style={chartland.landscapeChart}
-               initWidth="480"
-               initHeight="287"                
-             />
+
+             <ChartGraph viewLargeGraph={true} />
+
            </View>
            <View style={chartland.options}>
              <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
@@ -736,9 +746,12 @@ class Chart extends Component {
              </View>
              
              <Text style={chartland.momentumFPO}>   
+               <Image 
+                 source={require('../images/momo_chart_landscape.gif')}
+                 style={chartland.momenutmImg}
+               />
              </Text>
              
-             <ChartGraph viewLargeGraph={true} />
              
            </View>
            
@@ -1015,10 +1028,10 @@ class Chart extends Component {
       case 'portrait':
         return this.renderPortrait()
         break;
-    case 'landscape':
-     return this.renderLandscape()
-      break;
-    }
+      case 'landscape':
+       return this.renderLandscape()
+        break;
+      }
   }
   render() {
     var self = this;

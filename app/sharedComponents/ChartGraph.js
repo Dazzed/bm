@@ -97,7 +97,9 @@ export default class ChartGraph extends React.Component {
       // borderWidth: 1,
       // borderColor: 'red',
       flex: 1,
-      height: 200
+      height: 200,
+      marginTop: 18
+
     }
 
     let inlineGraphContainerStyle = {
@@ -139,26 +141,116 @@ export default class ChartGraph extends React.Component {
   
 
   renderLargeGraph() {
+    const { theme } = colorStore;
+    
+    
     let inlineContainerStyle = {
-      // borderWidth: 1,
-      // borderColor: 'red',
+      borderWidth: 1,
+      borderColor: 'red',
       flex: 1,
       height: 200
     }
+    
+    let gridXArray = [10, 50, 100, 150];
+    let gridYArray = [10, 50, 100, 150]
+
+
+    let lineYVal = 0;
+    let boxWidth = 50;
+    let boxHeight = 9;
+    let pointOffset = 10;
+    let xPosition = 5;
+
+    let textLeftOffset = 5;
+    let textTopOffset = boxHeight * .42;
+    
+    const generateXLineGroup = (number) => {
+      return <G id="horiz-line">
+          <G>
+            <Line
+                key={ 'zero-axis' }
+                x1={ '0%' }
+                x2={ '90%' }
+                y1={ number }
+                y2={ number }
+                stroke={ theme.borderGray }
+                strokeDasharray={ [ 4, 8 ] }
+                strokeWidth={ 1 }
+            />
+            <TextSvg
+              fontSize={12}
+              fill={theme.borderGray}
+              stroke={theme.borderGray}
+              y={number}
+              x={'95%'}
+              textAnchor="middle"
+            >
+              {number}
+            </TextSvg>
+          </G>
+      </G>
+    }
+    
+    const generateYLineGroup = (number) => {
+      return <G id="vert-line">
+            <Line
+                key={ 'zero-axis' }
+                x1={ number }
+                x2={ number }
+                y1={ '0%' }
+                y2={ '100%' }
+                stroke={ theme.borderGray }
+                strokeDasharray={ [ 4, 8 ] }
+                strokeWidth={ 1 }
+            />
+            <TextSvg
+              fontSize={12}
+              fill={theme.borderGray}
+              stroke={theme.borderGray}
+              y={'50%'}
+              x={number}
+              textAnchor="middle"
+            >
+              {number}
+            </TextSvg>
+      </G>
+    }
+
+    let barData = [
+      {
+        top: 100,
+        bottom: 
+      }
+    ]
+
+    const generateBarLine = ()
+    
     return <View style={inlineContainerStyle}>
-      <Text>large graph here</Text>
+      <Svg
+        height={'100%'}
+        width={'100%'}
+      >
+        {gridYArray.map((elem, i) => {
+          return generateYLineGroup(elem)
+        })}
+        {gridXArray.map((elem, i) => {
+          return generateXLineGroup(elem)
+        })}
+
+
+      </Svg>
     </View>
   }
+
+
   
-  // <Image 
-  //   source={require('../images/momo_chart_landscape.gif')}
-  //   style={chartland.momenutmImg}
-  // />
+
+
 
 
   renderLargeGraphOrSmallGraph() {
     if(this.props.viewLargeGraph) {
-      this.renderLargeGraph()
+      return this.renderLargeGraph()
     } else {
       return this.renderSmallGraph()  
     }
@@ -166,15 +258,21 @@ export default class ChartGraph extends React.Component {
 
   render() {
     let inlineStyle = {
-      borderWidth: 1,
-      borderColor: 'red',
+      // borderWidth: 1,
+      // borderColor: 'red',
       width: '100%',
       height: '100%',
-      position: 'relative',
-      marginTop: 18
+      position: 'relative'
     }
     return <View style={inlineStyle}>
       {this.renderLargeGraphOrSmallGraph()}
     </View>
   }
 }
+
+// <ResponsiveImage 
+//   source={require('../images/landscapechart_ichi.png')}
+//   style={chartland.landscapeChart}
+//   initWidth="480"
+//   initHeight="287"                
+// />
