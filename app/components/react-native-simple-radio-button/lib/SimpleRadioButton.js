@@ -11,7 +11,8 @@ var {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  LayoutAnimation
+  LayoutAnimation,
+  ScrollView
 } = ReactNative
 
 var RadioForm = createReactClass({
@@ -34,7 +35,7 @@ var RadioForm = createReactClass({
     }
   },
 
-  updateIsActiveIndex: function(index) {
+  updateIsActiveIndex: function (index) {
     this.setState({ is_active_index: index });
     this.props.onPress(this.props.radio_props[index], index)
   },
@@ -57,10 +58,10 @@ var RadioForm = createReactClass({
         labelWrapActive={this.props.radioLabelActive}
         style={this.props.radioStyle}
         animation={this.props.animation}
-		    disabled={this.props.disabled}
+        disabled={this.props.disabled}
         onPress={(value, index) => {
-			this.props.onPress(value, index)
-			this.setState({is_active_index: index})
+          this.props.onPress(value, index)
+          this.setState({ is_active_index: index })
         }}
       />
     )
@@ -74,13 +75,15 @@ var RadioForm = createReactClass({
       render_content = this.props.children
     }
     return (
-      <View style={[
-        Style.radioFrom,
-        this.props.style,
-        this.props.formHorizontal && Style.formHorizontal
-      ]}>
-        {render_content}
-      </View>
+      <ScrollView>
+        <View style={[
+          Style.radioFrom,
+          this.props.style,
+          this.props.formHorizontal && Style.formHorizontal
+        ]}>
+          {render_content}
+        </View>
+      </ScrollView>
     )
   }
 })
@@ -97,7 +100,7 @@ var RadioButton = createReactClass({
       disabled: false,
     }
   },
-  componentWillUpdate () {
+  UNSAFE_componentWillUpdate() {
     if (this.props.animation) {
       LayoutAnimation.spring()
     }
@@ -114,15 +117,15 @@ var RadioButton = createReactClass({
         {c}
       </View>
     ) : (
-      <View style={[
-        Style.radioWrap,
-        this.props.style,
-        !this.props.labelHorizontal && Style.labelVerticalWrap
-      ]}>
-        <RadioButtonInput {...this.props} />
-        <RadioButtonLabel {...this.props} />
-      </View>
-    )
+        <View style={[
+          Style.radioWrap,
+          this.props.style,
+          !this.props.labelHorizontal && Style.labelVerticalWrap
+        ]}>
+          <RadioButtonInput {...this.props} />
+          <RadioButtonLabel {...this.props} />
+        </View>
+      )
     return (
       <View>
         {renderContent}
@@ -132,16 +135,16 @@ var RadioButton = createReactClass({
 })
 
 export class RadioButtonInput extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isSelected: false,
       buttonColor: props.buttonColor || '#2196f3'
     }
   }
-  render () {
-    var innerSize = {width: 20, height:20}
-    var outerSize = {width: 20+10, height:20+10 }
+  render() {
+    var innerSize = { width: 20, height: 20 }
+    var outerSize = { width: 20 + 10, height: 20 + 10 }
     if (this.props.buttonSize) {
       innerSize.width = this.props.buttonSize
       innerSize.height = this.props.buttonSize
@@ -159,41 +162,41 @@ export class RadioButtonInput extends React.Component {
       outerColor = this.props.buttonOuterColor
       innerColor = this.props.buttonColor
     }
-	var c = (
-		<View style={[
-		  Style.radioNormal,
-      this.props.isSelected && Style.radioActive,
-		  this.props.isSelected && innerSize,
-		  this.props.isSelected && {backgroundColor:innerColor}
-		]}></View>
-	)
-	var radioStyle = [
-	  Style.radio,
-	  {
-		borderColor:outerColor,
-		borderWidth:borderWidth
-	  },
-	  this.props.buttonStyle,
-	  outerSize
-  	]
+    var c = (
+      <View style={[
+        Style.radioNormal,
+        this.props.isSelected && Style.radioActive,
+        this.props.isSelected && innerSize,
+        this.props.isSelected && { backgroundColor: innerColor }
+      ]}></View>
+    )
+    var radioStyle = [
+      Style.radio,
+      {
+        borderColor: outerColor,
+        borderWidth: borderWidth
+      },
+      this.props.buttonStyle,
+      outerSize
+    ]
 
-	if (this.props.disabled) {
-		return (
-	      <View style={this.props.buttonWrapStyle} >
-	        <View style={radioStyle}>
-	          {c}
-	  		</View>
-	      </View>
-	    )
-	}
+    if (this.props.disabled) {
+      return (
+        <View style={this.props.buttonWrapStyle} >
+          <View style={radioStyle}>
+            {c}
+          </View>
+        </View>
+      )
+    }
 
     return (
       <View style={this.props.buttonWrapStyle} >
         <TouchableOpacity
           style={radioStyle}
-          onPress={() => { this.props.onPress( this.props.obj.value, this.props.index) }
+          onPress={() => { this.props.onPress(this.props.obj.value, this.props.index) }
           }>
-         {c}
+          {c}
         </TouchableOpacity>
       </View>
     )
@@ -207,21 +210,22 @@ RadioButtonInput.defaultProps = {
 }
 
 export class RadioButtonLabel extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isSelected: false,
       buttonColor: '#2196f3',
     }
   }
-  render () {
+  render() {
     return (
       <TouchableWithoutFeedback
         onPress={() => {
-			if (!this.props.disabled) {
-				this.props.onPress( this.props.obj.value, this.props.index)}
-			}
-		}>
+          if (!this.props.disabled) {
+            this.props.onPress(this.props.obj.value, this.props.index)
+          }
+        }
+        }>
         <View style={[
           this.props.labelWrapStyle,
           Style.labelWrapStyle,
@@ -230,11 +234,11 @@ export class RadioButtonLabel extends React.Component {
             <Text style={[
               Style.radioLabel,
               !this.props.labelHorizontal && Style.labelVertical,
-              {color: this.props.labelColor},
+              { color: this.props.labelColor },
               this.props.labelStyle,
-              this.props.isSelected && this.props.labelWrapActive,            
-            ]}>{this.props.obj.label} 
-            {this.props.obj.info && <Text style={[Style.radioInfo]}>{"\n"}{this.props.obj.info}</Text>}
+              this.props.isSelected && this.props.labelWrapActive,
+            ]}>{this.props.obj.label}
+              {this.props.obj.info && <Text style={[Style.radioInfo]}>{"\n"}{this.props.obj.info}</Text>}
             </Text>
           </View>
         </View>
@@ -244,4 +248,4 @@ export class RadioButtonLabel extends React.Component {
 }
 
 export default RadioForm
-export {RadioButton}
+export { RadioButton }
