@@ -79,6 +79,41 @@ export default class DialIndicator extends React.Component {
       return null;
     }
   }
+  
+  renderDialArrow() {
+    if(this.props.showArrow) {
+      let triangleBaseWidth = 5;
+      let rotation = 180;
+      let distanceFromEdgeOfDial = -12;
+      let arrowAlignOffset = 1;
+      let inlineStyle = {
+        width: 0,
+        height: 0,
+        position: 'relative',
+        borderBottomWidth: triangleBaseWidth,
+        borderRightWidth: triangleBaseWidth / 2,
+        borderLeftWidth: triangleBaseWidth * 2.5,
+        borderTopWidth: triangleBaseWidth,
+        borderTopColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'transparent',
+        borderLeftColor: 'black',
+      }
+      let containerStyle = {
+        width: 20,
+        top: -triangleBaseWidth + arrowAlignOffset,
+        right: distanceFromEdgeOfDial,
+        transform: [
+          { rotate: rotation + 'deg' }
+        ],
+      }
+      
+      return <View style={containerStyle}>
+        <View style={inlineStyle}></View>
+      </View>  
+    }
+    
+  }
 
   renderDialIndicator() {
     const { theme } = colorStore;
@@ -106,6 +141,7 @@ export default class DialIndicator extends React.Component {
     }
     return <Animated.View style={inlineIndicatorStyle}>
       <View style={inlineIndicatorNibStyle}></View>
+      {this.renderDialArrow()}
     </Animated.View>
   }
 

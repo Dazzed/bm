@@ -418,7 +418,7 @@ class Chart extends Component {
         </View>
 
         <View style={{ flex: 1}}>
-          <DialIndicator width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
         </View>
         
       </View>
@@ -746,7 +746,7 @@ class Chart extends Component {
              </View>
              
              <View style={{ flex: 1}}>
-               <DialIndicator width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+               <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
              </View>
              
            </View>
