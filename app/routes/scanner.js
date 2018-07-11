@@ -42,34 +42,17 @@ import { scannerStore } from '../mobxStores';
 import { observer } from 'mobx-react';
 
 var scan_props = [
-  { label: 'Change from open', value: 0 },
-  { label: 'Increasing volume', value: 1 },
-  { label: 'Uptrend & oversold', value: 2 },
-  { label: 'Over 750k volume', value: 3 },
-  { label: 'Over 10% short float', value: 4 }
+  { label: 'All', value: 0, queryString: 'all' },
+  { label: 'Change from open', value: 1, queryString: 'open' },
+  { label: 'Over 750k volume', value: 2, queryString: 'volume' },
+  { label: 'Over 10% short float', value: 3, queryString: 'short_interest' }
 ];
-
-// var sector_props = [
-//   { label: 'All',                        value: 0,  queryString: 'all' },
-//   { label: 'Consumer Discretionary',     value: 1,  queryString: 'Consumer Discretionary' },
-//   { label: 'Consumer Staples',           value: 2,  queryString: 'Consumer Staples' },
-//   { label: 'Energy',                     value: 3,  queryString: 'Energy' },
-//   { label: 'Financials',                 value: 4,  queryString: 'Financial' },
-//   { label: 'Health Care',                value: 5,  queryString: 'Health Care' },
-//   { label: 'Industrials',                value: 6,  queryString: 'Industrials' },
-//   { label: 'Information Technology',     value: 7,  queryString: 'Information Technology' },
-//   { label: 'Materials',                  value: 8,  queryString: 'Materials' },
-//   { label: 'Real Estate',                value: 9,  queryString: 'Real Estate' },
-//   { label: 'Telecommunication Services', value: 10, queryString: 'Telecommunication Services' },
-//   { label: 'Utilities',                  value: 11, queryString: 'Utilities' }
-// ];
-//
 
 var sector_props = [
   {
     label: 'All',
     value: 0,
-    queryString: ''
+    queryString: 'null'
   },
   {
     label: 'Healthcare',
@@ -246,8 +229,6 @@ NumPad.propTypes = {
 };
 
 
-
-
 class SubMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -270,15 +251,18 @@ class SubMenu extends React.Component {
       formattedOperator = 'lt';
     }
 
-    let formattedScanOption = 'volume';
-    // scan_props[this.state.scanOption].queryString
+    let formattedScanOption = scan_props[this.state.scanOption].queryString;
 
     let params = {
       scan: formattedScanOption,
       last_trade: this.state.ltValue,
       operator: formattedOperator,
-      sector: sector_props[this.state.sectorOption].queryString
     }
+
+    // if(this.state.sectorOption > 0) {
+      params.sector = sector_props[this.state.sectorOption].queryString
+    // }
+
     scannerStore.getScannerData(params)
   }
 
@@ -329,10 +313,10 @@ class SubMenu extends React.Component {
   }
 
   hideScan(value) {
-    if (valueOvverride) {
+    if (value) {
       this.setState({ isScanVisible: false, scanOption: value }, this.populateWithData)
     } else {
-      this.setState({ isScanVisible: false }, this.populateWithData)
+      this.setState({ isScanVisible: false })
     }
   }
 

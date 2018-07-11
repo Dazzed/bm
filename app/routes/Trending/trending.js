@@ -508,7 +508,7 @@ class Trending extends React.Component {
     // })
     const { getTrendingData } = trendingStore;
     getTrendingData()
-    
+
     let fakeData = {
       change:"+1.85",
       changePerc:"+10.41%",
@@ -522,7 +522,8 @@ class Trending extends React.Component {
       vol:"24.9M",
       watching:true
     }
-    this.props.navigation.navigate('Chart', {data: fakeData})
+
+    // this.props.navigation.navigate('Chart', {data: fakeData})
   }
 
   componentDidUpdate(prevProps) {
@@ -581,7 +582,7 @@ class Trending extends React.Component {
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
-  
+
   renderTrendingList() {
     const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
 

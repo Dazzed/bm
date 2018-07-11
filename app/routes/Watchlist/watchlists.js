@@ -16,29 +16,21 @@ import {
   Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import DialIndicator from '../../sharedComponents/DialIndicator';
-
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../components/react-native-simple-radio-button';
 import Modal from 'react-native-modal'
 import SortableListView from 'react-native-sortable-listview'
 import { setTheme, getTheme, colors } from '../../store/store';
 import { selectGlobalData } from '../../selectors';
-
 import {
   TabNavigator,
 } from 'react-navigation';
-
 import Swipeout from '../../components/react-native-swipeout';
 import Search from './../search';
-
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
 import navstyle from '../../style/nav';
-
 import watchstyle from '../../style/watchlist';
-// import colors from '../../style/colors';
-
 import { watchListStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 
@@ -190,8 +182,8 @@ class Watchlists extends React.Component {
             <View style={watchstyle.symMomentum}>
               <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={row['latestVolume']} position={.4} />
             </View>
-            <TouchableOpacity 
-              style={watchstyle.symCost} 
+            <TouchableOpacity
+              style={watchstyle.symCost}
               onPress={this.toggleWatchListPercent.bind(this, row.id)}
             >
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${row['latestPrice']}</Text>
