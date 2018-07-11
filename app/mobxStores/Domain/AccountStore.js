@@ -22,7 +22,7 @@ export default class AccountStore {
             },
             {
                 title: 'MOCK BANK',
-                subtitle: 'CHECKING',
+                subtitle: 'SAVINGS',
                 amount: '52495'
             },
         ]

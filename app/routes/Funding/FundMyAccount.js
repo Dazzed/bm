@@ -134,13 +134,24 @@ export default class FundMyAccount extends React.Component {
 
     renderErrorOrNull() {
       const { theme } = colorStore;
-      let text = '';
+      let text = null;;
       if(this.state.errorRemainingFunds) {
-        text = 'Error: Withdraw limit exceeds funds available'
+        text = 'Withdraw amount exceeds funds available'
       }
-      return <View style={{height: 25, alignItems: 'center', backgroundColor: theme.white}}>
-        <Text style={{color: 'red'}}>{text}</Text>
-      </View>
+      let height = 25;
+      if(text) {
+        return <View style={{width: '100%', alignSelf: 'center', justifyContent: 'center', height: height, flexDirection: 'row', alignItems: 'center', backgroundColor: theme.white}}>
+            <View style={{flex: 0, height: '100%', alignSelf: 'center', flexDirection: 'row'}}>
+              <Text style={{color: 'red', fontWeight: 'bold'}}>{'Error: '}</Text>
+              <Text style={{color: 'red'}}>{text}</Text>
+            </View>
+        </View>
+      } else {
+        return <View style={{height: height, alignItems: 'center', backgroundColor: theme.white}}>
+          <Text style={{color: 'red'}}>{''}</Text>
+        </View>
+      }
+
     }
 
     renderInputAmount() {
