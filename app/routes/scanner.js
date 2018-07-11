@@ -49,20 +49,74 @@ var scan_props = [
   { label: 'Over 10% short float', value: 4 }
 ];
 
+// var sector_props = [
+//   { label: 'All',                        value: 0,  queryString: 'all' },
+//   { label: 'Consumer Discretionary',     value: 1,  queryString: 'Consumer Discretionary' },
+//   { label: 'Consumer Staples',           value: 2,  queryString: 'Consumer Staples' },
+//   { label: 'Energy',                     value: 3,  queryString: 'Energy' },
+//   { label: 'Financials',                 value: 4,  queryString: 'Financial' },
+//   { label: 'Health Care',                value: 5,  queryString: 'Health Care' },
+//   { label: 'Industrials',                value: 6,  queryString: 'Industrials' },
+//   { label: 'Information Technology',     value: 7,  queryString: 'Information Technology' },
+//   { label: 'Materials',                  value: 8,  queryString: 'Materials' },
+//   { label: 'Real Estate',                value: 9,  queryString: 'Real Estate' },
+//   { label: 'Telecommunication Services', value: 10, queryString: 'Telecommunication Services' },
+//   { label: 'Utilities',                  value: 11, queryString: 'Utilities' }
+// ];
+// 
+
 var sector_props = [
-  { label: 'All',                        value: 0,  queryString: 'all' },
-  { label: 'Consumer Discretionary',     value: 1,  queryString: 'Consumer Discretionary' },
-  { label: 'Consumer Staples',           value: 2,  queryString: 'Consumer Staples' },
-  { label: 'Energy',                     value: 3,  queryString: 'Energy' },
-  { label: 'Financials',                 value: 4,  queryString: 'Financial' },
-  { label: 'Health Care',                value: 5,  queryString: 'Health Care' },
-  { label: 'Industrials',                value: 6,  queryString: 'Industrials' },
-  { label: 'Information Technology',     value: 7,  queryString: 'Information Technology' },
-  { label: 'Materials',                  value: 8,  queryString: 'Materials' },
-  { label: 'Real Estate',                value: 9,  queryString: 'Real Estate' },
-  { label: 'Telecommunication Services', value: 10, queryString: 'Telecommunication Services' },
-  { label: 'Utilities',                  value: 11, queryString: 'Utilities' }
-];
+  {
+    label: 'All',
+    value: 0,
+    queryString: ''
+  },
+  {
+    label: 'Healthcare',
+    value: 1,
+    queryString: 'Healthcare',
+  },
+  {
+    label: 'Services',
+    value: 2,
+    queryString: 'Services',
+  },
+  {
+    label: 'Basic Materials',
+    value: 3,
+    queryString: 'Basic Materials',
+  },
+  {
+    label: 'Industrial Goods',
+    value: 4,
+    queryString: 'Industrial Goods',
+  },
+  {
+    label: 'Financial',
+    value: 5,
+    queryString: 'Financial',
+  },
+  {
+    label: 'Technology',
+    value: 6,
+    queryString: 'Technology',
+  },
+  {
+    label: 'Conglomerates',
+    value: 7,
+    queryString: 'Conglomerates',
+  },
+  {
+    label: 'Consumer Goods',
+    value: 8,
+    queryString: 'Consumer Goods',
+  },
+  {
+    label: 'Utilities',
+    value: 9,
+    queryString: 'Utilities',
+  }
+]
 
 var scan_options = [
   "Greater Than",
@@ -253,11 +307,11 @@ class SubMenu extends React.Component {
   }
 
   hideSector(value) {
-    if (value) {
+    // if (value) {
       this.setState({ isSectorVisible: false, sectorOption: value }, this.populateWithData)
-    } else {
-      this.setState({ isSectorVisible: false })
-    }
+    // } else {
+      // this.setState({ isSectorVisible: false })
+    // }
   }
   setPrice(value) {
     this.setState({ ltValue: value }, this.populateWithData)
