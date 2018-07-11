@@ -28,3 +28,9 @@ Fixed with bundler / Relase to Debug setting
 
 ### Navitagion Library
 https://reactnavigation.org/
+
+###
+Build won't work because SVG Library causing link issues
+
+This is a know bug. Follow directions here. This will happen every time react-native link is run
+https://github.com/react-native-community/react-native-svg/issues/544

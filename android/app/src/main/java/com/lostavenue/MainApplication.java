@@ -3,6 +3,7 @@ package com.lostavenue;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.rnfingerprint.FingerprintAuthPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
             new FingerprintAuthPackage(),
             new OrientationPackage()
       );

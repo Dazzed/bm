@@ -41,6 +41,7 @@ import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
 
 import ChartGraph from '../sharedComponents/ChartGraph';
+import DialIndicator from '../sharedComponents/DialIndicator';
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -121,9 +122,22 @@ class Chart extends Component {
     )
   }
 
+  forceSetToLandscape() {
+    // Orientation.lockToLandscape()
+    // this.setState({
+    //   orientation: 'landscape'
+    // })
+  }
+
   componentDidMount(){
     Orientation.unlockAllOrientations();   
     Orientation.addOrientationListener(this.orientationDidChange);
+    
+    setTimeout(() => {
+      this.forceSetToLandscape();  
+    }, 1000)
+    
+
     console.log(getTheme());
   }
 
@@ -390,23 +404,23 @@ class Chart extends Component {
               <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
         </Tabs>
 
+
         </View>
         <View style={chart.chartWrapper}>
-          <ChartGraph />
+          <ChartGraph viewLargeGraph={false} />
         </View>
 
       </View>
-      <View style={chart.momentumWrapper}>
-        <View style={chart.momentumInfo}>
+      <View style={[chart.momentumWrapper, {width: '100%'}]}>
+        <View style={[chart.momentumInfo, {flex: 1}]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
           <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
         </View>
-        <Text style={chart.momentumFPO}>
-          <Image 
-            source={require('../images/momo_chart_portrait.gif')}
-            style={chart.momenutmImg}
-          />
-        </Text>
+
+        <View style={{ flex: 1}}>
+          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+        </View>
+        
       </View>
       <View style={chart.profileWrapper}>
         <View style={chart.statsRow}>
@@ -682,12 +696,9 @@ class Chart extends Component {
        <View style={chartland.chartWrapper}>
          <View style={chartland.leftSide}>
            <View style={chartland.chartFPO}>
-             <ResponsiveImage 
-               source={require('../images/landscapechart_ichi.png')}
-               style={chartland.landscapeChart}
-               initWidth="480"
-               initHeight="287"                
-             />
+
+             <ChartGraph viewLargeGraph={true} />
+
            </View>
            <View style={chartland.options}>
              <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
@@ -726,18 +737,20 @@ class Chart extends Component {
            </View>
          </View>
          <View style={chartland.right}>
+           
            <View style={chartland.momentumWrapper}>
+             
              <View style={chartland.momentumInfo}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>MOMENTUM</Text>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
              </View>
-             <Text style={chartland.momentumFPO}>
-             <Image 
-               source={require('../images/momo_chart_landscape.gif')}
-               style={chartland.momenutmImg}
-             />
-             </Text>
+             
+             <View style={{ flex: 1}}>
+               <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+             </View>
+             
            </View>
+           
            <View style={chartland.bidAsksWrapper}>
              <View style={chartland.bid}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
@@ -1011,10 +1024,10 @@ class Chart extends Component {
       case 'portrait':
         return this.renderPortrait()
         break;
-    case 'landscape':
-     return this.renderLandscape()
-      break;
-    }
+      case 'landscape':
+       return this.renderLandscape()
+        break;
+      }
   }
   render() {
     var self = this;
