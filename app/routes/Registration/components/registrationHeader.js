@@ -51,7 +51,7 @@ export default class RegistrationHeader extends React.Component {
       return <View style={{flex: 1}}>
         {this.renderWhyWeAskText()}
         {this.renderExtraContent()}
-        <Image source={theme.illustration} style={{ width: 358, height: 150, marginRight: -52 }} />
+        <Image source={theme.illustration} style={{ width: 358, height: 150, position: 'relative', right: -25 }} />
       </View>
     } else {
       return null;
