@@ -49,7 +49,7 @@ export default class FundMyAccount extends React.Component {
         list.push('.')
         let afterDecimalLength = this.state.fundingString.split('.')[1].length
         if(afterDecimalLength >= 2) {
-             list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']  
+             list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']
         }
       }
       return list;
@@ -109,12 +109,12 @@ export default class FundMyAccount extends React.Component {
     renderAmountInAccount() {
         const { theme } = colorStore;
         const { selectedAccount } = accountStore;
+        let textStyle = {
+            fontSize: 25,
+            textAlign: 'center',
+            color: theme.darkSlate
+        }
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-            let textStyle = {
-                fontSize: 30,
-                textAlign: 'center',
-                color: theme.darkSlate
-            }
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
                 <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
@@ -122,7 +122,12 @@ export default class FundMyAccount extends React.Component {
                 <View style={{marginVertical: 10}}></View>
             </View>
         } else {
-            return null;
+            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
+                <View style={{marginVertical: 10}}></View>
+                <Text style={textStyle}>{selectedAccount.title}</Text>
+                <Text style={textStyle}>{selectedAccount.subtitle}</Text>
+                <View style={{marginVertical: 10}}></View>
+            </View>;
         }
 
     }
