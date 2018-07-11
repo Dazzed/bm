@@ -552,7 +552,7 @@ class Chart extends Component {
           <View style={chart.bidaskRow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
             <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
+          </View>dev
           <View style={chart.bidaskRow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
             <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
