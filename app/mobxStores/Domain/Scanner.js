@@ -22,15 +22,8 @@ export default class Scanner {
     }
   }
 
-  @action getScannerData = () => {
-
-    let params = {
-      scan: 'volume',
-      last_trade: '100',
-      operator: 'gt',
-      sector: 'Financial',
-    }
-
+  @action getScannerData = (params) => {
+    console.log('===== GETTING SCANNER DATA ========')
     let stringifyParams = JSON.stringify(params)
     let newparams = {
       filter: stringifyParams

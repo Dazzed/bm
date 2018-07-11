@@ -38,6 +38,8 @@ import { selectGlobalData } from '../selectors';
 import fonts from '../style/fonts';
 import navstyle from '../style/nav';
 
+import { scannerStore } from '../mobxStores';
+import { observer } from 'mobx-react';
 
 var scan_props = [
   { label: 'Change from open', value: 0 },
@@ -48,18 +50,18 @@ var scan_props = [
 ];
 
 var sector_props = [
-  { label: 'All', value: 0 },
-  { label: 'Consumer Discretionary', value: 1 },
-  { label: 'Consumer Staples', value: 2 },
-  { label: 'Energy', value: 3 },
-  { label: 'Financials', value: 4 },
-  { label: 'Health Care', value: 5 },
-  { label: 'Industrials', value: 6 },
-  { label: 'Information Technology', value: 7 },
-  { label: 'Materials', value: 8 },
-  { label: 'Real Estate', value: 9 },
-  { label: 'Telecommunication Services', value: 10 },
-  { label: 'Utilities', value: 11 }
+  { label: 'All',                        value: 0,  queryString: 'all' },
+  { label: 'Consumer Discretionary',     value: 1,  queryString: 'Consumer Discretionary' },
+  { label: 'Consumer Staples',           value: 2,  queryString: 'Consumer Staples' },
+  { label: 'Energy',                     value: 3,  queryString: 'Energy' },
+  { label: 'Financials',                 value: 4,  queryString: 'Financial' },
+  { label: 'Health Care',                value: 5,  queryString: 'Health Care' },
+  { label: 'Industrials',                value: 6,  queryString: 'Industrials' },
+  { label: 'Information Technology',     value: 7,  queryString: 'Information Technology' },
+  { label: 'Materials',                  value: 8,  queryString: 'Materials' },
+  { label: 'Real Estate',                value: 9,  queryString: 'Real Estate' },
+  { label: 'Telecommunication Services', value: 10, queryString: 'Telecommunication Services' },
+  { label: 'Utilities',                  value: 11, queryString: 'Utilities' }
 ];
 
 var scan_options = [
@@ -208,7 +210,22 @@ class SubMenu extends React.Component {
   }
 
   populateWithData() {
-    scannerStore.getScannerData()
+    
+    let formattedOperator = 'gt';
+    if(this.state.operator == '<') {
+      formattedOperator = 'lt';
+    }
+    
+    let formattedScanOption = 'volume';
+    // scan_props[this.state.scanOption].queryString
+    
+    let params = {
+      scan: formattedScanOption,
+      last_trade: this.state.ltValue,
+      operator: formattedOperator,
+      sector: sector_props[this.state.sectorOption].queryString
+    }
+    scannerStore.getScannerData(params)
   }
   
   componentDidMount() {
@@ -237,19 +254,19 @@ class SubMenu extends React.Component {
 
   hideSector(value) {
     if (value) {
-      this.setState({ isSectorVisible: false, sectorOption: value })
+      this.setState({ isSectorVisible: false, sectorOption: value }, this.populateWithData)
     } else {
       this.setState({ isSectorVisible: false })
     }
   }
   setPrice(value) {
-    this.setState({ ltValue: value })
+    this.setState({ ltValue: value }, this.populateWithData)
   }
   setOperator(value) {
     this.setState({ operator: value })
   }
   hideSub() {
-    this.setState({ isLTVisible: false })
+    this.setState({ isLTVisible: false }, this.populateWithData)
   }
   showScan() {
     this.setState({ isScanVisible: true })
@@ -257,9 +274,9 @@ class SubMenu extends React.Component {
 
   hideScan(value) {
     if (value) {
-      this.setState({ isScanVisible: false, scanOption: value })
+      this.setState({ isScanVisible: false, scanOption: value }, this.populateWithData)
     } else {
-      this.setState({ isScanVisible: false })
+      this.setState({ isScanVisible: false }, this.populateWithData)
     }
   }
 
@@ -404,9 +421,6 @@ SubMenu.propTypes = {
 };
 
 
-import { scannerStore } from '../mobxStores';
-import { observer } from 'mobx-react';
-
 @observer
 class Scanner extends React.Component {
   static navigationOptions = {
@@ -425,14 +439,6 @@ class Scanner extends React.Component {
     super(props);
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      dataSource: ds.cloneWithRows([
-        { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../images/momentumfpowatchlist.png'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', change: '+1.45' },
-        { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../images/momentumfpowatchlist_down01.png'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', change: '+1.45' },
-        { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../images/momentumfpowatchlist_01.png'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', change: '+1.45' },
-        { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../images/momentumfpowatchlist_down02.png'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', change: '+1.45' },
-        { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../images/momentumfpowatchlist_down01.png'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', change: '+1.45' },
-        { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', change: '+1.45' },
-      ]),
       isSearchVisible: false,
       colors: colors(props.globalData.isDarkThemeActive),
       isUpdatingState: false
