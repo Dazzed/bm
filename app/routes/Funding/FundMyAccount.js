@@ -13,7 +13,8 @@ import { numberWithCommas } from '../../utility';
 import { colorStore, accountStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 import { generateHeaderStyles } from '../../utility';
-
+const SearchCancelLight = require('../../images/searchcancel.png');
+const SearchCancelDark = require('../../images/searchcancel_dark.png');
 
 @observer
 export default class FundMyAccount extends React.Component {
@@ -155,7 +156,7 @@ export default class FundMyAccount extends React.Component {
     }
 
     renderInputAmount() {
-        const { theme } = colorStore;
+        const { theme, themeType } = colorStore;
 
         let amountHeight = 60;
 
@@ -177,6 +178,11 @@ export default class FundMyAccount extends React.Component {
             textAmountStyle.color = 'red';
         }
 
+        let searchCancelSource = SearchCancelLight;
+        if(themeType === 'dark') {
+          searchCancelSource = SearchCancelDark;
+        }
+
         return <View style={{width: '100%', alignSelf: 'center', backgroundColor: theme.white}}>
             <View style={{width: '80%', alignSelf: 'center'}}>
                 <View style={{
@@ -194,7 +200,7 @@ export default class FundMyAccount extends React.Component {
                         <Image
                             style={{height: 30}}
                             resizeMode="contain"
-                            source={require('../../images/searchcancel.png')}
+                            source={searchCancelSource}
                         />
                     </TouchableOpacity>
                 </View>

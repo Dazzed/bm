@@ -36,7 +36,6 @@ export default class NumericalSelector extends React.Component {
 
 
     render() {
-
         const { theme, themeType } = colorStore;
 
         let deleteSource = DeleteLight;
@@ -65,8 +64,8 @@ export default class NumericalSelector extends React.Component {
 
         let numberStyle = [
             {
-                color: theme.darkSlate,
-                fontSize: 20
+              color: theme.darkSlate,
+              fontSize: 20
             },
             fonts.hindGunturRg
         ]
