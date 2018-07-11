@@ -66,6 +66,11 @@ const rootApiCall = (path, method, body) => {
 
         let url = [API_URL, 'api', path].join('/');
 
+        // add args here
+        if(method === 'GET' && body) {
+          url += '?' + body
+        }
+
         ///////////////////////////////////////////////////////
         // Add Token
 
@@ -76,10 +81,21 @@ const rootApiCall = (path, method, body) => {
             attachToken = false;
           };
 
+          // if standard post request
           if (attachToken) {
-            url = url + `?access_token=${token}`
-            // req.setRequestHeader('Authorization', 'Token ' + token);
+
+            if(method === 'GET' && !body) {
+              // append with ?
+              url += `?access_token=${token}`
+            } else if(method === 'GET' && body) {
+              // already has question mark
+              url += `&access_token=${token}`;
+            } else {
+              // append with question mark
+              url += `?access_token=${token}`;
+            }
           }
+
         }
 
         ///////////////////////////////////////////////////////
@@ -131,16 +147,16 @@ const querify = (obj = {}, needsEncoding = false) => {
   const encode = (value) => needsEncoding ? encodeURIComponent(value) : value;
   const keys = Object.keys(obj);
   return keys.length
-    ? '?' + keys
+    ? '' + keys
       .filter((key) => obj[key] !== undefined)
       .map((key) => encode(key) + '=' + encode(obj[key])).join('&')
     : '';
 };
 
-const get = (path, ...querifyArgs) => rootApiCall(path + querify(...querifyArgs), 'GET', undefined);
+const get = (path, ...querifyArgs) => rootApiCall(path, 'GET', querify(...querifyArgs));
 const post = (path, body) => rootApiCall(path, 'POST', body);
 const put = (path, body) => rootApiCall(path, 'PUT', body);
-const deleteRequest = path => rootApiCall(path, 'DELETE');
+const deleteRequest = path => rootApiCall(path, 'DELETE', null);
 
 export {
   get,

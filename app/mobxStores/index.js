@@ -17,7 +17,7 @@ let authStore = new AuthStore();
 let myAccount = new MyAccount();
 let watchListStore = new Watchlist();
 let trendingStore = new Trending();
-let scanner = new Scanner();
+let scannerStore = new Scanner();
 
 
 export {
@@ -28,5 +28,5 @@ export {
     myAccount,
     watchListStore,
     trendingStore,
-    scanner
+    scannerStore
 }
