@@ -24,6 +24,10 @@ export default class Scanner {
 
   @action getScannerData = (params) => {
     console.log('===== GETTING SCANNER DATA ========')
+
+    // reset
+    this.setScannerData(null)
+
     let stringifyParams = JSON.stringify(params)
     let newparams = {
       filter: stringifyParams

@@ -63,7 +63,7 @@ var scan_props = [
 //   { label: 'Telecommunication Services', value: 10, queryString: 'Telecommunication Services' },
 //   { label: 'Utilities',                  value: 11, queryString: 'Utilities' }
 // ];
-// 
+//
 
 var sector_props = [
   {
@@ -264,15 +264,15 @@ class SubMenu extends React.Component {
   }
 
   populateWithData() {
-    
+
     let formattedOperator = 'gt';
     if(this.state.operator == '<') {
       formattedOperator = 'lt';
     }
-    
+
     let formattedScanOption = 'volume';
     // scan_props[this.state.scanOption].queryString
-    
+
     let params = {
       scan: formattedScanOption,
       last_trade: this.state.ltValue,
@@ -281,7 +281,7 @@ class SubMenu extends React.Component {
     }
     scannerStore.getScannerData(params)
   }
-  
+
   componentDidMount() {
     this.populateWithData()
   }
@@ -307,12 +307,14 @@ class SubMenu extends React.Component {
   }
 
   hideSector(value) {
-    // if (value) {
+    console.log('====== value', value)
+    if(value === undefined) {
+      this.setState({ isSectorVisible: false })
+    } else {
       this.setState({ isSectorVisible: false, sectorOption: value }, this.populateWithData)
-    // } else {
-      // this.setState({ isSectorVisible: false })
-    // }
+    }
   }
+
   setPrice(value) {
     this.setState({ ltValue: value }, this.populateWithData)
   }
@@ -327,7 +329,7 @@ class SubMenu extends React.Component {
   }
 
   hideScan(value) {
-    if (value) {
+    if (valueOvverride) {
       this.setState({ isScanVisible: false, scanOption: value }, this.populateWithData)
     } else {
       this.setState({ isScanVisible: false }, this.populateWithData)
@@ -524,7 +526,7 @@ class Scanner extends React.Component {
   hideSearch() {
     this.setState({ isSearchVisible: false });
   }
-  
+
   // {
   //   !this.state.isUpdatingState &&
   //   <ListView
@@ -541,7 +543,7 @@ class Scanner extends React.Component {
   //       </View>
   //     }
   //   />}
-  
+
   renderListOrLoading() {
     const { scannerDataLoading, scannerDataJS } = scannerStore;
     if(scannerDataLoading) {
@@ -555,7 +557,7 @@ class Scanner extends React.Component {
     } else {
       return <View>
         {scannerDataJS.map((data, i) => {
-          console.log('-- each', data)
+          // console.log('-- each', data)
           return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
             <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
               <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
@@ -593,11 +595,11 @@ class Scanner extends React.Component {
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['lightGray'] }, scanner.symbolsTitle, fonts.hindGunturRg]}>HIGH</Text></View>
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['lightGray'] }, scanner.symbolsTitle, fonts.hindGunturRg]}>CURRENT</Text></View>
           </View>
-          
+
           <ScrollView style={scanner.symbolsContainer}>
             {this.renderListOrLoading()}
           </ScrollView>
-        
+
         </View>
         <Modal
           isVisible={this.state.isSearchVisible}
