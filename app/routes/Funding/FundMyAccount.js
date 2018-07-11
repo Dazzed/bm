@@ -120,17 +120,56 @@ export default class FundMyAccount extends React.Component {
                 <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
-                <View style={{marginVertical: 10}}></View>
+                <View style={{marginVertical: 0}}></View>
+                {this.renderAccountDropdown()}
             </View>
         } else {
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
                 <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>{selectedAccount.title}</Text>
                 <Text style={textStyle}>{selectedAccount.subtitle}</Text>
-                <View style={{marginVertical: 10}}></View>
+                <View style={{marginVertical: 0}}></View>
+                {this.renderAccountDropdown()}
             </View>;
         }
 
+    }
+
+    renderAccountDropdown() {
+        const { theme } = colorStore;
+        const { selectedAccount } = accountStore;
+        let height = 25;
+        let style = {
+            borderWidth: 1,
+            borderColor: theme.inactiveDarkSlate,
+            backgroundColor: theme.contentBg,
+            height: height,
+            flex: 0,
+            borderRadius: height / 2,
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: 5,
+            marginHorizontal: 20
+        };
+        let textStyle = {
+            color: theme.inactiveDarkSlate,
+            flex: 0
+        };
+
+
+        let string = 'FROM'
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+            string = 'TO'
+        }
+
+
+            return <View style={style}>
+            <View style={{flex: 0, height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={textStyle}>
+                    {string + ''} {selectedAccount.title}
+                </Text>
+            </View>
+        </View>
     }
 
     renderErrorOrNull() {
