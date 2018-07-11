@@ -20,12 +20,13 @@ export default class AccountStore {
     @action getChartData = (data) => {
       let symbol = data.sym;
       this.setChartLoading(true);
-      console.log('GET CHART DATA');
+
       let params = {
         ticker: symbol
       }
       getTickerDetails(params)
       .then((res) => {
+          console.log('GET CHART DATA', res);
         if(res.ok) {
           this.setChartData(res.json.result);
         } else {
@@ -43,7 +44,7 @@ export default class AccountStore {
       if(this.chartData === null) {
         return null;
       } else {
-        return toJS(this.accountList);
+        return toJS(this.chartData);
       }
     }
 
