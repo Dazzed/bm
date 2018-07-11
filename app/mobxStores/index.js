@@ -7,18 +7,18 @@ import MyAccount from './Domain/MyAccount';
 import Watchlist from './Domain/Watchlist';
 import Trending from './Domain/Trending';
 import Scanner from './Domain/Scanner';
+import Chart from './Domain/Chart';
 
 // Import and init all stores here
 let colorStore = new ColorStore();
 let accountStore = new AccountStore();
 let registrationStore = new RegistrationStore();
 let authStore = new AuthStore();
-
 let myAccount = new MyAccount();
 let watchListStore = new Watchlist();
 let trendingStore = new Trending();
 let scannerStore = new Scanner();
-
+let chartStore = new Chart();
 
 export {
     colorStore,
@@ -28,5 +28,6 @@ export {
     myAccount,
     watchListStore,
     trendingStore,
-    scannerStore
+    scannerStore,
+    chartStore
 }

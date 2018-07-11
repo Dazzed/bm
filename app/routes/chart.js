@@ -25,7 +25,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from '../com
 import CheckBox from '../components/react-native-check-box'
 import Tabs from 'react-native-tabs';
 import ResponsiveImage from 'react-native-responsive-image';
-import {setTheme, getTheme, colors} from '../store/store';
+import { setTheme, getTheme, colors } from '../store/store';
 
 import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
@@ -42,6 +42,9 @@ import { selectGlobalData } from '../selectors';
 
 import ChartGraph from '../sharedComponents/ChartGraph';
 import DialIndicator from '../sharedComponents/DialIndicator';
+
+import { chartStore } from '../mobxStores';
+import { observer } from 'mobx-react';
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -60,7 +63,7 @@ var indicator_props = [
   {label: 'BOL', info: 'Bollinger Bands', value: 10 }
 ];
 
-
+@observer
 class Chart extends Component {
 
   static navigationOptions = {
@@ -71,7 +74,7 @@ class Chart extends Component {
         source={require('../images/watchlist.png')}
         style={[navstyle.iconBig, {tintColor: tintColor}]}
       />
-    ),    
+    ),
   };
   constructor(props){
     super(props);
@@ -130,15 +133,15 @@ class Chart extends Component {
   }
 
   componentDidMount(){
-    Orientation.unlockAllOrientations();   
+    Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
-    
-    setTimeout(() => {
-      this.forceSetToLandscape();  
-    }, 1000)
-    
 
-    console.log(getTheme());
+    // setTimeout(() => {
+    //   this.forceSetToLandscape();
+    // }, 1000)
+
+    getTheme()
+    chartStore.getChartData(this.props.navigation.state.params.data)
   }
 
   componentDidUpdate(prevProps) {
@@ -154,7 +157,7 @@ class Chart extends Component {
   }
 
   componentWillUnmount() {
-    Orientation.lockToPortrait();    
+    Orientation.lockToPortrait();
     Orientation.removeOrientationListener(this.orientationDidChange);
   }
 
@@ -162,21 +165,21 @@ class Chart extends Component {
     if(this.state.orientation == 'landscape') {
       this.setState({ isRotateVisible: true, orderType: orderType })
     } else {
-      Orientation.lockToPortrait();    
+      Orientation.lockToPortrait();
       this.setState({ isOrderVisible: true, orderType: orderType })
     }
   }
-  hideOrder(){ 
-    Orientation.unlockAllOrientations();   
+  hideOrder(){
+    Orientation.unlockAllOrientations();
     this.setState({ isOrderVisible: false })
   }
   showNews(){
     this.setState({ isNewsVisible: true })
     Orientation.lockToPortrait();
   }
-  hideNews(){ 
+  hideNews(){
     this.setState({ isNewsVisible: false })
-    Orientation.unlockAllOrientations();  
+    Orientation.unlockAllOrientations();
   }
   showSearch() {
     this.setState({isSearchVisible:true});
@@ -184,7 +187,7 @@ class Chart extends Component {
   }
   hideSearch() {
     this.setState({isSearchVisible:false});
-    Orientation.unlockAllOrientations();  
+    Orientation.unlockAllOrientations();
   }
   showIndicators() {
     this.setState({isIndicatorsVisible:true});
@@ -254,42 +257,42 @@ class Chart extends Component {
     var that = this;
     setTimeout(function(){that.props.navigation.navigate(tab)}, 15);
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
   // PORTRAIT
   //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
+
+
   renderPortrait() {
     return <View>
     <View style={styles.menuBorder}>
       <View style={styles.menuContainer}>
         <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
-          <Image 
+          <Image
             source={require('../images/back.png')}
             style={styles.backImg}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
           <Text style={[{color: this.state.colors['lightGray']}, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
-            <Image 
+            <Image
               source={require('../images/search.png')}
               style={styles.searchImg}
             />
@@ -366,7 +369,7 @@ class Chart extends Component {
         <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>$153.53</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
           <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>12:30 PM PT</Text>
-          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}              
+          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
         </TouchableOpacity>
       </View>
       <View style={chart.prices}>
@@ -420,7 +423,7 @@ class Chart extends Component {
         <View style={{ flex: 1}}>
           <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
         </View>
-        
+
       </View>
       <View style={chart.profileWrapper}>
         <View style={chart.statsRow}>
@@ -431,7 +434,7 @@ class Chart extends Component {
               <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
             </TouchableOpacity>
         </View>
-      </View>                    
+      </View>
       <View style={chart.bidAsksWrapper}>
         <View style={chart.bid}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>BID</Text>
@@ -541,7 +544,7 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>Apple Inc. designs, manufactures, and markets personal computers and related personal computing and mobile communication devices along with a variety of related software, services, peripherals, and networking solutions. The Company sells its products worldwide through its online stores, its retail stores, its direct sales force, third-party wholesalers, and resellers.</Text>
           </View>
-      </View>          
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>ADDRESS</Text>
           <View style={chart.profileTxt}>
@@ -549,13 +552,13 @@ class Chart extends Component {
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>Cupertino, CA 95014</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>United States</Text>
           </View>
-      </View>          
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>www.apple.com</Text>
           </View>
-      </View>          
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
           <View style={chart.profileTxt}>
@@ -569,7 +572,7 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Jonathan Ive</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Design Officer</Text>
-          </View>              
+          </View>
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Luca Maestri</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/CFO</Text>
@@ -577,8 +580,8 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>D Bruce Sewell</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/Secy/General Counsel</Text>
-          </View>              
-      </View>          
+          </View>
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
           <View style={chart.profileTxt}>
@@ -592,8 +595,8 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
-          </View>              
-      </View>          
+          </View>
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
           <View style={chart.statsRow}>
@@ -612,7 +615,7 @@ class Chart extends Component {
               <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>62.43%</Text>
             </View>
           </View>
-      </View>          
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
         <View style={styles.btnRow}>
           <View style={chart.statsColumn}>
@@ -626,32 +629,32 @@ class Chart extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </View>          
+      </View>
     </ScrollView>
   </View>
   }
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
   // LANDSCAPE
   //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
-  
+
+
+
   renderLandscape() {
     return <View style={chartland.landscape}>
        <View style={chartland.header}>
            <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
-             <Image 
+             <Image
                source={require('../images/back.png')}
                style={styles.backImg}
              />
@@ -665,7 +668,7 @@ class Chart extends Component {
 
            <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
              <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>12:30 PM PT</Text>
-             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}              
+             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
            </TouchableOpacity>
          </View>
          <View style={chartland.prices}>
@@ -705,7 +708,7 @@ class Chart extends Component {
                <View style={chartland.indicatorsWrap}>
                  <Text style={[{color: this.state.colors['darkSlate']}, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>
                  <Text style={[{color: this.state.colors['lightGray']}, chartland.indicatorsTxt, fonts.hindGunturRg]}>
-                   {this.state.indicators.length < 1 ? 
+                   {this.state.indicators.length < 1 ?
                      'Add to graph' : ''}
                  {
                    this.state.indicators.map(function(indicate, index) {
@@ -737,20 +740,20 @@ class Chart extends Component {
            </View>
          </View>
          <View style={chartland.right}>
-           
+
            <View style={chartland.momentumWrapper}>
-             
+
              <View style={chartland.momentumInfo}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>MOMENTUM</Text>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
              </View>
-             
+
              <View style={{ flex: 1}}>
                <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
              </View>
-             
+
            </View>
-           
+
            <View style={chartland.bidAsksWrapper}>
              <View style={chartland.bid}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
@@ -817,10 +820,10 @@ class Chart extends Component {
                  </TouchableOpacity>
                </View>
              </View>
-           </View>                    
+           </View>
          </View>
        </View>
-         <Modal 
+         <Modal
            isVisible={this.state.isIndicatorsVisible}
            animationIn={'fadeIn'}
            animationOut={'fadeOut'}
@@ -999,26 +1002,26 @@ class Chart extends Component {
              </View>
              </ScrollView>
            </View>
-         </Modal>          
+         </Modal>
      </View>
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   showOrientation(){
     switch (this.state.orientation) {
       case 'portrait':
@@ -1029,48 +1032,62 @@ class Chart extends Component {
         break;
       }
   }
+
+  renderLoadingOrContent() {
+    const { chartLoading } = chartStore;
+
+    if(chartLoading) {
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={[{color: this.state.colors['lightGray']}, fonts.hindGunturRg]}>Loading...</Text>
+      </View>
+    } else {
+      return <View style={chart.container}>
+        {this.showOrientation()}
+        <Modal
+          isVisible={this.state.isOrderVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}
+          style={order.modal}>
+          <PlaceOrder
+            hideOrder={this.hideOrder}
+            orderType={this.state.orderType} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isNewsVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}
+          style={order.modal}>
+          <ChartNews
+            hideNews={this.hideNews} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isRotateVisible}
+          animationIn={'fadeIn'}
+          animationOut={'fadeOut'}
+          style={order.modal}>
+          <View style={styles.pageContainer}>
+            <View style={styles.rotateDevice}>
+              <Image
+                source={require('../images/turnphoneicon.png')}
+                style={styles.rotateImg}
+              />
+              <Text style={[styles.rotateFont, fonts.hindGunturBd]}>Please rotate your phone</Text>
+              <Text style={[styles.rotateFont, fonts.hindGunturBd]}>to buy APPL stocks</Text>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    }
+  }
+
   render() {
     var self = this;
     return (
       <View style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
-        <View style={chart.container}>
-          {this.showOrientation()}
-          <Modal 
-            isVisible={this.state.isOrderVisible}
-            animationIn={'slideInUp'}
-            animationOut={'slideOutDown'}
-            style={order.modal}>
-            <PlaceOrder 
-              hideOrder={this.hideOrder}
-              orderType={this.state.orderType} />
-          </Modal>
-          <Modal 
-            isVisible={this.state.isNewsVisible}
-            animationIn={'slideInUp'}
-            animationOut={'slideOutDown'}
-            style={order.modal}>
-            <ChartNews 
-              hideNews={this.hideNews} />
-          </Modal>
-          <Modal 
-            isVisible={this.state.isRotateVisible}
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
-            style={order.modal}>
-            <View style={styles.pageContainer}>
-              <View style={styles.rotateDevice}>
-                <Image 
-                  source={require('../images/turnphoneicon.png')}
-                  style={styles.rotateImg}
-                />
-                <Text style={[styles.rotateFont, fonts.hindGunturBd]}>Please rotate your phone</Text>
-                <Text style={[styles.rotateFont, fonts.hindGunturBd]}>to buy APPL stocks</Text>
-              </View>
-            </View>
-          </Modal>
-        </View>
 
-        <Modal 
+        {this.renderLoadingOrContent()}
+
+        <Modal
           isVisible={this.state.isSearchVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'} >
