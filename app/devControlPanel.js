@@ -21,7 +21,7 @@ const displayPreviewButtonOnHome = false;
 
 // force dark theme all the time
 // const forceDarkTheme = false;
-const forceDarkTheme = false;
+const forceDarkTheme = true;
 
 // force navigation on top level navigator
 // const firstNavDefaultRoute = 'Home';

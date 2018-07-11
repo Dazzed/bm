@@ -10,10 +10,10 @@ import { generateHeaderStyles } from '../../utility';
 export default class AccountSelect extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-    
+
         const { theme } = colorStore;
         let headerStyleToExtend = generateHeaderStyles(theme);
-    
+
         let title = 'Withdraw funds';
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Fund my account'
@@ -181,11 +181,15 @@ export default class AccountSelect extends React.Component {
         if(themeType == 'light') {
             return <Image
                 resizeMode={'contain'}
-                style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -10, top: '60%', zIndex: 0}}
+                style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -25, top: '60%', zIndex: 0}}
                 source={require('../../images/illustration.png')}
             />
         } else {
-            return null;
+          return <Image
+              resizeMode={'contain'}
+              style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -25, top: '60%', zIndex: 0}}
+              source={require('../../images/illustration_dark.png')}
+          />
         }
     }
 
