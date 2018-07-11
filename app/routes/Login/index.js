@@ -59,7 +59,7 @@ class SignIn extends Component {
         email: 'fogg4444@gmail.com',
         password: 'Password11!',
       }, () => {
-        this._signIn()  
+        this._signIn()
       })
     }
   }
@@ -74,13 +74,13 @@ class SignIn extends Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
-    
+
     // handle navigation with mobx
     // if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
     //   const { navigate } = this.props.navigation;
     //   navigate('AppNavTabs', { color: this.state.activeColor })
     // }
-    
+
   }
 
   setColor(value) {
@@ -121,7 +121,7 @@ class SignIn extends Component {
     if (this.props.globalData.isAuthenticating) {
       return;
     }
-    
+
     this.props.loginAction({ email: this.state.email, password: this.state.password });
 
     // doing login in parrallel in mobx
@@ -132,13 +132,13 @@ class SignIn extends Component {
     authStore.login(params)
     .then((res) => {
       console.log('ress', authStore.loginDataJS)
-      
+
       if(authStore.loginDataJS.firstLogin || forceLoginToFundingEveryTime) {
         this.props.navigation.navigate('FundAccountSplash')
       } else {
         this.props.navigation.navigate('AppNavTabs');
       }
-      
+
     })
     .catch((err) => {
       console.log('err', err)
@@ -146,30 +146,29 @@ class SignIn extends Component {
   }
 
   navToForgotPassword() {
-    console.log('NAV TO FORGTO PASSOWRS')
     this.props.navigation.navigate('ForgotPassword');
   }
 
-  renderLoading() {
-    const { loginLoading } = authStore;
-    const { theme } = colorStore;
-    if(loginLoading) {
-      return <View style={{marginVertical: 5, }}>
-        <Text style={[fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>Loading...</Text>
-      </View>
-    } else {
-      return null;
-    }
-  }
-
-  renderLoginError() {
-    const { loginErrorMessage } = authStore;
-    if(loginErrorMessage) {
-      return <View style={[{marginVertical: 5}]}>
-        <Text style={{color: 'red'}}>Error: {loginErrorMessage}</Text>
-      </View>
-    }
-  }
+  // renderLoading() {
+  //   const { loginLoading } = authStore;
+  //   const { theme } = colorStore;
+  //   if(loginLoading) {
+  //     return <View style={{marginVertical: 5, }}>
+  //       <Text style={[fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>Loading...</Text>
+  //     </View>
+  //   } else {
+  //     return null;
+  //   }
+  // }
+  //
+  // renderLoginError() {
+  //   const { loginErrorMessage } = authStore;
+  //   if(loginErrorMessage) {
+  //     return <View style={[{marginVertical: 5}]}>
+  //       <Text style={{color: 'red'}}>Error: {loginErrorMessage}</Text>
+  //     </View>
+  //   }
+  // }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -213,8 +212,9 @@ class SignIn extends Component {
               secureTextEntry={true}
             />
           </View>
-          <View style={{ marginTop: 10, display: this.props.globalData.loginErrorPresent ? 'flex' : 'none' }}>
-            <Text style={{ color: 'red' }}>Error invalid email/password</Text>
+          <View style={{ marginTop: 10, flexDirection: 'row', display: this.props.globalData.loginErrorPresent ? 'flex' : 'none' }}>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>Error: </Text>
+            <Text style={{ color: 'red' }}>invalid email/password</Text>
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
@@ -228,8 +228,7 @@ class SignIn extends Component {
               Forgot password?
             </Text>
           </TouchableOpacity>
-          {this.renderLoginError()}
-          {this.renderLoading()}
+
           <TouchableOpacity
             style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
             // onPress={() => navigate('AppNav', { color: this.state.activeColor })}
@@ -244,6 +243,10 @@ class SignIn extends Component {
     );
   }
 }
+
+// {this.renderLoading()}
+// {this.renderLoginError()}
+
 
 SignIn.propTypes = {
   globalData: PropTypes.object.isRequired,
