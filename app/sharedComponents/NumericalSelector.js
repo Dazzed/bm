@@ -14,10 +14,6 @@ export default class NumericalSelector extends React.Component {
         }
     }
 
-    componentWillMount() {
-        // console.log('numerical mounts', this)
-    }
-
     addNumber(newNumber) {
         this.props.onChange(newNumber)
     }
@@ -37,7 +33,7 @@ export default class NumericalSelector extends React.Component {
 
 
     render() {
-      
+
         const { theme } = colorStore;
 
         let keypadHeight = 250;
@@ -87,7 +83,7 @@ export default class NumericalSelector extends React.Component {
             ];
             return numberStyle;
         }
-        
+
         return <View style={containerStyle}>
             <View style={keypadStyle}>
                 <View style={rowStyle}>

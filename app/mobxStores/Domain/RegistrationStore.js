@@ -55,7 +55,7 @@ export default class RegistrationStore {
             password: '',
         }
         this.initRegistation();
-
+        
         if(fillRegistrationWithFakeData) {
             this.initWithTestData();
         }
