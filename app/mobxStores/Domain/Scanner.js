@@ -1,29 +1,55 @@
 import { observable, action, computed, toJS } from 'mobx';
-// import { getScannerData as getScannerDataApi } from '../../api';
+import { getScannerList } from '../../api';
 
 export default class Scanner {
 
   @observable scannerData = null;
+  @observable scannerDataLoading = false;
+
+  @action setScannerDataLoading = (loadingBool) => {
+    this.scannerDataLoading = loadingBool;
+  }
 
   @action setScannerData = (data) => {
     this.scannerData = data;
   }
 
   @computed get scannerDataJS() {
-    return toJS(this.scannerData)
+    if(!this.scannerData) {
+      return [];
+    } else {
+      return toJS(this.scannerData)
+    }
   }
 
-  @action getScannerData = () => {
-    let params = {
+  @action getScannerData = (params) => {
+    console.log('===== GETTING SCANNER DATA ========')
 
+    // reset
+    this.setScannerData(null)
+
+    let stringifyParams = JSON.stringify(params)
+    let newparams = {
+      filter: stringifyParams
     }
-    // getScannerDataApi(params)
-    // .then((res) => {
-    //   console.log('account data', res)
-    // })
-    // .catch((err) => {
-    //   console.log('account data err', err)
-    // })
+
+    this.setScannerDataLoading(true);
+
+    getScannerList(newparams)
+    .then((res) => {
+
+      console.log('account data', res)
+      if(res.ok) {
+        this.setScannerData(res.json.data.data);
+      } else {
+        console.log('======= ERROR')
+      }
+      this.setScannerDataLoading(false);
+    })
+    .catch((err) => {
+      console.log('account data err', err);
+      this.setScannerDataLoading(false);
+    })
   }
 
 }

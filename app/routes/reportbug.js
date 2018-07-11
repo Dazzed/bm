@@ -84,7 +84,7 @@ class ReportBug extends React.Component {
       subject: this.state.subject,
       issueType: this.state.issue_type,
       message: this.state.message
-    } 
+    }
     const res = await axios.post(`${API_URL}/api/contacts?access_token=${this.props.globalData.currentUser.access_token}`, contact);
     this.props.hideBug();
   }
@@ -112,6 +112,8 @@ class ReportBug extends React.Component {
             <TextInput
               style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles.report_bug_field]}
               multiline={true}
+              placeholder="Message"
+              placeholderTextColor={this.state.colors['lightGray']}
               onFocus={() => this.ScrollView_Reference.scrollToEnd()}
               onChange={(event) => this.onTextChange(event, 'message')}
             />

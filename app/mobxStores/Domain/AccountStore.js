@@ -16,13 +16,13 @@ export default class AccountStore {
     @action getAccountList = () => {
         this.accountList = [
             {
-                title: 'MOCK BANK TITLE 1',
-                subtitle: 'Checking 1',
+                title: 'MOCK BANK',
+                subtitle: 'Checking - 1234',
                 amount: '4283'
             },
             {
-                title: 'MOCK BANK TITLE 2',
-                subtitle: 'Savings 2',
+                title: 'MOCK BANK',
+                subtitle: 'Savings - 1234',
                 amount: '52495'
             },
         ]

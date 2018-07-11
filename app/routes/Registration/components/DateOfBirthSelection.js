@@ -92,7 +92,7 @@ export default class DateOfBirthSelection extends Component {
         return this.isFormValid() === true ? styles_2.formValid : styles_2.formInvalid
     }
 
-    getDisabledList() {
+    getPrelimDisabledList() {
         const { registrationDataJS } = registrationStore;
         let disabledList = [];
         if(registrationDataJS.dateField.length < 1) {
@@ -128,6 +128,12 @@ export default class DateOfBirthSelection extends Component {
         }
     }
 
+    getDisabledList() {
+      let prelimDisabledList = this.getPrelimDisabledList();
+      prelimDisabledList.push('.');
+      return prelimDisabledList;
+    }
+
     toggleWhyWeAsk = () => {
         this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
@@ -156,7 +162,7 @@ export default class DateOfBirthSelection extends Component {
                         </View>
                     </View>
                 </ScrollView>
-  
+
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.getFormValidClass()]}>
                         <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>

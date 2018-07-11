@@ -5,6 +5,9 @@ import fonts from '../style/fonts';
 import { setTheme, getTheme, colors } from '../store/store';
 import { colorStore } from '../mobxStores';
 
+const DeleteLight = require('../images/delete.png');
+const DeleteDark = require('../images/delete_dark.png');
+
 export default class NumericalSelector extends React.Component {
 
     constructor(props) {
@@ -12,10 +15,6 @@ export default class NumericalSelector extends React.Component {
         this.state = {
             colors: colors()
         }
-    }
-
-    componentWillMount() {
-        // console.log('numerical mounts', this)
     }
 
     addNumber(newNumber) {
@@ -37,8 +36,12 @@ export default class NumericalSelector extends React.Component {
 
 
     render() {
-      
-        const { theme } = colorStore;
+        const { theme, themeType } = colorStore;
+
+        let deleteSource = DeleteLight;
+        if(themeType === 'dark') {
+          deleteSource = DeleteDark;
+        }
 
         let keypadHeight = 250;
 
@@ -61,8 +64,8 @@ export default class NumericalSelector extends React.Component {
 
         let numberStyle = [
             {
-                color: theme.darkSlate,
-                fontSize: 20
+              color: theme.darkSlate,
+              fontSize: 20
             },
             fonts.hindGunturRg
         ]
@@ -87,7 +90,7 @@ export default class NumericalSelector extends React.Component {
             ];
             return numberStyle;
         }
-        
+
         return <View style={containerStyle}>
             <View style={keypadStyle}>
                 <View style={rowStyle}>
@@ -138,7 +141,7 @@ export default class NumericalSelector extends React.Component {
                         <Image
                             style={{height: '50%'}}
                             resizeMode="contain"
-                            source={require('../images/delete.png')}
+                            source={deleteSource}
                         />
                     </TouchableOpacity>
                 </View>

@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-const productionMode = false;
-// const productionMode = true;
+// const productionMode = false;
+const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ const displayPreviewButtonOnHome = false;
 
 // force dark theme all the time
 // const forceDarkTheme = false;
-const forceDarkTheme = false;
+const forceDarkTheme = true;
 
 // force navigation on top level navigator
 // const firstNavDefaultRoute = 'Home';
@@ -36,7 +36,7 @@ const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Trending';
+const appNavDefaultTabRoute = 'Scanner';
 
 // Account
 // Watchlists

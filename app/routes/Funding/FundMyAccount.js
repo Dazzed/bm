@@ -13,7 +13,8 @@ import { numberWithCommas } from '../../utility';
 import { colorStore, accountStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 import { generateHeaderStyles } from '../../utility';
-
+const SearchCancelLight = require('../../images/searchcancel.png');
+const SearchCancelDark = require('../../images/searchcancel_dark.png');
 
 @observer
 export default class FundMyAccount extends React.Component {
@@ -49,7 +50,7 @@ export default class FundMyAccount extends React.Component {
         list.push('.')
         let afterDecimalLength = this.state.fundingString.split('.')[1].length
         if(afterDecimalLength >= 2) {
-             list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']  
+             list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']
         }
       }
       return list;
@@ -109,12 +110,12 @@ export default class FundMyAccount extends React.Component {
     renderAmountInAccount() {
         const { theme } = colorStore;
         const { selectedAccount } = accountStore;
+        let textStyle = {
+            fontSize: 25,
+            textAlign: 'center',
+            color: theme.darkSlate
+        }
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-            let textStyle = {
-                fontSize: 30,
-                textAlign: 'center',
-                color: theme.darkSlate
-            }
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
                 <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
@@ -122,24 +123,40 @@ export default class FundMyAccount extends React.Component {
                 <View style={{marginVertical: 10}}></View>
             </View>
         } else {
-            return null;
+            return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
+                <View style={{marginVertical: 10}}></View>
+                <Text style={textStyle}>{selectedAccount.title}</Text>
+                <Text style={textStyle}>{selectedAccount.subtitle}</Text>
+                <View style={{marginVertical: 10}}></View>
+            </View>;
         }
 
     }
 
     renderErrorOrNull() {
       const { theme } = colorStore;
-      let text = '';
+      let text = null;;
       if(this.state.errorRemainingFunds) {
-        text = 'Error: Withdraw limit exceeds funds available'
+        text = 'Withdraw amount exceeds funds available'
       }
-      return <View style={{height: 25, alignItems: 'center', backgroundColor: theme.white}}>
-        <Text style={{color: 'red'}}>{text}</Text>
-      </View>
+      let height = 25;
+      if(text) {
+        return <View style={{width: '100%', alignSelf: 'center', justifyContent: 'center', height: height, flexDirection: 'row', alignItems: 'center', backgroundColor: theme.white}}>
+            <View style={{flex: 0, height: '100%', alignSelf: 'center', flexDirection: 'row'}}>
+              <Text style={{color: 'red', fontWeight: 'bold'}}>{'Error: '}</Text>
+              <Text style={{color: 'red'}}>{text}</Text>
+            </View>
+        </View>
+      } else {
+        return <View style={{height: height, alignItems: 'center', backgroundColor: theme.white}}>
+          <Text style={{color: 'red'}}>{''}</Text>
+        </View>
+      }
+
     }
 
     renderInputAmount() {
-        const { theme } = colorStore;
+        const { theme, themeType } = colorStore;
 
         let amountHeight = 60;
 
@@ -161,6 +178,11 @@ export default class FundMyAccount extends React.Component {
             textAmountStyle.color = 'red';
         }
 
+        let searchCancelSource = SearchCancelLight;
+        if(themeType === 'dark') {
+          searchCancelSource = SearchCancelDark;
+        }
+
         return <View style={{width: '100%', alignSelf: 'center', backgroundColor: theme.white}}>
             <View style={{width: '80%', alignSelf: 'center'}}>
                 <View style={{
@@ -178,7 +200,7 @@ export default class FundMyAccount extends React.Component {
                         <Image
                             style={{height: 30}}
                             resizeMode="contain"
-                            source={require('../../images/searchcancel.png')}
+                            source={searchCancelSource}
                         />
                     </TouchableOpacity>
                 </View>
