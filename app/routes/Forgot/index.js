@@ -21,9 +21,6 @@ export default class ForgotPassword extends React.Component {
             email: ''
         }
     }
-    componentDidMount() {
-
-    }
 
     updateEmail(text) {
         this.setState({
@@ -32,24 +29,40 @@ export default class ForgotPassword extends React.Component {
     }
 
     submitForgotRequest() {
-        let params = {
-            email: ''
-        }
-        authStore.submitForgot(params)
-            .then((res) => {
-                console.log('forgot res', res)
-            })
-            .catch((err) => {
-                console.log('err', err);
-            })
+      let params = {
+          email: this.state.email
+      }
+      authStore.submitForgot(params)
+        .then((res) => {
+            console.log('forgot res', res)
+        })
+        .catch((err) => {
+            console.log('err', err);
+        })
+    }
+
+    renderForgotError() {
+      const { resetErrorMessage, resetSuccess } = authStore;
+      const { theme } = colorStore;
+      let height = 25;
+      let color = theme.red;
+      if( resetSuccess ) {
+        color = theme.graySlate;
+      }
+      if(resetErrorMessage) {
+        return <View style={{height: height}}>
+          <Text style={{ color: color}}>{resetErrorMessage}</Text>
+        </View>
+      } else {
+          return <View style={{height: height}}></View>
+      }
     }
 
     render() {
-
         const { theme } = colorStore;
+        const { resetLoading } = authStore;
 
         return <View style={{flex: 1}}>
-
             <View style={styles.menuBorder}>
                 <View style={styles.menuContainer}>
                     <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
@@ -74,9 +87,13 @@ export default class ForgotPassword extends React.Component {
                     onChangeText={(e) => this.updateEmail(e)}
                     style={{marginVertical: 20, fontSize: 25}}
                 />
-                <Button disabled={this.state.email.length === 0} onPress={() => this.submitForgotRequest()} title="RESET PASSWORD" />
+                {this.renderForgotError()}
+                <Button
+                  disabled={this.state.email.length === 0 || resetLoading === true}
+                  onPress={() => this.submitForgotRequest()}
+                  title={resetLoading ? "LOADING..." : "RESET PASSWORD"}
+                />
             </View>
-
         </View>
     }
 }
