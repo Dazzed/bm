@@ -11,6 +11,10 @@ export default class Watchlist {
     { label: '% Change', value: 3 }
   ];
 
+  constructor() {
+    this.getWatchlistData();
+  }
+
   @observable isFetchingWatchlistData = true;
   @observable deletingRecordId = null;
   @observable watchlistData = [];
@@ -98,4 +102,30 @@ export default class Watchlist {
         return toJS(this.watchlistData);
     }
   }
+
+  @action addTickerToWatchList = async ticker => {
+    try {
+      this.isFetchingWatchlistData = true;
+      this.watchlistData = this.watchlistDataJS.concat({ ticker });
+      await post('userWatchLists', { ticker });
+      await this.getWatchlistData();
+    } catch (e) {
+      console.info('Error in addTickerToWatchList', e);
+    }
+  }
+
+  @action removeTickerFromWatchList = async ticker => {
+    console.info('removeTickerFromWatchList', ticker);
+    try {
+      this.isFetchingWatchlistData = true;
+      const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
+      this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
+      await deleteRequest(`userWatchLists/${deletingItem.id}`);
+      await this.getWatchlistData();
+    } catch (e) {
+      console.info('Error in removeTickerToWatchList', e);
+    }
+  }
+
+
 }
