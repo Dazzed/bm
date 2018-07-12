@@ -1,6 +1,6 @@
 import { observable, action, computed, toJS } from 'mobx';
 // import { getTrendingData as getTrendingDataApi } from '../../api';
-
+import { watchListStore } from '../index';
 
 let list = [
   {
@@ -14,7 +14,6 @@ let list = [
     change: '+1.85',
     changePerc: '+10.41%',
     stockChange: true,
-    watching: true,
   },
   {
     sym: 'AMID',
@@ -27,7 +26,6 @@ let list = [
     change: '-3.12',
     changePerc: '-2.15%',
     stockChange: true,
-    watching: true,
   },
   {
     sym: 'AAPL',
@@ -40,7 +38,6 @@ let list = [
     change: '+2.01',
     changePerc: '+2.43%',
     stockChange: true,
-    watching: true,
   },
   {
     sym: 'TSLA',
@@ -53,7 +50,6 @@ let list = [
     change: '+3.10',
     changePerc: '+1.05%',
     stockChange: true,
-    watching: true,
   },
   {
     sym: 'SPH',
@@ -66,7 +62,6 @@ let list = [
     change: '-4.43',
     changePerc: '-5.64%',
     stockChange: true,
-    watching: true,
   },
   {
     sym: 'NGG',
@@ -79,25 +74,8 @@ let list = [
     change: '+0.15',
     changePerc: '+4.04%',
     stockChange: true,
-    watching: true,
   },
-
-]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+];
 
 export default class Trending {
 
@@ -139,7 +117,21 @@ export default class Trending {
   }
 
   @computed get trendingDataJS() {
+    const watchListItems = watchListStore.watchlistDataJS;
     return toJS(this.trendingData)
+      .map(data => ({
+        ...data,
+        watching: watchListItems.some(({ ticker }) => ticker === data.sym)
+      }))
+  }
+
+  @action addSymToWatchList = sym => {
+    watchListStore.addTickerToWatchList(sym);
+  }
+
+  @action removeSymFromWatchList = sym => {
+    console.info('removeSymFromWatchList', sym);
+    watchListStore.removeTickerFromWatchList(sym);
   }
 
   @action setDecimalOrPercentage = (newVal) => {

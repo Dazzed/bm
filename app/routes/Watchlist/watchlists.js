@@ -75,7 +75,7 @@ class Watchlists extends React.Component {
   }
 
   componentDidMount() {
-    watchListStore.getWatchlistData();
+    // watchListStore.getWatchlistData();
   }
 
   componentDidUpdate(prevProps) {
@@ -258,7 +258,7 @@ class Watchlists extends React.Component {
     const { isFetchingWatchlistData, watchlistDataJS, watchlistOrderJS, sortByIndex } = watchListStore;
     let dataSource = watchlistDataJS;
     let order = watchlistOrderJS;
-    console.log('render', watchListStore)
+
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>

@@ -223,7 +223,7 @@ class SubMenu extends React.Component {
 
   hideTrendingOptionModal(value) {
     const { setTrendingOption } = trendingStore;
-    if(value !== undefined) {
+    if (value !== undefined) {
       setTrendingOption(value);
     }
 
@@ -282,7 +282,7 @@ class SubMenu extends React.Component {
 
   hideSector(value) {
     const { setSectorOption } = trendingStore;
-    if(value === undefined) {
+    if (value === undefined) {
       this.setState({ isSectorVisible: false });
       return;
     }
@@ -301,7 +301,7 @@ class SubMenu extends React.Component {
 
   hideIndustry(value) {
     const { setIndustryOption } = trendingStore;
-    if(value === undefined) {
+    if (value === undefined) {
       this.setState({ isIndustryVisible: false })
       return;
     }
@@ -432,7 +432,7 @@ class SubMenu extends React.Component {
                 source={require('../../images/arrowblue.png')}
                 style={[trending.downArrow]}
               />
-              <Text style={[{ color: this.state.colors['darkSlate'] },trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
             </View>
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
               <ScrollView style={trending.sectorRadio}>
@@ -508,21 +508,21 @@ class Trending extends React.Component {
     // })
     const { getTrendingData } = trendingStore;
     getTrendingData()
-    
-    let fakeData = {
-      change:"+1.85",
-      changePerc:"+10.41%",
-      exch:"NYSE",
-      name:"Ethereum",
-      posNeg:"green",
-      price:"30.75",
-      stockChange:true,
-      sym:"ETH",
-      time:"12:30 PM PT",
-      vol:"24.9M",
-      watching:true
-    }
-    this.props.navigation.navigate('Chart', {data: fakeData})
+
+    // let fakeData = {
+    //   change:"+1.85",
+    //   changePerc:"+10.41%",
+    //   exch:"NYSE",
+    //   name:"Ethereum",
+    //   posNeg:"green",
+    //   price:"30.75",
+    //   stockChange:true,
+    //   sym:"ETH",
+    //   time:"12:30 PM PT",
+    //   vol:"24.9M",
+    //   watching:true
+    // }
+    // this.props.navigation.navigate('Chart', {data: fakeData})
   }
 
   componentDidUpdate(prevProps) {
@@ -545,31 +545,24 @@ class Trending extends React.Component {
     this.setState({ isSearchVisible: false });
   }
 
-  addWatchItem() {
-    console.log('WATCH ITEM ADD')
-  }
-  removeWatchItem() {
-    console.log('WATCH ITEM REMOVE')
-  }
-
   addOrRemoveSymbolFromWatchlist(sym, currentWatchStatus) {
     let message = ''
     let successFunction = null;
-    if(currentWatchStatus) {
-      message = 'Remote ' + sym + ' from your watchlist.'
-      successFunction = () => this.addWatchItem(sym);
+    if (currentWatchStatus) {
+      message = 'Remove ' + sym + ' from your watchlist.'
+      successFunction = () => trendingStore.removeSymFromWatchList(sym);
     } else {
       message = 'Add ' + sym + ' to your watchlist.'
-      successFunction = () => this.removeWatchItem(sym);
+      successFunction = () => trendingStore.addSymToWatchList(sym);
     }
     Alert.alert(
-        '',
-        message,
-        [
-          { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-          { text: 'OK', onPress: () => { successFunction() } },
-        ],
-        { cancelable: true }
+      '',
+      message,
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'OK', onPress: successFunction },
+      ],
+      { cancelable: true }
     )
   }
 
@@ -581,47 +574,47 @@ class Trending extends React.Component {
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
-  
+
   renderTrendingList() {
     const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
-
-    if(trendingLoading) {
+    console.info({ trendingDataJS });
+    if (trendingLoading) {
       return <View>
         <Text>Loading...</Text>
       </View>
-    } else if(trendingDataJS.length === 0) {
+    } else if (trendingDataJS.length === 0) {
       return <View>
         <Text>No Results</Text>
       </View>
     } else {
-      return <View style={{flex: 1}}>
-        <ScrollView style={[trending.symbolsContainer, {flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%'}]}>
+      return <View style={{ flex: 1 }}>
+        <ScrollView style={[trending.symbolsContainer, { flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%' }]}>
 
           <Text>Mapping this data to stores</Text>
 
           {trendingDataJS.map((data, i) => {
             let watchListIconSrc = require('../../images/add.png');
-            if(data.watching) {
+            if (data.watching) {
               watchListIconSrc = require('../../images/watchlist_added.png');
             }
             return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
-                <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
-                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-                  <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
+              <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
+              </TouchableOpacity>
+              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
+              <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
+                {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
+              </TouchableOpacity>
+              <View style={trending.addBtn}>
+                <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data['sym'], data.watching)} >
+                  <Image
+                    source={watchListIconSrc} style={styles.addImg} />
                 </TouchableOpacity>
-                <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
-                <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
-                  <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
-                  {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
-                </TouchableOpacity>
-                <View style={trending.addBtn}>
-                  <TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addOrRemoveSymbolFromWatchlist(data['sym'], data.watching) }} >
-                    <Image
-                        source={watchListIconSrc} style={styles.addImg} />
-                  </TouchableOpacity>
-                </View>
-              </View>)
-            })}
+              </View>
+            </View>)
+          })}
         </ScrollView>
       </View>
     }
