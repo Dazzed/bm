@@ -122,7 +122,7 @@ export default class Watchlist {
 
   @action removeTickerFromWatchList = async ticker => {
     // console.info('removeTickerFromWatchList', ticker);
-    
+
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);

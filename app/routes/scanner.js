@@ -24,7 +24,8 @@ import {
   TouchableWithoutFeedback,
   TabbedArea,
   TabPane,
-  SegmentedControlIOS
+  SegmentedControlIOS,
+  ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -49,59 +50,6 @@ var scan_props = [
   { label: 'Over 750k volume', value: 2, queryString: 'volume' },
   { label: 'Over 10% short float', value: 3, queryString: 'short_interest' }
 ];
-// 
-// var sector_props = [
-//   {
-//     label: 'All',
-//     value: 0,
-//     queryString: 'null'
-//   },
-//   {
-//     label: 'Healthcare',
-//     value: 1,
-//     queryString: 'Healthcare',
-//   },
-//   {
-//     label: 'Services',
-//     value: 2,
-//     queryString: 'Services',
-//   },
-//   {
-//     label: 'Basic Materials',
-//     value: 3,
-//     queryString: 'Basic Materials',
-//   },
-//   {
-//     label: 'Industrial Goods',
-//     value: 4,
-//     queryString: 'Industrial Goods',
-//   },
-//   {
-//     label: 'Financial',
-//     value: 5,
-//     queryString: 'Financial',
-//   },
-//   {
-//     label: 'Technology',
-//     value: 6,
-//     queryString: 'Technology',
-//   },
-//   {
-//     label: 'Conglomerates',
-//     value: 7,
-//     queryString: 'Conglomerates',
-//   },
-//   {
-//     label: 'Consumer Goods',
-//     value: 8,
-//     queryString: 'Consumer Goods',
-//   },
-//   {
-//     label: 'Utilities',
-//     value: 9,
-//     queryString: 'Utilities',
-//   }
-// ]
 
 var scan_options = [
   "Greater Than",
@@ -533,15 +481,15 @@ class Scanner extends React.Component {
   renderListOrLoading() {
     const { scannerDataLoading, scannerDataJS } = scannerStore;
     if(scannerDataLoading) {
-      return <View>
-        <Text>Loading...</Text>
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator />
       </View>
     } else if( scannerDataJS.length === 0) {
       return <View>
         <Text>No results found</Text>
       </View>
     } else {
-      return <View>
+      return <ScrollView style={scanner.symbolsContainer}>
         {scannerDataJS.map((data, i) => {
           // console.log('-- each', data)
           return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
@@ -553,7 +501,7 @@ class Scanner extends React.Component {
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$22.98</Text></View>
           </View>
         })}
-      </View>
+      </ScrollView>
     }
   }
 
@@ -582,9 +530,7 @@ class Scanner extends React.Component {
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['lightGray'] }, scanner.symbolsTitle, fonts.hindGunturRg]}>CURRENT</Text></View>
           </View>
 
-          <ScrollView style={scanner.symbolsContainer}>
-            {this.renderListOrLoading()}
-          </ScrollView>
+          {this.renderListOrLoading()}
 
         </View>
         <Modal
