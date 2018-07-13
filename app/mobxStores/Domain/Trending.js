@@ -1,6 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { getTrendingData as getTrendingDataApi } from '../../api';
 import { watchListStore, colorStore } from '../index';
+import { millionBillionFormatter } from '../../utility';
 
 import {
   scan_props,
@@ -74,17 +75,26 @@ export default class Trending {
     const { theme } = colorStore;
     const { watchlistDataJS } = watchListStore;
     const watchListItems = watchlistDataJS;
-    return toJS(this.trendingData)
+    if(!this.trendingData) {
+      return []
+    } else {
+      return toJS(this.trendingData)
       .map(data => {
         let parseData = {
           ...data,
+          latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
           posNegColor: data.change > 0 ? theme.green : theme.red
         }
+
+        console.log('data', parseData)
+
         if(watchListItems.length > 0) {
           parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
         }
         return parseData;
       });
+    }
+
   }
 
   @action addSymToWatchList = ticker => {
@@ -101,13 +111,25 @@ export default class Trending {
 
   @action getTrendingData = () => {
     this.setLoading(true);
-    let params = {
-      filter: JSON.stringify({
-        "trending": scan_props[this.trendingOption].queryString,
-        // "sector": "Financial",
-        "industry": "Banking"
-      })
+
+    let filterOptions = {
+      "trending": scan_props[this.trendingOption].queryString,
     }
+    if(this.sectorOption > 0) {
+
+      filterOptions.sector = sector_props[this.sectorOption].queryString;
+    }
+
+    if(this.sectorOption > 0 && this.industryOption > 0) {
+      // filterOptions.industry = industry_utilities
+    }
+
+    console.log('=============== sector wtf', this.sectorOption, sector_props)
+
+    let params = {
+      filter: JSON.stringify(filterOptions)
+    }
+
     getTrendingDataApi(params)
     .then((res) => {
       console.log('trending data', res)

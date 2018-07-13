@@ -503,20 +503,9 @@ class Trending extends React.Component {
 
   constructor(props) {
     super(props);
-    // var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      // ds: [
-      //   { sym: 'ETH', exch: 'NYSE', name: 'Ethereum', img: require('../../images/momentumfpowatchlist.png'), vol: '24.9M', price: '30.75', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+1.85', changePerc: '+10.41%', stockChange: true },
-      //   { sym: 'AMID', exch: 'NYSE', name: 'American Midstream', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '65.2M', price: '12.45', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-3.12', changePerc: '-2.15%', stockChange: true },
-      //   { sym: 'AAPL', exch: 'NASDAQ', name: 'Apple, Inc.', img: require('../../images/momentumfpowatchlist_01.png'), vol: '16.3M', price: '146.19', time: '12:30 PM PT', icon: require('../../images/watchlist_added.png'), posNeg: 'green', change: '+2.01', changePerc: '+2.43%', stockChange: true },
-      //   { sym: 'TSLA', exch: 'NASDAQ', name: 'Tesla Motors, Inc.', img: require('../../images/momentumfpowatchlist_down02.png'), vol: '5.3M', price: '378.47', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+3.10', changePerc: '+1.05%', stockChange: true },
-      //   { sym: 'SPH', exch: 'NYSE', name: 'Suburban Propan', img: require('../../images/momentumfpowatchlist_down01.png'), vol: '37.9M', price: '24.31', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'red', change: '-4.43', changePerc: '-5.64%', stockChange: true },
-      //   { sym: 'NGG', exch: 'NYSE', name: 'National Grid PLC', img: require('../../images/momentumfpowatchlist_01.png'), vol: '12.4M', price: '64.85', time: '12:30 PM PT', icon: require('../../images/add.png'), posNeg: 'green', change: '+0.15', changePerc: '+4.04%', stockChange: true },
-      // ],
-      // dataSource: ds,
       isSearchVisible: false,
       offsetX: new Animated.Value(Dimensions.get('window').width),
-      watchlistItems: ['ETH', 'AAPL'],
       colors: colors(props.globalData.isDarkThemeActive)
     };
     this.showSearch = this.showSearch.bind(this);
@@ -606,7 +595,7 @@ class Trending extends React.Component {
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
                 <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName']}</Text>
               </TouchableOpacity>
-              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolume}</Text></View>
+              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
               <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPrice']}</Text>
                 {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePercent']}</Text>}

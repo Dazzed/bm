@@ -85,20 +85,58 @@ const scan_props = [
   { label: '% Losers', value: 2, queryString: 'losers'},
 ];
 
-const sector_props = [
-  { label: 'All', value: 0 },
-  { label: 'Consumer Discretionary', value: 1 },
-  { label: 'Consumer Staples', value: 2 },
-  { label: 'Energy', value: 3 },
-  { label: 'Financials', value: 4 },
-  { label: 'Health Care', value: 5 },
-  { label: 'Industrials', value: 6 },
-  { label: 'Information Technology', value: 7 },
-  { label: 'Materials', value: 8 },
-  { label: 'Real Estate', value: 9 },
-  { label: 'Telecommunication Services', value: 10 },
-  { label: 'Utilities', value: 11 }
-];
+var sector_props = [
+  {
+    label: 'All',
+    value: 0,
+    queryString: 'null'
+  },
+  {
+    label: 'Healthcare',
+    value: 1,
+    queryString: 'Healthcare',
+  },
+  {
+    label: 'Services',
+    value: 2,
+    queryString: 'Services',
+  },
+  {
+    label: 'Basic Materials',
+    value: 3,
+    queryString: 'Basic Materials',
+  },
+  {
+    label: 'Industrial Goods',
+    value: 4,
+    queryString: 'Industrial Goods',
+  },
+  {
+    label: 'Financial',
+    value: 5,
+    queryString: 'Financial',
+  },
+  {
+    label: 'Technology',
+    value: 6,
+    queryString: 'Technology',
+  },
+  {
+    label: 'Conglomerates',
+    value: 7,
+    queryString: 'Conglomerates',
+  },
+  {
+    label: 'Consumer Goods',
+    value: 8,
+    queryString: 'Consumer Goods',
+  },
+  {
+    label: 'Utilities',
+    value: 9,
+    queryString: 'Utilities',
+  }
+]
 
 const industry_utilities = [
   { label: 'All', value: 0 },

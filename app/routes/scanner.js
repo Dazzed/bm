@@ -41,65 +41,67 @@ import navstyle from '../style/nav';
 import { scannerStore } from '../mobxStores';
 import { observer } from 'mobx-react';
 
+import { sector_props } from '../constants';
+
 var scan_props = [
   { label: 'All', value: 0, queryString: 'all' },
   { label: 'Change from open', value: 1, queryString: 'open' },
   { label: 'Over 750k volume', value: 2, queryString: 'volume' },
   { label: 'Over 10% short float', value: 3, queryString: 'short_interest' }
 ];
-
-var sector_props = [
-  {
-    label: 'All',
-    value: 0,
-    queryString: 'null'
-  },
-  {
-    label: 'Healthcare',
-    value: 1,
-    queryString: 'Healthcare',
-  },
-  {
-    label: 'Services',
-    value: 2,
-    queryString: 'Services',
-  },
-  {
-    label: 'Basic Materials',
-    value: 3,
-    queryString: 'Basic Materials',
-  },
-  {
-    label: 'Industrial Goods',
-    value: 4,
-    queryString: 'Industrial Goods',
-  },
-  {
-    label: 'Financial',
-    value: 5,
-    queryString: 'Financial',
-  },
-  {
-    label: 'Technology',
-    value: 6,
-    queryString: 'Technology',
-  },
-  {
-    label: 'Conglomerates',
-    value: 7,
-    queryString: 'Conglomerates',
-  },
-  {
-    label: 'Consumer Goods',
-    value: 8,
-    queryString: 'Consumer Goods',
-  },
-  {
-    label: 'Utilities',
-    value: 9,
-    queryString: 'Utilities',
-  }
-]
+// 
+// var sector_props = [
+//   {
+//     label: 'All',
+//     value: 0,
+//     queryString: 'null'
+//   },
+//   {
+//     label: 'Healthcare',
+//     value: 1,
+//     queryString: 'Healthcare',
+//   },
+//   {
+//     label: 'Services',
+//     value: 2,
+//     queryString: 'Services',
+//   },
+//   {
+//     label: 'Basic Materials',
+//     value: 3,
+//     queryString: 'Basic Materials',
+//   },
+//   {
+//     label: 'Industrial Goods',
+//     value: 4,
+//     queryString: 'Industrial Goods',
+//   },
+//   {
+//     label: 'Financial',
+//     value: 5,
+//     queryString: 'Financial',
+//   },
+//   {
+//     label: 'Technology',
+//     value: 6,
+//     queryString: 'Technology',
+//   },
+//   {
+//     label: 'Conglomerates',
+//     value: 7,
+//     queryString: 'Conglomerates',
+//   },
+//   {
+//     label: 'Consumer Goods',
+//     value: 8,
+//     queryString: 'Consumer Goods',
+//   },
+//   {
+//     label: 'Utilities',
+//     value: 9,
+//     queryString: 'Utilities',
+//   }
+// ]
 
 var scan_options = [
   "Greater Than",
@@ -259,9 +261,9 @@ class SubMenu extends React.Component {
       operator: formattedOperator,
     }
 
-    // if(this.state.sectorOption > 0) {
+    if(this.state.sectorOption > 0) {
       params.sector = sector_props[this.state.sectorOption].queryString
-    // }
+    }
 
     scannerStore.getScannerData(params)
   }
