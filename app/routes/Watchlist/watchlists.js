@@ -16,18 +16,16 @@ import {
   Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
+import Modal from 'react-native-modal'
+import moment from 'moment';
 
 import DialIndicator from '../../sharedComponents/DialIndicator';
 
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../components/react-native-simple-radio-button';
-import Modal from 'react-native-modal'
 import SortableListView from 'react-native-sortable-listview'
 import { setTheme, getTheme, colors } from '../../store/store';
 import { selectGlobalData } from '../../selectors';
-
-import {
-  TabNavigator,
-} from 'react-navigation';
 
 import Swipeout from '../../components/react-native-swipeout';
 import Search from './../search';
@@ -40,7 +38,7 @@ import watchstyle from '../../style/watchlist';
 // import colors from '../../style/colors';
 
 import { watchListStore } from '../../mobxStores';
-import { observer } from 'mobx-react';
+import { kFormatter, zacksRatingFormatter } from '../../utility';
 
 @observer
 class Watchlists extends React.Component {
@@ -179,24 +177,28 @@ class Watchlists extends React.Component {
                 {row['ticker']}
               </Text>
               <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.coName, fonts.hindGunturRg]}>
-                {row['companyName'].length > 23 ? `${row['companyName'].slice(0, 23)}...` : row['companyName']}
+                {row['companyName'].length > 23 ? `${row['companyName'].slice(0, 20)}...` : row['companyName']}
               </Text>
             </View>
             <View style={watchstyle.symMomentum}>
-              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={row['latestVolume']} position={.4} />
+              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={kFormatter(row['latestVolume'])} position={zacksRatingFormatter(row['zacksRating'])} />
             </View>
             <TouchableOpacity
               style={watchstyle.symCost}
               onPress={this.toggleWatchListPercent.bind(this, row.id)}
             >
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${row['latestPrice']}</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symTime, fonts.hindGunturRg]}>{row['time'] || 'N/A'}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symTime, fonts.hindGunturRg]}>{moment.unix(row['latestUpdate']).format('hh:MM A PT')}</Text>
               {this.state.showWatchListPercent.includes(row.id) ?
-                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>
-                  {row['changePercent']}
+                <Text
+                  style={[{ backgroundColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
+                >
+                  {Number(row['changePercent']) < 0 ? '' : '+'}{`${(row['changePercent'] * 100).toFixed(2)}%`}
                 </Text> :
-                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>
-                  {row['change']}
+                <Text
+                  style={[{ backgroundColor: Number(row['change']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
+                >
+                  {Number(row['change']) < 0 ? '' : '+'}{row['change'].toFixed(2)}
                 </Text>
               }
             </TouchableOpacity>
@@ -234,7 +236,7 @@ class Watchlists extends React.Component {
               {row['ticker']}
             </Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.coName, fonts.hindGunturRg]}>
-              {row['companyName'].length > 23 ? `${row['companyName'].slice(0, 23)}...` : row['companyName']}
+              {row['companyName'].length > 23 ? `${row['companyName'].slice(0, 20)}...` : row['companyName']}
             </Text>
           </View>
           <View style={watchstyle.symMomentum}></View>
