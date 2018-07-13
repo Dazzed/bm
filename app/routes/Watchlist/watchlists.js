@@ -164,6 +164,7 @@ class Watchlists extends React.Component {
     if (row.id === deletingRecordId) {
       return <Text></Text>;
     }
+    console.log('rowwwwwwww', row)
     var thisRow = (
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
         <TouchableOpacity
@@ -180,7 +181,7 @@ class Watchlists extends React.Component {
               </Text>
             </View>
             <View style={watchstyle.symMomentum}>
-              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={row['latestVolume']} position={.4} />
+              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={row['formattedLatestVolume']} position={.4} />
             </View>
             <TouchableOpacity
               style={watchstyle.symCost}
