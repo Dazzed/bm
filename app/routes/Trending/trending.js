@@ -51,6 +51,7 @@ import trending from '../../style/trending';
 import numbers from '../../style/numbers';
 var styleDefault;
 
+@observer
 class SubMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -60,8 +61,8 @@ class SubMenu extends React.Component {
       isScanVisible: false,
       isIndustryVisible: false,
       // trendingOption: 0,
-      sectorOption: 0,
-      industryOption: null,
+      // sectorOption: 0,
+      // industryOption: null,
       currIndustryOptions: null,
       colors: colors(props.globalData.isDarkThemeActive)
     };
@@ -110,79 +111,45 @@ class SubMenu extends React.Component {
     this.setState({ isSectorVisible: true })
   }
 
-  getCurrentIndustryOptions() {
-    const { industryOption } = trendingStore;
-    switch (industryOption) {
-      case 0:
-        return industry_consumerdiscretionary
-        break;
-      case 1:
-        return industry_consumerdiscretionary
-        break;
-      case 2:
-        return industry_consumerstaples
-        break;
-      case 3:
-        return industry_energy
-        break;
-      case 4:
-        return industry_financials
-        break;
-      case 5:
-        return industry_health
-        break;
-      case 6:
-        return industry_industrials
-        break;
-      case 7:
-        return industry_infotech
-        break;
-      case 8:
-        return industry_materials
-        break;
-      case 9:
-        return industry_realestate
-        break;
-      case 10:
-        return industry_telecomm
-        break;
-      case 11:
-        return industry_utilities
-        break;
-    }
+  setSector(value) {
+    const { setSectorOption } = trendingStore;
+    setSectorOption(value);
+    this.hideSector()
   }
 
-  hideSector(value) {
-    const { setSectorOption } = trendingStore;
-    if (value === undefined) {
-      this.setState({ isSectorVisible: false });
-      return;
-    }
-    setSectorOption(value);
-    this.setState({
-      isSectorVisible: false
-    })
+  hideSector() {
+    this.setState({ isSectorVisible: false });
+  }
+
+  setIndustry(value) {
+    const { industryOption, setIndustryOption } = trendingStore;
+    setIndustryOption(value);
+    this.hideIndustry()
   }
 
   showIndustry() {
-    const { industryOption } = trendingStore;
-    if (industryOption != null) {
-      this.setState({ isIndustryVisible: true })
+    const { sectorOption } = trendingStore;
+    if(sectorOption === null) {
+      return;
     }
+    this.setState({ isIndustryVisible: true })
   }
 
   hideIndustry(value) {
-    const { setIndustryOption } = trendingStore;
-    if (value === undefined) {
-      this.setState({ isIndustryVisible: false })
-      return;
-    }
-    setIndustryOption(value)
     this.setState({ isIndustryVisible: false })
+  }
+  
+  getIsIndustryVisible() {
+    const { sectorOption } = trendingStore;
+    if(sectorOption === null) {
+      return false;
+    } else {
+      return this.state.isIndustryVisible;
+    }
   }
 
   render() {
-    const { trendingOption, industryOption, sectorOption } = trendingStore;
+    const { trendingOption, industryOption, sectorOption, currentIndustryOptions } = trendingStore;
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, trending.subMenu]}>
@@ -277,7 +244,7 @@ class SubMenu extends React.Component {
                   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
                   labelWrapStyle={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.hideSector(value) }}
+                  onPress={(value) => { this.setSector(value) }}
                   style={trending.radioField}
                 />
               </ScrollView>
@@ -295,11 +262,11 @@ class SubMenu extends React.Component {
             />
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
-              {industryOption == null ? 'Select a sector' : this.getCurrentIndustryOptions()[industryOption].label}
+              {sectorOption === 0 ? 'Select a sector' : currentIndustryOptions[industryOption].label}
             </Text>
           </TouchableOpacity>
           <Modal
-            isVisible={this.state.isIndustryVisible}
+            isVisible={this.getIsIndustryVisible()}
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}
             style={trending.halfModal}
@@ -314,7 +281,7 @@ class SubMenu extends React.Component {
             <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
               <ScrollView style={trending.sectorRadio}>
                 <RadioForm
-                  radio_props={this.getCurrentIndustryOptions()}
+                  radio_props={sectorOption == 0 ? [] : currentIndustryOptions}
                   initial={industryOption}
                   formHorizontal={false}
                   labelHorizontal={true}
@@ -327,7 +294,7 @@ class SubMenu extends React.Component {
                   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
                   labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.hideIndustry(value) }}
+                  onPress={(value) => { sectorOption == 0 ? console.log('this') : this.setIndustry(value) }}
                   style={trending.radioField}
                 />
               </ScrollView>
@@ -431,8 +398,8 @@ class Trending extends React.Component {
         <ActivityIndicator />
       </View>
     } else if (trendingDataJS.length === 0) {
-      return <View>
-        <Text>No Results</Text>
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
       return <View style={{ flex: 1 }}>

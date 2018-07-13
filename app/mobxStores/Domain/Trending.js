@@ -37,12 +37,14 @@ export default class Trending {
   @observable sectorOption = 0;
 
   @action setSectorOption = (newOption) => {
-    this.sectorOption = newOption;
+    console.log('SET SECOTR', newOption);
     this.industryOption = 0;
+    this.sectorOption = newOption;
     this.getTrendingData()
   }
 
   @action setIndustryOption = (newOption) => {
+    console.log('Set new industry option', newOption)
     this.industryOption = newOption;
     this.getTrendingData()
   }
@@ -87,7 +89,7 @@ export default class Trending {
           posNegColor: data.change > 0 ? theme.green : theme.red
         }
 
-        console.log('data', parseData)
+        // console.log('data', parseData)
 
         if(watchListItems.length > 0) {
           parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
@@ -110,6 +112,50 @@ export default class Trending {
     this.displayDecimal = newVal;
   }
 
+  @computed get currentIndustryOptions() {
+    console.log('=============== CURRENT INDUSTRY OPTIONS SELECOT', this.industryOption)
+     if(this.sectorOption === null) {
+       return null;
+     }
+     if(this.sectorOption === 0) {
+       return industry_consumerdiscretionary
+     }
+     if(this.sectorOption === 1) {
+       return industry_consumerdiscretionary
+     }
+     if(this.sectorOption === 2) {
+       return industry_consumerstaples
+     }
+     if(this.sectorOption === 3) {
+       return industry_energy
+     }
+     if(this.sectorOption === 4) {
+       return industry_financials
+     }
+     if(this.sectorOption === 5) {
+       return industry_health
+     }
+     if(this.sectorOption === 6) {
+       return industry_industrials
+     }
+     if(this.sectorOption === 7) {
+       return industry_infotech
+     }
+     if(this.sectorOption === 8) {
+       return industry_materials
+     }
+     if(this.sectorOption === 9) {
+       return industry_realestate
+     }
+     if(this.sectorOption === 10) {
+       return industry_telecomm
+     }
+     if(this.sectorOption === 11) {
+       return industry_utilities
+     }
+  }
+
+
   @action getTrendingData = () => {
     this.setLoading(true);
 
@@ -117,15 +163,14 @@ export default class Trending {
       "trending": scan_props[this.trendingOption].queryString,
     }
     if(this.sectorOption > 0) {
-
       filterOptions.sector = sector_props[this.sectorOption].queryString;
     }
 
     if(this.sectorOption > 0 && this.industryOption > 0) {
-      // filterOptions.industry = industry_utilities
+      filterOptions.industry = industry_utilities[this.industryOption]
     }
 
-    console.log('=============== sector wtf', this.sectorOption, sector_props)
+    // console.log('=============== params', filterOptions)
 
     let params = {
       filter: JSON.stringify(filterOptions)

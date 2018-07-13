@@ -461,23 +461,6 @@ class Scanner extends React.Component {
     this.setState({ isSearchVisible: false });
   }
 
-  // {
-  //   !this.state.isUpdatingState &&
-  //   <ListView
-  //     style={scanner.symbolsContainer}
-  //     dataSource={this.state.dataSource}
-  //     renderRow={(data) =>
-  //       <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
-  //         <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
-  //           <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-  //         </TouchableOpacity>
-  //         <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$12.40</Text></View>
-  //         <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$23.12</Text></View>
-  //         <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>$22.98</Text></View>
-  //       </View>
-  //     }
-  //   />}
-
   renderListOrLoading() {
     const { scannerDataLoading, scannerDataJS } = scannerStore;
     if(scannerDataLoading) {
@@ -485,8 +468,8 @@ class Scanner extends React.Component {
         <ActivityIndicator />
       </View>
     } else if( scannerDataJS.length === 0) {
-      return <View>
-        <Text>No results found</Text>
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
       return <ScrollView style={scanner.symbolsContainer}>
