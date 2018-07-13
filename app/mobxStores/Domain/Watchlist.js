@@ -121,13 +121,14 @@ export default class Watchlist {
   }
 
   @action removeTickerFromWatchList = async ticker => {
-    console.info('removeTickerFromWatchList', ticker);
+    // console.info('removeTickerFromWatchList', ticker);
+    
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
       const deleteResponse = await deleteRequest(`userWatchLists/${deletingItem.id}`);
 
-      console.log('delestRs', deleteResponse)
+      // console.log('delestRs', deleteResponse)
       if(deleteResponse.ok) {
         await this.getWatchlistData();
       }
