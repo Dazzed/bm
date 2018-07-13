@@ -339,6 +339,11 @@ class SubMenu extends React.Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>TRENDING</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{scan_props[trendingOption].label}</Text>
           </TouchableOpacity>
+          
+          
+          {/* TRENDGING PICKER */}
+
+          
           <Modal
             isVisible={this.state.isScanVisible}
             animationIn={'fadeIn'}

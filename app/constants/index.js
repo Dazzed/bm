@@ -78,16 +78,11 @@ const investmentStatusList = [
     { "label": "I'm an expert", "value": 3 }
 ];
 
-
-
-
-
-
-
+// Trending sorter
 const scan_props = [
-  { label: 'Top volume', value: 0 },
-  { label: '% Gainers', value: 1 },
-  { label: '% Losers', value: 2 },
+  { label: 'Top volume', value: 0, queryString: 'volume' },
+  { label: '% Gainers', value: 1, queryString: 'gainers' },
+  { label: '% Losers', value: 2, queryString: 'losers'},
 ];
 
 const sector_props = [

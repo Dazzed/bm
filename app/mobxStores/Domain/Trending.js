@@ -103,9 +103,9 @@ export default class Trending {
     this.setLoading(true);
     let params = {
       filter: JSON.stringify({
-        "trending":"volume",
-        "sector":"Financial",
-        "industry":"Banking"
+        "trending": scan_props[this.trendingOption].queryString,
+        // "sector": "Financial",
+        "industry": "Banking"
       })
     }
     getTrendingDataApi(params)
