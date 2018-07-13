@@ -32,140 +32,156 @@ import { setTheme, getTheme, colors } from '../../store/store';
 import { selectGlobalData } from '../../selectors';
 
 import { observer } from 'mobx-react';
-import { trendingStore } from '../../mobxStores';
+import { trendingStore, watchListStore } from '../../mobxStores';
 
-var scan_props = [
-  { label: 'Top volume', value: 0 },
-  { label: '% Gainers', value: 1 },
-  { label: '% Losers', value: 2 },
-];
+import {
+  scan_props,
+  sector_props,
+  industry_utilities,
+  industry_telecomm,
+  industry_realestate,
+  industry_materials,
+  industry_infotech,
+  industry_industrials,
+  industry_health,
+  industry_financials,
+  industry_energy,
+  industry_consumerstaples,
+  industry_consumerdiscretionary
+} from '../../constants';
 
-var sector_props = [
-  { label: 'All', value: 0 },
-  { label: 'Consumer Discretionary', value: 1 },
-  { label: 'Consumer Staples', value: 2 },
-  { label: 'Energy', value: 3 },
-  { label: 'Financials', value: 4 },
-  { label: 'Health Care', value: 5 },
-  { label: 'Industrials', value: 6 },
-  { label: 'Information Technology', value: 7 },
-  { label: 'Materials', value: 8 },
-  { label: 'Real Estate', value: 9 },
-  { label: 'Telecommunication Services', value: 10 },
-  { label: 'Utilities', value: 11 }
-];
-
-var industry_utilities = [
-  { label: 'All', value: 0 },
-  { label: 'Electric Utilities', value: 1 },
-  { label: 'Gas Utilities', value: 2 },
-  { label: 'Independent Power and Renewable Electricity Producers', value: 3 },
-  { label: 'Multi-Utilities', value: 4 },
-  { label: 'Water Utilities', value: 5 },
-];
-
-var industry_telecomm = [
-  { label: 'All', value: 0 },
-  { label: 'Diversified Telecommunication Services', value: 1 },
-  { label: 'Wireless Telecommunication Services', value: 2 },
-];
-
-var industry_realestate = [
-  { label: 'All', value: 0 },
-  { label: 'Equity Real Estate Investment Trusts', value: 1 },
-  { label: 'Real Estate Management & Development', value: 2 },
-];
-
-var industry_materials = [
-  { label: 'All', value: 0 },
-  { label: 'Chemicals', value: 1 },
-  { label: 'Construction Materials', value: 2 },
-  { label: 'Containers & Packaging', value: 3 },
-  { label: 'Metals & Mining', value: 4 },
-  { label: 'Paper & Forest Products', value: 5 },
-];
-
-var industry_infotech = [
-  { label: 'All', value: 0 },
-  { label: 'Communications Equipment', value: 1 },
-  { label: 'Electronic Equipment, Instruments & Components', value: 2 },
-  { label: 'IT Services', value: 3 },
-  { label: 'Internet Software & Services', value: 4 },
-  { label: 'Semiconductors & Semiconductor Equipment', value: 5 },
-  { label: 'Software', value: 6 },
-  { label: 'Technology Hardware, Storage & Peripherals', value: 7 },
-];
-
-var industry_industrials = [
-  { label: 'All', value: 0 },
-  { label: 'Aerospace & Defense', value: 1 },
-  { label: 'Air Freight & Logistics', value: 2 },
-  { label: 'Airlines', value: 3 },
-  { label: 'Building Products', value: 4 },
-  { label: 'Commercial Services & Supplies', value: 5 },
-  { label: 'Construction & Engineering', value: 6 },
-  { label: 'Electrical Equipment', value: 7 },
-  { label: 'Industrial Conglomerates ', value: 8 },
-  { label: 'Machinery', value: 9 },
-  { label: 'Marine', value: 10 },
-  { label: 'Professional Services', value: 11 },
-  { label: 'Road & Rail', value: 12 },
-  { label: 'Trading Companies & Distributors', value: 13 },
-  { label: 'Transportation Infrastructure', value: 14 },
-];
-
-var industry_health = [
-  { label: 'All', value: 0 },
-  { label: 'Biotechnology', value: 1 },
-  { label: 'Health Care Equipment & Supplies', value: 2 },
-  { label: 'Health Care Providers & Services', value: 3 },
-  { label: 'Health Care Technology', value: 4 },
-  { label: 'Life Sciences Tools & Services', value: 5 },
-  { label: 'Pharmaceuticals', value: 6 },
-];
-
-var industry_financials = [
-  { label: 'All', value: 0 },
-  { label: 'Banks', value: 1 },
-  { label: 'Capital Markets', value: 2 },
-  { label: 'Consumer Finance', value: 3 },
-  { label: 'Diversified Financial Services', value: 4 },
-  { label: 'Insurance', value: 5 },
-  { label: 'Mortgage REITs', value: 6 },
-  { label: 'Thrifts & Mortgage Finance ', value: 7 },
-];
-
-var industry_energy = [
-  { label: 'All', value: 0 },
-  { label: 'Energy Equipment & Services', value: 1 },
-  { label: 'Oil, Gas & Consumable Fuels', value: 2 },
-];
-
-var industry_consumerstaples = [
-  { label: 'All', value: 0 },
-  { label: 'Beverages', value: 1 },
-  { label: 'Food & Staples Retailing', value: 2 },
-  { label: 'Food Products', value: 3 },
-  { label: 'Household Products', value: 4 },
-  { label: 'Personal Products', value: 5 },
-  { label: 'Tobacco', value: 6 },
-];
-
-var industry_consumerdiscretionary = [
-  { label: 'All', value: 0 },
-  { label: 'Auto Components', value: 1 },
-  { label: 'Automobiles', value: 2 },
-  { label: 'Distributors', value: 3 },
-  { label: 'Diversified Consumer Services', value: 4 },
-  { label: 'Hotels, Restaurants & Leisure', value: 5 },
-  { label: 'Household Durables', value: 6 },
-  { label: 'Internet & Catalog Retail', value: 7 },
-  { label: 'Leisure Products', value: 8 },
-  { label: 'Media', value: 9 },
-  { label: 'Multiline Retail', value: 10 },
-  { label: 'Specialty Retail', value: 11 },
-  { label: 'Textiles, Apparel & Luxury Goods', value: 12 },
-];
+// var scan_props = [
+//   { label: 'Top volume', value: 0 },
+//   { label: '% Gainers', value: 1 },
+//   { label: '% Losers', value: 2 },
+// ];
+// 
+// var sector_props = [
+//   { label: 'All', value: 0 },
+//   { label: 'Consumer Discretionary', value: 1 },
+//   { label: 'Consumer Staples', value: 2 },
+//   { label: 'Energy', value: 3 },
+//   { label: 'Financials', value: 4 },
+//   { label: 'Health Care', value: 5 },
+//   { label: 'Industrials', value: 6 },
+//   { label: 'Information Technology', value: 7 },
+//   { label: 'Materials', value: 8 },
+//   { label: 'Real Estate', value: 9 },
+//   { label: 'Telecommunication Services', value: 10 },
+//   { label: 'Utilities', value: 11 }
+// ];
+// 
+// var industry_utilities = [
+//   { label: 'All', value: 0 },
+//   { label: 'Electric Utilities', value: 1 },
+//   { label: 'Gas Utilities', value: 2 },
+//   { label: 'Independent Power and Renewable Electricity Producers', value: 3 },
+//   { label: 'Multi-Utilities', value: 4 },
+//   { label: 'Water Utilities', value: 5 },
+// ];
+// 
+// var industry_telecomm = [
+//   { label: 'All', value: 0 },
+//   { label: 'Diversified Telecommunication Services', value: 1 },
+//   { label: 'Wireless Telecommunication Services', value: 2 },
+// ];
+// 
+// var industry_realestate = [
+//   { label: 'All', value: 0 },
+//   { label: 'Equity Real Estate Investment Trusts', value: 1 },
+//   { label: 'Real Estate Management & Development', value: 2 },
+// ];
+// 
+// var industry_materials = [
+//   { label: 'All', value: 0 },
+//   { label: 'Chemicals', value: 1 },
+//   { label: 'Construction Materials', value: 2 },
+//   { label: 'Containers & Packaging', value: 3 },
+//   { label: 'Metals & Mining', value: 4 },
+//   { label: 'Paper & Forest Products', value: 5 },
+// ];
+// 
+// var industry_infotech = [
+//   { label: 'All', value: 0 },
+//   { label: 'Communications Equipment', value: 1 },
+//   { label: 'Electronic Equipment, Instruments & Components', value: 2 },
+//   { label: 'IT Services', value: 3 },
+//   { label: 'Internet Software & Services', value: 4 },
+//   { label: 'Semiconductors & Semiconductor Equipment', value: 5 },
+//   { label: 'Software', value: 6 },
+//   { label: 'Technology Hardware, Storage & Peripherals', value: 7 },
+// ];
+// 
+// var industry_industrials = [
+//   { label: 'All', value: 0 },
+//   { label: 'Aerospace & Defense', value: 1 },
+//   { label: 'Air Freight & Logistics', value: 2 },
+//   { label: 'Airlines', value: 3 },
+//   { label: 'Building Products', value: 4 },
+//   { label: 'Commercial Services & Supplies', value: 5 },
+//   { label: 'Construction & Engineering', value: 6 },
+//   { label: 'Electrical Equipment', value: 7 },
+//   { label: 'Industrial Conglomerates ', value: 8 },
+//   { label: 'Machinery', value: 9 },
+//   { label: 'Marine', value: 10 },
+//   { label: 'Professional Services', value: 11 },
+//   { label: 'Road & Rail', value: 12 },
+//   { label: 'Trading Companies & Distributors', value: 13 },
+//   { label: 'Transportation Infrastructure', value: 14 },
+// ];
+// 
+// var industry_health = [
+//   { label: 'All', value: 0 },
+//   { label: 'Biotechnology', value: 1 },
+//   { label: 'Health Care Equipment & Supplies', value: 2 },
+//   { label: 'Health Care Providers & Services', value: 3 },
+//   { label: 'Health Care Technology', value: 4 },
+//   { label: 'Life Sciences Tools & Services', value: 5 },
+//   { label: 'Pharmaceuticals', value: 6 },
+// ];
+// 
+// var industry_financials = [
+//   { label: 'All', value: 0 },
+//   { label: 'Banks', value: 1 },
+//   { label: 'Capital Markets', value: 2 },
+//   { label: 'Consumer Finance', value: 3 },
+//   { label: 'Diversified Financial Services', value: 4 },
+//   { label: 'Insurance', value: 5 },
+//   { label: 'Mortgage REITs', value: 6 },
+//   { label: 'Thrifts & Mortgage Finance ', value: 7 },
+// ];
+// 
+// var industry_energy = [
+//   { label: 'All', value: 0 },
+//   { label: 'Energy Equipment & Services', value: 1 },
+//   { label: 'Oil, Gas & Consumable Fuels', value: 2 },
+// ];
+// 
+// var industry_consumerstaples = [
+//   { label: 'All', value: 0 },
+//   { label: 'Beverages', value: 1 },
+//   { label: 'Food & Staples Retailing', value: 2 },
+//   { label: 'Food Products', value: 3 },
+//   { label: 'Household Products', value: 4 },
+//   { label: 'Personal Products', value: 5 },
+//   { label: 'Tobacco', value: 6 },
+// ];
+// 
+// var industry_consumerdiscretionary = [
+//   { label: 'All', value: 0 },
+//   { label: 'Auto Components', value: 1 },
+//   { label: 'Automobiles', value: 2 },
+//   { label: 'Distributors', value: 3 },
+//   { label: 'Diversified Consumer Services', value: 4 },
+//   { label: 'Hotels, Restaurants & Leisure', value: 5 },
+//   { label: 'Household Durables', value: 6 },
+//   { label: 'Internet & Catalog Retail', value: 7 },
+//   { label: 'Leisure Products', value: 8 },
+//   { label: 'Media', value: 9 },
+//   { label: 'Multiline Retail', value: 10 },
+//   { label: 'Specialty Retail', value: 11 },
+//   { label: 'Textiles, Apparel & Luxury Goods', value: 12 },
+// ];
 
 
 import Search from '../search';
@@ -503,28 +519,8 @@ class Trending extends React.Component {
   }
 
   componentDidMount() {
-    // this.setState({
-    //   dataSource: this.state.dataSource.cloneWithRows(this.state.ds),
-    // })
     const { getTrendingData } = trendingStore;
     getTrendingData()
-
-
-    // let fakeData = {
-    //   change:"+1.85",
-    //   changePerc:"+10.41%",
-    //   exch:"NYSE",
-    //   name:"Ethereum",
-    //   posNeg:"green",
-    //   price:"30.75",
-    //   stockChange:true,
-    //   sym:"ETH",
-    //   time:"12:30 PM PT",
-    //   vol:"24.9M",
-    //   watching:true
-    // }
-    // this.props.navigation.navigate('Chart', {data: fakeData})
-    
   }
 
   componentDidUpdate(prevProps) {
@@ -547,15 +543,15 @@ class Trending extends React.Component {
     this.setState({ isSearchVisible: false });
   }
 
-  addOrRemoveSymbolFromWatchlist(sym, currentWatchStatus) {
+  addOrRemoveSymbolFromWatchlist(data, currentWatchStatus) {
     let message = ''
     let successFunction = null;
     if (currentWatchStatus) {
-      message = 'Remove ' + sym + ' from your watchlist.'
-      successFunction = () => trendingStore.removeSymFromWatchList(sym);
+      message = 'Remove ' + data.ticker + ' from your watchlist.'
+      successFunction = () => watchListStore.removeTickerFromWatchList(data.ticker);
     } else {
-      message = 'Add ' + sym + ' to your watchlist.'
-      successFunction = () => trendingStore.addSymToWatchList(sym);
+      message = 'Add ' + data.ticker + ' to your watchlist.'
+      successFunction = () => watchListStore.addTickerToWatchList(data.ticker);
     }
     Alert.alert(
       '',
@@ -579,6 +575,8 @@ class Trending extends React.Component {
 
   renderTrendingList() {
     const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
+    // const { watchlistDataJS } = watchListStore;
+
     console.info({ trendingDataJS });
     if (trendingLoading) {
       return <View>
@@ -590,27 +588,26 @@ class Trending extends React.Component {
       </View>
     } else {
       return <View style={{ flex: 1 }}>
-        <ScrollView style={[trending.symbolsContainer, { flex: 1, borderWidth: 1, borderColor: 'green', padding: 0, margin: 0, width: '100%' }]}>
-
-          <Text>Mapping this data to stores</Text>
-
+        <ScrollView style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}>
           {trendingDataJS.map((data, i) => {
+            // console.log('each data', data)
+            
             let watchListIconSrc = require('../../images/add.png');
-            if (data.watching) {
+            if (data.inWatchList) {
               watchListIconSrc = require('../../images/watchlist_added.png');
             }
             return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
               <TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.navigateToChart(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName']}</Text>
               </TouchableOpacity>
-              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>
+              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolume}</Text></View>
               <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>
-                {!displayDecimal ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPrice']}</Text>
+                {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePercent']}</Text>}
               </TouchableOpacity>
               <View style={trending.addBtn}>
-                <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data['sym'], data.watching)} >
+                <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data, data.inWatchList)} >
                   <Image
                     source={watchListIconSrc} style={styles.addImg} />
                 </TouchableOpacity>

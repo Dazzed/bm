@@ -78,9 +78,163 @@ const investmentStatusList = [
     { "label": "I'm an expert", "value": 3 }
 ];
 
+
+
+
+
+
+
+const scan_props = [
+  { label: 'Top volume', value: 0 },
+  { label: '% Gainers', value: 1 },
+  { label: '% Losers', value: 2 },
+];
+
+const sector_props = [
+  { label: 'All', value: 0 },
+  { label: 'Consumer Discretionary', value: 1 },
+  { label: 'Consumer Staples', value: 2 },
+  { label: 'Energy', value: 3 },
+  { label: 'Financials', value: 4 },
+  { label: 'Health Care', value: 5 },
+  { label: 'Industrials', value: 6 },
+  { label: 'Information Technology', value: 7 },
+  { label: 'Materials', value: 8 },
+  { label: 'Real Estate', value: 9 },
+  { label: 'Telecommunication Services', value: 10 },
+  { label: 'Utilities', value: 11 }
+];
+
+const industry_utilities = [
+  { label: 'All', value: 0 },
+  { label: 'Electric Utilities', value: 1 },
+  { label: 'Gas Utilities', value: 2 },
+  { label: 'Independent Power and Renewable Electricity Producers', value: 3 },
+  { label: 'Multi-Utilities', value: 4 },
+  { label: 'Water Utilities', value: 5 },
+];
+
+const industry_telecomm = [
+  { label: 'All', value: 0 },
+  { label: 'Diversified Telecommunication Services', value: 1 },
+  { label: 'Wireless Telecommunication Services', value: 2 },
+];
+
+const industry_realestate = [
+  { label: 'All', value: 0 },
+  { label: 'Equity Real Estate Investment Trusts', value: 1 },
+  { label: 'Real Estate Management & Development', value: 2 },
+];
+
+const industry_materials = [
+  { label: 'All', value: 0 },
+  { label: 'Chemicals', value: 1 },
+  { label: 'Construction Materials', value: 2 },
+  { label: 'Containers & Packaging', value: 3 },
+  { label: 'Metals & Mining', value: 4 },
+  { label: 'Paper & Forest Products', value: 5 },
+];
+
+const industry_infotech = [
+  { label: 'All', value: 0 },
+  { label: 'Communications Equipment', value: 1 },
+  { label: 'Electronic Equipment, Instruments & Components', value: 2 },
+  { label: 'IT Services', value: 3 },
+  { label: 'Internet Software & Services', value: 4 },
+  { label: 'Semiconductors & Semiconductor Equipment', value: 5 },
+  { label: 'Software', value: 6 },
+  { label: 'Technology Hardware, Storage & Peripherals', value: 7 },
+];
+
+const industry_industrials = [
+  { label: 'All', value: 0 },
+  { label: 'Aerospace & Defense', value: 1 },
+  { label: 'Air Freight & Logistics', value: 2 },
+  { label: 'Airlines', value: 3 },
+  { label: 'Building Products', value: 4 },
+  { label: 'Commercial Services & Supplies', value: 5 },
+  { label: 'Construction & Engineering', value: 6 },
+  { label: 'Electrical Equipment', value: 7 },
+  { label: 'Industrial Conglomerates ', value: 8 },
+  { label: 'Machinery', value: 9 },
+  { label: 'Marine', value: 10 },
+  { label: 'Professional Services', value: 11 },
+  { label: 'Road & Rail', value: 12 },
+  { label: 'Trading Companies & Distributors', value: 13 },
+  { label: 'Transportation Infrastructure', value: 14 },
+];
+
+const industry_health = [
+  { label: 'All', value: 0 },
+  { label: 'Biotechnology', value: 1 },
+  { label: 'Health Care Equipment & Supplies', value: 2 },
+  { label: 'Health Care Providers & Services', value: 3 },
+  { label: 'Health Care Technology', value: 4 },
+  { label: 'Life Sciences Tools & Services', value: 5 },
+  { label: 'Pharmaceuticals', value: 6 },
+];
+
+const industry_financials = [
+  { label: 'All', value: 0 },
+  { label: 'Banks', value: 1 },
+  { label: 'Capital Markets', value: 2 },
+  { label: 'Consumer Finance', value: 3 },
+  { label: 'Diversified Financial Services', value: 4 },
+  { label: 'Insurance', value: 5 },
+  { label: 'Mortgage REITs', value: 6 },
+  { label: 'Thrifts & Mortgage Finance ', value: 7 },
+];
+
+const industry_energy = [
+  { label: 'All', value: 0 },
+  { label: 'Energy Equipment & Services', value: 1 },
+  { label: 'Oil, Gas & Consumable Fuels', value: 2 },
+];
+
+const industry_consumerstaples = [
+  { label: 'All', value: 0 },
+  { label: 'Beverages', value: 1 },
+  { label: 'Food & Staples Retailing', value: 2 },
+  { label: 'Food Products', value: 3 },
+  { label: 'Household Products', value: 4 },
+  { label: 'Personal Products', value: 5 },
+  { label: 'Tobacco', value: 6 },
+];
+
+const industry_consumerdiscretionary = [
+  { label: 'All', value: 0 },
+  { label: 'Auto Components', value: 1 },
+  { label: 'Automobiles', value: 2 },
+  { label: 'Distributors', value: 3 },
+  { label: 'Diversified Consumer Services', value: 4 },
+  { label: 'Hotels, Restaurants & Leisure', value: 5 },
+  { label: 'Household Durables', value: 6 },
+  { label: 'Internet & Catalog Retail', value: 7 },
+  { label: 'Leisure Products', value: 8 },
+  { label: 'Media', value: 9 },
+  { label: 'Multiline Retail', value: 10 },
+  { label: 'Specialty Retail', value: 11 },
+  { label: 'Textiles, Apparel & Luxury Goods', value: 12 },
+];
+
 export {
   stateOptionsMap,
   maritalStatusList,
   employmentStatusList,
-  investmentStatusList
+  investmentStatusList,
+
+  //  from trending view
+  scan_props,
+  sector_props,
+  industry_utilities,
+  industry_telecomm,
+  industry_realestate,
+  industry_materials,
+  industry_infotech,
+  industry_industrials,
+  industry_health,
+  industry_financials,
+  industry_energy,
+  industry_consumerstaples,
+  industry_consumerdiscretionary
 }

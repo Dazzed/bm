@@ -1,85 +1,29 @@
 import { observable, action, computed, toJS } from 'mobx';
-// import { getTrendingData as getTrendingDataApi } from '../../api';
-import { watchListStore } from '../index';
+import { getTrendingData as getTrendingDataApi } from '../../api';
+import { watchListStore, colorStore } from '../index';
 
-let list = [
-  {
-    sym: 'ETH',
-    exch: 'NYSE',
-    name: 'Ethereum',
-    vol: '24.9M',
-    price: '30.75',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+1.85',
-    changePerc: '+10.41%',
-    stockChange: true,
-  },
-  {
-    sym: 'AMID',
-    exch: 'NYSE',
-    name: 'American Midstream',
-    vol: '65.2M',
-    price: '12.45',
-    time: '12:30 PM PT',
-    posNeg: 'red',
-    change: '-3.12',
-    changePerc: '-2.15%',
-    stockChange: true,
-  },
-  {
-    sym: 'AAPL',
-    exch: 'NASDAQ',
-    name: 'Apple, Inc.',
-    vol: '16.3M',
-    price: '146.19',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+2.01',
-    changePerc: '+2.43%',
-    stockChange: true,
-  },
-  {
-    sym: 'TSLA',
-    exch: 'NASDAQ',
-    name: 'Tesla Motors, Inc.',
-    vol: '5.3M',
-    price: '378.47',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+3.10',
-    changePerc: '+1.05%',
-    stockChange: true,
-  },
-  {
-    sym: 'SPH',
-    exch: 'NYSE',
-    name: 'Suburban Propan',
-    vol: '37.9M',
-    price: '24.31',
-    time: '12:30 PM PT',
-    posNeg: 'red',
-    change: '-4.43',
-    changePerc: '-5.64%',
-    stockChange: true,
-  },
-  {
-    sym: 'NGG',
-    exch: 'NYSE',
-    name: 'National Grid PLC',
-    vol: '12.4M',
-    price: '64.85',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+0.15',
-    changePerc: '+4.04%',
-    stockChange: true,
-  },
-];
+import {
+  scan_props,
+  sector_props,
+  industry_utilities,
+  industry_telecomm,
+  industry_realestate,
+  industry_materials,
+  industry_infotech,
+  industry_industrials,
+  industry_health,
+  industry_financials,
+  industry_energy,
+  industry_consumerstaples,
+  industry_consumerdiscretionary
+} from '../../constants';
 
 export default class Trending {
 
   @observable trendingData = [];
+  @observable currentPage = 0;
+  @observable totalPages = 0;
+  @observable pageSize = 0;
 
   @observable trendingLoading = false;
 
@@ -113,25 +57,42 @@ export default class Trending {
   }
 
   @action setTrendingData = (data) => {
-    this.trendingData = data;
+    if(!data) {
+      this.trendingData = [];
+      this.currentPage = 0;
+      this.totalPages = 0;
+      this.pageSize = 0;
+    } else {
+      this.trendingData = data.data;
+      this.currentPage = data.current_page;
+      this.totalPages = data.total_pages;
+      this.pageSize = data.page_size;
+    }
   }
 
   @computed get trendingDataJS() {
-    const watchListItems = watchListStore.watchlistDataJS;
+    const { theme } = colorStore;
+    const { watchlistDataJS } = watchListStore;
+    const watchListItems = watchlistDataJS;
     return toJS(this.trendingData)
-      .map(data => ({
-        ...data,
-        watching: watchListItems.some(({ ticker }) => ticker === data.sym)
-      }))
+      .map(data => {
+        let parseData = {
+          ...data,
+          posNegColor: data.change > 0 ? theme.green : theme.red
+        }
+        if(watchListItems.length > 0) {
+          parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
+        }
+        return parseData;
+      });
   }
 
-  @action addSymToWatchList = sym => {
-    watchListStore.addTickerToWatchList(sym);
+  @action addSymToWatchList = ticker => {
+    watchListStore.addTickerToWatchList(ticker);
   }
 
-  @action removeSymFromWatchList = sym => {
-    console.info('removeSymFromWatchList', sym);
-    watchListStore.removeTickerFromWatchList(sym);
+  @action removeSymFromWatchList = ticker => {
+    watchListStore.removeTickerFromWatchList(ticker);
   }
 
   @action setDecimalOrPercentage = (newVal) => {
@@ -139,23 +100,28 @@ export default class Trending {
   }
 
   @action getTrendingData = () => {
-
-    let params = {
-
-    }
-    // getTrendingDataApi(params)
-    // .then((res) => {
-    //   console.log('trending data', res)
-    // })
-    // .catch((err) => {
-    //   console.log('trending data err', err)
-    // })
-
     this.setLoading(true);
-    setTimeout(() => {
-      this.setTrendingData(list);
+    let params = {
+      filter: JSON.stringify({
+        "trending":"volume",
+        "sector":"Financial",
+        "industry":"Banking"
+      })
+    }
+    getTrendingDataApi(params)
+    .then((res) => {
+      console.log('trending data', res)
+      if(res.ok) {
+        this.setTrendingData(res.json.data)
+      } else {
+        this.setTrendingData(null)
+      }
       this.setLoading(false);
-    }, 500)
+    })
+    .catch((err) => {
+      this.setLoading(false);
+      console.log('trending data err', err)
+    })
 
   }
 

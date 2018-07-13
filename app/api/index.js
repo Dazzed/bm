@@ -6,6 +6,7 @@ const resetPassword = (params) => post('users/reset', params);
 const getUserById = (id) => get(`users/${id}`, {});
 const getScannerList = (params) => get(`users/scanner`, params)
 const getTickerDetails = (params) => get('tickerLists/stockDetails', params)
+const getTrendingData = (params) => get('users/trendingList', params);
 
 export {
     login,
@@ -13,5 +14,6 @@ export {
     resetPassword,
     getUserById,
     getScannerList,
-    getTickerDetails
+    getTickerDetails,
+    getTrendingData
 }

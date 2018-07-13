@@ -30,6 +30,9 @@ export default class Watchlist {
   @action getWatchlistData = async () => {
     try {
       const { json: watchlistData } = await get('userWatchLists');
+
+      console.log('GOT NEW WATCHLIST DATA', watchlistData);
+
       this.watchlistData = watchlistData;
       this.isFetchingWatchlistData = false;
     } catch (e) {
@@ -70,6 +73,7 @@ export default class Watchlist {
   }
 
   @action removeFromWatchlist = async itemToDelete => {
+    console.log('item to delete ================== ', itemToDelete)
     try {
       this.deletingRecordId = itemToDelete.id;
       await deleteRequest(`userWatchLists/${itemToDelete.id}`);
@@ -118,12 +122,23 @@ export default class Watchlist {
     console.info('removeTickerFromWatchList', ticker);
     try {
       this.isFetchingWatchlistData = true;
+
+
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
-      this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
+
+      console.log('===== deleting item', deletingItem)
+
+      // this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
       await deleteRequest(`userWatchLists/${deletingItem.id}`);
+
+      // console.log('before filter', toJS(this.watchlistData))
+      //
+      // console.log('after filter', toJS(this.watchlistData))
+
       await this.getWatchlistData();
     } catch (e) {
       console.info('Error in removeTickerToWatchList', e);
+      // throw e;
     }
   }
 

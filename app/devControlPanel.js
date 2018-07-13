@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -54,8 +54,8 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-const autoLogin = false;
-// const autoLogin = true;
+// const autoLogin = false;
+const autoLogin = true;
 if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }
