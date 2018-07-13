@@ -155,6 +155,10 @@ class Watchlists extends React.Component {
       }));
     }
   };
+  
+  navigateToChart(data) {
+    this.props.navigation.navigate('Chart', { data: row })
+  }
 
   renderRow = row => {
     if (!row) {
@@ -165,11 +169,12 @@ class Watchlists extends React.Component {
       return <Text></Text>;
     }
     console.log('rowwwwwwww', row)
+    
     var thisRow = (
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
         <TouchableOpacity
           style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, watchstyle.symbol]}
-          onPress={() => this.props.navigation.navigate('Chart', { data: row })}
+          onPress={() => this.navigateToChart(row)}
           delayLongPress={500}>
           <View style={watchstyle.touchable}>
             <View style={watchstyle.symDetails}>
