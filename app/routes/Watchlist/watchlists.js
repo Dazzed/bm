@@ -261,6 +261,7 @@ class Watchlists extends React.Component {
     } = watchListStore;
     let dataSource = watchlistDataJS;
     let order = watchlistOrderJS;
+    console.log(dataSource);
 
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>

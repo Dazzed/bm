@@ -73,8 +73,9 @@ export default class Watchlist {
   @action removeFromWatchlist = async itemToDelete => {
     try {
       this.deletingRecordId = itemToDelete.id;
+      this.isFetchingWatchlistData = true;
       await deleteRequest(`userWatchLists/${itemToDelete.id}`);
-      this.watchlistData = toJS(this.watchlistData).filter(d => d.id !== itemToDelete.id);
+      await this.getWatchlistData();
       this.deletingRecordId = null;
     } catch (e) {
       console.log('Error in removeFromWatchlist', e);
@@ -91,7 +92,7 @@ export default class Watchlist {
 
   @computed get watchlistDataJS() {
     if (this.isEditingWatchList) {
-      return toJS(this.watchlistData);
+      return sortNumberArrayByParam(toJS(this.watchlistData), 'position');
     }
     switch (this.sortByIndex) {
       case 0:
@@ -123,9 +124,11 @@ export default class Watchlist {
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
+      this.deletingRecordId = deletingItem.id;
       this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
       await deleteRequest(`userWatchLists/${deletingItem.id}`);
       await this.getWatchlistData();
+      this.deletingRecordId = null;
     } catch (e) {
       console.info('Error in removeTickerToWatchList', e);
     }
