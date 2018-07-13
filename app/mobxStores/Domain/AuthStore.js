@@ -1,6 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { login, getUserById } from '../../api';
 import { saveToken } from '../../api/tokenUtility';
+import { watchListStore } from '../index';
 
 export default class ColorStore {
     constructor() {
@@ -24,27 +25,28 @@ export default class ColorStore {
 
     @action setUserData = (userData) => {
         this.userData = userData;
+        watchListStore.getWatchlistData();
     }
 
     @computed get loginDataJS() {
-      return toJS(this.loginData);
+        return toJS(this.loginData);
     }
 
     @action populateUserById = (id) => {
         return new Promise((resolve, reject) => {
             getUserById(id)
-            .then((res) => {
-                console.log('res', res)
-                if(res.ok) {
-                    console.log('got user data', res)
-                    resolve(res)
-                } else {
-                    this.setLoginErrorMessage(res.json.error.message)
-                }
-            })
-            .catch((err) => {
-                console.log('err', err)
-            })
+                .then((res) => {
+                    console.log('res', res)
+                    if (res.ok) {
+                        console.log('got user data', res)
+                        resolve(res)
+                    } else {
+                        this.setLoginErrorMessage(res.json.error.message)
+                    }
+                })
+                .catch((err) => {
+                    console.log('err', err)
+                })
         })
     }
 
@@ -56,35 +58,35 @@ export default class ColorStore {
             let userId = 0;
 
             login(params)
-            .then((res) => {
-                console.log('res', res)
-                if(res.ok) {
-                    this.setLoginData(res.json)
-                    userId = res.json.userId;
-                    return saveToken(res.json.id)
-                } else {
-                    this.setLoginErrorMessage(res.json.error.message)
+                .then((res) => {
+                    console.log('res', res)
+                    if (res.ok) {
+                        this.setLoginData(res.json)
+                        userId = res.json.userId;
+                        return saveToken(res.json.id)
+                    } else {
+                        this.setLoginErrorMessage(res.json.error.message)
+                        this.loginLoading = false;
+                        reject(err);
+                    }
+                })
+                .then(() => {
+                    return this.populateUserById(userId)
+                })
+                .then((res) => {
+                    // nav out
+                    if (res.ok) {
+                        this.setUserData(res.json)
+                        resolve()
+                    } else {
+                        this.setLoginErrorMessage(res.json.error.message);
+                    }
+                })
+                .catch((err) => {
+                    console.log('err', err)
                     this.loginLoading = false;
-                    reject(err);
-                }
-            })
-            .then(() => {
-                return this.populateUserById(userId)
-            })
-            .then((res) => {
-                // nav out
-                if(res.ok) {
-                    this.setUserData(res.json)
-                    resolve()
-                } else {
-                    this.setLoginErrorMessage(res.json.error.message);
-                }
-            })
-            .catch((err) => {
-                console.log('err', err)
-                this.loginLoading = false;
-                reject(err)
-            })
+                    reject(err)
+                })
 
         })
     }

@@ -11,22 +11,23 @@ export default class Watchlist {
     { label: '% Change', value: 3 }
   ];
 
-  constructor() {
-    this.getWatchlistData();
-  }
+  constructor() {}
 
   @observable isFetchingWatchlistData = true;
+  @observable isEditingWatchList = false;
   @observable deletingRecordId = null;
   @observable watchlistData = [];
-
   @observable listOrder = ["0", "1", "2", "3", "4", "5"];
-
   @observable sortByIndex = 0;
 
   @action setWatchlistData = (data) => {
     this.scannerData = data;
   }
 
+  /* IMPORTANT */
+  // The AuthStore.js will call *getWatchlistData* after the user logs in for the first time..
+  // The store/actions/global.js verifyAuth action will call *getWatchlistData* after existing auth token is validated successfully.
+  /* END IMPORTANT */
   @action getWatchlistData = async () => {
     try {
       const { json: watchlistData } = await get('userWatchLists');
@@ -89,6 +90,9 @@ export default class Watchlist {
   }
 
   @computed get watchlistDataJS() {
+    if (this.isEditingWatchList) {
+      return toJS(this.watchlistData);
+    }
     switch (this.sortByIndex) {
       case 0:
         return sortNumberArrayByParam(toJS(this.watchlistData), 'position');
@@ -127,5 +131,7 @@ export default class Watchlist {
     }
   }
 
-
+  @action toggleEditingWatchList = flag => {
+    this.isEditingWatchList = flag;
+  }
 }
