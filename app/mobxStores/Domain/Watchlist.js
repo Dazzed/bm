@@ -125,8 +125,12 @@ export default class Watchlist {
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
-      await deleteRequest(`userWatchLists/${deletingItem.id}`);
-      await this.getWatchlistData();
+      const deleteResponse = await deleteRequest(`userWatchLists/${deletingItem.id}`);
+
+      console.log('delestRs', deleteResponse)
+      if(deleteResponse.ok) {
+        await this.getWatchlistData();
+      }
     } catch (e) {
       console.info('Error in removeTickerToWatchList', e);
       // throw e;
