@@ -17,6 +17,12 @@ export const generateHeaderStyles = (theme) => {
 export const millionBillionFormatter = (inputNumber) => {
   let formattedNumber = '';
   let stringAppend = '';
+  if(!inputNumber) {
+    return '';
+  }
+  if(isNaN(inputNumber)) {
+    return 'NaN!'
+  }
   if(inputNumber.length < 4) {
     // handle three digit items without modifying style
     return inputNumber;
@@ -37,6 +43,25 @@ export const millionBillionFormatter = (inputNumber) => {
     return dividedBy1000000000.toFixed(1) + stringAppend;
   } else {
     return '!!!'
+  }
+}
+
+export const formatPrice = (priceInput) => {
+  if(!priceInput) {
+    return ''
+  }
+  if(isNaN(priceInput)) {
+    return priceInput
+  }
+  // make string
+  let stringifiedPrice = priceInput.toString();
+  // check if decimal exists
+  let hasDecimal = stringifiedPrice.indexOf('.') > 0;
+  if(!hasDecimal) {
+    // if it does not, add it and two 00s
+    return priceInput + '.00';
+  } else {
+    return priceInput + '';
   }
 }
 

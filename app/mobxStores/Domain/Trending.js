@@ -1,7 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { getTrendingData as getTrendingDataApi } from '../../api';
 import { watchListStore, colorStore } from '../index';
-import { millionBillionFormatter } from '../../utility';
+import { millionBillionFormatter, formatPrice } from '../../utility';
 
 import {
   scan_props,
@@ -82,6 +82,7 @@ export default class Trending {
       .map(data => {
         let parseData = {
           ...data,
+          latestPriceFormatted: formatPrice(data.latestPrice),
           latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
           posNegColor: data.change > 0 ? theme.green : theme.red
         }

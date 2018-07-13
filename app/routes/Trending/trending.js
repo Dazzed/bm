@@ -597,7 +597,7 @@ class Trending extends React.Component {
               </TouchableOpacity>
               <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
               <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPrice']}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPriceFormatted']}</Text>
                 {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePercent']}</Text>}
               </TouchableOpacity>
               <View style={trending.addBtn}>
