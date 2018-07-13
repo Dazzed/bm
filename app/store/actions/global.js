@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { API_URL } from '../../config';
-import { colorStore } from '../../mobxStores';
+import { colorStore, watchListStore } from '../../mobxStores';
 
 export const PREFIX = 'APP_GLOBAL';
 
@@ -80,6 +80,7 @@ export function verifyAuth() {
         type: `${PREFIX}_SET_CURRENT_USER`,
         payload: currentUser
       });
+      watchListStore.getWatchlistData();
       dispatch({
         type: `${PREFIX}_STOP_VERIFYING_AUTH`
       });

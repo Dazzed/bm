@@ -60,7 +60,6 @@ class Watchlists extends React.Component {
     super(props);
     const colorObj = colors(props.globalData.isDarkThemeActive);
     this.state = {
-      isListEditable: false,
       isScanVisible: false,
       isSearchVisible: false,
       isSortVisible: false,
@@ -103,18 +102,14 @@ class Watchlists extends React.Component {
     }];
   }
 
-  showEdits = () => {
-    this.setState({ isListEditable: true });
-  }
-  hideEdits = () => {
-    this.setState({ isListEditable: false });
-  }
   showSearch() {
     this.setState({ isSearchVisible: true });
   }
+
   hideSearch() {
     this.setState({ isSearchVisible: false });
   }
+
   showSort = () => {
     this.setState({ isSortVisible: true })
   }
@@ -154,11 +149,11 @@ class Watchlists extends React.Component {
 
   toggleWatchListPercent = id => {
     if (this.state.showWatchListPercent.some(p => p === id)) {
-      this.setState(({showWatchListPercent}) => ({
+      this.setState(({ showWatchListPercent }) => ({
         showWatchListPercent: showWatchListPercent.filter(p => p !== id)
       }));
     } else {
-      this.setState(({showWatchListPercent}) => ({
+      this.setState(({ showWatchListPercent }) => ({
         showWatchListPercent: showWatchListPercent.concat(id)
       }));
     }
@@ -190,8 +185,8 @@ class Watchlists extends React.Component {
             <View style={watchstyle.symMomentum}>
               <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={row['latestVolume']} position={.4} />
             </View>
-            <TouchableOpacity 
-              style={watchstyle.symCost} 
+            <TouchableOpacity
+              style={watchstyle.symCost}
               onPress={this.toggleWatchListPercent.bind(this, row.id)}
             >
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${row['latestPrice']}</Text>
@@ -255,7 +250,13 @@ class Watchlists extends React.Component {
   }
 
   render() {
-    const { isFetchingWatchlistData, watchlistDataJS, watchlistOrderJS, sortByIndex } = watchListStore;
+    const {
+      isFetchingWatchlistData,
+      isEditingWatchList,
+      watchlistDataJS,
+      watchlistOrderJS,
+      sortByIndex
+    } = watchListStore;
     let dataSource = watchlistDataJS;
     let order = watchlistOrderJS;
 
@@ -266,15 +267,15 @@ class Watchlists extends React.Component {
 
             {/*Header*/}
 
-            {!this.state.isListEditable &&
-              <TouchableOpacity style={styles.leftCta} onPress={this.showEdits}>
+            {!isEditingWatchList &&
+              <TouchableOpacity style={styles.leftCta} onPress={watchListStore.toggleEditingWatchList.bind(this, true)}>
                 <Text style={[{ color: this.state.colors['lightGray'] }, styles.leftCtaTxt, fonts.hindGunturRg]}>
                   Edit
                 </Text>
               </TouchableOpacity>
             }
-            {this.state.isListEditable &&
-              <TouchableOpacity style={styles.leftCta} onPress={this.hideEdits}>
+            {isEditingWatchList &&
+              <TouchableOpacity style={styles.leftCta} onPress={watchListStore.toggleEditingWatchList.bind(this, false)}>
                 <Text style={[{ color: this.state.colors['lightGray'] }, styles.leftCtaTxt, fonts.hindGunturRg]}>
                   Done
                 </Text>
@@ -302,7 +303,7 @@ class Watchlists extends React.Component {
 
         {/* Not Editable */}
 
-        {!isFetchingWatchlistData && !this.state.isListEditable &&
+        {!isFetchingWatchlistData && !isEditingWatchList &&
           <SortableListView
             data={dataSource}
             order={order}
@@ -322,7 +323,7 @@ class Watchlists extends React.Component {
 
         {/* Editable */}
 
-        {!isFetchingWatchlistData && this.state.isListEditable &&
+        {!isFetchingWatchlistData && isEditingWatchList &&
           <SortableListView
             data={dataSource}
             order={order}
