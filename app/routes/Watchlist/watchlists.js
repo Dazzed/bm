@@ -187,16 +187,16 @@ class Watchlists extends React.Component {
               style={watchstyle.symCost}
               onPress={this.toggleWatchListPercent.bind(this, row.id)}
             >
-              <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${row['latestPrice']}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${Number(row['latestPrice']).toFixed(2)}</Text>
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symTime, fonts.hindGunturRg]}>{moment.unix(row['latestUpdate']).format('hh:MM A PT')}</Text>
               {this.state.showWatchListPercent.includes(row.id) ?
                 <Text
-                  style={[{ backgroundColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
+                  style={[{ backgroundColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
                 >
                   {Number(row['changePercent']) < 0 ? '' : '+'}{`${(row['changePercent'] * 100).toFixed(2)}%`}
                 </Text> :
                 <Text
-                  style={[{ backgroundColor: Number(row['change']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
+                  style={[{ backgroundColor: Number(row['change']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
                 >
                   {Number(row['change']) < 0 ? '' : '+'}{row['change'].toFixed(2)}
                 </Text>
