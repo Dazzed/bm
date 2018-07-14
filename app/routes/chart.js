@@ -1147,7 +1147,12 @@ class Chart extends Component {
   }
 
   renderLoadingOrContent() {
-    const { chartLoading } = chartStore;
+    const { chartLoading, chartDataJS } = chartStore;
+
+      let newsTicker = null;
+      if(chartDataJS) {
+         newsTicker = chartDataJS.ticker;
+      }
 
     if(chartLoading) {
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -1171,6 +1176,7 @@ class Chart extends Component {
           animationOut={'slideOutDown'}
           style={order.modal}>
           <ChartNews
+            ticker={newsTicker}
             hideNews={this.hideNews} />
         </Modal>
         <Modal

@@ -8,6 +8,7 @@ import Watchlist from './Domain/Watchlist';
 import Trending from './Domain/Trending';
 import Scanner from './Domain/Scanner';
 import Chart from './Domain/Chart';
+import News from './Domain/News';
 
 // Import and init all stores here
 let colorStore = new ColorStore();
@@ -19,6 +20,7 @@ let watchListStore = new Watchlist();
 let trendingStore = new Trending();
 let scannerStore = new Scanner();
 let chartStore = new Chart();
+let newsStore = new News();
 
 export {
     colorStore,
@@ -29,5 +31,6 @@ export {
     watchListStore,
     trendingStore,
     scannerStore,
-    chartStore
+    chartStore,
+    newsStore
 }

@@ -7,6 +7,7 @@ const getUserById = (id) => get(`users/${id}`, {});
 const getScannerList = (params) => get(`users/scanner`, params)
 const getTickerDetails = (params) => get('tickerLists/stockDetails', params)
 const getTrendingData = (params) => get('users/trendingList', params);
+const getNewsList = (params) => get('/tickerLists/getNews', params);
 
 export {
     login,
@@ -15,5 +16,6 @@ export {
     getUserById,
     getScannerList,
     getTickerDetails,
-    getTrendingData
+    getTrendingData,
+    getNewsList
 }

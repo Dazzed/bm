@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectGlobalData } from '../selectors';
+import moment from 'moment';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -20,7 +22,8 @@ import {
   TouchableHighlight,
   TabbedArea,
   TabPane,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 
 import Modal from 'react-native-modal'
@@ -30,8 +33,12 @@ import {setTheme, getTheme, colors} from '../store/store';
 import styles from '../style/style';
 import chartnews from '../style/chartnews';
 import fonts from '../style/fonts';
+import trending from "../style/trending";
 // var colors = require('../style/colors')
+import { observer } from 'mobx-react';
+import { newsStore } from "../mobxStores";
 
+@observer
 class ChartNews extends React.Component {
   constructor(props){
     super(props);
@@ -53,6 +60,64 @@ class ChartNews extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { getNewsData } = newsStore;
+
+    let ticker = this.props.ticker;
+
+    getNewsData({ticker})
+  }
+
+
+  renderList() {
+    const { newsDataLoading, newsArticleListJS } = newsStore;
+
+    if(newsDataLoading) {
+        return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator />
+        </View>
+    } else if( newsArticleListJS.length === 0) {
+        return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+        </View>
+    } else {
+        return <ScrollView style={chartnews.container}>
+            {newsArticleListJS.map((elem, i) => {
+
+                let formattedTime = '';
+                let currentMoment = moment().format('X');
+                let parsedTime = moment(elem.publishedAt).format('X');
+
+                let secondsAway = currentMoment - parsedTime;
+                let hoursAway = secondsAway / 3600;
+                let daysAway = hoursAway / 24;
+
+                if(hoursAway > 24 && hoursAway < 48) {
+                  formattedTime = parseInt(daysAway) + ' day ago'
+                } else if(hoursAway > 48) {
+                  formattedTime = parseInt(daysAway) + ' days ago'
+                } else {
+                  formattedTime = parseInt(hoursAway) + 'h ago'
+                }
+
+                return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
+                    <TouchableOpacity style={chartnews.rowBtn}>
+                        <Image
+                            source={{ uri: elem.urlToImage }}
+                            style={chartnews.image}
+                        />
+                        <View style={chartnews.label}>
+                            <Text style={[{color: this.state.colors['darkSlate']}, chartnews.txt]}>{elem.title}</Text>
+                            <Text style={[{color: this.state.colors['lightGray']}, chartnews.detailTxt]}>{elem.source.name} - {formattedTime}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            })}
+        </ScrollView>
+    }
+
+  }
+
   render() {
     return (
       <View style={[{backgroundColor: this.state.colors['white']}, styles.container]}>
@@ -67,68 +132,7 @@ class ChartNews extends React.Component {
             <Text style={[{color: this.state.colors['darkSlate']}, styles.boldTitle, fonts.hindGunturBd]}>{this.state.page} APPL News</Text>
           </View>
         </View>
-        <ScrollView style={chartnews.container}>
-              <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
-                <TouchableOpacity style={chartnews.rowBtn}>
-                  <Image
-                    source={require('../images/new01.png')}
-                    style={chartnews.image}
-                  />                  
-                  <View style={chartnews.label}>
-                    <Text style={[{color: this.state.colors['darkSlate']}, chartnews.txt]}>Apple Working on AI Processor Chip Called Apple Neural Engine</Text>
-                    <Text style={[{color: this.state.colors['lightGray']}, chartnews.detailTxt]}>CNBC - 7h ago</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
-                <TouchableOpacity style={chartnews.rowBtn}>
-                  <Image
-                    source={require('../images/new02.png')}
-                    style={chartnews.image}
-                  />                  
-                  <View style={chartnews.label}>
-                    <Text style={[{color: this.state.colors['darkSlate']}, chartnews.txt]}>Apple Inc. (NASDAQ:AAPL) iPhone 8 Changes</Text>
-                    <Text style={[{color: this.state.colors['lightGray']}, chartnews.detailTxt]}>CNBC - 7h ago</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
-                <TouchableOpacity style={chartnews.rowBtn}>
-                  <Image
-                    source={require('../images/new03.png')}
-                    style={chartnews.image}
-                  />                  
-                  <View style={chartnews.label}>
-                    <Text style={[{color: this.state.colors['darkSlate']}, chartnews.txt]}>Apple Inc. (AAPL) Is Battling Nintendo For Important Tech Components</Text>
-                    <Text style={[{color: this.state.colors['lightGray']}, chartnews.detailTxt]}>CNBC - 7h ago</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
-                <TouchableOpacity style={chartnews.rowBtn}>
-                  <Image
-                    source={require('../images/new04.png')}
-                    style={chartnews.image}
-                  />                  
-                  <View style={chartnews.label}>
-                    <Text style={[{color: this.state.colors['darkSlate']}, chartnews.txt]}>Why Techs Will Fly Higher: A Technical View (FB, AAPL)</Text>
-                    <Text style={[{color: this.state.colors['lightGray']}, chartnews.detailTxt]}>CNBC - 7h ago</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
-                <TouchableOpacity style={chartnews.rowBtn}>
-                  <Image
-                    source={require('../images/new05.png')}
-                    style={chartnews.image}
-                  />                  
-                  <View style={chartnews.label}>
-                    <Text style={[{color: this.state.colors['darkSlate']}, chartnews.txt]}>Early movers: C, PPG, AAPL, HES, SPG, ZNGA & more</Text>
-                    <Text style={[{color: this.state.colors['lightGray']}, chartnews.detailTxt]}>CNBC - 7h ago</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-          </ScrollView>
+          {this.renderList()}
       </View>
     );
   }
