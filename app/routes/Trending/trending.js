@@ -51,6 +51,8 @@ import trending from '../../style/trending';
 import numbers from '../../style/numbers';
 var styleDefault;
 
+import Index from '../../sharedComponents/ChartGraph';
+
 @observer
 class SubMenu extends React.Component {
   constructor(props) {
@@ -138,7 +140,7 @@ class SubMenu extends React.Component {
   hideIndustry(value) {
     this.setState({ isIndustryVisible: false })
   }
-  
+
   getIsIndustryVisible() {
     const { sectorOption } = trendingStore;
     if(sectorOption === null) {
@@ -162,11 +164,11 @@ class SubMenu extends React.Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>TRENDING</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{scan_props[trendingOption].label}</Text>
           </TouchableOpacity>
-          
-          
+
+
           {/* TRENDGING PICKER */}
 
-          
+
           <Modal
             isVisible={this.state.isScanVisible}
             animationIn={'fadeIn'}
@@ -406,7 +408,7 @@ class Trending extends React.Component {
         <ScrollView style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}>
           {trendingDataJS.map((data, i) => {
             // console.log('each data', data)
-            
+
             let watchListIconSrc = require('../../images/add.png');
             if (data.inWatchList) {
               watchListIconSrc = require('../../images/watchlist_added.png');
@@ -434,9 +436,14 @@ class Trending extends React.Component {
     }
   }
 
+  renderChart() {
+    return <Index viewLargeGraph={true}/>
+  }
+
   render() {
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
+        {this.renderChart()}
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>

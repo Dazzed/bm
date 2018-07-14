@@ -40,7 +40,7 @@ import order from '../style/order';
 import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
 
-import ChartGraph from '../sharedComponents/ChartGraph';
+import Index from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
 
 import { chartStore } from '../mobxStores';
@@ -478,7 +478,7 @@ class Chart extends Component {
 
         </View>
         <View style={chart.chartWrapper}>
-          <ChartGraph viewLargeGraph={false} />
+          <Index viewLargeGraph={false} />
         </View>
 
       </View>
@@ -813,7 +813,7 @@ class Chart extends Component {
          <View style={chartland.leftSide}>
            <View style={chartland.chartFPO}>
 
-             <ChartGraph viewLargeGraph={true} />
+             <Index viewLargeGraph={true} />
 
            </View>
            <View style={chartland.options}>
