@@ -95,13 +95,113 @@ export default class ChartGraph extends React.Component {
 
   constructor(props) {
     super(props);
-    
+
+
+    this.smallGraphData = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ];
+
     this.state = {
       height: 0,
       width: 0
     }
-    
+
   }
+
+
+  smallGraphData() {
+
+  }
+
+  largeGraphBarData() {
+    const { theme } = colorStore;
+    return [
+      {
+        xPosition: 10,
+        hardTop: 100,
+        hardBottom: 10,
+        softTop: 50,
+        softBottom: 100,
+        color: theme.red
+      },
+      {
+        xPosition: 30,
+        hardTop: 200,
+        hardBottom: 80,
+        softTop: 80,
+        softBottom: 40,
+        color: theme.green
+      },
+      {
+        xPosition: 200,
+        hardTop: 300,
+        hardBottom: 80,
+        softTop: 180,
+        softBottom: 90,
+        color: theme.green
+      },
+    ]
+  }
+
+  getLineList() {
+    const { theme } = colorStore;
+    return [
+      {
+        lineTitle: 'Test line 1',
+        color: theme.red,
+        lineData: [
+          {
+            x: 0, y: 50
+          },
+          {
+            x: 50, y: 100
+          },
+          {
+            x: 100, y: 400
+          },
+          {
+            x: 150, y: 250
+          },
+          {
+            x: 200, y: 500
+          },
+          {
+            x: 250, y: 0
+          },
+          {
+            x: 300, y: 100
+          }
+        ]
+      },
+
+      {
+        lineTitle: 'Test line 1',
+        color: theme.green,
+        lineData: [
+          {
+            x: 0, y: 400
+          },
+          {
+            x: 50, y: 200
+          },
+          {
+            x: 100, y: 300
+          },
+          {
+            x: 150, y: 150
+          },
+          {
+            x: 200, y: 50
+          },
+          {
+            x: 250, y: 100
+          },
+          {
+            x: 300, y: 150
+          }
+        ]
+      }
+    ]
+  }
+
 
   renderSmallGraph() {
     const { theme } = colorStore;
@@ -127,7 +227,7 @@ export default class ChartGraph extends React.Component {
       flex: 1
     }
 
-    const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+    const data = this.smallGraphData;
 
     let height = 200;
 
@@ -151,24 +251,24 @@ export default class ChartGraph extends React.Component {
       </View>
     </View>
   }
-  
+
 
   renderLargeGraph() {
     const { theme } = colorStore;
-    
-    
+
+
     let inlineContainerStyle = {
       borderWidth: 1,
       borderColor: 'red',
       flex: 1,
       height: 200
     }
-    
+
     let gridXArray = [];
     let gridYArray = [];
-    
+
     let lineCount = 8;
-    
+
     for(let i = 0; i < lineCount; i++) {
       let multiplier = i / lineCount;
       gridXArray.push(this.state.width * multiplier);
@@ -183,7 +283,7 @@ export default class ChartGraph extends React.Component {
 
     let textLeftOffset = 5;
     let topOffset = 2;
-    
+
     const generateXLineGroup = (number) => {
       let formattednumber = number.toFixed(1);
       return <G>
@@ -211,7 +311,7 @@ export default class ChartGraph extends React.Component {
           </G>
       </G>
     }
-    
+
     const generateYLineGroup = (number) => {
       let formattednumber = number.toFixed(1);
       return <G>
@@ -238,35 +338,10 @@ export default class ChartGraph extends React.Component {
       </G>
     }
 
-    let barDataList = [
-      {
-        xPosition: 10,
-        hardTop: 100,
-        hardBottom: 10,
-        softTop: 50,
-        softBottom: 100,
-        color: theme.red
-      },
-      {
-        xPosition: 30,
-        hardTop: 200,
-        hardBottom: 80,
-        softTop: 80,
-        softBottom: 40,
-        color: theme.green
-      },
-      {
-        xPosition: 200,
-        hardTop: 300,
-        hardBottom: 80,
-        softTop: 180,
-        softBottom: 90,
-        color: theme.green
-      },
-    ]
+    let barDataList = this.largeGraphBarData();
 
-    let thinLineWidth = 1;
-    let thickLineWidth = 5;
+    let thinLineWidth = .5;
+    let thickLineWidth = 8;
 
     const generateBarLine = (params) => {
       return <G>
@@ -276,8 +351,9 @@ export default class ChartGraph extends React.Component {
             width={thickLineWidth}
             height={params.softBottom - params.softTop}
             fill={params.color}
-            strokeWidth={'1'}
+            strokeWidth={'3'}
             stroke={params.color}
+            strokeLinejoin={'round'}
         />
         <Rect
             x={params.xPosition - (thinLineWidth / 2)}
@@ -285,66 +361,39 @@ export default class ChartGraph extends React.Component {
             width={thinLineWidth}
             height={params.hardBottom - params.hardTop}
             fill={params.color}
-            strokeWidth={'1'}
+            strokeWidth={'2'}
             stroke={params.color}
+            strokeLinejoin={'round'}
         />
       </G>
     }
-    
-    let lineList = [
-      {
-        lineTitle: 'Test line 1',
-        color: theme.red,
-        lineData: [{
-          x: 0, y: 0
-        },
-        {
-          x: 100, y: 100
-        },
-        {
-          x: 150, y: 0
-        }]
-      },
-      
-      {
-        lineTitle: 'Test line 1',
-        color: theme.green,
-        lineData: [{
-          x: 0, y: 30
-        },
-        {
-          x: 50, y: 10
-        },
-        {
-          x: 300, y: 80
-        }]
-      }
-      
-    ]
-    
+
+    let lineList = this.getLineList();
+
     const generateLine = (params) => {
       let points = "0,0";
-      
+
       params.lineData.map((elem, i) => {
         console.log('each line data', elem);
         points += ` ${elem.x},${elem.y}`
       })
-      
+
       return <Polyline
           points={points}
           fill={'none'}
           stroke={params.color}
           strokeWidth={2}
+          strokeLinejoin={'round'}
       />
     }
-    
-    
+
+
     return <View style={inlineContainerStyle}>
       <Svg
         height={'100%'}
         width={'100%'}
       >
-      
+
         {gridYArray.map((elem, i) => {
           return generateYLineGroup(elem)
         })}
@@ -355,7 +404,7 @@ export default class ChartGraph extends React.Component {
         {barDataList.map((elem, i) => {
           return generateBarLine(elem)
         })}
-        
+
         {lineList.map((elem, i) => {
           return generateLine(elem)
         })}
@@ -371,7 +420,7 @@ export default class ChartGraph extends React.Component {
     if(this.props.viewLargeGraph) {
       return this.renderLargeGraph()
     } else {
-      return this.renderSmallGraph()  
+      return this.renderSmallGraph()
     }
   }
 
@@ -397,9 +446,9 @@ export default class ChartGraph extends React.Component {
   }
 }
 
-// <ResponsiveImage 
+// <ResponsiveImage
 //   source={require('../images/landscapechart_ichi.png')}
 //   style={chartland.landscapeChart}
 //   initWidth="480"
-//   initHeight="287"                
+//   initHeight="287"
 // />
