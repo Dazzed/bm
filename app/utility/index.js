@@ -149,3 +149,29 @@ export const sortNumberArrayByParam = (targetArray, param, order = 'ASC') => {
     });
   }
 }
+
+export const kFormatter = num => {
+  switch(String(num).length) {
+    case 1:
+    case 2:
+    case 3:
+      return num;
+    case 4:
+    case 5:
+    case 6:
+      return (num / 1000).toFixed(1) + 'K';
+    case 7:
+    case 8:
+    case 9:
+      return (num / 1000000).toFixed(1) + 'M';
+    default:
+      return (num / 1000000000).toFixed(1) + 'B';
+  }
+}
+
+export const zacksRatingFormatter = num => {
+  if (num === null || num === undefined || num === 0 || num === 'na') {
+    return 0;
+  }
+  return num * 0.2;
+}
