@@ -417,8 +417,8 @@ class Chart extends Component {
     <ScrollView style={chart.wrapper}>
       <View style={chart.header}>
         <View style={chart.titleContainer}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{this.props.navigation.state.params.data['name']}</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{this.props.navigation.state.params.data['sym']}: {this.props.navigation.state.params.data['exch']}</Text>
+          <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
         </View>
 
         {/* TODO: nav to news with ticker */}

@@ -157,7 +157,7 @@ class Watchlists extends React.Component {
   };
   
   navigateToChart(data) {
-    this.props.navigation.navigate('Chart', { data: row })
+    this.props.navigation.navigate('Chart', { data: data })
   }
 
   renderRow = row => {

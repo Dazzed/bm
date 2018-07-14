@@ -18,7 +18,8 @@ export default class AccountStore {
     }
 
     @action getChartData = (data) => {
-      let symbol = data.sym;
+        console.log('===== get chart data', data)
+      let symbol = data.ticker;
       this.setChartLoading(true);
 
       let params = {
