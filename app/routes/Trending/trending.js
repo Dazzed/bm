@@ -436,14 +436,15 @@ class Trending extends React.Component {
     }
   }
 
-  renderChart() {
-    return <Index viewLargeGraph={true}/>
-  }
+//   renderChart() {
+//     return <Index viewLargeGraph={false}/>
+//   }
+// {this.renderChart()}
 
-  render() {
+
+render() {
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
-        {this.renderChart()}
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
@@ -482,30 +483,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, null)(Trending);
-
-
-// {/*<ListView*/}
-// {/*style={trending.symbolsContainer}*/}
-// {/*dataSource={this.state.dataSource}*/}
-// {/*renderRow={(data) =>*/}
-// {/*<View style={[{ borderBottomColor: this.state.colors['borderGray'] }, trending.symbolsRow]}>*/}
-// {/*<TouchableOpacity style={trending.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>*/}
-// {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['sym']}</Text>*/}
-// {/*<Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['name']}</Text>*/}
-// {/*</TouchableOpacity>*/}
-// {/*<View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL 65.2M</Text></View>*/}
-//
-//
-// {/*<TouchableOpacity style={trending.symbolsLabel} onPress={() => this.changeToggle(data)}>*/}
-// {/*<Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['price']}</Text>*/}
-// {/*{data['stockChange'] ? <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['change']}</Text> : <Text style={[{ backgroundColor: this.state.colors[data.posNeg] }, { borderColor: this.state.colors[data.posNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{data['changePerc']}</Text>}*/}
-// {/*</TouchableOpacity>*/}
-// {/*<View style={trending.addBtn}>*/}
-// {/*<TouchableOpacity style={trending.symbolsAdd} onPress={(value) => { this.addSymbol(data['sym']) }} >*/}
-// {/*<Image*/}
-// {/*source={data['icon']} style={styles.addImg} />*/}
-// {/*</TouchableOpacity>*/}
-// {/*</View>*/}
-// {/*</View>*/}
-// {/*}*/}
-// {/*/>*/}
