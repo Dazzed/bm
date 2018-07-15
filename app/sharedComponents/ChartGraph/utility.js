@@ -108,3 +108,69 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
     }
     return polyGonList;
 }
+
+export const parseSmallGraphData = (data) => {
+
+    let graphMax = 0;
+    let graphMin = 9999999;
+
+    let lineData = [];
+    let dateData = [];
+
+    for(let i = 0; i < data.length; i++) {
+        // console.log('eavh elem', data[i])
+        let thisClosePoint = data[i].close;
+        if(thisClosePoint > graphMax) {
+            graphMax = thisClosePoint
+        }
+        if(thisClosePoint < graphMin) {
+            graphMin = thisClosePoint
+        }
+        lineData.push(data[i].close);
+        dateData.push(data[i].date);
+    }
+
+    return {
+        graphMax: graphMax,
+        graphMin: graphMin,
+        lineData: lineData,
+        dateData: dateData
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//

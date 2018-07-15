@@ -73,7 +73,7 @@ export default class HorizontalLine extends React.Component {
                             x={boxWidth / 2 + textLeftOffset}
                             textAnchor="middle"
                         >
-                            {yVal}
+                            {this.props.title}
                         </TextSvg>
                     </G>
                 </G>

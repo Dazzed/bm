@@ -1,12 +1,13 @@
 import React from 'react';
 import {
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Text
 } from 'react-native';
 import { observer } from 'mobx-react';
 import LargeGraph from './LargeGraph';
 import SmallGraph from './SmallGraph';
-import {chartStore} from "../../mobxStores";
+import { chartStore } from "../../mobxStores";
 
 @observer
 export default class Index extends React.Component {
@@ -21,10 +22,18 @@ export default class Index extends React.Component {
   }
 
   renderLargeGraphOrSmallGraph() {
+    const { chartDetailDataJS } = chartStore;
+
+    if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
+      return <View style={{flex: 1, height: this.state.height, alignItems: 'center', justifyContent: 'center'}}>
+        <Text>No data for graph</Text>
+      </View>
+    }
+
     if(this.props.viewLargeGraph) {
-      return <LargeGraph height={this.state.height} width={this.state.width} {...this.props}/>
+      return <LargeGraph data={chartDetailDataJS} height={this.state.height} width={this.state.width} {...this.props}/>
     } else {
-      return <SmallGraph height={this.state.height} width={this.state.width} {...this.props}/>
+      return <SmallGraph data={chartDetailDataJS} height={this.state.height} width={this.state.width} {...this.props}/>
     }
   }
 

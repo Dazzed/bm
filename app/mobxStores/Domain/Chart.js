@@ -71,8 +71,16 @@ export default class AccountStore {
 
     @observable indicatorsList = [];
     @action setIndicatorsList = (newList) => {
-        console.log('NEW INDICATORS LIST INCOMING', newList)
         this.indicatorsList = newList;
+        this.getStockChartDetails();
+    }
+
+    @observable chartDetailData = null;
+    @action setChartDetailData = (newData) => {
+        this.chartDetailData = newData;
+    }
+    @computed get chartDetailDataJS() {
+        return toJS(this.chartDetailData)
     }
 
     @action getStockChartDetails = () => {
@@ -83,56 +91,54 @@ export default class AccountStore {
 
         this.setStockChartLoading(true);
 
-        console.log('chartData ============================================= ', this.tickerDataJS.ticker);
+        console.log('chartData ============================================= ', toJS(this.indicatorsList));
 
         // let symbol = data.ticker;
 
         // this.setTickerDataLoading(true);
 
-        // ["OBV","TRND","ICHI","EMA","MACD","RSI","BOL"]
 
-        // "parameters":{
-        //     "ICHI":{
-        //         "conversionPeriod": 9,
-        //             "basePeriod": 26,
-        //             "spanPeriod": 52,
-        //             "displacement": 26
-        //     },
-        //     "EMA":{
-        //         "period":50
-        //     },
-        //     "MACD":{
-        //         "fastPeriod": 5,
-        //             "slowPeriod": 8,
-        //             "signalPeriod": 3,
-        //             "SimpleMAOscillator": false,
-        //             "SimpleMASignal": false
-        //     },
-        //     "RSI":{
-        //         "period":14
-        //     },
-        //     "BOL":{
-        //         "period":14,
-        //             "stdDev":2
-        //     }
-        // }
 
         let params = {
             "ticker": this.tickerDataJS.ticker,
             "range": this.range,
-            "indicator": toJS(this.indicatorsList),
-
+            "indicator": ["OBV","TRND","ICHI","EMA","MACD","RSI","BOL"],
+            "parameters": JSON.stringify({
+                "ICHI":{
+                    "conversionPeriod": 9,
+                        "basePeriod": 26,
+                        "spanPeriod": 52,
+                        "displacement": 26
+                },
+                "EMA":{
+                    "period":50
+                },
+                "MACD":{
+                    "fastPeriod": 5,
+                        "slowPeriod": 8,
+                        "signalPeriod": 3,
+                        "SimpleMAOscillator": false,
+                        "SimpleMASignal": false
+                },
+                "RSI":{
+                    "period":14
+                },
+                "BOL":{
+                    "period":14,
+                        "stdDev":2
+                }
+            })
         }
+
 
 
         getStockChartDetail(params)
         .then((res) => {
             console.log('GET CHART DATA', res);
-            // if(res.ok) {
-            //     this.setTickerData(res.json.result);
-            // } else {
-            // }
-            // this.setTickerDataLoading(false);
+            if(res.ok) {
+                this.setChartDetailData(res.json.result);
+            } else {
+            }
             this.setStockChartLoading(false);
         })
         .catch((err) => {
