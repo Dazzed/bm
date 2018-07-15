@@ -15,34 +15,36 @@ export default class DepositWithdraw {
 
     @action makeTransaction = (params) => {
         return new Promise((resolve, reject) => {
+            let options = {
+                account: 'savings',
+                amount: params.amount,
+            }
+            if(params.account.subtitle == 'Checking - 1234') {
+                options.account = 'checking';
+            }
             this.setTransactionLoading(true);
             let formattedParams = {
-                options: JSON.stringify({
-                    account: 'savings',
-                    amount: params.amount,
-                })
+                options: JSON.stringify(options)
             }
             let transactionFunction = deposit;
             if(params.type === 'withdraw') {
                 transactionFunction = withdraw
             }
             transactionFunction(formattedParams)
-                .then((res) => {
-                    console.log('MAKE TRANSACTION', res);
-                    if(res.ok) {
-                        resolve(res)
-                    } else {
-                        reject(res)
-                    }
-                    this.setTransactionLoading(false);
-                })
-                .catch((err) => {
-                    console.log('err', err);
-                    this.setTransactionLoading(false);
-                })
-
+            .then((res) => {
+                console.log('MAKE TRANSACTION', res);
+                if(res.ok) {
+                    resolve(res)
+                } else {
+                    reject(res)
+                }
+                this.setTransactionLoading(false);
+            })
+            .catch((err) => {
+                console.log('err', err);
+                this.setTransactionLoading(false);
+            })
         })
-
     }
 
 

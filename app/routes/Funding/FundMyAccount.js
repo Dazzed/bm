@@ -286,6 +286,7 @@ export default class FundMyAccount extends React.Component {
 
         if(transactionLoading) {
             disabled = true;
+            buttonTitle = 'LOADING...'
         }
 
         return <Button disabled={disabled} {...this.props} title={buttonTitle} onPress={() => this.submitPressed()}/>
