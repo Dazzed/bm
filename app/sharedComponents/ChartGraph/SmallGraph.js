@@ -33,20 +33,12 @@ export default class SmallGraph extends React.Component {
             flex: 1,
             height: this.props.height,
             marginTop: 18
-
         }
-
 
         const { height } = this.props.height;
         const data = parseSmallGraphData(this.props.data);
         const { tickerDataJS } = chartStore;
         const { Price } = tickerDataJS;
-
-
-
-        console.log('render small graph', this.smallGraphData)
-
-
 
         let xAxisHeight = 20;
         let graphHeight = this.props.height - xAxisHeight;
@@ -70,18 +62,13 @@ export default class SmallGraph extends React.Component {
             justifyContent: 'center'
         }
 
-        // contentInset={{ top: 10, bottom: 10 }}
-
         let xAxisData = data.dateData;
-        console.log('------ date', xAxisData)
-
-
 
         return <View style={inlineContainerStyle}>
 
             <View style={inlineGraphContainerStyle}>
 
-                <View style={{ flex: 1,height: graphHeight, borderWidth: 1, borderColor: 'blue'}}>
+                <View style={{ flex: 1,height: graphHeight}}>
                     <LineChart
                         style={{ height: graphHeight }}
                         data={ data.lineData }
@@ -99,7 +86,6 @@ export default class SmallGraph extends React.Component {
                     style={{ marginHorizontal: 5 }}
                     data={ xAxisData }
                     formatLabel={ (value, index) => {
-                        console.log('--- value, index', value, index)
                         return xAxisData[value]
                     }}
                     numberOfTicks={ 3 }
