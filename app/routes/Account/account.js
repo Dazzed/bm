@@ -74,6 +74,11 @@ class Account extends Component {
     }
   }
 
+  componentDidMount() {
+      myAccount.getMyAccountData()
+  }
+
+
   getTabView() {
     switch (this.state.page) {
       case 'balances':
