@@ -1,5 +1,5 @@
 import React from 'react';
-import {colorStore} from "../../mobxStores";
+import {chartStore, colorStore} from "../../mobxStores";
 import { LineChart, Grid } from 'react-native-svg-charts'
 import {
     Svg,
@@ -19,7 +19,7 @@ import {
     Animated
 } from 'react-native';
 import { observer } from "mobx-react";
-import { generatePolygonsFromTwoLines, flipYAxisValue } from './utility';
+import { generatePolygonsFromTwoLines, flipYAxisValue, parseLargeGraphData } from './utility';
 
 @observer
 export default class LargeGraph extends React.Component {
@@ -35,6 +35,7 @@ export default class LargeGraph extends React.Component {
         //     width: 0,
         // }
     }
+
 
     largeGraphBarData() {
         const { theme } = colorStore;
@@ -68,6 +69,9 @@ export default class LargeGraph extends React.Component {
 
     getLineList() {
         const { theme } = colorStore;
+
+        console.log('----------------- GET LINE LIST', this.props.data)
+
         return [
             {
                 lineTitle: 'Test line 1',
@@ -131,9 +135,13 @@ export default class LargeGraph extends React.Component {
         return input;
     }
 
+    getParsedData() {
+        const { chartDetailDataJS } = chartStore;
+        return parseLargeGraphData(chartDetailDataJS);
+    }
+
     render() {
         const { theme } = colorStore;
-
 
         let inlineContainerStyle = {
             borderWidth: 1,
@@ -271,7 +279,10 @@ export default class LargeGraph extends React.Component {
         let lines = this.getLineList();
         let line1 = lines[0];
         let line2 = lines[1];
-        let polygonsList = generatePolygonsFromTwoLines(line1, line2, this.props.height)
+
+        let polygonsList = generatePolygonsFromTwoLines(line1, line2, this.props.height);
+
+
         console.log('POLYGONGS', polygonsList)
 
         const generateGraphPolygonFill = (elem, key) => {
@@ -290,7 +301,6 @@ export default class LargeGraph extends React.Component {
                 fillOpacity={.2}
             />
         }
-
 
 
         return <View style={inlineContainerStyle}>
@@ -317,7 +327,6 @@ export default class LargeGraph extends React.Component {
                 {lineList.map((elem, i) => {
                     return generateGraphPolygon(elem, i)
                 })}
-
 
 
             </Svg>
