@@ -51,6 +51,12 @@ export default class AccountStore {
     }
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     @observable range = '1y';
 
     @action setRange = (newRange) => {
@@ -63,6 +69,12 @@ export default class AccountStore {
         this.stockChartLoading = newBool;
     }
 
+    @observable indicatorsList = [];
+    @action setIndicatorsList = (newList) => {
+        console.log('NEW INDICATORS LIST INCOMING', newList)
+        this.indicatorsList = newList;
+    }
+
     @action getStockChartDetails = () => {
 
         if(this.chartData === null) {
@@ -71,41 +83,45 @@ export default class AccountStore {
 
         this.setStockChartLoading(true);
 
-        console.log('chartData ============================================= ', this.chartData);
+        console.log('chartData ============================================= ', this.tickerDataJS.ticker);
 
         // let symbol = data.ticker;
 
         // this.setTickerDataLoading(true);
 
+        // ["OBV","TRND","ICHI","EMA","MACD","RSI","BOL"]
+
+        // "parameters":{
+        //     "ICHI":{
+        //         "conversionPeriod": 9,
+        //             "basePeriod": 26,
+        //             "spanPeriod": 52,
+        //             "displacement": 26
+        //     },
+        //     "EMA":{
+        //         "period":50
+        //     },
+        //     "MACD":{
+        //         "fastPeriod": 5,
+        //             "slowPeriod": 8,
+        //             "signalPeriod": 3,
+        //             "SimpleMAOscillator": false,
+        //             "SimpleMASignal": false
+        //     },
+        //     "RSI":{
+        //         "period":14
+        //     },
+        //     "BOL":{
+        //         "period":14,
+        //             "stdDev":2
+        //     }
+        // }
+
         let params = {
-            "ticker":"AAPL",
+            "ticker": this.tickerDataJS.ticker,
             "range": this.range,
-            "indicator":["OBV","TRND","ICHI","EMA","MACD","RSI","BOL"],
-            "parameters":{
-                "ICHI":{
-                    "conversionPeriod": 9,
-                    "basePeriod": 26,
-                    "spanPeriod": 52,
-                    "displacement": 26
-                },
-                "EMA":{
-                    "period":50
-                },
-                "MACD":{
-                    "fastPeriod": 5,
-                    "slowPeriod": 8,
-                    "signalPeriod": 3,
-                    "SimpleMAOscillator": false,
-                    "SimpleMASignal": false
-                },
-                "RSI":{
-                    "period":14
-                },
-                "BOL":{
-                    "period":14,
-                    "stdDev":2
-                }
-            }
+            "indicator": toJS(this.indicatorsList),
+
         }
 
 

@@ -43,7 +43,7 @@ import { selectGlobalData } from '../selectors';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
 
-import { chartStore } from '../mobxStores';
+import { chartStore, watchListStore } from '../mobxStores';
 import { observer } from 'mobx-react';
 
 // var colors = require('../style/colors')
@@ -116,13 +116,13 @@ class Chart extends Component {
     }
   }
 
-  addSymbol(sym){
+  addSymbol(ticker){
     Alert.alert(
       '',
-      'You added '+sym+' to your watchlist.',
+      'You added '+ticker+' to your watchlist.',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker)},
       ],
       { cancelable: true }
     )
@@ -199,6 +199,8 @@ class Chart extends Component {
       this.setState({isIndicatorsVisible:false});
   }
   toggleCheck(value) {
+    const { setIndicatorsList } = chartStore;
+
     var indicates = this.state.indicators;
     var exists = false;
     var indicatorCnt = this.state.indicatorCnt;
@@ -213,11 +215,16 @@ class Chart extends Component {
         exists = true;
         this.setState({ isDisabled: false }, () => {
           this.setState({ indicators: indicates, isDisabled: false, indicatorCnt: indicatorCnt }, () => {
+              // forward data to mobx
+              setIndicatorsList(indicates);
           })
         })
         return;
       }
     }
+
+
+
     console.log("movin on");
     //if it doesn't exists and we aren't at 5 indicators add it
     if(!exists && indicates.length < 5) {
@@ -231,11 +238,15 @@ class Chart extends Component {
           var arrayvar = indicates.slice()
           arrayvar.push(value)
           this.setState({  indicators: arrayvar, isDisabled: true, indicatorCnt: indicatorCnt }, () => {
+              // forward data to mobx
+              setIndicatorsList(arrayvar);
           })
         } else {
           var arrayvar = indicates.slice()
           arrayvar.push(value)
           this.setState({ indicators: arrayvar, isDisabled: false, indicatorCnt: indicatorCnt }, () => {
+              // forward data to mobx
+              setIndicatorsList(arrayvar);
           })
         }
       }
@@ -273,7 +284,7 @@ class Chart extends Component {
     })
   }
 
-
+  // TODO: add image to watchlist when you add
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +367,7 @@ class Chart extends Component {
               style={styles.searchImg}
             />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rightCta} onPress={() => this.addSymbol('AAPL')}>
+        <TouchableOpacity style={styles.rightCta} onPress={() => this.addSymbol(ticker)}>
             <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
         </TouchableOpacity>
       </View>
@@ -808,7 +819,7 @@ class Chart extends Component {
              </View>
            </View>
          </View>
-         <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol('AAPL')}>
+         <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol(ticker)}>
           <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
          </TouchableOpacity>
 
