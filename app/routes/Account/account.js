@@ -31,7 +31,7 @@ import navstyle from '../../style/nav';
 import { selectGlobalData } from '../../selectors';
 
 import { observer } from 'mobx-react';
-import { myAccount } from '../../mobxStores';
+import { myAccountStore } from '../../mobxStores';
 
 let SearchImage = '../../images/search.png';
 let TabBarIcon = '../../images/accounts.png';
@@ -75,7 +75,7 @@ class Account extends Component {
   }
 
   componentDidMount() {
-      myAccount.getMyAccountData()
+      myAccountStore.getMyAccountData()
   }
 
 
@@ -100,7 +100,7 @@ class Account extends Component {
 
   render() {
     
-    const { myAccoutDataJS } = myAccount;
+    const { myAccoutDataJS } = myAccountStore;
     const { totalAccountValue, todaysChange, todaysChangePercentage } = myAccoutDataJS;
     
     return (

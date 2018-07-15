@@ -49,7 +49,7 @@ export default class ColorStore {
         return new Promise((resolve, reject) => {
             getUserById(id)
                 .then((res) => {
-                    console.log('res', res)
+                    console.log('GET YSER BY ID RES-------- ', res)
                     if (res.ok) {
                         console.log('got user data', res)
                         resolve(res)

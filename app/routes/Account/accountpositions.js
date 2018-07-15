@@ -28,7 +28,7 @@ import { selectGlobalData } from '../../selectors';
 
 
 import { observer } from 'mobx-react';
-import { myAccount } from '../../mobxStores';
+import { myAccountStore } from '../../mobxStores';
 
 @observer
 class AccountPos extends React.Component {
@@ -68,7 +68,7 @@ class AccountPos extends React.Component {
   }
 
   renderList() {
-    const { positionsJS } = myAccount;
+    const { positionsJS } = myAccountStore;
 
     return <View style={account.sectionFull}>
       {positionsJS.map((elem, i) => {
@@ -95,7 +95,7 @@ class AccountPos extends React.Component {
   }
 
   renderTotal() {
-    const { positionTotalsJS } = myAccount;
+    const { positionTotalsJS } = myAccountStore;
 
    return <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
      <View style={account.section}>

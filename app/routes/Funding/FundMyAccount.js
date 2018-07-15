@@ -10,7 +10,7 @@ import {
 import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
 import { numberWithCommas } from '../../utility';
-import { colorStore, accountStore } from '../../mobxStores';
+import { colorStore, accountStore, depositWithdrawStore, myAccountStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 import { generateHeaderStyles } from '../../utility';
 const SearchCancelLight = require('../../images/searchcancel.png');
@@ -56,11 +56,36 @@ export default class FundMyAccount extends React.Component {
       return list;
     }
 
-    depositPressed() {
-        this.props.navigation.navigate('Success', {
-            widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode,
-            amount: this.state.fundingString
-        });
+    submitPressed() {
+        const { makeTransaction } = depositWithdrawStore;
+        const { selectedAccount } = accountStore;
+        const { setMyAccountData } = myAccountStore;
+
+        if(this.state.fundingString == '') {
+            return;
+        }
+
+        let params = {
+            type: 'withdraw',
+            amount: this.state.fundingString,
+            account: selectedAccount
+        }
+        if(this.props.navigation.state.params.widthdrawDepositMode == 'deposit') {
+            params.type = 'deposit'
+        }
+        makeTransaction(params)
+        .then((res) => {
+            // save user data back to user store
+            setMyAccountData(res.json.result);
+            // navigate here...
+            this.props.navigation.navigate('Success', {
+                widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode,
+                amount: this.state.fundingString
+            });
+        })
+        .catch((err) => {
+            console.log('err', err);
+        })
     }
 
     numberChange(newValue) {
@@ -248,12 +273,26 @@ export default class FundMyAccount extends React.Component {
         </View>
     }
 
+    renderButton() {
+        const { transactionLoading } = depositWithdrawStore;
+        console.log('===== rendring button');
+        let buttonTitle = 'FUND ACCOUNT';
+
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+            buttonTitle = 'MAKE WITHDRAW';
+        }
+
+        let disabled = false;
+
+        if(transactionLoading) {
+            disabled = true;
+        }
+
+        return <Button disabled={disabled} {...this.props} title={buttonTitle} onPress={() => this.submitPressed()}/>
+    }
+
     render() {
       const { theme } = colorStore;
-        let buttonTitle = 'FUND ACCOUNT';
-        if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-          buttonTitle = 'MAKE WITHDRAW';
-        }
         return <View style={{height: '100%', padding: 0}}>
             <View style={{flex: 1, backgroundColor: theme.contentBg}}>
                 {this.renderAmountInAccount()}
@@ -263,7 +302,7 @@ export default class FundMyAccount extends React.Component {
                 {this.renderErrorOrNull()}
                 <NumericalSelector disabledList={this.getDisabledList()} onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
                 <View style={{padding: 30, backgroundColor: theme.white}}>
-                  <Button {...this.props} title={buttonTitle} onPress={() => this.depositPressed()}/>
+                    {this.renderButton()}
                 </View>
             </View>
         </View>
