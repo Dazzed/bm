@@ -40,7 +40,7 @@ import order from '../style/order';
 import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
 
-import Index from '../sharedComponents/ChartGraph/index';
+import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
 
 import { chartStore } from '../mobxStores';
@@ -91,13 +91,16 @@ class Chart extends Component {
       indicatorCnt: 0,
       isDisabled: false,
       stockChange: false,
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
     };
     this.orientationDidChange = this._orientationDidChange.bind(this);
     this.hideNews = this.hideNews.bind(this);
     this.hideOrder = this.hideOrder.bind(this);
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
+
+    this.smallGraphHeight = 150;
+    this.largeGraphHeight = 300;
   }
 
   _orientationDidChange(orientation) {
@@ -141,7 +144,7 @@ class Chart extends Component {
     // }, 1000)
 
     getTheme()
-    chartStore.getChartData(this.props.navigation.state.params.data)
+    chartStore.getTickerDetails(this.props.navigation.state.params.data)
   }
 
   componentDidUpdate(prevProps) {
@@ -261,13 +264,14 @@ class Chart extends Component {
 
 
 
-
-
-
-
-
-
-
+  setRange(el) {
+    const { setRange } = chartStore;
+    this.setState({
+        page: el.props.name
+    }, () => {
+      setRange(el.props.name)
+    })
+  }
 
 
 
@@ -282,12 +286,12 @@ class Chart extends Component {
 
   renderPortrait() {
 
-    const { chartLoading, chartDataJS } = chartStore;
+    const { chartLoading, tickerDataJS } = chartStore;
 
     console.log('==========================================================================')
-    console.log(chartDataJS)
+    console.log(tickerDataJS)
 
-    if(!chartDataJS) {
+    if(!tickerDataJS) {
       return null;
     }
 
@@ -312,7 +316,7 @@ class Chart extends Component {
         profile,
         ticker,
         website,
-    } = chartDataJS;
+    } = tickerDataJS;
 
     // keyStats
     //   avgTotalVolume
@@ -463,7 +467,7 @@ class Chart extends Component {
       <View style={chart.verticalChart}>
         <View style={chart.timeWrap}>
         <Tabs selected={this.state.page} style={chart.timePeriod}
-              selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=>this.setState({page:el.props.name})}>
+              selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=> this.setRange(el)}>
               <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
               <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
               <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
@@ -478,7 +482,7 @@ class Chart extends Component {
 
         </View>
         <View style={chart.chartWrapper}>
-          <Index viewLargeGraph={false} />
+          <ChartGraph height={this.smallGraphHeight} viewLargeGraph={false} />
         </View>
 
       </View>
@@ -813,7 +817,7 @@ class Chart extends Component {
          <View style={chartland.leftSide}>
            <View style={chartland.chartFPO}>
 
-             <Index viewLargeGraph={true} />
+             <ChartGraph height={this.largeGraphHeight} viewLargeGraph={true} />
 
            </View>
            <View style={chartland.options}>
@@ -838,7 +842,7 @@ class Chart extends Component {
              </TouchableOpacity>
              <View style={chartland.timePeriod}>
              <Tabs selected={this.state.page} style={[{borderRightColor: this.state.colors['borderGray']}, chartland.timePeriod]}
-                   selectedStyle={[{backgroundColor: this.state.colors['grayTwo']}, {borderColor: this.state.colors['grayTwo']}, {color: this.state.colors['realWhite']}, fonts.hindGunturBd, chartland.timeSelected]} onSelect={el=>this.setState({page:el.props.name})}>
+                   selectedStyle={[{backgroundColor: this.state.colors['grayTwo']}, {borderColor: this.state.colors['grayTwo']}, {color: this.state.colors['realWhite']}, fonts.hindGunturBd, chartland.timeSelected]} onSelect={el=> this.setRange(el)}>
                  <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
                  <Text name='5m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5m</Text>
                  <Text name='30m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>30m</Text>
@@ -1147,11 +1151,11 @@ class Chart extends Component {
   }
 
   renderLoadingOrContent() {
-    const { chartLoading, chartDataJS } = chartStore;
+    const { chartLoading, tickerDataJS } = chartStore;
 
       let newsTicker = null;
-      if(chartDataJS) {
-         newsTicker = chartDataJS.ticker;
+      if(tickerDataJS) {
+         newsTicker = tickerDataJS.ticker;
       }
 
     if(chartLoading) {

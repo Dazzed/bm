@@ -10,6 +10,7 @@ const getTrendingData = (params) => get('users/trendingList', params);
 const getNewsList = (params) => get('/tickerLists/getNews', params);
 const withdraw = (params) => get('/users/withdraw', params);
 const deposit = (params) => get('users/deposit', params);
+const getStockChartDetail = (params) => get('tickerLists/stockCharts', params);
 
 export {
     login,
@@ -21,5 +22,6 @@ export {
     getTrendingData,
     getNewsList,
     withdraw,
-    deposit
+    deposit,
+    getStockChartDetail
 }

@@ -47,13 +47,4 @@ export default class DepositWithdraw {
         })
     }
 
-
-    @computed get chartDataJS() {
-        if(this.chartData === null) {
-            return null;
-        } else {
-            return toJS(this.chartData);
-        }
-    }
-
 }

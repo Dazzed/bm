@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   View,
-  Text,
-  Animated
+  ActivityIndicator
 } from 'react-native';
 import { observer } from 'mobx-react';
 import LargeGraph from './LargeGraph';
 import SmallGraph from './SmallGraph';
+import {chartStore} from "../../mobxStores";
 
 @observer
 export default class Index extends React.Component {
@@ -36,16 +36,28 @@ export default class Index extends React.Component {
     })
   }
 
+  renderLoadingOrContent() {
+    const { stockChartLoading } = chartStore;
+    if(stockChartLoading) {
+      return <View style={{flex: 1, height: this.state.height, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    } else {
+      return this.renderLargeGraphOrSmallGraph()
+    }
+  }
+
+
   render() {
     let inlineStyle = {
       // borderWidth: 1,
       // borderColor: 'red',
       width: '100%',
-      height: '100%',
+      height: this.props.height,
       position: 'relative'
     }
     return <View style={inlineStyle} onLayout={(event) => this.onLayout(event)}>
-      {this.renderLargeGraphOrSmallGraph()}
+        {this.renderLoadingOrContent()}
     </View>
   }
 }
