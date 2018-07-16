@@ -19,24 +19,20 @@ import { connect } from 'react-redux';
 import { observer } from 'mobx-react';
 import Modal from 'react-native-modal'
 import moment from 'moment';
-
 import DialIndicator from '../../sharedComponents/DialIndicator';
-
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../components/react-native-simple-radio-button';
 import SortableListView from 'react-native-sortable-listview'
 import { setTheme, getTheme, colors } from '../../store/store';
 import { selectGlobalData } from '../../selectors';
-
+import {
+  TabNavigator,
+} from 'react-navigation';
 import Swipeout from '../../components/react-native-swipeout';
 import Search from './../search';
-
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
 import navstyle from '../../style/nav';
-
 import watchstyle from '../../style/watchlist';
-// import colors from '../../style/colors';
-
 import { watchListStore } from '../../mobxStores';
 import { kFormatter, zacksRatingFormatter } from '../../utility';
 
@@ -156,6 +152,10 @@ class Watchlists extends React.Component {
       }));
     }
   };
+  
+  navigateToChart(data) {
+    this.props.navigation.navigate('Chart', { data: data })
+  }
 
   renderRow = row => {
     if (!row) {
@@ -165,11 +165,13 @@ class Watchlists extends React.Component {
     if (row.id === deletingRecordId) {
       return <Text></Text>;
     }
+    console.log('rowwwwwwww', row)
+    
     var thisRow = (
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
         <TouchableOpacity
           style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, watchstyle.symbol]}
-          onPress={() => this.props.navigation.navigate('Chart', { data: row })}
+          onPress={() => this.navigateToChart(row)}
           delayLongPress={500}>
           <View style={watchstyle.touchable}>
             <View style={watchstyle.symDetails}>

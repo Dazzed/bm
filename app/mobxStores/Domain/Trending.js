@@ -1,85 +1,30 @@
 import { observable, action, computed, toJS } from 'mobx';
-// import { getTrendingData as getTrendingDataApi } from '../../api';
-import { watchListStore } from '../index';
+import { getTrendingData as getTrendingDataApi } from '../../api';
+import { watchListStore, colorStore } from '../index';
+import { millionBillionFormatter, formatPrice } from '../../utility';
 
-let list = [
-  {
-    sym: 'ETH',
-    exch: 'NYSE',
-    name: 'Ethereum',
-    vol: '24.9M',
-    price: '30.75',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+1.85',
-    changePerc: '+10.41%',
-    stockChange: true,
-  },
-  {
-    sym: 'AMID',
-    exch: 'NYSE',
-    name: 'American Midstream',
-    vol: '65.2M',
-    price: '12.45',
-    time: '12:30 PM PT',
-    posNeg: 'red',
-    change: '-3.12',
-    changePerc: '-2.15%',
-    stockChange: true,
-  },
-  {
-    sym: 'AAPL',
-    exch: 'NASDAQ',
-    name: 'Apple, Inc.',
-    vol: '16.3M',
-    price: '146.19',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+2.01',
-    changePerc: '+2.43%',
-    stockChange: true,
-  },
-  {
-    sym: 'TSLA',
-    exch: 'NASDAQ',
-    name: 'Tesla Motors, Inc.',
-    vol: '5.3M',
-    price: '378.47',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+3.10',
-    changePerc: '+1.05%',
-    stockChange: true,
-  },
-  {
-    sym: 'SPH',
-    exch: 'NYSE',
-    name: 'Suburban Propan',
-    vol: '37.9M',
-    price: '24.31',
-    time: '12:30 PM PT',
-    posNeg: 'red',
-    change: '-4.43',
-    changePerc: '-5.64%',
-    stockChange: true,
-  },
-  {
-    sym: 'NGG',
-    exch: 'NYSE',
-    name: 'National Grid PLC',
-    vol: '12.4M',
-    price: '64.85',
-    time: '12:30 PM PT',
-    posNeg: 'green',
-    change: '+0.15',
-    changePerc: '+4.04%',
-    stockChange: true,
-  },
-];
+import {
+  scan_props,
+  sector_props,
+  industry_utilities,
+  industry_telecomm,
+  industry_realestate,
+  industry_materials,
+  industry_infotech,
+  industry_industrials,
+  industry_health,
+  industry_financials,
+  industry_energy,
+  industry_consumerstaples,
+  industry_consumerdiscretionary
+} from '../../constants';
 
 export default class Trending {
 
   @observable trendingData = [];
+  @observable currentPage = 0;
+  @observable totalPages = 0;
+  @observable pageSize = 0;
 
   @observable trendingLoading = false;
 
@@ -92,12 +37,14 @@ export default class Trending {
   @observable sectorOption = 0;
 
   @action setSectorOption = (newOption) => {
-    this.sectorOption = newOption;
+    console.log('SET SECOTR', newOption);
     this.industryOption = 0;
+    this.sectorOption = newOption;
     this.getTrendingData()
   }
 
   @action setIndustryOption = (newOption) => {
+    console.log('Set new industry option', newOption)
     this.industryOption = newOption;
     this.getTrendingData()
   }
@@ -113,49 +60,136 @@ export default class Trending {
   }
 
   @action setTrendingData = (data) => {
-    this.trendingData = data;
+    if(!data) {
+      this.trendingData = [];
+      this.currentPage = 0;
+      this.totalPages = 0;
+      this.pageSize = 0;
+    } else {
+      this.trendingData = data.data;
+      this.currentPage = data.current_page;
+      this.totalPages = data.total_pages;
+      this.pageSize = data.page_size;
+    }
   }
 
   @computed get trendingDataJS() {
-    const watchListItems = watchListStore.watchlistDataJS;
-    return toJS(this.trendingData)
-      .map(data => ({
-        ...data,
-        watching: watchListItems.some(({ ticker }) => ticker === data.sym)
-      }))
+    const { theme } = colorStore;
+    const { watchlistDataJS } = watchListStore;
+    const watchListItems = watchlistDataJS;
+    if(!this.trendingData) {
+      return []
+    } else {
+      return toJS(this.trendingData)
+      .map(data => {
+        let parseData = {
+          ...data,
+          latestPriceFormatted: formatPrice(data.latestPrice),
+          latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
+          posNegColor: data.change > 0 ? theme.green : theme.red
+        }
+
+        // console.log('data', parseData)
+
+        if(watchListItems.length > 0) {
+          parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
+        }
+        return parseData;
+      });
+    }
+
   }
 
-  @action addSymToWatchList = sym => {
-    watchListStore.addTickerToWatchList(sym);
+  @action addSymToWatchList = ticker => {
+    watchListStore.addTickerToWatchList(ticker);
   }
 
-  @action removeSymFromWatchList = sym => {
-    console.info('removeSymFromWatchList', sym);
-    watchListStore.removeTickerFromWatchList(sym);
+  @action removeSymFromWatchList = ticker => {
+    watchListStore.removeTickerFromWatchList(ticker);
   }
 
   @action setDecimalOrPercentage = (newVal) => {
     this.displayDecimal = newVal;
   }
 
+  @computed get currentIndustryOptions() {
+    console.log('=============== CURRENT INDUSTRY OPTIONS SELECOT', this.industryOption)
+     if(this.sectorOption === null) {
+       return null;
+     }
+     if(this.sectorOption === 0) {
+       return industry_consumerdiscretionary
+     }
+     if(this.sectorOption === 1) {
+       return industry_consumerdiscretionary
+     }
+     if(this.sectorOption === 2) {
+       return industry_consumerstaples
+     }
+     if(this.sectorOption === 3) {
+       return industry_energy
+     }
+     if(this.sectorOption === 4) {
+       return industry_financials
+     }
+     if(this.sectorOption === 5) {
+       return industry_health
+     }
+     if(this.sectorOption === 6) {
+       return industry_industrials
+     }
+     if(this.sectorOption === 7) {
+       return industry_infotech
+     }
+     if(this.sectorOption === 8) {
+       return industry_materials
+     }
+     if(this.sectorOption === 9) {
+       return industry_realestate
+     }
+     if(this.sectorOption === 10) {
+       return industry_telecomm
+     }
+     if(this.sectorOption === 11) {
+       return industry_utilities
+     }
+  }
+
+
   @action getTrendingData = () => {
+    this.setLoading(true);
+
+    let filterOptions = {
+      "trending": scan_props[this.trendingOption].queryString,
+    }
+    if(this.sectorOption > 0) {
+      filterOptions.sector = sector_props[this.sectorOption].queryString;
+    }
+
+    if(this.sectorOption > 0 && this.industryOption > 0) {
+      filterOptions.industry = industry_utilities[this.industryOption]
+    }
+
+    // console.log('=============== params', filterOptions)
 
     let params = {
-
+      filter: JSON.stringify(filterOptions)
     }
-    // getTrendingDataApi(params)
-    // .then((res) => {
-    //   console.log('trending data', res)
-    // })
-    // .catch((err) => {
-    //   console.log('trending data err', err)
-    // })
 
-    this.setLoading(true);
-    setTimeout(() => {
-      this.setTrendingData(list);
+    getTrendingDataApi(params)
+    .then((res) => {
+      console.log('trending data', res)
+      if(res.ok) {
+        this.setTrendingData(res.json.data)
+      } else {
+        this.setTrendingData(null)
+      }
       this.setLoading(false);
-    }, 500)
+    })
+    .catch((err) => {
+      this.setLoading(false);
+      console.log('trending data err', err)
+    })
 
   }
 

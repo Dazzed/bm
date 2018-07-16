@@ -1,5 +1,5 @@
 import { observable, action, computed, toJS } from 'mobx';
-// import { getMyAccountData } from '../../api';
+import { getMyAccountData } from '../../api';
 
 export default class MyAccountData {
 
@@ -17,13 +17,13 @@ export default class MyAccountData {
     let params = {
 
     }
-    getMyAccountData(params)
-    .then((res) => {
-      console.log('account data', res)
-    })
-    .catch((err) => {
-      console.log('account data err', err)
-    });
+    // getMyAccountData(params)
+    // .then((res) => {
+    //   console.log('account data =============  ', res)
+    // })
+    // .catch((err) => {
+    //   console.log('account data err', err)
+    // });
   };
 
 @computed get myAccoutDataJS() {

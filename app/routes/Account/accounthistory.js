@@ -26,7 +26,7 @@ import {setTheme, getTheme, colors} from '../../store/store';
 import { selectGlobalData } from '../../selectors';
 
 import { observer } from 'mobx-react';
-import { myAccount } from '../../mobxStores';
+import { myAccountStore } from '../../mobxStores';
 
 @observer
 class AccountHist extends React.Component {
@@ -65,7 +65,7 @@ class AccountHist extends React.Component {
       }
     }
 
-    const { historyJS } = myAccount;
+    const { historyJS } = myAccountStore;
     return <View style={{borderWidth: 1, borderColor: 'red'}}>
       {historyJS.map((eachDate, i) => {
         return <View key={'eachDate' + i} style={{borderWidth: 1, borderColor: 'blue'}}>

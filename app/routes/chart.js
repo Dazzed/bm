@@ -25,7 +25,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from '../com
 import CheckBox from '../components/react-native-check-box'
 import Tabs from 'react-native-tabs';
 import ResponsiveImage from 'react-native-responsive-image';
-import {setTheme, getTheme, colors} from '../store/store';
+import { setTheme, getTheme, colors } from '../store/store';
 
 import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
@@ -40,8 +40,11 @@ import order from '../style/order';
 import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
 
-import ChartGraph from '../sharedComponents/ChartGraph';
+import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
+
+import { chartStore, watchListStore } from '../mobxStores';
+import { observer } from 'mobx-react';
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -60,7 +63,7 @@ var indicator_props = [
   {label: 'BOL', info: 'Bollinger Bands', value: 10 }
 ];
 
-
+@observer
 class Chart extends Component {
 
   static navigationOptions = {
@@ -71,7 +74,7 @@ class Chart extends Component {
         source={require('../images/watchlist.png')}
         style={[navstyle.iconBig, {tintColor: tintColor}]}
       />
-    ),    
+    ),
   };
   constructor(props){
     super(props);
@@ -88,13 +91,16 @@ class Chart extends Component {
       indicatorCnt: 0,
       isDisabled: false,
       stockChange: false,
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
     };
     this.orientationDidChange = this._orientationDidChange.bind(this);
     this.hideNews = this.hideNews.bind(this);
     this.hideOrder = this.hideOrder.bind(this);
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
+
+    this.smallGraphHeight = 150;
+    this.largeGraphHeight = 300;
   }
 
   _orientationDidChange(orientation) {
@@ -110,13 +116,13 @@ class Chart extends Component {
     }
   }
 
-  addSymbol(sym){
+  addSymbol(ticker){
     Alert.alert(
       '',
-      'You added '+sym+' to your watchlist.',
+      'You added '+ticker+' to your watchlist.',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker)},
       ],
       { cancelable: true }
     )
@@ -130,15 +136,15 @@ class Chart extends Component {
   }
 
   componentDidMount(){
-    Orientation.unlockAllOrientations();   
+    Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
-    
-    setTimeout(() => {
-      this.forceSetToLandscape();  
-    }, 1000)
-    
 
-    console.log(getTheme());
+    // setTimeout(() => {
+    //   this.forceSetToLandscape();
+    // }, 1000)
+
+    getTheme()
+    chartStore.getTickerDetails(this.props.navigation.state.params.data)
   }
 
   componentDidUpdate(prevProps) {
@@ -154,7 +160,7 @@ class Chart extends Component {
   }
 
   componentWillUnmount() {
-    Orientation.lockToPortrait();    
+    Orientation.lockToPortrait();
     Orientation.removeOrientationListener(this.orientationDidChange);
   }
 
@@ -162,21 +168,21 @@ class Chart extends Component {
     if(this.state.orientation == 'landscape') {
       this.setState({ isRotateVisible: true, orderType: orderType })
     } else {
-      Orientation.lockToPortrait();    
+      Orientation.lockToPortrait();
       this.setState({ isOrderVisible: true, orderType: orderType })
     }
   }
-  hideOrder(){ 
-    Orientation.unlockAllOrientations();   
+  hideOrder(){
+    Orientation.unlockAllOrientations();
     this.setState({ isOrderVisible: false })
   }
   showNews(){
     this.setState({ isNewsVisible: true })
     Orientation.lockToPortrait();
   }
-  hideNews(){ 
+  hideNews(){
     this.setState({ isNewsVisible: false })
-    Orientation.unlockAllOrientations();  
+    Orientation.unlockAllOrientations();
   }
   showSearch() {
     this.setState({isSearchVisible:true});
@@ -184,7 +190,7 @@ class Chart extends Component {
   }
   hideSearch() {
     this.setState({isSearchVisible:false});
-    Orientation.unlockAllOrientations();  
+    Orientation.unlockAllOrientations();
   }
   showIndicators() {
     this.setState({isIndicatorsVisible:true});
@@ -193,6 +199,8 @@ class Chart extends Component {
       this.setState({isIndicatorsVisible:false});
   }
   toggleCheck(value) {
+    const { setIndicatorsList } = chartStore;
+
     var indicates = this.state.indicators;
     var exists = false;
     var indicatorCnt = this.state.indicatorCnt;
@@ -207,11 +215,16 @@ class Chart extends Component {
         exists = true;
         this.setState({ isDisabled: false }, () => {
           this.setState({ indicators: indicates, isDisabled: false, indicatorCnt: indicatorCnt }, () => {
+              // forward data to mobx
+              setIndicatorsList(indicates);
           })
         })
         return;
       }
     }
+
+
+
     console.log("movin on");
     //if it doesn't exists and we aren't at 5 indicators add it
     if(!exists && indicates.length < 5) {
@@ -225,11 +238,15 @@ class Chart extends Component {
           var arrayvar = indicates.slice()
           arrayvar.push(value)
           this.setState({  indicators: arrayvar, isDisabled: true, indicatorCnt: indicatorCnt }, () => {
+              // forward data to mobx
+              setIndicatorsList(arrayvar);
           })
         } else {
           var arrayvar = indicates.slice()
           arrayvar.push(value)
           this.setState({ indicators: arrayvar, isDisabled: false, indicatorCnt: indicatorCnt }, () => {
+              // forward data to mobx
+              setIndicatorsList(arrayvar);
           })
         }
       }
@@ -254,53 +271,111 @@ class Chart extends Component {
     var that = this;
     setTimeout(function(){that.props.navigation.navigate(tab)}, 15);
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+  setRange(el) {
+    const { setRange } = chartStore;
+    this.setState({
+        page: el.props.name
+    }, () => {
+      setRange(el.props.name)
+    })
+  }
+
+  // TODO: add image to watchlist when you add
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
   // PORTRAIT
   //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
+
+
   renderPortrait() {
+
+    const { chartLoading, tickerDataJS } = chartStore;
+
+    console.log('==========================================================================')
+    console.log(tickerDataJS)
+
+    if(!tickerDataJS) {
+      return null;
+    }
+
+    const {
+        Price,
+        Volume,
+        address,
+        ask,
+        bid,
+        change,
+        changePercent,
+        companyName,
+        exchange,
+        executives,
+        high,
+        keyStats,
+        latestUpdate,
+        low,
+        momentum,
+        open,
+        overview,
+        profile,
+        ticker,
+        website,
+    } = tickerDataJS;
+
+    // keyStats
+    //   avgTotalVolume
+    //   beta
+    //   divYield
+    //   eps
+    //   float
+    //   mktCap
+    //   nextEarningsDate
+    //   peRatio
+    //   week52high
+    //   week52low
+    //   float
+
+
+    // overview
+    //   institutionPercent
+    //   lastStockSplit
+    //     forFactor
+    //     paymentDate
+    //     toFactor
+    //   sharesOutstanding
+
     return <View>
     <View style={styles.menuBorder}>
       <View style={styles.menuContainer}>
         <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
-          <Image 
+          <Image
             source={require('../images/back.png')}
             style={styles.backImg}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
           <Text style={[{color: this.state.colors['lightGray']}, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
-            <Image 
+            <Image
               source={require('../images/search.png')}
               style={styles.searchImg}
             />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rightCta} onPress={() => this.addSymbol('AAPL')}>
+        <TouchableOpacity style={styles.rightCta} onPress={() => this.addSymbol(ticker)}>
             <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
         </TouchableOpacity>
       </View>
     </View>
 
-    <View style={[{borderTopColor: this.state.colors['borderGray']}, chart.symbolPosition]}>
+      {/* TODO: YOU ARE LONG */}
+
+    <View style={[{borderTopColor: this.state.colors['borderGray'], backgroundColor: this.state.colors['white'],}, chart.symbolPosition]}>
       <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnFirst, fonts.hindGunturRg]}>You are long</Text>
       <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
       <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
@@ -352,47 +427,58 @@ class Chart extends Component {
           <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Settings</Text>
       </TouchableOpacity>
     </View>
+
+
     <ScrollView style={chart.wrapper}>
       <View style={chart.header}>
         <View style={chart.titleContainer}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{this.props.navigation.state.params.data['name']}</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{this.props.navigation.state.params.data['sym']}: {this.props.navigation.state.params.data['exch']}</Text>
+          <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
         </View>
+
+        {/* TODO: nav to news with ticker */}
+
         <TouchableOpacity style={[{borderColor: this.state.colors['lightGray']}, chart.newsBtn]} onPress={() => this.showNews()}>
           <Text style={[{color: this.state.colors['lightGray']}, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
         </TouchableOpacity>
       </View>
+
       <View style={chart.prices}>
-        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>$153.53</Text>
+        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>${Price}</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>12:30 PM PT</Text>
-          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}              
+
+          {/* TODO: don't have this yet */}
+
+          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>12:30 PM PT TODO!!</Text>
+          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{change}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{changePercent}%</Text>}
         </TouchableOpacity>
       </View>
+
       <View style={chart.prices}>
         <View style={chart.pricePoints}>
           <View style={chart.priceOpen}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>$153.53</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${open}</Text>
           </View>
           <View style={chart.priceHigh}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>$153.98</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${high}</Text>
           </View>
           <View style={chart.priceLow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>$153.01</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${low}</Text>
           </View>
           <View style={chart.priceVol}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>$24.9M</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${Volume}</Text>
           </View>
         </View>
       </View>
+
       <View style={chart.verticalChart}>
         <View style={chart.timeWrap}>
         <Tabs selected={this.state.page} style={chart.timePeriod}
-              selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=>this.setState({page:el.props.name})}>
+              selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=> this.setRange(el)}>
               <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
               <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
               <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
@@ -407,21 +493,27 @@ class Chart extends Component {
 
         </View>
         <View style={chart.chartWrapper}>
-          <ChartGraph viewLargeGraph={false} />
+          <ChartGraph height={this.smallGraphHeight} viewLargeGraph={false} />
         </View>
 
       </View>
       <View style={[chart.momentumWrapper, {width: '100%'}]}>
         <View style={[chart.momentumInfo, {flex: 1}]}>
+
+          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
+
           <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
           <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
         </View>
 
+        {/* TODO: add value to dial indicator, where does it come from */}
+
         <View style={{ flex: 1}}>
           <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
         </View>
-        
+
       </View>
+
       <View style={chart.profileWrapper}>
         <View style={chart.statsRow}>
             <TouchableOpacity style={styles.sellBtn} onPress={() => {this.showOrder('Sell')}}>
@@ -431,7 +523,10 @@ class Chart extends Component {
               <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
             </TouchableOpacity>
         </View>
-      </View>                    
+      </View>
+
+      {/* TODO: BID LIST not getting this from server yet */}
+
       <View style={chart.bidAsksWrapper}>
         <View style={chart.bid}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>BID</Text>
@@ -456,6 +551,9 @@ class Chart extends Component {
             <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
           </View>
         </View>
+
+        {/* TODO: ASK LIST not getting this from server yet */}
+
         <View style={chart.bid}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>ASK</Text>
           <View style={chart.bidaskRow}>
@@ -469,7 +567,7 @@ class Chart extends Component {
           <View style={chart.bidaskRow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
             <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
+          </View>dev
           <View style={chart.bidaskRow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
             <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
@@ -480,85 +578,106 @@ class Chart extends Component {
           </View>
         </View>
       </View>
+
       <View style={chart.statsWrapper}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>52WK HIGH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>$155.80</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52high}</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>52WK LOW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>$155.80</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52low}</Text>
           </View>
           <View style={chart.statsColumn}>
+
+              {/* TODO: do we want to format with a B for billions? */}
+
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>25.2B</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.avgTotalVolume}</Text>
           </View>
         </View>
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
+
+              {/* TODO: do we want to format with a B for billions? */}
+
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>MKT CAP</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>797.61B</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.mktCap}</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>17.83</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.peRatio}</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>EPS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>3.28</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.eps}</Text>
           </View>
         </View>
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
+
+                {/* TODO: what is this referencing?? */}
+
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>PRICE/EARNINGS</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>17.19</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>1.64%</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.divYield}%</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>BETA</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>1.25</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.beta}</Text>
           </View>
         </View>
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>5.21B</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.float}</Text>
           </View>
           <View style={chart.statsColumnLong}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>NEXT EARNINGS DATE</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>07/02/2017</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.nextEarningsDate}</Text>
           </View>
           <View style={chart.statsColumnShort}></View>
         </View>
       </View>
+
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PROFILE</Text>
           <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>Apple Inc. designs, manufactures, and markets personal computers and related personal computing and mobile communication devices along with a variety of related software, services, peripherals, and networking solutions. The Company sells its products worldwide through its online stores, its retail stores, its direct sales force, third-party wholesalers, and resellers.</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{profile}</Text>
           </View>
-      </View>          
+      </View>
+
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>ADDRESS</Text>
           <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>1 Infinite Loop</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>Cupertino, CA 95014</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>United States</Text>
+
+                {/* TODO: there is no state or country in the data.. */}
+
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, STATE?? {address.hq_address_city}</Text>
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, STATE?? {address.hq_address_postal_code}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>COUNTRY??</Text>
           </View>
-      </View>          
+      </View>
+
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>www.apple.com</Text>
+                {/* TODO: make this a link?? */}
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
           </View>
-      </View>          
+      </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
           <View style={chart.profileTxt}>
+
+              {/* TODO: get executives list. Not in this data yet */}
+
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Timothy Donald Cook</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Executive Officer</Text>
           </View>
@@ -569,7 +688,7 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Jonathan Ive</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Design Officer</Text>
-          </View>              
+          </View>
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Luca Maestri</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/CFO</Text>
@@ -577,8 +696,11 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>D Bruce Sewell</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/Secy/General Counsel</Text>
-          </View>              
-      </View>          
+          </View>
+      </View>
+
+                {/* TODO: get related stocks. not yet in data */}
+
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
           <View style={chart.profileTxt}>
@@ -592,27 +714,36 @@ class Chart extends Component {
           <View style={chart.profileTxt}>
             <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
-          </View>              
-      </View>          
+          </View>
+      </View>
+
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
+
+                {/* TODO: format number with a B?? */}
+
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>SHARES OUTSTANDING</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>5.214B</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{overview.sharesOutstanding}</Text>
             </View>
             <View style={chart.statsColumn}>
+
+                {/* TODO: get this data, don't have anything for last stock split */}
+
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
               <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>7 TO 1 - Jun 2014</Text>
             </View>
           </View>
+
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>INSTITUTIONAL OWNERSHIP</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>62.43%</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{overview.institutionPercent}%</Text>
             </View>
           </View>
-      </View>          
+      </View>
+
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
         <View style={styles.btnRow}>
           <View style={chart.statsColumn}>
@@ -626,32 +757,32 @@ class Chart extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </View>          
+      </View>
     </ScrollView>
   </View>
   }
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //
   // LANDSCAPE
   //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
-  
+
+
+
   renderLandscape() {
     return <View style={chartland.landscape}>
        <View style={chartland.header}>
            <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
-             <Image 
+             <Image
                source={require('../images/back.png')}
                style={styles.backImg}
              />
@@ -665,7 +796,7 @@ class Chart extends Component {
 
            <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
              <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>12:30 PM PT</Text>
-             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}              
+             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
            </TouchableOpacity>
          </View>
          <View style={chartland.prices}>
@@ -688,7 +819,7 @@ class Chart extends Component {
              </View>
            </View>
          </View>
-         <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol('AAPL')}>
+         <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol(ticker)}>
           <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
          </TouchableOpacity>
 
@@ -697,7 +828,7 @@ class Chart extends Component {
          <View style={chartland.leftSide}>
            <View style={chartland.chartFPO}>
 
-             <ChartGraph viewLargeGraph={true} />
+             <ChartGraph height={this.largeGraphHeight} viewLargeGraph={true} />
 
            </View>
            <View style={chartland.options}>
@@ -705,7 +836,7 @@ class Chart extends Component {
                <View style={chartland.indicatorsWrap}>
                  <Text style={[{color: this.state.colors['darkSlate']}, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>
                  <Text style={[{color: this.state.colors['lightGray']}, chartland.indicatorsTxt, fonts.hindGunturRg]}>
-                   {this.state.indicators.length < 1 ? 
+                   {this.state.indicators.length < 1 ?
                      'Add to graph' : ''}
                  {
                    this.state.indicators.map(function(indicate, index) {
@@ -722,7 +853,7 @@ class Chart extends Component {
              </TouchableOpacity>
              <View style={chartland.timePeriod}>
              <Tabs selected={this.state.page} style={[{borderRightColor: this.state.colors['borderGray']}, chartland.timePeriod]}
-                   selectedStyle={[{backgroundColor: this.state.colors['grayTwo']}, {borderColor: this.state.colors['grayTwo']}, {color: this.state.colors['realWhite']}, fonts.hindGunturBd, chartland.timeSelected]} onSelect={el=>this.setState({page:el.props.name})}>
+                   selectedStyle={[{backgroundColor: this.state.colors['grayTwo']}, {borderColor: this.state.colors['grayTwo']}, {color: this.state.colors['realWhite']}, fonts.hindGunturBd, chartland.timeSelected]} onSelect={el=> this.setRange(el)}>
                  <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
                  <Text name='5m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5m</Text>
                  <Text name='30m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>30m</Text>
@@ -737,20 +868,20 @@ class Chart extends Component {
            </View>
          </View>
          <View style={chartland.right}>
-           
+
            <View style={chartland.momentumWrapper}>
-             
+
              <View style={chartland.momentumInfo}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>MOMENTUM</Text>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
              </View>
-             
+
              <View style={{ flex: 1}}>
                <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
              </View>
-             
+
            </View>
-           
+
            <View style={chartland.bidAsksWrapper}>
              <View style={chartland.bid}>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
@@ -817,10 +948,10 @@ class Chart extends Component {
                  </TouchableOpacity>
                </View>
              </View>
-           </View>                    
+           </View>
          </View>
        </View>
-         <Modal 
+         <Modal
            isVisible={this.state.isIndicatorsVisible}
            animationIn={'fadeIn'}
            animationOut={'fadeOut'}
@@ -999,26 +1130,26 @@ class Chart extends Component {
              </View>
              </ScrollView>
            </View>
-         </Modal>          
+         </Modal>
      </View>
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   showOrientation(){
     switch (this.state.orientation) {
       case 'portrait':
@@ -1029,48 +1160,68 @@ class Chart extends Component {
         break;
       }
   }
+
+  renderLoadingOrContent() {
+    const { chartLoading, tickerDataJS } = chartStore;
+
+      let newsTicker = null;
+      if(tickerDataJS) {
+         newsTicker = tickerDataJS.ticker;
+      }
+
+    if(chartLoading) {
+      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={[{color: this.state.colors['lightGray']}, fonts.hindGunturRg]}>Loading...</Text>
+      </View>
+    } else {
+      return <View style={chart.container}>
+        {this.showOrientation()}
+        <Modal
+          isVisible={this.state.isOrderVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}
+          style={order.modal}>
+          <PlaceOrder
+            hideOrder={this.hideOrder}
+            orderType={this.state.orderType} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isNewsVisible}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}
+          style={order.modal}>
+          <ChartNews
+            ticker={newsTicker}
+            hideNews={this.hideNews} />
+        </Modal>
+        <Modal
+          isVisible={this.state.isRotateVisible}
+          animationIn={'fadeIn'}
+          animationOut={'fadeOut'}
+          style={order.modal}>
+          <View style={styles.pageContainer}>
+            <View style={styles.rotateDevice}>
+              <Image
+                source={require('../images/turnphoneicon.png')}
+                style={styles.rotateImg}
+              />
+              <Text style={[styles.rotateFont, fonts.hindGunturBd]}>Please rotate your phone</Text>
+              <Text style={[styles.rotateFont, fonts.hindGunturBd]}>to buy APPL stocks</Text>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    }
+  }
+
   render() {
     var self = this;
     return (
       <View style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
-        <View style={chart.container}>
-          {this.showOrientation()}
-          <Modal 
-            isVisible={this.state.isOrderVisible}
-            animationIn={'slideInUp'}
-            animationOut={'slideOutDown'}
-            style={order.modal}>
-            <PlaceOrder 
-              hideOrder={this.hideOrder}
-              orderType={this.state.orderType} />
-          </Modal>
-          <Modal 
-            isVisible={this.state.isNewsVisible}
-            animationIn={'slideInUp'}
-            animationOut={'slideOutDown'}
-            style={order.modal}>
-            <ChartNews 
-              hideNews={this.hideNews} />
-          </Modal>
-          <Modal 
-            isVisible={this.state.isRotateVisible}
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
-            style={order.modal}>
-            <View style={styles.pageContainer}>
-              <View style={styles.rotateDevice}>
-                <Image 
-                  source={require('../images/turnphoneicon.png')}
-                  style={styles.rotateImg}
-                />
-                <Text style={[styles.rotateFont, fonts.hindGunturBd]}>Please rotate your phone</Text>
-                <Text style={[styles.rotateFont, fonts.hindGunturBd]}>to buy APPL stocks</Text>
-              </View>
-            </View>
-          </Modal>
-        </View>
 
-        <Modal 
+        {this.renderLoadingOrContent()}
+
+        <Modal
           isVisible={this.state.isSearchVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'} >

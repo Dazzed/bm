@@ -27,7 +27,7 @@ import fonts from '../../style/fonts';
 import { selectGlobalData } from '../../selectors';
 
 import { observer } from 'mobx-react';
-import { myAccount } from '../../mobxStores';
+import { myAccountStore } from '../../mobxStores';
 
 @observer
 class AccountBal extends React.Component {
@@ -57,7 +57,7 @@ class AccountBal extends React.Component {
   }
 
   render() {
-    const { balancesJS } = myAccount;
+    const { balancesJS } = myAccountStore;
 
     return (
       <View style={[{backgroundColor: this.state.colors['contentBg']}, account.tabContent]}>

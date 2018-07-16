@@ -14,6 +14,57 @@ export const generateHeaderStyles = (theme) => {
   }
 };
 
+export const millionBillionFormatter = (inputNumber) => {
+  let formattedNumber = '';
+  let stringAppend = '';
+  if(!inputNumber) {
+    return '';
+  }
+  if(isNaN(inputNumber)) {
+    return 'NaN!'
+  }
+  if(inputNumber.length < 4) {
+    // handle three digit items without modifying style
+    return inputNumber;
+  } else if( inputNumber > 0 && inputNumber <= 99999) {
+    // format for thousands
+    stringAppend = 'K';
+    let dividedBy1000 = inputNumber / 1000;
+    return dividedBy1000.toFixed(1) + stringAppend;
+  } else if( inputNumber >= 100000 && inputNumber <= 999999999) {
+    // handle millions
+    stringAppend = 'M';
+    let dividedBy1000000 = inputNumber / 1000000;
+    return dividedBy1000000.toFixed(1) + stringAppend;
+  } else if( inputNumber >= 1000000000 && inputNumber <= 999999999999) {
+    // handle billions
+    stringAppend = 'B';
+    let dividedBy1000000000 = inputNumber / 1000000000;
+    return dividedBy1000000000.toFixed(1) + stringAppend;
+  } else {
+    return '!!!'
+  }
+}
+
+export const formatPrice = (priceInput) => {
+  if(!priceInput) {
+    return ''
+  }
+  if(isNaN(priceInput)) {
+    return priceInput
+  }
+  // make string
+  let stringifiedPrice = priceInput.toString();
+  // check if decimal exists
+  let hasDecimal = stringifiedPrice.indexOf('.') > 0;
+  if(!hasDecimal) {
+    // if it does not, add it and two 00s
+    return priceInput + '.00';
+  } else {
+    return priceInput + '';
+  }
+}
+
 export const eightCharValidator = (password) => {
   if (!password) {
     return false;

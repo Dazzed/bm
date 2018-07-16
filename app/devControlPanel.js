@@ -3,7 +3,7 @@
 
 // const productionMode = false;
 const productionMode = true;
-
+//
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -20,8 +20,8 @@ const displayPreviewButtonOnHome = false;
 
 
 // force dark theme all the time
-// const forceDarkTheme = false;
-const forceDarkTheme = true;
+const forceDarkTheme = false;
+// const forceDarkTheme = true;
 
 // force navigation on top level navigator
 // const firstNavDefaultRoute = 'Home';
@@ -36,7 +36,7 @@ const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Scanner';
+const appNavDefaultTabRoute = 'Trending';
 
 // Account
 // Watchlists
