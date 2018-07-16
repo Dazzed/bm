@@ -11,6 +11,7 @@ const getNewsList = (params) => get('/tickerLists/getNews', params);
 const withdraw = (params) => get('/users/withdraw', params);
 const deposit = (params) => get('users/deposit', params);
 const getStockChartDetail = (params) => get('tickerLists/stockCharts', params);
+const searchStocks = (params) => get('users/stockSearch', params);
 
 export {
     login,
@@ -23,5 +24,6 @@ export {
     getNewsList,
     withdraw,
     deposit,
-    getStockChartDetail
+    getStockChartDetail,
+    searchStocks
 }

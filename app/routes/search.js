@@ -35,7 +35,9 @@ import styles from '../style/style';
 import watchstyle from '../style/watchlist';
 import search from '../style/search';
 import fonts from '../style/fonts';
+import { observer } from 'mobx-react';
 
+@observer
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -129,17 +131,31 @@ class Search extends React.Component {
     }
   }
 
+    forwardSearchTermToMobx() {
+      console.log('-------------- FORWARD SEARCH TERM TO MOBX', this.state.searchTerm)
+    }
+
   showSearchPreset(search) {
     if(search == 'toptech'){
-      this.setState({showCancel: 1, page: search, searchTerm: 'Top Tech Companies'});
+      this.setState({showCancel: 1, page: search, searchTerm: 'Top Tech Companies'}, () => {
+        this.forwardSearchTermToMobx()
+      });
     } else if(search == 'biotech'){
-      this.setState({showCancel: 1, page: search, searchTerm: 'Hot Biotech Companies'});
+      this.setState({showCancel: 1, page: search, searchTerm: 'Hot Biotech Companies'}, () => {
+        this.forwardSearchTermToMobx()
+      });
     } else if(search == 'crypto'){
-      this.setState({showCancel: 1, page: search, searchTerm: 'Best Cryptocurrencies'});
+      this.setState({showCancel: 1, page: search, searchTerm: 'Best Cryptocurrencies'}, () => {
+        this.forwardSearchTermToMobx()
+      });
     } else if(search == 'cannabis'){
-      this.setState({showCancel: 1, page: search, searchTerm: 'Top Cannabis Stocks'});
+      this.setState({showCancel: 1, page: search, searchTerm: 'Top Cannabis Stocks'}, () => {
+        this.forwardSearchTermToMobx()
+      });
     } else {
-      this.setState({showCancel: 0, page: search, searchTerm: ''});
+      this.setState({showCancel: 0, page: search, searchTerm: ''}, () => {
+        this.forwardSearchTermToMobx()
+      });
     }
   }
   getSearchView() {
@@ -180,9 +196,7 @@ class Search extends React.Component {
                     <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
-                    <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-                    </TouchableOpacity>
+                      {this.renderAddToWatchlistTouchable(data['sym'])}
                   </View>
                 </View>    
               </TouchableOpacity>
@@ -205,9 +219,7 @@ class Search extends React.Component {
                     <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
-                    <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-                    </TouchableOpacity>
+                      {this.renderAddToWatchlistTouchable(data['sym'])}
                   </View>
                 </View>    
               </TouchableOpacity>
@@ -230,9 +242,7 @@ class Search extends React.Component {
                     <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
-                    <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-                    </TouchableOpacity>
+                      {this.renderAddToWatchlistTouchable(data['sym'])}
                   </View>
                 </View>    
               </TouchableOpacity>
@@ -255,9 +265,7 @@ class Search extends React.Component {
                     <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
                   </View>
                   <View style={watchstyle.symCost}>
-                    <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(data['sym'])}} >
-                      <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-                    </TouchableOpacity>
+                      {this.renderAddToWatchlistTouchable(data['sym'])}
                   </View>
                 </View>    
               </TouchableOpacity>
@@ -267,6 +275,17 @@ class Search extends React.Component {
         break;
     }
   }  
+
+
+  renderAddToWatchlistTouchable(sym) {
+    let source = this.state.colors['addImage'];
+    if(false) {
+      // check for watchlist presence and overwrite source here
+    }
+    return <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(sym)}} >
+        <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
+    </TouchableOpacity>
+  }
 
   render() {
     return(
