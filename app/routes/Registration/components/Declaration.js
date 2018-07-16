@@ -28,7 +28,7 @@ import RegistrationHeader from './registrationHeader';
 let linkList = [
     { title: "Terms & Conditions", value: 'tnc' },
     { title: "Privacy Policy", value: 'pp' },
-    { title: "Client Agreement", value: 'ca' },
+    { title: "User Agreement", value: 'ca' },
     { title: "Risk Disclosure Notice", value: 'rdn' }
 ]
 

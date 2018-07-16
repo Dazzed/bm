@@ -1,7 +1,6 @@
 import { observable, action, computed, toJS } from 'mobx';
-// import { getWatchlistData as getWatchlistDataApi } from '../../api';
 import { get, deleteRequest, post } from '../../api/apiUtility';
-import { sortStringArrayByParam, sortNumberArrayByParam } from '../../utility';
+import { sortStringArrayByParam, sortNumberArrayByParam, millionBillionFormatter } from '../../utility';
 
 export default class Watchlist {
   sort_props = [
@@ -11,7 +10,9 @@ export default class Watchlist {
     { label: '% Change', value: 3 }
   ];
 
-  constructor() {}
+  constructor() {
+
+  }
 
   @observable isFetchingWatchlistData = true;
   @observable isEditingWatchList = false;
@@ -91,20 +92,26 @@ export default class Watchlist {
   }
 
   @computed get watchlistDataJS() {
-    if (this.isEditingWatchList) {
-      return sortNumberArrayByParam(toJS(this.watchlistData), 'position');
-    }
+    let originalData = toJS(this.watchlistData);
+    let formattedData = originalData.map((data, i) => {
+      let thisData = {
+        ...data,
+        formattedLatestVolume: millionBillionFormatter(data.latestVolume)
+      }
+      return thisData
+    });
+
     switch (this.sortByIndex) {
       case 0:
-        return sortNumberArrayByParam(toJS(this.watchlistData), 'position');
+        return sortNumberArrayByParam(formattedData, 'position');
       case 1:
-        return sortStringArrayByParam(toJS(this.watchlistData), 'companyName');
+        return sortStringArrayByParam(formattedData, 'companyName');
       case 2:
-        return sortNumberArrayByParam(toJS(this.watchlistData), 'avgTotalVolume', 'DESC');
+        return sortNumberArrayByParam(formattedData, 'avgTotalVolume', 'DESC');
       case 3:
-        return sortNumberArrayByParam(toJS(this.watchlistData), 'changePercent', 'DESC');
+        return sortNumberArrayByParam(formattedData, 'changePercent', 'DESC');
       default:
-        return toJS(this.watchlistData);
+        return toJS(formattedData);
     }
   }
 
@@ -120,17 +127,19 @@ export default class Watchlist {
   }
 
   @action removeTickerFromWatchList = async ticker => {
-    console.info('removeTickerFromWatchList', ticker);
+    // console.info('removeTickerFromWatchList', ticker);
+
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
-      this.deletingRecordId = deletingItem.id;
-      this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
-      await deleteRequest(`userWatchLists/${deletingItem.id}`);
-      await this.getWatchlistData();
-      this.deletingRecordId = null;
+      const deleteResponse = await deleteRequest(`userWatchLists/${deletingItem.id}`);
+      // console.log('delestRs', deleteResponse)
+      if(deleteResponse.ok) {
+        await this.getWatchlistData();
+      }
     } catch (e) {
       console.info('Error in removeTickerToWatchList', e);
+      // throw e;
     }
   }
 

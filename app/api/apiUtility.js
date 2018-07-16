@@ -118,7 +118,7 @@ const rootApiCall = (path, method, body) => {
         // Append Body
 
         let sendBody;
-        if (typeof body === 'object') {
+        if (body && typeof body === 'object') {
           sendBody = JSON.stringify(body);
         }
 
