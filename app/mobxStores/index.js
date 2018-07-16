@@ -9,6 +9,7 @@ import Scanner from './Domain/Scanner';
 import Chart from './Domain/Chart';
 import News from './Domain/News';
 import DepositWithdraw from './Domain/DepositWithdraw';
+import Search from './Domain/Search';
 
 // Import and init all stores here
 let colorStore = new ColorStore();
@@ -22,6 +23,7 @@ let scannerStore = new Scanner();
 let chartStore = new Chart();
 let newsStore = new News();
 let depositWithdrawStore = new DepositWithdraw();
+let searchStore = new Search();
 
 export {
     colorStore,
@@ -34,5 +36,6 @@ export {
     scannerStore,
     chartStore,
     newsStore,
-    depositWithdrawStore
+    depositWithdrawStore,
+    searchStore
 }

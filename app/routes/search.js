@@ -22,7 +22,8 @@ import {
   TabbedArea,
   TabPane,
   Dimensions,
-  Alert
+  Alert,
+    ActivityIndicator
 } from 'react-native';
 
 import Modal from 'react-native-modal'
@@ -36,6 +37,7 @@ import watchstyle from '../style/watchlist';
 import search from '../style/search';
 import fonts from '../style/fonts';
 import { observer } from 'mobx-react';
+import { watchListStore, searchStore } from "../mobxStores";
 
 @observer
 class Search extends React.Component {
@@ -47,52 +49,52 @@ class Search extends React.Component {
     const ds3 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       topTech: ds.cloneWithRows([
-        {sym: 'APPL', name: 'Apple'}, 
-        {sym: 'MSFT', name: 'Microsoft'},
-        {sym: 'GOOGL', name: 'Alphabet'},
-        {sym: 'AMZN', name: 'Amazon'},
-        {sym: 'FB', name: 'Facebook'},
-        {sym: 'BABA', name: 'Alibaba'},
-        {sym: 'IBM', name: 'IBM'},
-        {sym: 'INTC', name: 'Intel'},
-        {sym: 'ORCL', name: 'Oracle'},
-        {sym: 'TSLA', name: 'Tesla'},
+        {ticker: 'APPL', companyName: 'Apple'},
+        {ticker: 'MSFT', companyName: 'Microsoft'},
+        {ticker: 'GOOGL', companyName: 'Alphabet'},
+        {ticker: 'AMZN', companyName: 'Amazon'},
+        {ticker: 'FB', companyName: 'Facebook'},
+        {ticker: 'BABA', companyName: 'Alibaba'},
+        {ticker: 'IBM', companyName: 'IBM'},
+        {ticker: 'INTC', companyName: 'Intel'},
+        {ticker: 'ORCL', companyName: 'Oracle'},
+        {ticker: 'TSLA', companyName: 'Tesla'},
         ]),
       bioTech: ds1.cloneWithRows([
-        {sym: 'AMGN', name: 'Amgen'}, 
-        {sym: 'ABBV', name: 'AbbVie'},
-        {sym: 'CELG', name: 'Celgene'},
-        {sym: 'GILD', name: 'Gilead Sciences'},
-        {sym: 'BIIB', name: 'Biogen'},
-        {sym: 'REGN', name: 'Regeneron Pharmaceuticals'},
-        {sym: 'INCY', name: 'Incyte'},
-        {sym: 'VRTX', name: 'Vertex Pharmaceuticals'},
-        {sym: 'IONS', name: 'Ionis Pharmaceuticals'},
-        {sym: 'ACAD', name: 'Acadia Pharmaceuticals'},
+        {ticker: 'AMGN', companyName: 'Amgen'},
+        {ticker: 'ABBV', companyName: 'AbbVie'},
+        {ticker: 'CELG', companyName: 'Celgene'},
+        {ticker: 'GILD', companyName: 'Gilead Sciences'},
+        {ticker: 'BIIB', companyName: 'Biogen'},
+        {ticker: 'REGN', companyName: 'Regeneron Pharmaceuticals'},
+        {ticker: 'INCY', companyName: 'Incyte'},
+        {ticker: 'VRTX', companyName: 'Vertex Pharmaceuticals'},
+        {ticker: 'IONS', companyName: 'Ionis Pharmaceuticals'},
+        {ticker: 'ACAD', companyName: 'Acadia Pharmaceuticals'},
         ]),
       crypto: ds2.cloneWithRows([
-        {sym: 'Bitcoin', name: 'Bitcoin'}, 
-        {sym: 'Ethereum', name: 'Ethereum'},
-        {sym: 'Ripple', name: 'Ripple'},
-        {sym: 'NEM', name: 'NEM'},
-        {sym: 'Litecoin', name: 'Litecoin'},
-        {sym: 'Dash', name: 'Dash'},
-        {sym: 'Stratis', name: 'Stratis'},
-        {sym: 'Monero', name: 'Monero'},
-        {sym: 'Steem', name: 'Steem'},
-        {sym: 'Waves', name: 'Waves'},
+        {ticker: 'Bitcoin', companyName: 'Bitcoin'},
+        {ticker: 'Ethereum', companyName: 'Ethereum'},
+        {ticker: 'Ripple', companyName: 'Ripple'},
+        {ticker: 'NEM', companyName: 'NEM'},
+        {ticker: 'Litecoin', companyName: 'Litecoin'},
+        {ticker: 'Dash', companyName: 'Dash'},
+        {ticker: 'Stratis', companyName: 'Stratis'},
+        {ticker: 'Monero', companyName: 'Monero'},
+        {ticker: 'Steem', companyName: 'Steem'},
+        {ticker: 'Waves', companyName: 'Waves'},
         ]),
       cannabis: ds3.cloneWithRows([
-        {sym: 'GW Pharmaceuticals', name: 'GWPH'}, 
-        {sym: 'AbbVie', name: 'ABBV'},
-        {sym: 'Scotts Miracle-Gro', name: 'SMG'},
-        {sym: 'Corbus Pharmaceuticals', name: 'CRBP'},
-        {sym: 'Insys Therapeutics', name: 'INSY'},
-        {sym: 'Cara Therapeutics', name: 'CARA'},
-        {sym: 'Arna Pharmaceuticals', name: 'ARNA'},
-        {sym: 'Axim Biotechnologies', name: 'AXIM'},
-        {sym: 'Canopy Growth', name: 'TWMJF'},
-        {sym: 'Aphria', name: 'APHQF'},
+        {companyName: 'GW Pharmaceuticals', ticker: 'GWPH'},
+        {companyName: 'AbbVie', ticker: 'ABBV'},
+        {companyName: 'Scotts Miracle-Gro', ticker: 'SMG'},
+        {companyName: 'Corbus Pharmaceuticals', ticker: 'CRBP'},
+        {companyName: 'Insys Therapeutics', ticker: 'INSY'},
+        {companyName: 'Cara Therapeutics', ticker: 'CARA'},
+        {companyName: 'Arna Pharmaceuticals', ticker: 'ARNA'},
+        {companyName: 'Axim Biotechnologies', ticker: 'AXIM'},
+        {companyName: 'Canopy Growth', ticker: 'TWMJF'},
+        {companyName: 'Aphria', ticker: 'APHQF'},
         ]),
       page: 'presets',
       showCancel: 0,
@@ -107,7 +109,7 @@ class Search extends React.Component {
       'You added '+sym+' to your watchlist.',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(sym)},
       ],
       { cancelable: true }
     )
@@ -116,7 +118,10 @@ class Search extends React.Component {
     this.props.hideSearch();
   }
   goToChart(data) {
-    setTimeout(() => {this.props.hideSearch()}, 0.1)
+    setTimeout(() => {this.props.hideSearch()}, 0.5)
+
+      console.log('============ go to chart', data);
+
     this.props.navigation.navigate('Chart', {data: data})
   }
   componentDidUpdate(prevProps) {
@@ -132,25 +137,27 @@ class Search extends React.Component {
   }
 
     forwardSearchTermToMobx() {
-      console.log('-------------- FORWARD SEARCH TERM TO MOBX', this.state.searchTerm)
+      searchStore.setSearchQuery(this.state.searchTerm)
     }
 
-  showSearchPreset(search) {
+    textInputChanged(text) {
+        this.setState({ searchTerm: text }, () => {
+          this.forwardSearchTermToMobx()
+        })
+    }
+
+    showSearchPreset(search) {
     if(search == 'toptech'){
       this.setState({showCancel: 1, page: search, searchTerm: 'Top Tech Companies'}, () => {
-        this.forwardSearchTermToMobx()
       });
     } else if(search == 'biotech'){
       this.setState({showCancel: 1, page: search, searchTerm: 'Hot Biotech Companies'}, () => {
-        this.forwardSearchTermToMobx()
       });
     } else if(search == 'crypto'){
       this.setState({showCancel: 1, page: search, searchTerm: 'Best Cryptocurrencies'}, () => {
-        this.forwardSearchTermToMobx()
       });
     } else if(search == 'cannabis'){
       this.setState({showCancel: 1, page: search, searchTerm: 'Top Cannabis Stocks'}, () => {
-        this.forwardSearchTermToMobx()
       });
     } else {
       this.setState({showCancel: 0, page: search, searchTerm: ''}, () => {
@@ -158,6 +165,7 @@ class Search extends React.Component {
       });
     }
   }
+
   getSearchView() {
     switch (this.state.page) {
       case 'presets':
@@ -182,110 +190,89 @@ class Search extends React.Component {
         </View>
         break;
       case 'toptech':
-        return <View style={search.results}>
-          <ListView
-            style={watchstyle.symbolContainer}
-            dataSource={this.state.topTech}
-            renderRow={(data) => 
-              <TouchableOpacity 
-                style={watchstyle.symbol}
-                onPress={() => this.goToChart(data)}>
-                <View style={watchstyle.touchable}>
-                  <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
-                  </View>
-                  <View style={watchstyle.symCost}>
-                      {this.renderAddToWatchlistTouchable(data['sym'])}
-                  </View>
-                </View>    
-              </TouchableOpacity>
-              }
-            />
-        </View>
+        return this.renderPreCompiledList(this.state.topTech)
         break;
       case 'biotech':
-        return <View style={search.results}>
-          <ListView
-            style={watchstyle.symbolContainer}
-            dataSource={this.state.bioTech}
-            renderRow={(data) => 
-              <TouchableOpacity 
-                style={watchstyle.symbol}
-                onPress={() => this.goToChart(data)}>
-                <View style={watchstyle.touchable}>
-                  <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
-                  </View>
-                  <View style={watchstyle.symCost}>
-                      {this.renderAddToWatchlistTouchable(data['sym'])}
-                  </View>
-                </View>    
-              </TouchableOpacity>
-              }
-            />
-        </View>
+        return this.renderPreCompiledList(this.state.bioTech)
         break;
       case 'cannabis':
-        return <View style={search.results}>
-          <ListView
-            style={watchstyle.symbolContainer}
-            dataSource={this.state.cannabis}
-            renderRow={(data) => 
-              <TouchableOpacity 
-                style={watchstyle.symbol}
-                onPress={() => this.goToChart(data)}>
-                <View style={watchstyle.touchable}>
-                  <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
-                  </View>
-                  <View style={watchstyle.symCost}>
-                      {this.renderAddToWatchlistTouchable(data['sym'])}
-                  </View>
-                </View>    
-              </TouchableOpacity>
-              }
-            />
-        </View>
+        return this.renderPreCompiledList(this.state.cannabis)
         break;
       case 'crypto':
-        return <View style={search.results}>
-          <ListView
-            style={watchstyle.symbolContainer}
-            dataSource={this.state.crypto}
-            renderRow={(data) => 
-              <TouchableOpacity 
-                style={watchstyle.symbol}
-                onPress={() => this.goToChart(data)}>
-                <View style={watchstyle.touchable}>
-                  <View style={search.symDetails}>
-                    <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['sym']}</Text>
-                    <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['name']}</Text>
-                  </View>
-                  <View style={watchstyle.symCost}>
-                      {this.renderAddToWatchlistTouchable(data['sym'])}
-                  </View>
-                </View>    
-              </TouchableOpacity>
-              }
-            />
-        </View>
+        return this.renderPreCompiledList(this.state.crypto)
         break;
     }
-  }  
+  }
+
+  renderListElement(data, i) {
+    return <TouchableOpacity
+        key={i}
+        style={watchstyle.symbol}
+        onPress={() => this.goToChart(data)}>
+        <View style={watchstyle.touchable}>
+            <View style={search.symDetails}>
+                <Text style={[watchstyle.symName, fonts.hindGunturRg, { color: this.state.colors['darkSlate'] }]}>{data['ticker']}</Text>
+                <Text style={[watchstyle.coName, fonts.hindGunturRg, { color: this.state.colors['lightGray'] }]}>{data['companyName'].length > 23 ? `${data['companyName'].slice(0, 20)}...` : data['companyName']}</Text>
+            </View>
+            <View style={watchstyle.symCost}>
+                {this.renderAddToWatchlistTouchable(data['ticker'])}
+            </View>
+        </View>
+    </TouchableOpacity>
+  }
+
+  renderPreCompiledList(dataSource) {
+      return <View style={search.results}>
+          <ListView
+              style={watchstyle.symbolContainer}
+              dataSource={dataSource}
+              renderRow={(data, i) => {
+                return this.renderListElement(data, i)
+              }}
+          />
+      </View>
+  }
 
 
-  renderAddToWatchlistTouchable(sym) {
+  renderAddToWatchlistTouchable(ticker) {
     let source = this.state.colors['addImage'];
     if(false) {
       // check for watchlist presence and overwrite source here
     }
-    return <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(sym)}} >
+    return <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(ticker)}} >
         <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
     </TouchableOpacity>
   }
+
+
+    renderListOrSearchView() {
+        const { searchData, searchDataJS } = searchStore;
+
+        if(searchData === null) {
+            return this.getSearchView()
+        }
+        if(searchDataJS.length === 0) {
+          return <View>
+            <Text>No results</Text>
+          </View>
+        } else {
+          return searchDataJS.map((elem, i) => {
+            return this.renderListElement(elem, i)
+          })
+        }
+    }
+
+    renderLoadingWheel() {
+      const { searchLoading } = searchStore;
+      if(searchLoading) {
+        return <View>
+          <ActivityIndicator />
+        </View>
+      } else {
+        return null;
+      }
+    }
+
 
   render() {
     return(
@@ -303,7 +290,7 @@ class Search extends React.Component {
                   keyboardType="default"
                   autoFocus={true}
                   value={this.state.searchTerm}
-                  onChangeText={(text) => this.setState({ searchTerm: text })}
+                  onChangeText={(text) => this.textInputChanged(text)}
                   />
                 <View style={[search.searchcancel, {opacity: this.state.showCancel}]}>
                  <TouchableOpacity onPress={() => this.showSearchPreset('presets')}>
@@ -319,7 +306,8 @@ class Search extends React.Component {
           </View>
         </View>
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }]}>
-        {this.getSearchView()}
+            {this.renderLoadingWheel()}
+            {this.renderListOrSearchView()}
         </ScrollView>
       </View>
     )
