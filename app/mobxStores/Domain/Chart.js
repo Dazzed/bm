@@ -93,43 +93,38 @@ export default class AccountStore {
 
         console.log('chartData ============================================= ', toJS(this.indicatorsList));
 
-        // let symbol = data.ticker;
-
-        // this.setTickerDataLoading(true);
-
-
-
         let params = {
-            "ticker": this.tickerDataJS.ticker,
-            "range": this.range,
-            "indicator": ["OBV","TRND","ICHI","EMA","MACD","RSI","BOL"],
-            "parameters": JSON.stringify({
-                "ICHI":{
-                    "conversionPeriod": 9,
-                        "basePeriod": 26,
-                        "spanPeriod": 52,
-                        "displacement": 26
-                },
-                "EMA":{
-                    "period":50
-                },
-                "MACD":{
-                    "fastPeriod": 5,
-                        "slowPeriod": 8,
-                        "signalPeriod": 3,
-                        "SimpleMAOscillator": false,
-                        "SimpleMASignal": false
-                },
-                "RSI":{
-                    "period":14
-                },
-                "BOL":{
-                    "period":14,
-                        "stdDev":2
-                }
-            })
+          options: {
+            'ticker': this.tickerDataJS.ticker,
+            'range': this.range,
+            'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL' ],
+            'parameters':{
+              'ICHI': {
+                'conversionPeriod': 9,
+                'basePeriod': 26,
+                'spanPeriod': 52,
+                'displacement': 26
+              },
+              'EMA': {
+                'period':50
+              },
+              'MACD': {
+                'fastPeriod': 5,
+                'slowPeriod': 8,
+                'signalPeriod': 3,
+                'SimpleMAOscillator': false,
+                'SimpleMASignal': false
+              },
+              'RSI': {
+                'period':14
+              },
+              'BOL': {
+                'period':14,
+                'stdDev':2
+              }
+            }
+          }
         }
-
 
 
         getStockChartDetail(params)

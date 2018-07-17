@@ -34,7 +34,7 @@ export default class Index extends React.Component {
     }
 
     if(this.props.viewLargeGraph) {
-      return <LargeGraph data={parseLargeGraphData(chartDetailDataJS)} height={this.state.height} width={this.state.width} {...this.props}/>
+      return <LargeGraph data={parseLargeGraphData(chartDetailDataJS, this.state.height, this.state.width)} height={this.state.height} width={this.state.width} {...this.props}/>
     } else {
       return <SmallGraph data={chartDetailDataJS} height={this.state.height} width={this.state.width} {...this.props}/>
     }

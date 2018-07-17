@@ -113,7 +113,7 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
 export const parseSmallGraphData = (data) => {
 
     let graphMax = 0;
-    let graphMin = 9999999;
+    let graphMin = 999999999999999;
 
     let lineData = [];
     let dateData = [];
@@ -139,118 +139,92 @@ export const parseSmallGraphData = (data) => {
     }
 }
 
-export const parseLargeGraphData = (data) => {
-
-    let graphYMax = 0;
-    let graphYMin = 999999999999;
-
-    let graphXMax = 0;
-    let graphXMin = 999999999999;
-
+export const parseLargeGraphData = (inputData, height, width) => {
 
     let allGraphData = {
-        dates: []
+        xMax: 0,
+        xMin: 99999999999999999999999,
+        yMax: 0,
+        yMin: 99999999999999999999999,
+        data: inputData,
+        gridYArray: [],
+        gridXArray: [],
+        xLineCount: 3,
+        yLineCount: 8
     };
 
-    // for(let i = 0; i < data.length; i++) {
-    //     // console.log('eavh elem', data[i])
-    //
-    //     // calculate max
-    //     if(data[i].vwap > graphYMax) {
-    //         graphYMax = data[i].vwap;
-    //     }
-    //     if(data[i].open > graphYMax) {
-    //         graphYMax = data[i].open;
-    //     }
-    //     if(data[i].close > graphYMax) {
-    //         graphYMax = data[i].close;
-    //     }
-    //     if(data[i].high > graphYMax) {
-    //         graphYMax = data[i].high;
-    //     }
-    //     if(data[i].low > graphYMax) {
-    //         graphYMax = data[i].low
-    //     }
-    //
-    //     // calculate min
-    //     if(data[i].vwap < graphYMin) {
-    //         graphYMin = data[i].vwap;
-    //     }
-    //     if(data[i].open < graphYMin) {
-    //         graphYMin = data[i].open;
-    //     }
-    //     if(data[i].close < graphYMin) {
-    //         graphYMin = data[i].close;
-    //     }
-    //     if(data[i].high < graphYMin) {
-    //         graphYMin = data[i].high;
-    //     }
-    //     if(data[i].low < graphYMin) {
-    //         graphYMin = data[i].low
-    //     }
-    // }
+    // add date stamp and calculate maximums and minimums
+    inputData.map((elem, i) => {
+      // console.log('elem', elem, i)
+      elem.dateUnix = parseInt(moment(elem.date).format('X'));
 
-    // for(let i = 0; i < data.length; i++) {
-    //
-    //     // TODO: get proper date stamps from sameep in here
-    //
-    //     let timeStamp = moment(data[i].date).format('X');
-    //
-    //     if(timeStamp > graphXMax) {
-    //         graphXMax = timeStamp;
-    //     }
-    //     if(timeStamp < graphYMin) {
-    //         graphYMin = timeStamp;
-    //     }
-    //
-    //     // TODO: ask ben if I can do this in the same linear time. Calculate max and min and assemble all data in a relative sense
-    // }
+      // calculate min and max
+      // time / x value
+      if( elem.dateUnix > allGraphData.xMax ) allGraphData.xMax = elem.dateUnix;
+      if( elem.dateUnix < allGraphData.xMin ) allGraphData.xMin = elem.dateUnix;
+      // vwap
+      if( elem.vwap > allGraphData.yMax ) allGraphData.yMax = elem.vwap;
+      if( elem.vwap < allGraphData.yMin ) allGraphData.yMin = elem.vwap;
+      // open
+      if( elem.open > allGraphData.yMax ) allGraphData.yMax = elem.open;
+      if( elem.open < allGraphData.yMin ) allGraphData.yMin = elem.open;
+      // close
+      if( elem.close > allGraphData.yMax ) allGraphData.yMax = elem.close;
+      if( elem.close < allGraphData.yMin ) allGraphData.yMin = elem.close;
+      // high
+      if( elem.high > allGraphData.yMax ) allGraphData.yMax = elem.high;
+      if( elem.high < allGraphData.yMin ) allGraphData.yMin = elem.high;
+      // low
+      if( elem.low > allGraphData.yMax ) allGraphData.yMax = elem.low
+      if( elem.low < allGraphData.yMin ) allGraphData.yMin = elem.low
+    })
 
-    // for(let i = 0; i < data.length; i++) {
-    //
-    //     let timeStamp = moment(data[i].date).format('X');
-    //
-    //     // console.log('----- time', data[i].date, timeStamp)
-    //
-    //     allGraphData.dates.push({
-    //         dateStamp: data[i].date,
-    //         unixTime: timeStamp,
-    //         vwap: data[i].vwap,
-    //         vwapCoordinate: {
-    //             x: timeStamp / xGraphMax,
-    //             y: vwap / yGraphMax
-    //         }
-    //     })
-    // }
+     // add relative positional data to all pertinent points
+     allGraphData.data.map((elem, i) => {
+       elem.xPosition = elem.dateUnix / allGraphData.xMax;
+       elem.openYPosition = elem.open / allGraphData.yMax;
+       elem.closeYPosition = elem.close / allGraphData.yMax;
+       elem.highYPosition = elem.high / allGraphData.yMax;
+       elem.lowYPosition = elem.low / allGraphData.yMax;
+       // console.log('each elem', elem)
+     })
+
+     console.log('height width', height, width)
+    // TODO: ask ben if I can do this in the same linear time. Calculate max and min and assemble all data in a relative sense
 
 
 
-    // let thisClosePoint = data[i].close;
-    //
-    // if(thisClosePoint > graphYMax) {
-    //     graphYMax = thisClosePoint
-    // }
-    // if(thisClosePoint < graphYMin) {
-    //     graphYMin = thisClosePoint
-    // }
+    // generate grid x and y bars
+
+    for(let i = 0; i < allGraphData.yLineCount; i++) {
+        let multiplier = i / allGraphData.yLineCount;
+        // for y lines
+        let yPosition = ((allGraphData.yMax * multiplier) / allGraphData.yMax ) * height;
+        let yObj = {
+          label: flipYAxisValue( height, yPosition ),
+          position: flipYAxisValue( height, yPosition )
+        }
+        allGraphData.gridYArray.push(yObj);
+    }
+
+    for(let j = 0; j < allGraphData.xLineCount; j++) {
+
+      // let spaceBetweenEachLine = width / allGraphData.xLineCount;
+      // let lineOffest = spaceBetweenEachLine / 2;
+      // console.log('--- space offset', spaceBetweenEachLine, lineOffest)
+
+      let multiplier = j / allGraphData.xLineCount;
+      // for x lines
+      let xPosition = ((allGraphData.xMax * multiplier) / allGraphData.xMax ) * width;
+      let xObj = {
+        label: xPosition,
+        position: xPosition
+      }
+      console.log('--------- x line', xObj)
+      allGraphData.gridXArray.push(xObj);
+    }
 
 
-    // lineData.push(data[i].close);
-    // dateData.push(data[i].date);
-
-
-    // {
-    //     x: 0, y: 0
-    // },
-    // {
-    //     x: 50, y: 100
-    // },
-    // {
-    //     x: 100, y: 50
-    // },
-    // {
-    //     x: 150, y: 50
-    // },
 
     return allGraphData
 }

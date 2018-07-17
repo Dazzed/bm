@@ -41,7 +41,7 @@ import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
 import { chartStore, watchListStore } from '../mobxStores';
 import { observer } from 'mobx-react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { millionBillionFormatter } from '../utility';
 
 
@@ -287,6 +287,10 @@ class Chart extends Component {
 
 
   setRange(el) {
+    let name = el.props.name;
+    console.log('name', name);
+    // TODO: maybe rewrite the name query here for the range picker
+    
     const { setRange } = chartStore;
     this.setState({
         page: el.props.name
@@ -332,19 +336,28 @@ class Chart extends Component {
       </View>
     }
   }
+  
+  renderRelated() {
+    {/* TODO: get related stocks. not yet in data */}
+    return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
+        <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
+        <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>MSFT</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Microsoft Corporation</Text>
+        </View>
+        <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>DVMT</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Dell Technologies</Text>
+        </View>
+        <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
+        </View>
+    </View>
+  }
 
 
-  renderPortrait() {
-
-    const { chartLoading, tickerDataJS } = chartStore;
-
-    console.log('==========================================================================')
-    console.log(tickerDataJS)
-
-    if(!tickerDataJS) {
-      return null;
-    }
-
+  renderPortrait(params) {
     let {
         Price,
         Volume,
@@ -366,38 +379,14 @@ class Chart extends Component {
         profile,
         ticker,
         website,
-    } = tickerDataJS;
-    
-    
-    //  formatting price here
-    Price = Price.toFixed(2);
-    open = open.toFixed(2);
-    high = high.toFixed(2);
-    low = low.toFixed(2);
-    
-
-    //  notes on the data
-    // keyStats
-    //   avgTotalVolume
-    //   beta
-    //   divYield
-    //   eps
-    //   float
-    //   mktCap
-    //   nextEarningsDate
-    //   peRatio
-    //   week52high
-    //   week52low
-    //   float
-
-
-    // overview
-    //   institutionPercent
-    //   lastStockSplit
-    //     forFactor
-    //     paymentDate
-    //     toFactor
-    //   sharesOutstanding
+        formattedTime,
+        formattedVolume,
+        formattedPrice,
+        formattedOpen,
+        formattedLow,
+        formattedHigh,
+        formattedSharesOutstanding
+    } = params;
 
     return <View>
     <View style={styles.menuBorder}>
@@ -428,6 +417,10 @@ class Chart extends Component {
       <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
       <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
     </View>
+    
+    
+    {/* Bottom Menu nav bar */}
+    
     <View style={[{borderTopColor: this.state.colors['borderGray']}, {backgroundColor: this.state.colors['white']}, chart.fakeTabNav]}>
       <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Account')}>
           <View style={chart.fakeIcon}>
@@ -475,6 +468,10 @@ class Chart extends Component {
           <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Settings</Text>
       </TouchableOpacity>
     </View>
+    
+    
+    
+    
 
 
     <ScrollView style={chart.wrapper}>
@@ -489,12 +486,9 @@ class Chart extends Component {
       </View>
 
       <View style={chart.prices}>
-        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>${Price}</Text>
+        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-
-          {/* TODO: TIME don't have this yet */}
-
-          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{moment(latestUpdate).format('h:mm A')}</Text>
+          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
           {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{change}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{changePercent}%</Text>}
         </TouchableOpacity>
       </View>
@@ -503,19 +497,19 @@ class Chart extends Component {
         <View style={chart.pricePoints}>
           <View style={chart.priceOpen}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${open}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
           </View>
           <View style={chart.priceHigh}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${high}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
           </View>
           <View style={chart.priceLow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${low}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
           </View>
           <View style={chart.priceVol}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{millionBillionFormatter(Volume)}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
           </View>
         </View>
       </View>
@@ -570,59 +564,7 @@ class Chart extends Component {
         </View>
       </View>
 
-      {/* TODO: BID LIST not getting this from server yet */}
-
-      <View style={chart.bidAsksWrapper}>
-        <View style={chart.bid}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>BID</Text>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-        </View>
-
-        {/* TODO: ASK LIST not getting this from server yet */}
-
-        <View style={chart.bid}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>ASK</Text>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>dev
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-        </View>
-      </View>
+      {this.renderBidAsk()}
 
       <View style={chart.statsWrapper}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
@@ -640,7 +582,7 @@ class Chart extends Component {
               {/* TODO: do we want to format with a B for billions? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.avgTotalVolume}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.avgTotalVolume)}</Text>
           </View>
         </View>
         <View style={chart.statsRow}>
@@ -649,7 +591,7 @@ class Chart extends Component {
               {/* TODO: do we want to format with a B for billions? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>MKT CAP</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.mktCap}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.mktCap)}</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO</Text>
@@ -666,7 +608,7 @@ class Chart extends Component {
                 {/* TODO: what is this referencing?? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>PRICE/EARNINGS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>17.19</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????? 17.19</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
@@ -680,7 +622,7 @@ class Chart extends Component {
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.float}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
           </View>
           <View style={chart.statsColumnLong}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>NEXT EARNINGS DATE</Text>
@@ -724,33 +666,14 @@ class Chart extends Component {
           {this.renderExecutives(executives)}
       </View>
 
-                {/* TODO: get related stocks. not yet in data */}
-
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>MSFT</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Microsoft Corporation</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>DVMT</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Dell Technologies</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
-          </View>
-      </View>
+      {this.renderRelated()}
 
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
-
-                {/* TODO: format number with a B?? */}
-
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>SHARES OUTSTANDING</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{overview.sharesOutstanding}</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{formattedSharesOutstanding}</Text>
             </View>
             <View style={chart.statsColumn}>
 
@@ -788,8 +711,58 @@ class Chart extends Component {
   }
 
 
-
-
+  renderBidAsk() {
+      
+      // {/* TODO: BID LIST not getting this from server yet */}
+     return <View style={chartland.bidAsksWrapper}>
+       <View style={chartland.bid}>
+         <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+       </View>
+       <View style={chartland.bid}>
+         <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+       </View>
+     </View>
+  }
 
 
 
@@ -803,7 +776,37 @@ class Chart extends Component {
 
 
 
-  renderLandscape() {
+  renderLandscape(params) {
+    const {
+        Price,
+        Volume,
+        address,
+        ask,
+        bid,
+        change,
+        changePercent,
+        companyName,
+        exchange,
+        executives,
+        high,
+        keyStats,
+        latestUpdate,
+        low,
+        momentum,
+        open,
+        overview,
+        profile,
+        ticker,
+        website,
+        formattedTime,
+        formattedVolume,
+        formattedPrice,
+        formattedOpen,
+        formattedLow,
+        formattedHigh,
+        formattedSharesOutstanding
+    } = params;
+    
     return <View style={chartland.landscape}>
        <View style={chartland.header}>
            <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
@@ -817,30 +820,34 @@ class Chart extends Component {
            <Text style={[{color: this.state.colors['lightGray']}, chartland.symbol, fonts.hindGunturRg]}>{this.props.navigation.state.params.data['sym']}: NASDAQ</Text>
          </View>
          <View style={chartland.currentPrice}>
-           <Text style={[{color: this.state.colors['darkSlate']}, chartland.stockPrice, fonts.hindGunturRg]}>$153.53</Text>
+           <Text style={[{color: this.state.colors['darkSlate']}, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
 
            <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-             <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>12:30 PM PT</Text>
+             <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
              {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
            </TouchableOpacity>
          </View>
          <View style={chartland.prices}>
            <View style={chartland.pricePoints}>
+           
+       
+       
+       
              <View style={chartland.priceOpen}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$153.53</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
              </View>
              <View style={chartland.priceHigh}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$153.98</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
              </View>
              <View style={chartland.priceLow}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$153.01</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
              </View>
              <View style={chartland.priceVol}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$24.9M</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
              </View>
            </View>
          </View>
@@ -907,54 +914,8 @@ class Chart extends Component {
 
            </View>
 
-           <View style={chartland.bidAsksWrapper}>
-             <View style={chartland.bid}>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-             </View>
-             <View style={chartland.bid}>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-             </View>
-           </View>
+           {this.renderBidAsk()}
+           
            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
@@ -1176,12 +1137,112 @@ class Chart extends Component {
 
 
   showOrientation(){
+    const { chartLoading, tickerDataJS } = chartStore;
+
+    console.log('==========================================================================')
+    console.log(tickerDataJS)
+
+    if(!tickerDataJS) {
+      return null;
+    }
+
+    let {
+        Price,
+        Volume,
+        address,
+        ask,
+        bid,
+        change,
+        changePercent,
+        companyName,
+        exchange,
+        executives,
+        high,
+        keyStats,
+        latestUpdate,
+        low,
+        momentum,
+        open,
+        overview,
+        profile,
+        ticker,
+        website,
+    } = tickerDataJS;
+    
+    
+    //  formatting data
+    
+    {/* TODO: TIME don't have this yet with time zone */}
+    
+    let formattedTime = moment(latestUpdate).format('h:mm A');
+    let formattedVolume = millionBillionFormatter(Volume);
+    let formattedPrice = '$' + Price.toFixed(2);
+    let formattedOpen = '$' + open.toFixed(2);
+    let formattedLow = low.toFixed(2);
+    let formattedHigh = high.toFixed(2);
+    
+    let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
+    
+    const params = {
+      ...tickerDataJS,
+      // Price,
+      // Volume,
+      // address,
+      // ask,
+      // bid,
+      // change,
+      // changePercent,
+      // companyName,
+      // exchange,
+      // executives,
+      // high,
+      // keyStats,
+      // latestUpdate,
+      // low,
+      // momentum,
+      // open,
+      // overview,
+      // profile,
+      // ticker,
+      // website,
+      formattedTime,
+      formattedVolume,
+      formattedPrice,
+      formattedOpen,
+      formattedLow,
+      formattedHigh,
+      formattedSharesOutstanding
+    }
+    
+    //  notes on the data
+    // keyStats
+    //   avgTotalVolume
+    //   beta
+    //   divYield
+    //   eps
+    //   float
+    //   mktCap
+    //   nextEarningsDate
+    //   peRatio
+    //   week52high
+    //   week52low
+    //   float
+
+
+    // overview
+    //   institutionPercent
+    //   lastStockSplit
+    //     forFactor
+    //     paymentDate
+    //     toFactor
+    //   sharesOutstanding
+
     switch (this.state.orientation) {
       case 'portrait':
-        return this.renderPortrait()
+        return this.renderPortrait(params)
         break;
       case 'landscape':
-       return this.renderLandscape()
+       return this.renderLandscape(params)
         break;
       }
   }

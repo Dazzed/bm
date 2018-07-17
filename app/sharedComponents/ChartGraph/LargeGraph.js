@@ -26,14 +26,8 @@ export default class LargeGraph extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.thinLineWidth = .5;
         this.thickLineWidth = 8;
-
-        // this.state = {
-        //     height: 0,
-        //     width: 0,
-        // }
     }
 
 
@@ -66,6 +60,13 @@ export default class LargeGraph extends React.Component {
             },
         ]
     }
+    
+    // line top high
+    // line bottom low
+    // 
+    // bar top     open/close
+    // bar bottom  open/close
+
 
     getLineList() {
         const { theme } = colorStore;
@@ -135,12 +136,10 @@ export default class LargeGraph extends React.Component {
         return input;
     }
 
-    getParsedData() {
-        const { chartDetailDataJS } = chartStore;
-        return parseLargeGraphData(chartDetailDataJS);
-    }
-
     render() {
+      
+        console.log('---- parsed Data', this.props.data);
+      
         const { theme } = colorStore;
 
         let inlineContainerStyle = {
@@ -157,7 +156,17 @@ export default class LargeGraph extends React.Component {
 
         for(let i = 0; i < lineCount; i++) {
             let multiplier = i / lineCount;
-            gridXArray.push(this.props.height * multiplier);
+            
+            let xObj = {
+              label: this.props.data.xMax,
+              position: ( (this.props.data.xMax * multiplier) / this.props.data.xMax ) * this.props.width
+            }
+            gridXArray.push(xObj)
+            
+            // to show width on graph, use this
+            // gridXArray.push(this.props.height * multiplier);
+            
+            
             gridYArray.push(this.props.width * multiplier);
         }
 
@@ -167,23 +176,20 @@ export default class LargeGraph extends React.Component {
         let pointOffset = 10;
         let xPosition = 5;
 
-        let textLeftOffset = 5;
-        let topOffset = 2;
-
-        const generateXLineGroup = (number, key) => {
-
-            let inverseY = flipYAxisValue(this.props.height, number);
-
-            let formattednumber = inverseY.toFixed(1);
-
+        const generateXLineGroup = (data, key) => {
+            const { position, label } = data;
+            console.log('number', position, label)
+            
+            let horizontalOffset = 1;
+            
             return <G key={key}>
                 <G>
                     <Line
                         key={ 'zero-axis' }
-                        x1={ '0%' }
-                        x2={ '92%' }
-                        y1={ inverseY }
-                        y2={ inverseY }
+                        x1={ position }
+                        x2={ position }
+                        y1={ '0%' }
+                        y2={ '100%' }
                         stroke={ theme.borderGray }
                         strokeDasharray={ [ 4, 8 ] }
                         strokeWidth={ 1 }
@@ -192,43 +198,49 @@ export default class LargeGraph extends React.Component {
                         fontSize={12}
                         fill={theme.borderGray}
                         stroke={theme.borderGray}
-                        y={number + topOffset}
-                        x={'95%'}
+                        y={'95%'}
+                        x={position}
                         textAnchor="middle"
                     >
-                        {formattednumber}
+                        {label}
                     </TextSvg>
                 </G>
             </G>
         }
 
-        const generateYLineGroup = (number, key) => {
-            let formattednumber = number.toFixed(1);
+
+
+
+        const generateYLineGroup = (data, key) => {
+            const { position, label } = data;
+            let verticalOffset = 4;
             return <G key={key}>
                 <Line
                     key={ 'zero-axis' }
-                    x1={ number }
-                    x2={ number }
-                    y1={ '0%' }
-                    y2={ '100%' }
+                    y1={ position }
+                    y2={ position }
+                    x1={ '0%' }
+                    x2={ '95%' }
                     stroke={ theme.borderGray }
                     strokeDasharray={ [ 4, 8 ] }
                     strokeWidth={ 1 }
                 />
+                
                 <TextSvg
                     fontSize={12}
                     fill={theme.borderGray}
                     stroke={theme.borderGray}
-                    y={'95%'}
-                    x={number}
+                    x={'95%'}
+                    y={ position + verticalOffset}
                     textAnchor="middle"
                 >
-                    {formattednumber}
+                    {label}
                 </TextSvg>
             </G>
         }
-
-
+        
+        
+        
 
         let barDataList = this.largeGraphBarData();
 
@@ -265,7 +277,6 @@ export default class LargeGraph extends React.Component {
                 let flippedY = flipYAxisValue(this.props.height, elem.y);
                 points += ` ${elem.x},${flippedY}`
             })
-
             return <Polyline
                 key={key}
                 points={points}
@@ -309,23 +320,12 @@ export default class LargeGraph extends React.Component {
                 width={'100%'}
             >
 
-                {gridYArray.map((elem, i) => {
+                {this.props.data.gridYArray.map((elem, i) => {
                     return generateYLineGroup(elem, i)
                 })}
-                {gridXArray.map((elem, i) => {
+                
+                {this.props.data.gridXArray.map((elem, i) => {
                     return generateXLineGroup(elem, i)
-                })}
-
-                {barDataList.map((elem, i) => {
-                    return generateBarLine(elem, i)
-                })}
-
-                {polygonsList.map((elem, i) => {
-                    return generateGraphPolygonFill(elem, i)
-                })}
-
-                {lineList.map((elem, i) => {
-                    return generateGraphPolygon(elem, i)
                 })}
 
 
@@ -333,5 +333,19 @@ export default class LargeGraph extends React.Component {
         </View>
     }
 }
+
+// 
+// {barDataList.map((elem, i) => {
+//     return generateBarLine(elem, i)
+// })}
+// 
+// {polygonsList.map((elem, i) => {
+//     return generateGraphPolygonFill(elem, i)
+// })}
+// 
+// {lineList.map((elem, i) => {
+//     return generateGraphPolygon(elem, i)
+// })}
+
 
 
