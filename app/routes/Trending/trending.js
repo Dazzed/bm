@@ -62,9 +62,6 @@ class SubMenu extends React.Component {
       isSectorVisible: false,
       isScanVisible: false,
       isIndustryVisible: false,
-      // trendingOption: 0,
-      // sectorOption: 0,
-      // industryOption: null,
       currIndustryOptions: null,
       colors: colors(props.globalData.isDarkThemeActive)
     };

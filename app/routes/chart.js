@@ -15,7 +15,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Dimensions,
-  Alert
+  Alert,
+  Linking
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -114,6 +115,21 @@ class Chart extends Component {
         setTimeout(function(){that.showOrder(that.state.orderType)}, 500);
       }
     }
+  }
+  
+  navToLink(link) {
+    Linking.canOpenURL(link)
+    .then((res) => {
+      if(res === true) {
+        return Linking.openURL('http://' + link)
+      }
+    })
+    .then((res) => {
+      console.log('success', res)
+    })
+    .catch((err) => {
+      console.log('err', err)
+    })
   }
 
   addSymbol(ticker){
@@ -223,8 +239,6 @@ class Chart extends Component {
       }
     }
 
-
-
     console.log("movin on");
     //if it doesn't exists and we aren't at 5 indicators add it
     if(!exists && indicates.length < 5) {
@@ -274,7 +288,6 @@ class Chart extends Component {
 
 
 
-
   setRange(el) {
     const { setRange } = chartStore;
     this.setState({
@@ -293,6 +306,38 @@ class Chart extends Component {
   //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  renderExecutives(executives) {
+    // {/* TODO: get executives list. Not in this data yet */}
+    
+    executives = [
+      {
+        title: 'Timothy Donald Cook',
+        role: 'Chief Executive Officer'
+      },
+      {
+        title: 'Jeffrey E Williams',
+        role: 'Chief Operating Officer'
+      }
+      
+    ]
+    
+    if(!executives || executives.length === 0) {
+      return <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+    } else {
+      return <View>
+        {executives.map((elem, i) => {
+            return <View key={i} style={chart.profileTxt}>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>{elem.title}</Text>
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>{elem.role}</Text>
+            </View>
+        })}
+      </View>
+    }
+    
+    
+    
+  }
 
 
   renderPortrait() {
@@ -667,36 +712,16 @@ class Chart extends Component {
 
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
-          <View style={chart.profileTxt}>
-                {/* TODO: make this a link?? */}
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
-          </View>
+          <TouchableOpacity onPress={() => this.navToLink(website)}>
+            <View style={chart.profileTxt}>
+                  {/* TODO: make this a link?? */}
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
+            </View>
+          </TouchableOpacity>
       </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
-          <View style={chart.profileTxt}>
-
-              {/* TODO: get executives list. Not in this data yet */}
-
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Timothy Donald Cook</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Executive Officer</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Jeffrey E Williams</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Operating Officer</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Jonathan Ive</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Design Officer</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Luca Maestri</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/CFO</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>D Bruce Sewell</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/Secy/General Counsel</Text>
-          </View>
+          {this.renderExecutives(executives)}
       </View>
 
                 {/* TODO: get related stocks. not yet in data */}

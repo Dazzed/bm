@@ -7,8 +7,10 @@ import {
 import { observer } from 'mobx-react';
 import LargeGraph from './LargeGraph';
 import SmallGraph from './SmallGraph';
-import { chartStore } from "../../mobxStores";
+import { chartStore, colorStore } from "../../mobxStores";
 import { parseLargeGraphData } from "./utility";
+import fonts from '../../style/fonts';
+import trending from '../../style/trending';
 
 @observer
 export default class Index extends React.Component {
@@ -19,15 +21,15 @@ export default class Index extends React.Component {
       height: 0,
       width: 0
     }
-
   }
 
   renderLargeGraphOrSmallGraph() {
     const { chartDetailDataJS } = chartStore;
+    const { theme } = colorStore;
 
     if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
       return <View style={{flex: 1, height: this.state.height, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>No data for graph</Text>
+        <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     }
 
