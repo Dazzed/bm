@@ -131,7 +131,7 @@ class SubMenu extends React.Component {
 
   showIndustry() {
     const { sectorOption } = trendingStore;
-    if(sectorOption === null) {
+    if(sectorOption === null || sectorOption === 0) {
       return;
     }
     this.setState({ isIndustryVisible: true })
@@ -257,7 +257,7 @@ class SubMenu extends React.Component {
           {/* INDUSTRY PICKER */}
 
 
-          <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showIndustry(); }}>
+          <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => {this.showIndustry()}}>
             <Image
               source={require('../../images/arrow.png')}
               style={[trending.downArrow]}
