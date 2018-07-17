@@ -1,5 +1,4 @@
 //  Turn back now...
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -19,7 +18,6 @@ import {
   Linking
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import Modal from '../components/react-native-modal'
 import Orientation from 'react-native-orientation';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from '../components/react-native-simple-radio-button';
@@ -27,12 +25,10 @@ import CheckBox from '../components/react-native-check-box'
 import Tabs from 'react-native-tabs';
 import ResponsiveImage from 'react-native-responsive-image';
 import { setTheme, getTheme, colors } from '../store/store';
-
 import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
 import AppNav from './appnav';
 import Search from './search';
-
 import styles from '../style/style';
 import navstyle from '../style/nav';
 import chart from '../style/chart';
@@ -40,12 +36,14 @@ import chartland from '../style/chartlandscape';
 import order from '../style/order';
 import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
-
+import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
-
 import { chartStore, watchListStore } from '../mobxStores';
 import { observer } from 'mobx-react';
+import moment from 'moment';
+import { millionBillionFormatter } from '../utility';
+
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -310,17 +308,16 @@ class Chart extends Component {
   renderExecutives(executives) {
     // {/* TODO: get executives list. Not in this data yet */}
     
-    executives = [
-      {
-        title: 'Timothy Donald Cook',
-        role: 'Chief Executive Officer'
-      },
-      {
-        title: 'Jeffrey E Williams',
-        role: 'Chief Operating Officer'
-      }
-      
-    ]
+    // executives = [
+    //   {
+    //     title: 'Timothy Donald Cook',
+    //     role: 'Chief Executive Officer'
+    //   },
+    //   {
+    //     title: 'Jeffrey E Williams',
+    //     role: 'Chief Operating Officer'
+    //   }
+    // ]
     
     if(!executives || executives.length === 0) {
       return <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
@@ -334,9 +331,6 @@ class Chart extends Component {
         })}
       </View>
     }
-    
-    
-    
   }
 
 
@@ -351,7 +345,7 @@ class Chart extends Component {
       return null;
     }
 
-    const {
+    let {
         Price,
         Volume,
         address,
@@ -373,7 +367,16 @@ class Chart extends Component {
         ticker,
         website,
     } = tickerDataJS;
+    
+    
+    //  formatting price here
+    Price = Price.toFixed(2);
+    open = open.toFixed(2);
+    high = high.toFixed(2);
+    low = low.toFixed(2);
+    
 
+    //  notes on the data
     // keyStats
     //   avgTotalVolume
     //   beta
@@ -480,9 +483,6 @@ class Chart extends Component {
           <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
           <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
         </View>
-
-        {/* TODO: nav to news with ticker */}
-
         <TouchableOpacity style={[{borderColor: this.state.colors['lightGray']}, chart.newsBtn]} onPress={() => this.showNews()}>
           <Text style={[{color: this.state.colors['lightGray']}, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
         </TouchableOpacity>
@@ -492,9 +492,9 @@ class Chart extends Component {
         <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>${Price}</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
 
-          {/* TODO: don't have this yet */}
+          {/* TODO: TIME don't have this yet */}
 
-          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>12:30 PM PT TODO!!</Text>
+          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{moment(latestUpdate).format('h:mm A')}</Text>
           {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{change}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{changePercent}%</Text>}
         </TouchableOpacity>
       </View>
@@ -515,7 +515,7 @@ class Chart extends Component {
           </View>
           <View style={chart.priceVol}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${Volume}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{millionBillionFormatter(Volume)}</Text>
           </View>
         </View>
       </View>
