@@ -2,6 +2,7 @@ import { observable, action, computed, toJS } from 'mobx';
 import { getTrendingData as getTrendingDataApi } from '../../api';
 import { watchListStore, colorStore } from '../index';
 import { millionBillionFormatter, formatPrice } from '../../utility';
+import { sectorIndustriesStore } from '../';
 
 import {
   scan_props,
@@ -155,18 +156,22 @@ export default class Trending {
   @action getTrendingData = () => {
     this.setLoading(true);
 
+
+
+
     let filterOptions = {
       "trending": scan_props[this.trendingOption].queryString,
     }
-    if(this.sectorOption > 0) {
-      filterOptions.sector = sector_props[this.sectorOption].queryString;
+
+    if(sectorIndustriesStore.selectedSectorJS !== 'All') {
+      filterOptions.sector = sectorIndustriesStore.selectedSectorJS  
     }
 
-    if(this.sectorOption > 0 && this.industryOption > 0) {
-      filterOptions.industry = industry_utilities[this.industryOption]
+    if(sectorIndustriesStore.selectedIndustryJS !== 'All') {
+      filterOptions.industry = sectorIndustriesStore.selectedIndustryJS;
     }
 
-    console.log('=============== params', filterOptions)
+    console.log('=============== params', filterOptions, sectorIndustriesStore.selectedSectorJS, sectorIndustriesStore.selectedIndustryJS )
 
     let params = {
       filter: JSON.stringify(filterOptions)

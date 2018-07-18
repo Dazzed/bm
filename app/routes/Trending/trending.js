@@ -113,35 +113,29 @@ class SubMenu extends React.Component {
   }
 
   setSector(value) {
-    // const { setSectorOption } = trendingStore;
-    // setSectorOption(value);
-
-
     const { selectSectorByOption } = sectorIndustriesStore;
     selectSectorByOption(value);
-
-    this.hideSector()
+    this.refreshData();
+    this.hideSector();
   }
 
   hideSector() {
     this.setState({ isSectorVisible: false });
   }
 
+  refreshData() {
+    const { getTrendingData } = trendingStore;
+    getTrendingData()
+  }
+
   setIndustry(value) {
-    // const { industryOption, setIndustryOption } = trendingStore;
     const { selectIndustryByOption } = sectorIndustriesStore;
-
     selectIndustryByOption(value);
-
-    // setIndustryOption(value);
-    this.hideIndustry()
+    this.refreshData();
+    this.hideIndustry();
   }
 
   showIndustry() {
-    // const { sectorOption } = trendingStore;
-    // if(sectorOption === null || sectorOption === 0) {
-    //   return;
-    // }
     this.setState({ isIndustryVisible: true })
   }
 

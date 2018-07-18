@@ -23,7 +23,7 @@ export default class SectorIndustries {
       if(!this.sectorData) {
         return null;
       } else {
-        return toJS(this.sectorData)[this.selectedSectorOption - 1].sector;
+        return this.sectorDataJS[this.selectedSectorOption].label;
       }
     }
 
@@ -62,7 +62,7 @@ export default class SectorIndustries {
         }
         getSectorIndustries(params)
         .then((res) => {
-          console.log('======= get sector industries', res);
+          // console.log('======= get sector industries', res);
             if(res.ok) {
                 this.setSectorData(res.json.data)
             } else {
@@ -88,7 +88,7 @@ export default class SectorIndustries {
     }
 
     @computed get selectedIndustryJS() {
-      console.log('=========== gettint selected industry', this.industriesListJS, this.selectedIndustryOption)
+      // console.log('=========== gettint selected industry', this.industriesListJS, this.selectedIndustryOption)
       if(!this.industriesList) {
         return null;
       } else {
@@ -138,11 +138,11 @@ export default class SectorIndustries {
           })
       }
 
-      console.log('============== GETTING INDUSTRY LISTTTTTTTT', this.selectedSectorJS, params)
+      // console.log('============== GETTING INDUSTRY LISTTTTTTTT', this.selectedSectorJS, params)
 
       getSectorIndustries(params)
       .then((res) => {
-        console.log('======= get industries list', res);
+        // console.log('======= get industries list', res);
           if(res.ok) {
               this.setIndustriesList(res.json.data)
           } else {
