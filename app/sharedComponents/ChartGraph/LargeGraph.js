@@ -16,7 +16,8 @@ import {
 import {
     View,
     Text,
-    Animated
+    Animated,
+    ActivityIndicator
 } from 'react-native';
 import { observer } from "mobx-react";
 import { generatePolygonsFromTwoLines, flipYAxisValue, parseLargeGraphData } from './utility';

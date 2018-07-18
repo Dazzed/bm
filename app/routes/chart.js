@@ -827,8 +827,8 @@ class Chart extends Component {
              />
            </TouchableOpacity>
          <View style={chartland.titleContainer}>
-           <Text style={[{color: this.state.colors['darkSlate']}, chartland.name, fonts.hindGunturBd]}>{this.props.navigation.state.params.data['name']}</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.symbol, fonts.hindGunturRg]}>{this.props.navigation.state.params.data['sym']}: NASDAQ</Text>
+           <Text style={[{color: this.state.colors['darkSlate']}, chartland.name, fonts.hindGunturBd]}>{companyName}</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
          </View>
          <View style={chartland.currentPrice}>
            <Text style={[{color: this.state.colors['darkSlate']}, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
