@@ -48,7 +48,7 @@ export default class RegistrationHeader extends React.Component {
   renderExpandedContent() {
     const { theme } = colorStore;
     if(this.state.showWhyWeAsk) {
-      return <View style={{flex: 1}}>
+      return <View style={{flex: 1, marginHorizontal: 40}}>
         {this.renderWhyWeAskText()}
         {this.renderExtraContent()}
         <Image source={theme.illustration} style={{ width: 358, height: 150, position: 'relative', right: -25 }} />

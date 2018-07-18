@@ -18,19 +18,14 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-
 import checkBoxBlue from '../../../images/checkbox_blue.png';
 import checkBoxOutline from '../../../images/checkbox_outline.png';
 import { isPresent } from '../validation';
-
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
-
 import RegistrationHeader from './registrationHeader';
 
 const country_list = [
@@ -48,31 +43,10 @@ export default class CountrySelection extends Component {
 
   constructor(props){
     super(props);
-
-    // const {
-    //   registrationPage: {
-    //     country
-    //   }
-    // } = this.props;
-    //
-    // console.log(typeof country)
-    // console.log(country);
-    //
-    // if (country === null) {
-    //   this.state = {
-    //     country: 0
-    //   }
-    // } else {
-    //   this.state = {
-    //     country: country
-    //   }
-    // }
-
   }
 
   setStatus(value) {
     console.log('val', value)
-    // let val = value.target.val
     this.props.updateRegistrationParams({
       country: value
     });

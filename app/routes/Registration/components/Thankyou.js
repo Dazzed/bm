@@ -47,7 +47,7 @@ export default class Declaration extends Component {
                 style={styles_2.section}>
                 <ScrollView style={{ height: '72%' }}>
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle]}>
-                        
+
                     </Text>
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 22 }]}>
                         <View style={[styles_2.registrationFormView]}>
@@ -57,9 +57,9 @@ export default class Declaration extends Component {
                             <Text style={[{ color: this.props.colors['darkSlate'] }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', marginTop: 15 }]}>
                                 We just sent you a verification email. Please follow the instructions in the email to continue.
                             </Text>
-                            <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
                         </View>
                     </View>
+                    <Image source={this.props.colors['illustration']} style={{ position: 'relative', width: 358, height: 150, right: -67 }} />
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={() => this.props.onForwardStep()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>

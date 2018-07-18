@@ -18,19 +18,14 @@ const productionMode = false;
 // app requires real data so this is now unuseable
 const displayPreviewButtonOnHome = false;
 
-
-// force dark theme all the time
-const forceDarkTheme = false;
-// const forceDarkTheme = true;
-
 // force navigation on top level navigator
-// const firstNavDefaultRoute = 'Home';
-const firstNavDefaultRoute = 'Login';
+const firstNavDefaultRoute = 'Home';
+// const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
 
-const registrationInitialStep = 0;
+const registrationInitialStep = 12;
 
 const fillRegistrationWithFakeData = true;
 
@@ -54,8 +49,8 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-// const autoLogin = false;
-const autoLogin = true;
+const autoLogin = false;
+// const autoLogin = true;
 if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }
@@ -69,6 +64,9 @@ const verifyAuthOnHomeView = true;
 const chosenServer = 'staging';
 
 console.disableYellowBox = true;
+
+let forceDarkTheme = false;
+
 
 
 ///////////////////////////////////////////////////////////////////////
