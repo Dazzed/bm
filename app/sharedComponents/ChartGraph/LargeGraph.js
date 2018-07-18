@@ -26,8 +26,8 @@ export default class LargeGraph extends React.Component {
 
     constructor(props) {
         super(props);
-        this.thinLineWidth = .5;
-        this.thickLineWidth = 8;
+        // this.thinLineWidth = .5;
+        // this.thickLineWidth = 1;
     }
 
 
@@ -60,12 +60,7 @@ export default class LargeGraph extends React.Component {
             },
         ]
     }
-    
-    // line top high
-    // line bottom low
-    // 
-    // bar top     open/close
-    // bar bottom  open/close
+
 
 
     getLineList() {
@@ -137,9 +132,7 @@ export default class LargeGraph extends React.Component {
     }
 
     render() {
-      
         console.log('---- parsed Data', this.props.data);
-      
         const { theme } = colorStore;
 
         let inlineContainerStyle = {
@@ -149,26 +142,25 @@ export default class LargeGraph extends React.Component {
             height: '100%'
         }
 
-        let gridXArray = [];
-        let gridYArray = [];
-
-        let lineCount = 8;
-
-        for(let i = 0; i < lineCount; i++) {
-            let multiplier = i / lineCount;
-            
-            let xObj = {
-              label: this.props.data.xMax,
-              position: ( (this.props.data.xMax * multiplier) / this.props.data.xMax ) * this.props.width
-            }
-            gridXArray.push(xObj)
-            
-            // to show width on graph, use this
-            // gridXArray.push(this.props.height * multiplier);
-            
-            
-            gridYArray.push(this.props.width * multiplier);
-        }
+        // let gridXArray = [];
+        // let gridYArray = [];
+        // 
+        // let lineCount = 8;
+        // for(let i = 0; i < lineCount; i++) {
+        //     let multiplier = i / lineCount;
+        // 
+        //     let xObj = {
+        //       label: this.props.data.xMax,
+        //       position: ( (this.props.data.xMax * multiplier) / this.props.data.xMax ) * this.props.width
+        //     }
+        //     gridXArray.push(xObj)
+        // 
+        //     // to show width on graph, use this
+        //     // gridXArray.push(this.props.height * multiplier);
+        // 
+        // 
+        //     gridYArray.push(this.props.width * multiplier);
+        // }
 
         let lineYVal = 0;
         let boxWidth = 50;
@@ -178,12 +170,8 @@ export default class LargeGraph extends React.Component {
 
         const generateXLineGroup = (data, key) => {
             const { position, label } = data;
-            console.log('number', position, label)
-            
             let horizontalOffset = 1;
             let xPositionOfTextInPercentage = parseInt((position / this.props.width) * 100) + '%'
-            console.log('x positino text', xPositionOfTextInPercentage)
-            
             return <G key={key}>
                 <G>
                     <Line
@@ -247,28 +235,55 @@ export default class LargeGraph extends React.Component {
 
         let barDataList = this.largeGraphBarData();
 
-        const generateBarLine = (params, key) => {
+        const generateCandlestickBars = (params, key) => {
+          
+            // console.log('== params', params)
+            
+            let thickLineTop = params.closeYPositionCoordinates;
+            let thickLineBottom = params.openYPositionCoordinates
+            let color = theme.red;
+            if(params.close <= params.open) {
+              color = theme.green;
+              thickLineTop = params.openYPositionCoordinates;
+              thickLineBottom = params.closeYPositionCoordinates;
+            }
+            
+
+            // 
+            
+            // params.lowYPositionCoordinates + ( params.highYPositionCoordinates - params.lowYPositionCoordinates
+            
+            // console.log('=== render BAR', params)
+            let thinLineWidth = 1;
+            let thickLineWidth = 3;
+            
             return <G key={key}>
+                {/* Thin line -  high / low */}
                 <Rect
-                    x={params.xPosition - (this.thickLineWidth / 2)}
-                    y={params.softTop}
-                    width={this.thickLineWidth}
-                    height={params.softBottom - params.softTop}
-                    fill={params.color}
-                    strokeWidth={'3'}
-                    stroke={params.color}
+                    key={Math.random()}
+                    x={params.xPositionCoordinates - (thinLineWidth / 2)}
+                    y={params.lowYPositionCoordinates}
+                    width={thinLineWidth}
+                    height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
+                    fill={'red'}
+                    strokeWidth={'1'}
+                    stroke={color}
                     strokeLinejoin={'round'}
                 />
+                
+                {/* Thick line - open / close */}
                 <Rect
-                    x={params.xPosition - (this.thinLineWidth / 2)}
-                    y={params.hardTop}
-                    width={this.thinLineWidth}
-                    height={params.hardBottom - params.hardTop}
-                    fill={params.color}
+                    x={params.xPositionCoordinates - (thickLineWidth / 2)}
+                    y={thickLineBottom}
+                    width={thickLineWidth}
+                    height={thickLineTop - thickLineBottom}
+                    fill={color}
                     strokeWidth={'2'}
-                    stroke={params.color}
+                    stroke={color}
                     strokeLinejoin={'round'}
                 />
+                
+
             </G>
         }
 
@@ -330,6 +345,10 @@ export default class LargeGraph extends React.Component {
                 {this.props.data.gridXArray.map((elem, i) => {
                     return generateXLineGroup(elem, i)
                 })}
+                
+                {this.props.data.dataPoints.map((elem, i) => {
+                    return generateCandlestickBars(elem, i)
+                })}
 
 
             </Svg>
@@ -338,9 +357,7 @@ export default class LargeGraph extends React.Component {
 }
 
 // 
-// {barDataList.map((elem, i) => {
-//     return generateBarLine(elem, i)
-// })}
+
 // 
 // {polygonsList.map((elem, i) => {
 //     return generateGraphPolygonFill(elem, i)
