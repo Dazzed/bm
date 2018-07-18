@@ -149,8 +149,8 @@ export const parseLargeGraphData = (inputData, height, width) => {
         data: inputData,
         gridYArray: [],
         gridXArray: [],
-        xLineCount: 3,
-        yLineCount: 8
+        xLineCount: 4,
+        yLineCount: 4
     };
 
     // add date stamp and calculate maximums and minimums
@@ -195,35 +195,31 @@ export const parseLargeGraphData = (inputData, height, width) => {
 
 
     // generate grid x and y bars
-
     for(let i = 0; i < allGraphData.yLineCount; i++) {
-        let multiplier = i / allGraphData.yLineCount;
-        // for y lines
-        let yPosition = ((allGraphData.yMax * multiplier) / allGraphData.yMax ) * height;
-        let yObj = {
-          label: flipYAxisValue( height, yPosition ),
-          position: flipYAxisValue( height, yPosition )
-        }
-        allGraphData.gridYArray.push(yObj);
+      let spaceBetweenEachLine = height / allGraphData.yLineCount;
+      let lineOffest = spaceBetweenEachLine / 2;
+      let multiplier = i / allGraphData.yLineCount;
+      // for y lines
+      let yPosition = ((allGraphData.yMax * multiplier) / allGraphData.yMax ) * height;
+      let actualYPosition = yPosition + lineOffest;
+      const yObj = {
+        label: actualYPosition.toFixed(2),
+        position: flipYAxisValue( height - lineOffest, yPosition )
+      }
+      allGraphData.gridYArray.push(yObj);
     }
-
     for(let j = 0; j < allGraphData.xLineCount; j++) {
-
-      // let spaceBetweenEachLine = width / allGraphData.xLineCount;
-      // let lineOffest = spaceBetweenEachLine / 2;
-      // console.log('--- space offset', spaceBetweenEachLine, lineOffest)
-
+      let spaceBetweenEachLine = width / allGraphData.xLineCount;
+      let lineOffest = spaceBetweenEachLine / 2;
       let multiplier = j / allGraphData.xLineCount;
       // for x lines
       let xPosition = ((allGraphData.xMax * multiplier) / allGraphData.xMax ) * width;
-      let xObj = {
-        label: xPosition,
-        position: xPosition
+      const xObj = {
+        label: 'xPosition',
+        position: lineOffest + xPosition
       }
-      console.log('--------- x line', xObj)
       allGraphData.gridXArray.push(xObj);
     }
-
 
 
     return allGraphData

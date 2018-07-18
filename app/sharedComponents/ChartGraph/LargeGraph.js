@@ -181,6 +181,8 @@ export default class LargeGraph extends React.Component {
             console.log('number', position, label)
             
             let horizontalOffset = 1;
+            let xPositionOfTextInPercentage = parseInt((position / this.props.width) * 100) + '%'
+            console.log('x positino text', xPositionOfTextInPercentage)
             
             return <G key={key}>
                 <G>
@@ -195,14 +197,15 @@ export default class LargeGraph extends React.Component {
                         strokeWidth={ 1 }
                     />
                     <TextSvg
+                        key={Math.random()}
                         fontSize={12}
                         fill={theme.borderGray}
                         stroke={theme.borderGray}
                         y={'95%'}
-                        x={position}
+                        x={ position }
                         textAnchor="middle"
                     >
-                        {label}
+                      {label}
                     </TextSvg>
                 </G>
             </G>
@@ -225,8 +228,8 @@ export default class LargeGraph extends React.Component {
                     strokeDasharray={ [ 4, 8 ] }
                     strokeWidth={ 1 }
                 />
-                
                 <TextSvg
+                    key={Math.random()}
                     fontSize={12}
                     fill={theme.borderGray}
                     stroke={theme.borderGray}
