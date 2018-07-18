@@ -129,7 +129,6 @@ export default class NumericalSelector extends React.Component {
                     </TouchableOpacity>
                 </View>
 
-
                 <View style={rowStyle}>
                     <TouchableOpacity disabled={this.isDisabled('.')} onPress={() => this.addNumber('.')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle('.')}>.</Text>
