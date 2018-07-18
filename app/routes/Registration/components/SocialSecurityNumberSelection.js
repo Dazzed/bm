@@ -100,7 +100,7 @@ export default class SocialSecurityNumberSelection extends Component {
     }
 
     getSocialSecurityLink() {
-      return (<Text style={{color: "#18c3ff"}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>);
+      return (<Text style={{color: "#18c3ff", fontSize: 18}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>);
     }
 
     render() {

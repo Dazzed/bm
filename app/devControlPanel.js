@@ -19,13 +19,13 @@ const productionMode = false;
 const displayPreviewButtonOnHome = false;
 
 // force navigation on top level navigator
-// const firstNavDefaultRoute = 'Home';
-const firstNavDefaultRoute = 'Login';
+const firstNavDefaultRoute = 'Home';
+// const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
 
-const registrationInitialStep = 0;
+const registrationInitialStep = 4;
 
 const fillRegistrationWithFakeData = true;
 
@@ -49,8 +49,8 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-// const autoLogin = false;
-const autoLogin = true;
+const autoLogin = false;
+// const autoLogin = true;
 if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }
