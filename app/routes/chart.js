@@ -867,13 +867,13 @@ class Chart extends Component {
 
        <View style={chartland.chartWrapper}>
 
-         <View style={[chartland.leftSide, {borderWidth: 1, borderColor: 'orange'}]}>
+         <View style={[chartland.leftSide]}>
 
-           <View style={[chartland.chartFPO, {height: chartHeight, borderColor: 'green', borderWidth: 1}]}>
+           <View style={[chartland.chartFPO, {height: chartHeight}]}>
              <ChartGraph height={chartHeight} width={chartWidth} viewLargeGraph={true} />
            </View>
 
-           <View style={[chartland.options, {flex: 1, borderWidth: 1, borderColor: 'red'}]}>
+           <View style={[chartland.options, {flex: 1}]}>
              <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
                <View style={chartland.indicatorsWrap}>
                  <Text style={[{color: this.state.colors['darkSlate']}, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>

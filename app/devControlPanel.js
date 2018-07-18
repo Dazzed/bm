@@ -49,8 +49,8 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-const autoLogin = false;
-// const autoLogin = true;
+// const autoLogin = false;
+const autoLogin = true;
 if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }

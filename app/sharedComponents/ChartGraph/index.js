@@ -26,12 +26,6 @@ export default class Index extends React.Component {
     const { chartDetailDataJS } = chartStore;
     const { theme } = colorStore;
 
-    if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
-      return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
-      </View>
-    }
-
     if(this.props.viewLargeGraph) {
       return <LargeGraph data={chartDetailDataJS} height={this.props.height} width={this.props.width} {...this.props}/>
     } else {
@@ -47,18 +41,9 @@ export default class Index extends React.Component {
   }
 
   renderLoadingOrContent() {
-    if(!this.state.dimensions) return null;
-
-    const { stockChartLoading } = chartStore;
-    if(stockChartLoading) {
-      return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
-        <ActivityIndicator />
-      </View>
-    } else {
       return <View>
         {this.renderLargeGraphOrSmallGraph()}
       </View>
-    }
   }
 
 

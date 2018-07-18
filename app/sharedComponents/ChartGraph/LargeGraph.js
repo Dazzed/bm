@@ -20,6 +20,8 @@ import {
 } from 'react-native';
 import { observer } from "mobx-react";
 import { generatePolygonsFromTwoLines, flipYAxisValue, parseLargeGraphData } from './utility';
+import fonts from '../../style/fonts';
+import trending from '../../style/trending';
 
 @observer
 export default class LargeGraph extends React.Component {
@@ -96,6 +98,20 @@ export default class LargeGraph extends React.Component {
     render() {
 
         const { theme } = colorStore;
+
+        const { stockChartLoading, chartDetailDataJS } = chartStore;
+
+        if(stockChartLoading) {
+          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator />
+          </View>
+        }
+
+        if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
+          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+          </View>
+        }
 
         const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width);
         console.log('---- parsed Data', parsedData);
@@ -250,7 +266,6 @@ export default class LargeGraph extends React.Component {
                 fillOpacity={.2}
             />
         }
-
 
         return <View style={inlineContainerStyle}>
             <Svg
