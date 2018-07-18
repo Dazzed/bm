@@ -27,13 +27,13 @@ export default class Index extends React.Component {
     const { theme } = colorStore;
 
     if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
-      return <View style={{flex: 1, height: this.state.height, alignItems: 'center', justifyContent: 'center'}}>
+      return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     }
 
     if(this.props.viewLargeGraph) {
-      return <LargeGraph data={parseLargeGraphData(chartDetailDataJS, this.state.height, this.state.width)} height={this.state.height} width={this.state.width} {...this.props}/>
+      return <LargeGraph data={chartDetailDataJS} height={this.props.height} width={this.props.width} {...this.props}/>
     } else {
       return <SmallGraph data={chartDetailDataJS} height={this.state.height} width={this.state.width} {...this.props}/>
     }
@@ -42,7 +42,7 @@ export default class Index extends React.Component {
   onLayout = event => {
       if (this.state.dimensions) return // layout was already called
       let {width, height} = event.nativeEvent.layout
-      console.log('======================= on layout height width', height, width)
+      // console.log('======================= on layout height width', height, width)
       this.setState({dimensions: {width, height}})
   }
 
@@ -51,7 +51,7 @@ export default class Index extends React.Component {
 
     const { stockChartLoading } = chartStore;
     if(stockChartLoading) {
-      return <View style={{flex: 1, height: this.state.height, alignItems: 'center', justifyContent: 'center'}}>
+      return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator />
       </View>
     } else {
@@ -65,8 +65,8 @@ export default class Index extends React.Component {
 
   render() {
     let inlineStyle = {
-      borderWidth: 2,
-      borderColor: 'red',
+      // borderWidth: 2,
+      // borderColor: 'red',
       flex: 1,
       width: '100%',
       // height: '100%',

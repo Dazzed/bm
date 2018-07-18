@@ -94,14 +94,17 @@ export default class LargeGraph extends React.Component {
     }
 
     render() {
-        // console.log('---- parsed Data', this.props.data);
+
         const { theme } = colorStore;
 
+        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width);
+        console.log('---- parsed Data', parsedData);
+
         let inlineContainerStyle = {
-            // borderWidth: 1,
+            // borderWidth: 3,
             // borderColor: 'green',
-            flex: 1,
-            height: '100%'
+            // flex: 1,
+            height: this.props.height
         }
 
         const generateXLineGroup = (data, key) => {
@@ -255,15 +258,15 @@ export default class LargeGraph extends React.Component {
                 width={'100%'}
             >
 
-                {this.props.data.gridYArray.map((elem, i) => {
+                {parsedData.gridYArray.map((elem, i) => {
                     return generateYLineGroup(elem, i)
                 })}
 
-                {this.props.data.gridXArray.map((elem, i) => {
+                {parsedData.gridXArray.map((elem, i) => {
                     return generateXLineGroup(elem, i)
                 })}
 
-                {this.props.data.dataPoints.map((elem, i) => {
+                {parsedData.dataPoints.map((elem, i) => {
                     return generateCandlestickBars(elem, i)
                 })}
 

@@ -39,7 +39,7 @@ import { selectGlobalData } from '../selectors';
 import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
-import { chartStore, watchListStore } from '../mobxStores';
+import { chartStore, watchListStore, deviceSizeStore } from '../mobxStores';
 import { observer } from 'mobx-react';
 import moment from 'moment-timezone';
 import { millionBillionFormatter } from '../utility';
@@ -809,6 +809,15 @@ class Chart extends Component {
         formattedSharesOutstanding
     } = params;
 
+    const { longSide, shortSide } = deviceSizeStore;
+
+    let headerHeight = 58;
+    let footerHeight = 35;
+    let rightWidth = 220;
+
+    let chartHeight = shortSide - headerHeight - footerHeight;
+    let chartWidth = longSide - rightWidth;
+
     return <View style={chartland.landscape}>
        <View style={chartland.header}>
            <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
@@ -860,8 +869,8 @@ class Chart extends Component {
 
          <View style={[chartland.leftSide, {borderWidth: 1, borderColor: 'orange'}]}>
 
-           <View style={[chartland.chartFPO, {flex: 1, borderColor: 'green', borderWidth: 1}]}>
-             <ChartGraph viewLargeGraph={true} />
+           <View style={[chartland.chartFPO, {height: chartHeight, borderColor: 'green', borderWidth: 1}]}>
+             <ChartGraph height={chartHeight} width={chartWidth} viewLargeGraph={true} />
            </View>
 
            <View style={[chartland.options, {flex: 1, borderWidth: 1, borderColor: 'red'}]}>
