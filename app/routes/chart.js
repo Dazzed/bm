@@ -105,8 +105,10 @@ class Chart extends Component {
   _orientationDidChange(orientation) {
     if (orientation == 'LANDSCAPE') {
       this.setState({ orientation: 'landscape' })
+
     } else if(orientation == 'PORTRAIT') {
       this.setState({ orientation: 'portrait' })
+
       if(this.state.isRotateVisible) {
         this.setState({isRotateVisible: false})
         var that = this;
