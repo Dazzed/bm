@@ -18,8 +18,7 @@ export default class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      height: 0,
-      width: 0
+      dimensions: undefined
     }
   }
 
@@ -40,33 +39,38 @@ export default class Index extends React.Component {
     }
   }
 
-  onLayout(event) {
-    const {x, y, width, height} = event.nativeEvent.layout;
-    this.setState({
-      height: height,
-      width: width
-    })
+  onLayout = event => {
+      if (this.state.dimensions) return // layout was already called
+      let {width, height} = event.nativeEvent.layout
+      console.log('======================= on layout height width', height, width)
+      this.setState({dimensions: {width, height}})
   }
 
   renderLoadingOrContent() {
+    if(!this.state.dimensions) return null;
+
     const { stockChartLoading } = chartStore;
     if(stockChartLoading) {
       return <View style={{flex: 1, height: this.state.height, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator />
       </View>
     } else {
-      return this.renderLargeGraphOrSmallGraph()
+      return <View>
+        {this.renderLargeGraphOrSmallGraph()}
+      </View>
     }
   }
 
 
+
   render() {
     let inlineStyle = {
-      // borderWidth: 1,
-      // borderColor: 'red',
+      borderWidth: 2,
+      borderColor: 'red',
+      flex: 1,
       width: '100%',
-      height: this.props.height,
-      position: 'relative'
+      // height: '100%',
+      // position: 'relative'
     }
     return <View style={inlineStyle} onLayout={(event) => this.onLayout(event)}>
         {this.renderLoadingOrContent()}

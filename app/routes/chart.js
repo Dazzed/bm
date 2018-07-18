@@ -114,7 +114,7 @@ class Chart extends Component {
       }
     }
   }
-  
+
   navToLink(link) {
     Linking.canOpenURL(link)
     .then((res) => {
@@ -290,7 +290,7 @@ class Chart extends Component {
     let name = el.props.name;
     console.log('name', name);
     // TODO: maybe rewrite the name query here for the range picker
-    
+
     const { setRange } = chartStore;
     this.setState({
         page: el.props.name
@@ -311,7 +311,7 @@ class Chart extends Component {
 
   renderExecutives(executives) {
     // {/* TODO: get executives list. Not in this data yet */}
-    
+
     // executives = [
     //   {
     //     title: 'Timothy Donald Cook',
@@ -322,7 +322,7 @@ class Chart extends Component {
     //     role: 'Chief Operating Officer'
     //   }
     // ]
-    
+
     if(!executives || executives.length === 0) {
       return <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
     } else {
@@ -336,7 +336,7 @@ class Chart extends Component {
       </View>
     }
   }
-  
+
   renderRelated() {
     {/* TODO: get related stocks. not yet in data */}
     return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
@@ -417,10 +417,10 @@ class Chart extends Component {
       <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
       <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
     </View>
-    
-    
+
+
     {/* Bottom Menu nav bar */}
-    
+
     <View style={[{borderTopColor: this.state.colors['borderGray']}, {backgroundColor: this.state.colors['white']}, chart.fakeTabNav]}>
       <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Account')}>
           <View style={chart.fakeIcon}>
@@ -468,10 +468,10 @@ class Chart extends Component {
           <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Settings</Text>
       </TouchableOpacity>
     </View>
-    
-    
-    
-    
+
+
+
+
 
 
     <ScrollView style={chart.wrapper}>
@@ -712,7 +712,7 @@ class Chart extends Component {
 
 
   renderBidAsk() {
-      
+
       // {/* TODO: BID LIST not getting this from server yet */}
      return <View style={chartland.bidAsksWrapper}>
        <View style={chartland.bid}>
@@ -806,7 +806,7 @@ class Chart extends Component {
         formattedHigh,
         formattedSharesOutstanding
     } = params;
-    
+
     return <View style={chartland.landscape}>
        <View style={chartland.header}>
            <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
@@ -829,10 +829,7 @@ class Chart extends Component {
          </View>
          <View style={chartland.prices}>
            <View style={chartland.pricePoints}>
-           
-       
-       
-       
+
              <View style={chartland.priceOpen}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
                <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
@@ -852,18 +849,20 @@ class Chart extends Component {
            </View>
          </View>
          <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol(ticker)}>
-          <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
+           <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
          </TouchableOpacity>
 
        </View>
+
        <View style={chartland.chartWrapper}>
-         <View style={chartland.leftSide}>
-           <View style={chartland.chartFPO}>
 
-             <ChartGraph height={this.largeGraphHeight} viewLargeGraph={true} />
+         <View style={[chartland.leftSide, {borderWidth: 1, borderColor: 'orange'}]}>
 
+           <View style={[chartland.chartFPO, {flex: 1, borderColor: 'green', borderWidth: 1}]}>
+             <ChartGraph viewLargeGraph={true} />
            </View>
-           <View style={chartland.options}>
+
+           <View style={[chartland.options, {flex: 1, borderWidth: 1, borderColor: 'red'}]}>
              <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
                <View style={chartland.indicatorsWrap}>
                  <Text style={[{color: this.state.colors['darkSlate']}, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>
@@ -898,7 +897,10 @@ class Chart extends Component {
              </Tabs>
              </View>
            </View>
+
+
          </View>
+
          <View style={chartland.right}>
 
            <View style={chartland.momentumWrapper}>
@@ -915,7 +917,7 @@ class Chart extends Component {
            </View>
 
            {this.renderBidAsk()}
-           
+
            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
@@ -949,171 +951,171 @@ class Chart extends Component {
                <Text style={[chartland.radioSubTitle, fonts.hindGunturRg]}>Select up to 5</Text>
              </View>
              <ScrollView style={chartland.radioWrap}>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('VLM')}
-                   isChecked={this.checkIndicators('VLM')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'VLM'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Volume'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('TRND')}
-                   isChecked={this.checkIndicators('TRND')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'TRND'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Trend Lines'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('ICHI')}
-                   isChecked={this.checkIndicators('ICHI')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'ICHI'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Ichimoku Cloud'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_split.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('OBV')}
-                   isChecked={this.checkIndicators('OBV')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'OBV'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'On Balance Volume'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('SMA')}
-                   isChecked={this.checkIndicators('SMA')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'SMA'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Simple Moving Average'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('EMA')}
-                   isChecked={this.checkIndicators('EMA')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'EMA'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Exponential Moving Average'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('MACD')}
-                   isChecked={this.checkIndicators('MACD')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'MACD'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Moving Average Convergence Divergence'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('RSI')}
-                   isChecked={this.checkIndicators('RSI')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'RSI'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Relative Strength Index'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('A/D Line')}
-                   isChecked={this.checkIndicators('A/D Line')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'A/D Line'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Accumulation/Distribution Line'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('FIB')}
-                   isChecked={this.checkIndicators('FIB')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'FIB'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Fibonacci'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('BOL')}
-                   isChecked={this.checkIndicators('BOL')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'BOL'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Bollinger Bands'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('VLM')}
+                     isChecked={this.checkIndicators('VLM')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'VLM'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Volume'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('TRND')}
+                     isChecked={this.checkIndicators('TRND')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'TRND'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Trend Lines'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('ICHI')}
+                     isChecked={this.checkIndicators('ICHI')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'ICHI'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Ichimoku Cloud'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_split.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('OBV')}
+                     isChecked={this.checkIndicators('OBV')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'OBV'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'On Balance Volume'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('SMA')}
+                     isChecked={this.checkIndicators('SMA')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'SMA'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Simple Moving Average'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('EMA')}
+                     isChecked={this.checkIndicators('EMA')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'EMA'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Exponential Moving Average'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('MACD')}
+                     isChecked={this.checkIndicators('MACD')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'MACD'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Moving Average Convergence Divergence'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('RSI')}
+                     isChecked={this.checkIndicators('RSI')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'RSI'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Relative Strength Index'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('A/D Line')}
+                     isChecked={this.checkIndicators('A/D Line')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'A/D Line'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Accumulation/Distribution Line'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('FIB')}
+                     isChecked={this.checkIndicators('FIB')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'FIB'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Fibonacci'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('BOL')}
+                     isChecked={this.checkIndicators('BOL')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'BOL'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Bollinger Bands'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
              </ScrollView>
            </View>
          </Modal>
@@ -1168,43 +1170,23 @@ class Chart extends Component {
         ticker,
         website,
     } = tickerDataJS;
-    
-    
+
+
     //  formatting data
-    
+
     {/* TODO: TIME don't have this yet with time zone */}
-    
+
     let formattedTime = moment(latestUpdate).format('h:mm A');
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);
     let formattedLow = low.toFixed(2);
     let formattedHigh = high.toFixed(2);
-    
+
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
-    
+
     const params = {
       ...tickerDataJS,
-      // Price,
-      // Volume,
-      // address,
-      // ask,
-      // bid,
-      // change,
-      // changePercent,
-      // companyName,
-      // exchange,
-      // executives,
-      // high,
-      // keyStats,
-      // latestUpdate,
-      // low,
-      // momentum,
-      // open,
-      // overview,
-      // profile,
-      // ticker,
-      // website,
       formattedTime,
       formattedVolume,
       formattedPrice,
@@ -1213,29 +1195,6 @@ class Chart extends Component {
       formattedHigh,
       formattedSharesOutstanding
     }
-    
-    //  notes on the data
-    // keyStats
-    //   avgTotalVolume
-    //   beta
-    //   divYield
-    //   eps
-    //   float
-    //   mktCap
-    //   nextEarningsDate
-    //   peRatio
-    //   week52high
-    //   week52low
-    //   float
-
-
-    // overview
-    //   institutionPercent
-    //   lastStockSplit
-    //     forFactor
-    //     paymentDate
-    //     toFactor
-    //   sharesOutstanding
 
     switch (this.state.orientation) {
       case 'portrait':

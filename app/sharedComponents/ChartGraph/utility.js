@@ -156,7 +156,7 @@ export const parseLargeGraphData = (inputData, height, width) => {
         dataPoints: inputData,
         gridYArray: [],
         gridXArray: [],
-        xLineCount: 4,
+        xLineCount: 5,
         yLineCount: 4,
         xRange: 0,
         yRange: 0
@@ -165,7 +165,7 @@ export const parseLargeGraphData = (inputData, height, width) => {
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
       const dateUnix = parseInt(moment(elem.date).format('X'));
-      console.log('==== date unix', dateUnix)
+      // console.log('==== date unix', dateUnix)
 
       // calculate min and max
       // time / x value
@@ -258,19 +258,13 @@ export const parseLargeGraphData = (inputData, height, width) => {
       let spaceBetweenEachLine = width / d.xLineCount;
       let lineOffest = spaceBetweenEachLine / 2;
       let multiplier = j / d.xLineCount;
-
       let xPosition = ((d.xMax * multiplier) / d.xMax ) * width;
-      let exactPixelLocation = lineOffest + xPosition
-
+      let exactPixelLocation = lineOffest + xPosition;
       const relativePixelLocation = exactPixelLocation / width;
-
-
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
-
-      console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
+      // console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
 
       const label = moment.unix(unixPoint).format('MM-DD-YY')
-
       const xObj = {
         label: label,
         position: exactPixelLocation
@@ -279,8 +273,7 @@ export const parseLargeGraphData = (inputData, height, width) => {
     }
 
 
-
-    console.log('====== ALL GRAPH DATA', d)
+    // console.log('====== ALL GRAPH DATA', d)
     return d
 }
 
