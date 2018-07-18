@@ -103,14 +103,9 @@ export default class FundMyAccount extends React.Component {
     calculateError() {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             let displayError = false;
-
             const { selectedAccount } = accountStore;
-
             let entryValue = parseFloat(this.state.fundingString);
             let existingAmount = parseFloat(selectedAccount.amount);
-
-            console.log('======= INT', entryValue, existingAmount)
-
             if(entryValue > existingAmount) {
                 displayError = true;
             }
