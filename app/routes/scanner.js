@@ -190,9 +190,10 @@ class SubMenu extends React.Component {
   }
 
   populateWithData() {
+    const { selectedSectorJS } = sectorIndustriesStore;
 
     let formattedOperator = 'gt';
-    if(this.state.operator == '<') {
+    if(this.state.operator === 1) {
       formattedOperator = 'lt';
     }
 
@@ -203,17 +204,17 @@ class SubMenu extends React.Component {
       operator: formattedOperator,
     }
 
-    // if(this.state.scanOption > 0) {
-        params.scan = formattedScanOption;
-    // }
-
-
-
-    if(this.state.sectorOption > 0) {
-      params.sector = sector_props[this.state.sectorOption].queryString
+    if(this.state.scanOption > 0) {
+      params.scan = formattedScanOption;
+    } else {
+      params.scan = 'all'
     }
 
-    console.log('---------- paramas', params)
+    if(selectedSectorJS && selectedSectorJS !== 'All') {
+      params.sector = selectedSectorJS
+    }
+
+    console.log('---------- paramas', this.state.operator, params)
 
     scannerStore.getScannerData(params)
   }
@@ -245,19 +246,22 @@ class SubMenu extends React.Component {
     this.setState({ isSectorVisible: true })
   }
 
+  setSector(value) {
+    const { selectSectorByOption } = sectorIndustriesStore;
+    selectSectorByOption(value);
+    this.populateWithData();
+    this.hideSector()
+  }
+
   hideSector(value) {
-    console.log('====== value', value)
-    if(value === undefined) {
-      this.setState({ isSectorVisible: false })
-    } else {
-      this.setState({ isSectorVisible: false, sectorOption: value }, this.populateWithData)
-    }
+    this.setState({ isSectorVisible: false })
   }
 
   setPrice(value) {
     this.setState({ ltValue: value }, this.populateWithData)
   }
   setOperator(value) {
+    console.log('======== set operator', value)
     this.setState({ operator: value })
   }
   hideSub() {
@@ -276,6 +280,61 @@ class SubMenu extends React.Component {
     this.setState({ isScanVisible: false }, () => {
       this.populateWithData()
     })
+  }
+
+  renderSectorSelector() {
+    const { sectorDataJS, selectedSectorOption, sectorLoading } = sectorIndustriesStore;
+
+    let label = sector_props[this.state.sectorOption].label;
+    if(sectorLoading) {
+      label = 'Loading...'
+    }
+
+    return <View style={{flex: 1}}>
+      <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, scanner.subMenuHalf]} onPress={() => { this.showSector(); }}>
+        <Image
+          source={require('../images/arrow.png')}
+          style={[scanner.downArrow]}
+        />
+        <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, scanner.subMenuTxt, fonts.hindGunturRg]}>{label}</Text>
+      </TouchableOpacity>
+      <Modal
+        isVisible={this.state.isSectorVisible}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        style={scanner.halfModal}
+        onModalHide={() => { this.hideSector() }}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.subMenuRightModal]}>
+          <Image
+            source={require('../images/arrowblue.png')}
+            style={[scanner.downArrow]}
+          />
+          <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
+        </View>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.lastTradeModal]}>
+          <ScrollView style={scanner.sectorRadio}>
+            <RadioForm
+              radio_props={sectorDataJS}
+              initial={selectedSectorOption}
+              formHorizontal={false}
+              labelHorizontal={true}
+              borderWidth={1}
+              buttonColor={this.state.colors['blue']}
+              buttonOuterColor={this.state.colors['lightGray']}
+              buttonSize={22}
+              buttonOuterSize={20}
+              animation={false}
+              labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+              radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+              labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+              onPress={(value) => { this.hideSector(value) }}
+              style={scanner.radioField}
+            />
+          </ScrollView>
+        </View>
+      </Modal>
+    </View>
   }
 
   render() {
@@ -325,89 +384,49 @@ class SubMenu extends React.Component {
           </Modal>
         </View>
         <View style={scanner.subMenuRow}>
-          <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, scanner.subMenuHalf]} onPress={() => { this.showLT(); }}>
-            <Image
-              source={require('../images/arrow.png')}
-              style={[scanner.downArrow]}
-            />
-            <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.subMenuTitle, fonts.hindGunturBd]}>LAST TRADE</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, scanner.subMenuTxt, fonts.hindGunturRg]}>{scan_operators[this.state.operator]}${this.state.ltValue}</Text>
-          </TouchableOpacity>
-          <Modal
-            isVisible={this.state.isLTVisible}
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
-            style={scanner.halfModal}
-            onModalHide={() => { this.hideSub() }}>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.subMenuLeftModal]}>
+          <View style={{flex: 1}}>
+            <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, scanner.subMenuHalf]} onPress={() => { this.showLT(); }}>
               <Image
-                source={require('../images/arrowblue.png')}
+                source={require('../images/arrow.png')}
                 style={[scanner.downArrow]}
               />
-              <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.leftMenuText, fonts.hindGunturBd]}>LAST TRADE</Text>
-            </View>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.lastTradeModal]}>
-              <NumPad
-                setPrice={(value) => { this.setPrice(value); }}
-                setOperator={(value) => { this.setOperator(value); }}
-                currOperator={this.state.operator}
-                currPrice={this.state.ltValue}
-                globalData={this.props.globalData}
-              />
-              <View style={scanner.confirmBtn}>
-                <TouchableOpacity
-                  style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
-                  onPress={() => { this.hideSub(); }}>
-                  <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>
-                    CONFIRM
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-          <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, scanner.subMenuHalf]} onPress={() => { this.showSector(); }}>
-            <Image
-              source={require('../images/arrow.png')}
-              style={[scanner.downArrow]}
-            />
-            <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, scanner.subMenuTxt, fonts.hindGunturRg]}>{sector_props[this.state.sectorOption].label}</Text>
-          </TouchableOpacity>
-          <Modal
-            isVisible={this.state.isSectorVisible}
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
-            style={scanner.halfModal}
-            onModalHide={() => { this.hideSector() }}>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.subMenuRightModal]}>
-              <Image
-                source={require('../images/arrowblue.png')}
-                style={[scanner.downArrow]}
-              />
-              <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
-            </View>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.lastTradeModal]}>
-              <ScrollView style={scanner.sectorRadio}>
-                <RadioForm
-                  radio_props={sector_props}
-                  initial={this.state.sectorOption}
-                  formHorizontal={false}
-                  labelHorizontal={true}
-                  borderWidth={1}
-                  buttonColor={this.state.colors['blue']}
-                  buttonOuterColor={this.state.colors['lightGray']}
-                  buttonSize={22}
-                  buttonOuterSize={20}
-                  animation={false}
-                  labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
-                  radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-                  labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.hideSector(value) }}
-                  style={scanner.radioField}
+              <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.subMenuTitle, fonts.hindGunturBd]}>LAST TRADE</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, scanner.subMenuTxt, fonts.hindGunturRg]}>{scan_operators[this.state.operator]}${this.state.ltValue}</Text>
+            </TouchableOpacity>
+            <Modal
+              isVisible={this.state.isLTVisible}
+              animationIn={'fadeIn'}
+              animationOut={'fadeOut'}
+              style={scanner.halfModal}
+              onModalHide={() => { this.hideSub() }}>
+              <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.subMenuLeftModal]}>
+                <Image
+                  source={require('../images/arrowblue.png')}
+                  style={[scanner.downArrow]}
                 />
-              </ScrollView>
-            </View>
-          </Modal>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, scanner.leftMenuText, fonts.hindGunturBd]}>LAST TRADE</Text>
+              </View>
+              <View style={[{ backgroundColor: this.state.colors['white'] }, scanner.lastTradeModal]}>
+                <NumPad
+                  setPrice={(value) => { this.setPrice(value); }}
+                  setOperator={(value) => { this.setOperator(value); }}
+                  currOperator={this.state.operator}
+                  currPrice={this.state.ltValue}
+                  globalData={this.props.globalData}
+                />
+                <View style={scanner.confirmBtn}>
+                  <TouchableOpacity
+                    style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
+                    onPress={() => { this.hideSub(); }}>
+                    <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>
+                      CONFIRM
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </View>
+          {this.renderSectorSelector()}
         </View>
       </View>
     )
