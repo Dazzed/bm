@@ -188,7 +188,7 @@ export default class FundMyAccount extends React.Component {
         return <View style={style}>
           <View style={{flex: 0, height: '100%', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={textStyle}>
-                {string + ''} {selectedAccount.title}
+                {string + ''} {selectedAccount.subtitle}
             </Text>
           </View>
         </View>
