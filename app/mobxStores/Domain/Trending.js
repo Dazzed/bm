@@ -88,9 +88,6 @@ export default class Trending {
           latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
           posNegColor: data.change > 0 ? theme.green : theme.red
         }
-
-        // console.log('data', parseData)
-
         if(watchListItems.length > 0) {
           parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
         }
@@ -113,7 +110,6 @@ export default class Trending {
   }
 
   @computed get currentIndustryOptions() {
-    console.log('=============== CURRENT INDUSTRY OPTIONS SELECOT', this.industryOption)
      if(this.sectorOption === null) {
        return null;
      }
@@ -170,7 +166,7 @@ export default class Trending {
       filterOptions.industry = industry_utilities[this.industryOption]
     }
 
-    // console.log('=============== params', filterOptions)
+    console.log('=============== params', filterOptions)
 
     let params = {
       filter: JSON.stringify(filterOptions)
