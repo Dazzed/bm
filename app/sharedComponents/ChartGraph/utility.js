@@ -148,7 +148,7 @@ export const parseSmallGraphData = (data) => {
 
 export const parseLargeGraphData = (inputData, height, width) => {
 
-    let allGraphData = {
+    let d = {
         xMax: 0,
         xMin: 99999999999999999999999,
         yMax: 0,
@@ -158,34 +158,34 @@ export const parseLargeGraphData = (inputData, height, width) => {
         gridXArray: [],
         xLineCount: 4,
         yLineCount: 4,
-        candlestickData: [],
         xRange: 0,
         yRange: 0
     };
 
     // add date stamp and calculate maximums and minimums
-    allGraphData.dataPoints = allGraphData.dataPoints.map((elem, i) => {
+    d.dataPoints = d.dataPoints.map((elem, i) => {
       const dateUnix = parseInt(moment(elem.date).format('X'));
+      console.log('==== date unix', dateUnix)
 
       // calculate min and max
       // time / x value
-      if( dateUnix > allGraphData.xMax ) allGraphData.xMax = dateUnix;
-      if( dateUnix < allGraphData.xMin ) allGraphData.xMin = dateUnix;
+      if( dateUnix > d.xMax ) d.xMax = dateUnix;
+      if( dateUnix < d.xMin ) d.xMin = dateUnix;
       // vwap
-      if( elem.vwap > allGraphData.yMax ) allGraphData.yMax = elem.vwap;
-      if( elem.vwap < allGraphData.yMin ) allGraphData.yMin = elem.vwap;
+      if( elem.vwap > d.yMax ) d.yMax = elem.vwap;
+      if( elem.vwap < d.yMin ) d.yMin = elem.vwap;
       // open
-      if( elem.open > allGraphData.yMax ) allGraphData.yMax = elem.open;
-      if( elem.open < allGraphData.yMin ) allGraphData.yMin = elem.open;
+      if( elem.open > d.yMax ) d.yMax = elem.open;
+      if( elem.open < d.yMin ) d.yMin = elem.open;
       // close
-      if( elem.close > allGraphData.yMax ) allGraphData.yMax = elem.close;
-      if( elem.close < allGraphData.yMin ) allGraphData.yMin = elem.close;
+      if( elem.close > d.yMax ) d.yMax = elem.close;
+      if( elem.close < d.yMin ) d.yMin = elem.close;
       // high
-      if( elem.high > allGraphData.yMax ) allGraphData.yMax = elem.high;
-      if( elem.high < allGraphData.yMin ) allGraphData.yMin = elem.high;
+      if( elem.high > d.yMax ) d.yMax = elem.high;
+      if( elem.high < d.yMin ) d.yMin = elem.high;
       // low
-      if( elem.low > allGraphData.yMax ) allGraphData.yMax = elem.low;
-      if( elem.low < allGraphData.yMin ) allGraphData.yMin = elem.low;
+      if( elem.low > d.yMax ) d.yMax = elem.low;
+      if( elem.low < d.yMin ) d.yMin = elem.low;
 
       return {
         ...elem,
@@ -194,28 +194,28 @@ export const parseLargeGraphData = (inputData, height, width) => {
     })
 
     // Save range
-    allGraphData.xRange = allGraphData.xMax - allGraphData.xMin;
-    allGraphData.yRange = allGraphData.yMax - allGraphData.yMin;
+    d.xRange = d.xMax - d.xMin;
+    d.yRange = d.yMax - d.yMin;
 
-    // add relative positional data to all pertinent points
-    allGraphData.dataPoints = allGraphData.dataPoints.map((elem, i) => {
+    // add relative and coordinate positional data to all pertinent points
+    d.dataPoints = d.dataPoints.map((elem, i) => {
       const thisUnix = elem.dateUnix;
       const open = elem.open;
       const close = elem.close;
       const high = elem.high;
       const low = elem.low;
 
-      const thisXValScaled = thisUnix - allGraphData.xMin;
-      const openPositionScaled = open - allGraphData.yMin;
-      const closePositionScaled = close - allGraphData.yMin;
-      const highPositionScaled = high - allGraphData.yMin;
-      const lowPositionScaled = low - allGraphData.yMin;
+      const thisXValScaled = thisUnix - d.xMin;
+      const openPositionScaled = open - d.yMin;
+      const closePositionScaled = close - d.yMin;
+      const highPositionScaled = high - d.yMin;
+      const lowPositionScaled = low - d.yMin;
 
-      const xPositionRelative = thisXValScaled / allGraphData.xRange;
-      const openYPositionRelative = openPositionScaled / allGraphData.yRange;
-      const closeYPositionRelative = closePositionScaled / allGraphData.yRange;
-      const highYPositionRelative = highPositionScaled / allGraphData.yRange;
-      const lowYPositionRelative = lowPositionScaled / allGraphData.yRange;
+      const xPositionRelative = thisXValScaled / d.xRange;
+      const openYPositionRelative = openPositionScaled / d.yRange;
+      const closeYPositionRelative = closePositionScaled / d.yRange;
+      const highYPositionRelative = highPositionScaled / d.yRange;
+      const lowYPositionRelative = lowPositionScaled / d.yRange;
 
       const xPositionCoordinates = xPositionRelative * width;
       const openYPositionCoordinates = flipYAxisValue( height, openYPositionRelative * height );
@@ -240,36 +240,48 @@ export const parseLargeGraphData = (inputData, height, width) => {
     });
 
     // generate grid x and y bars
-    for(let i = 0; i < allGraphData.yLineCount; i++) {
-      let spaceBetweenEachLine = height / allGraphData.yLineCount;
-      let lineOffest = spaceBetweenEachLine / 2;
-      let multiplier = i / allGraphData.yLineCount;
+    for( let i = 0; i < d.yLineCount; i++) {
       // for y lines
-      let yPosition = ((allGraphData.yMax * multiplier) / allGraphData.yMax ) * height;
+      let spaceBetweenEachLine = height / d.yLineCount;
+      let lineOffest = spaceBetweenEachLine / 2;
+      let multiplier = i / d.yLineCount;
+      let yPosition = ((d.yMax * multiplier) / d.yMax ) * height;
       let actualYPosition = yPosition + lineOffest;
       const yObj = {
         label: actualYPosition.toFixed(2),
         position: flipYAxisValue( height - lineOffest, yPosition )
       }
-      allGraphData.gridYArray.push(yObj);
+      d.gridYArray.push(yObj);
     }
-    for(let j = 0; j < allGraphData.xLineCount; j++) {
-      let spaceBetweenEachLine = width / allGraphData.xLineCount;
-      let lineOffest = spaceBetweenEachLine / 2;
-      let multiplier = j / allGraphData.xLineCount;
+    for( let j = 0; j < d.xLineCount; j++) {
       // for x lines
-      let xPosition = ((allGraphData.xMax * multiplier) / allGraphData.xMax ) * width;
+      let spaceBetweenEachLine = width / d.xLineCount;
+      let lineOffest = spaceBetweenEachLine / 2;
+      let multiplier = j / d.xLineCount;
+
+      let xPosition = ((d.xMax * multiplier) / d.xMax ) * width;
+      let exactPixelLocation = lineOffest + xPosition
+
+      const relativePixelLocation = exactPixelLocation / width;
+
+
+      const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
+
+      console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
+
+      const label = moment.unix(unixPoint).format('MM-DD-YY')
+
       const xObj = {
-        label: lineOffest + xPosition,
-        position: lineOffest + xPosition
+        label: label,
+        position: exactPixelLocation
       }
-      allGraphData.gridXArray.push(xObj);
+      d.gridXArray.push(xObj);
     }
 
 
 
-    console.log('====== ALL GRAPH DATA', allGraphData)
-    return allGraphData
+    console.log('====== ALL GRAPH DATA', d)
+    return d
 }
 
 

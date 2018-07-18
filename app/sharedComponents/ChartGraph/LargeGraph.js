@@ -282,7 +282,6 @@ export default class LargeGraph extends React.Component {
                     stroke={color}
                     strokeLinejoin={'round'}
                 />
-                
 
             </G>
         }
