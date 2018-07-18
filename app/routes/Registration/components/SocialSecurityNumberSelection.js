@@ -105,10 +105,6 @@ export default class SocialSecurityNumberSelection extends Component {
 
     render() {
         const { registrationDataJS } = registrationStore;
-
-
-
-
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}

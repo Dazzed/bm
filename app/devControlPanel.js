@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-const productionMode = false;
-// const productionMode = true;
+// const productionMode = false;
+const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ const firstNavDefaultRoute = 'Home';
 // Login
 // Home
 
-const registrationInitialStep = 4;
+const registrationInitialStep = 0;
 
 const fillRegistrationWithFakeData = true;
 
