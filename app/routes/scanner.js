@@ -191,7 +191,6 @@ class SubMenu extends React.Component {
 
   populateWithData() {
     const { selectedSectorJS } = sectorIndustriesStore;
-
     let formattedOperator = 'gt';
     if(this.state.operator === 1) {
       formattedOperator = 'lt';
@@ -214,7 +213,7 @@ class SubMenu extends React.Component {
       params.sector = selectedSectorJS
     }
 
-    console.log('---------- paramas', this.state.operator, params)
+    console.log('---------- paramas', selectedSectorJS)
 
     scannerStore.getScannerData(params)
   }
@@ -283,9 +282,9 @@ class SubMenu extends React.Component {
   }
 
   renderSectorSelector() {
-    const { sectorDataJS, selectedSectorOption, sectorLoading } = sectorIndustriesStore;
+    const { sectorDataJS, selectedSectorOption, selectedSectorJS, sectorLoading } = sectorIndustriesStore;
 
-    let label = sector_props[this.state.sectorOption].label;
+    let label = selectedSectorJS;
     if(sectorLoading) {
       label = 'Loading...'
     }
@@ -328,7 +327,7 @@ class SubMenu extends React.Component {
               labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
               radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
               labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => { this.hideSector(value) }}
+              onPress={(value) => { this.setSector(value) }}
               style={scanner.radioField}
             />
           </ScrollView>
