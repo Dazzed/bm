@@ -110,68 +110,20 @@ export default class Trending {
     this.displayDecimal = newVal;
   }
 
-  @computed get currentIndustryOptions() {
-     if(this.sectorOption === null) {
-       return null;
-     }
-     if(this.sectorOption === 0) {
-       return industry_consumerdiscretionary
-     }
-     if(this.sectorOption === 1) {
-       return industry_consumerdiscretionary
-     }
-     if(this.sectorOption === 2) {
-       return industry_consumerstaples
-     }
-     if(this.sectorOption === 3) {
-       return industry_energy
-     }
-     if(this.sectorOption === 4) {
-       return industry_financials
-     }
-     if(this.sectorOption === 5) {
-       return industry_health
-     }
-     if(this.sectorOption === 6) {
-       return industry_industrials
-     }
-     if(this.sectorOption === 7) {
-       return industry_infotech
-     }
-     if(this.sectorOption === 8) {
-       return industry_materials
-     }
-     if(this.sectorOption === 9) {
-       return industry_realestate
-     }
-     if(this.sectorOption === 10) {
-       return industry_telecomm
-     }
-     if(this.sectorOption === 11) {
-       return industry_utilities
-     }
-  }
-
-
   @action getTrendingData = () => {
     this.setLoading(true);
-
-
-
 
     let filterOptions = {
       "trending": scan_props[this.trendingOption].queryString,
     }
 
     if(sectorIndustriesStore.selectedSectorJS !== 'All') {
-      filterOptions.sector = sectorIndustriesStore.selectedSectorJS  
+      filterOptions.sector = sectorIndustriesStore.selectedSectorJS
     }
 
     if(sectorIndustriesStore.selectedIndustryJS !== 'All') {
       filterOptions.industry = sectorIndustriesStore.selectedIndustryJS;
     }
-
-    console.log('=============== params', filterOptions, sectorIndustriesStore.selectedSectorJS, sectorIndustriesStore.selectedIndustryJS )
 
     let params = {
       filter: JSON.stringify(filterOptions)

@@ -282,7 +282,7 @@ class SubMenu extends React.Component {
   }
 
   render() {
-    const { trendingOption, industryOption, sectorOption, currentIndustryOptions } = trendingStore;
+    const { trendingOption, industryOption, sectorOption } = trendingStore;
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, trending.subMenu]}>
