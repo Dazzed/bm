@@ -31,7 +31,7 @@ const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Watchlists';
+const appNavDefaultTabRoute = 'Scanner';
 
 // Account
 // Watchlists

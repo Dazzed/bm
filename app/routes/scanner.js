@@ -28,20 +28,15 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import Modal from 'react-native-modal'
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
 import { RadioButtons, SegmentedControls } from 'react-native-radio-buttons'
 import { colors } from '../store/store';
-
 import { selectGlobalData } from '../selectors';
-
 import fonts from '../style/fonts';
 import navstyle from '../style/nav';
-
-import { scannerStore } from '../mobxStores';
+import { scannerStore, sectorIndustriesStore } from '../mobxStores';
 import { observer } from 'mobx-react';
-
 import { sector_props } from '../constants';
 
 var scan_props = [
@@ -204,19 +199,29 @@ class SubMenu extends React.Component {
     let formattedScanOption = scan_props[this.state.scanOption].queryString;
 
     let params = {
-      scan: formattedScanOption,
       last_trade: this.state.ltValue,
       operator: formattedOperator,
     }
+
+    // if(this.state.scanOption > 0) {
+        params.scan = formattedScanOption;
+    // }
+
+
 
     if(this.state.sectorOption > 0) {
       params.sector = sector_props[this.state.sectorOption].queryString
     }
 
+    console.log('---------- paramas', params)
+
     scannerStore.getScannerData(params)
   }
 
   componentDidMount() {
+    const { getSectors } = sectorIndustriesStore;
+    getSectors()
+
     this.populateWithData()
   }
 
@@ -262,12 +267,15 @@ class SubMenu extends React.Component {
     this.setState({ isScanVisible: true })
   }
 
+  setScan(value) {
+    this.setState({ isScanVisible: false, scanOption: value }, () => {
+    })
+  }
+
   hideScan(value) {
-    if (value) {
-      this.setState({ isScanVisible: false, scanOption: value }, this.populateWithData)
-    } else {
-      this.setState({ isScanVisible: false })
-    }
+    this.setState({ isScanVisible: false }, () => {
+      this.populateWithData()
+    })
   }
 
   render() {
@@ -309,7 +317,7 @@ class SubMenu extends React.Component {
                   labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                   radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
                   labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.hideScan(value) }}
+                  onPress={(value) => { this.setScan(value) }}
                   style={styles.radioField}
                 />
               </View>

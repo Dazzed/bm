@@ -29,7 +29,7 @@ import navstyle from '../../style/nav';
 import { setTheme, getTheme, colors } from '../../store/store';
 import { selectGlobalData } from '../../selectors';
 import { observer } from 'mobx-react';
-import { trendingStore, watchListStore } from '../../mobxStores';
+import { trendingStore, watchListStore, sectorIndustriesStore } from '../../mobxStores';
 import {
   scan_props,
   sector_props,
@@ -73,9 +73,11 @@ class SubMenu extends React.Component {
 
   componentDidMount() {
     const { industryOption } = trendingStore;
+    const { getSectors } = sectorIndustriesStore;
     if (industryOption == null) {
       styleDefault = { color: this.state.colors['lightGray'] }
     }
+    getSectors()
   }
 
   componentDidUpdate(prevProps) {
@@ -111,8 +113,13 @@ class SubMenu extends React.Component {
   }
 
   setSector(value) {
-    const { setSectorOption } = trendingStore;
-    setSectorOption(value);
+    // const { setSectorOption } = trendingStore;
+    // setSectorOption(value);
+
+
+    const { selectSectorByOption } = sectorIndustriesStore;
+    selectSectorByOption(value);
+
     this.hideSector()
   }
 
@@ -121,16 +128,20 @@ class SubMenu extends React.Component {
   }
 
   setIndustry(value) {
-    const { industryOption, setIndustryOption } = trendingStore;
-    setIndustryOption(value);
+    // const { industryOption, setIndustryOption } = trendingStore;
+    const { selectIndustryByOption } = sectorIndustriesStore;
+
+    selectIndustryByOption(value);
+
+    // setIndustryOption(value);
     this.hideIndustry()
   }
 
   showIndustry() {
-    const { sectorOption } = trendingStore;
-    if(sectorOption === null || sectorOption === 0) {
-      return;
-    }
+    // const { sectorOption } = trendingStore;
+    // if(sectorOption === null || sectorOption === 0) {
+    //   return;
+    // }
     this.setState({ isIndustryVisible: true })
   }
 
@@ -145,6 +156,135 @@ class SubMenu extends React.Component {
     } else {
       return this.state.isIndustryVisible;
     }
+  }
+
+  renderSectorPicker() {
+    const { sectorDataJS, sectorLoading, selectedSectorOption } = sectorIndustriesStore;
+    console.log('=============== SECTOR DATA JS', sectorDataJS)
+    const sectorOption = selectedSectorOption;
+
+    let label = sector_props[sectorOption].label;
+
+    let disabled = false;
+    if(sectorLoading || sectorDataJS.length === 0) {
+      disabled = true;
+    }
+    if(sectorLoading) {
+      label = 'Loading...'
+    }
+
+    return <View style={{flex: 1}}>
+      <TouchableOpacity disabled={disabled} style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
+        <Image
+          source={require('../../images/arrow.png')}
+          style={[trending.downArrow]}
+        />
+        <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{label}</Text>
+      </TouchableOpacity>
+      <Modal
+        isVisible={this.state.isSectorVisible}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        style={[trending.halfModal]}
+        onModalHide={() => { this.hideSector() }}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, trending.subMenuLeftModal]}>
+          <Image
+            source={require('../../images/arrowblue.png')}
+            style={[trending.downArrow]}
+          />
+          <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
+        </View>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
+          <ScrollView style={trending.sectorRadio}>
+            <RadioForm
+              radio_props={sectorDataJS}
+              initial={selectedSectorOption}
+              formHorizontal={false}
+              labelHorizontal={true}
+              borderWidth={1}
+              buttonColor={colors.blue}
+              buttonOuterColor={colors.lightGray}
+              buttonSize={22}
+              buttonOuterSize={20}
+              animation={false}
+              labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+              radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+              labelWrapStyle={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+              onPress={(value) => { this.setSector(value) }}
+              style={trending.radioField}
+            />
+          </ScrollView>
+        </View>
+      </Modal>
+    </View>
+  }
+
+  renderIndustryPicker() {
+    const { selectedSectorOption, industriesLoading, selectedIndustryOption, industriesListJS, selectedIndustryJS } = sectorIndustriesStore;
+    const sectorOption = selectedSectorOption;
+    const industryOption = selectedIndustryOption;
+
+    let disabled = false;
+    if(industriesLoading || industriesListJS.length === 0) {
+      disabled = true;
+    }
+
+    let label = selectedIndustryJS;
+    if(sectorOption === 0) {
+      label = 'Select a sector'
+    }
+    if(industriesLoading) {
+      label = 'Loading...'
+    }
+
+    return <View style={{flex: 1}}>
+      <TouchableOpacity disabled={disabled} style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => {this.showIndustry()}}>
+        <Image
+          source={require('../../images/arrow.png')}
+          style={[trending.downArrow]}
+        />
+        <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
+          {label}
+        </Text>
+      </TouchableOpacity>
+      <Modal
+        isVisible={this.getIsIndustryVisible()}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        style={trending.halfModal}
+        onModalHide={() => { this.hideIndustry() }}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, trending.subMenuRightModal]}>
+          <Image
+            source={require('../../images/arrowblue.png')}
+            style={[trending.downArrow]}
+          />
+          <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
+        </View>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
+          <ScrollView style={trending.sectorRadio}>
+            <RadioForm
+              radio_props={industriesListJS}
+              initial={industryOption}
+              formHorizontal={false}
+              labelHorizontal={true}
+              borderWidth={1}
+              buttonColor={colors.blue}
+              buttonOuterColor={colors.lightGray}
+              buttonSize={22}
+              buttonOuterSize={20}
+              animation={false}
+              labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+              radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+              labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+              onPress={(value) => { sectorOption == 0 ? console.log('this') : this.setIndustry(value) }}
+              style={trending.radioField}
+            />
+          </ScrollView>
+        </View>
+      </Modal>
+    </View>
   }
 
   render() {
@@ -202,104 +342,11 @@ class SubMenu extends React.Component {
         </View>
 
 
-
-        {/* SECTOR PICKER */}
-
         <View style={trending.subMenuRow}>
-          <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
-            <Image
-              source={require('../../images/arrow.png')}
-              style={[trending.downArrow]}
-            />
-            <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>{sector_props[sectorOption].label}</Text>
-          </TouchableOpacity>
-          <Modal
-            isVisible={this.state.isSectorVisible}
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
-            style={[trending.halfModal]}
-            onModalHide={() => { this.hideSector() }}>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, trending.subMenuLeftModal]}>
-              <Image
-                source={require('../../images/arrowblue.png')}
-                style={[trending.downArrow]}
-              />
-              <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
-            </View>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
-              <ScrollView style={trending.sectorRadio}>
-                <RadioForm
-                  radio_props={sector_props}
-                  initial={sectorOption}
-                  formHorizontal={false}
-                  labelHorizontal={true}
-                  borderWidth={1}
-                  buttonColor={colors.blue}
-                  buttonOuterColor={colors.lightGray}
-                  buttonSize={22}
-                  buttonOuterSize={20}
-                  animation={false}
-                  labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
-                  radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-                  labelWrapStyle={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { this.setSector(value) }}
-                  style={trending.radioField}
-                />
-              </ScrollView>
-            </View>
-          </Modal>
-
-
-          {/* INDUSTRY PICKER */}
-
-
-          <TouchableOpacity style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => {this.showIndustry()}}>
-            <Image
-              source={require('../../images/arrow.png')}
-              style={[trending.downArrow]}
-            />
-            <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
-              {sectorOption === 0 ? 'Select a sector' : currentIndustryOptions[industryOption].label}
-            </Text>
-          </TouchableOpacity>
-          <Modal
-            isVisible={this.getIsIndustryVisible()}
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
-            style={trending.halfModal}
-            onModalHide={() => { this.hideIndustry() }}>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, trending.subMenuRightModal]}>
-              <Image
-                source={require('../../images/arrowblue.png')}
-                style={[trending.downArrow]}
-              />
-              <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>INDUSTRY</Text>
-            </View>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
-              <ScrollView style={trending.sectorRadio}>
-                <RadioForm
-                  radio_props={sectorOption == 0 ? [] : currentIndustryOptions}
-                  initial={industryOption}
-                  formHorizontal={false}
-                  labelHorizontal={true}
-                  borderWidth={1}
-                  buttonColor={colors.blue}
-                  buttonOuterColor={colors.lightGray}
-                  buttonSize={22}
-                  buttonOuterSize={20}
-                  animation={false}
-                  labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
-                  radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-                  labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-                  onPress={(value) => { sectorOption == 0 ? console.log('this') : this.setIndustry(value) }}
-                  style={trending.radioField}
-                />
-              </ScrollView>
-            </View>
-          </Modal>
+          {this.renderSectorPicker()}
+          {this.renderIndustryPicker()}
         </View>
+
       </View>
     )
   }
