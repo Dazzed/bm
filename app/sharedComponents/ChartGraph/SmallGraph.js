@@ -5,10 +5,13 @@ import { LineChart, Grid, YAxis, XAxis } from 'react-native-svg-charts'
 import {
     View,
     Text,
-    Animated
+    Animated,
+    ActivityIndicator
 } from 'react-native';
 import HorizontalLine from './HorizontalLine';
 import { parseSmallGraphData, flipYAxisValue } from './utility';
+import fonts from '../../style/fonts';
+import trending from '../../style/trending';
 
 @observer
 export default class SmallGraph extends React.Component {
@@ -19,6 +22,19 @@ export default class SmallGraph extends React.Component {
 
     render() {
         const { theme } = colorStore;
+        const { stockChartLoading, chartDetailDataJS } = chartStore;
+
+        if(stockChartLoading) {
+          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator />
+          </View>
+        }
+
+        if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
+          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+          </View>
+        }
 
         let inlineContainerStyle = {
             // borderWidth: 1,

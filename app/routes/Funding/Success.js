@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Button from '../../sharedComponents/Button1';
 import { setTheme, getTheme, colors } from '../../store/store';
-import { colorStore } from '../../mobxStores';
+import { colorStore, accountStore } from '../../mobxStores';
 import { generateHeaderStyles, numberWithCommas } from '../../utility';
 
 export default class Success extends React.Component {
@@ -40,17 +40,18 @@ export default class Success extends React.Component {
 
     renderMessage() {
       const { theme } = colorStore;
-      
+      const { selectedAccount } = accountStore;
+
         let amount = this.props.navigation.state.params.amount;
 
         // TODO: map this to results
-        let bankName = 'Bank Mock'
-        let accountType = 'checking'
+        let bankName = selectedAccount.title;
+        let accountType = selectedAccount.subtitle;
 
         let formattedAmount = numberWithCommas(amount);
-        
+
         // Withdraw message
-        let message = `You just withdrew $${formattedAmount} to your ${bankName} ${accountType} account.`
+        let message = `You just withdrew $${formattedAmount} to your ${bankName} account.`
 
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
           message = `You just deposited $${formattedAmount}.`
@@ -74,11 +75,11 @@ export default class Success extends React.Component {
                   source={require('../../images/money_trans_160.png')}
               />
             </View>
-            
+
             {this.renderMessage()}
           </View>
           <View style={{flex: 0, width: '100%'}}>
-            <Button {...this.props} title="START TRADING" onPress={() => this.navToTradingView()}/>    
+            <Button {...this.props} title="START TRADING" onPress={() => this.navToTradingView()}/>
           </View>
         </View>
     }

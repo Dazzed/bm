@@ -116,7 +116,7 @@ const chart = StyleSheet.create({
   },
   priceNum: {
     fontSize:15,
-    // color: colors.darkSlate,    
+    // color: colors.darkSlate,
   },
   priceHigh: {
     flex: 1
@@ -154,7 +154,7 @@ const chart = StyleSheet.create({
     paddingTop: 2,
     fontSize: 11,
     // color: colors.white
-  },  
+  },
   indicatorsContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -202,10 +202,10 @@ const chart = StyleSheet.create({
     maxWidth: 220
   },
   chartFPO: {
-    flex: 3,
+    // flex: 3,
     borderRightColor: colors.borderGray,
     borderRightWidth: StyleSheet.hairlineWidth,
-    alignItems: 'flex-start'
+    // alignItems: 'flex-start'
   },
   landscapeChart: {
     marginTop: 10
@@ -328,7 +328,7 @@ const chart = StyleSheet.create({
   radioTitleWrap: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.lightGray,
-    
+
   },
   radioTitle: {
     textAlign: 'center',
@@ -345,9 +345,9 @@ const chart = StyleSheet.create({
     color: colors.lightGray,
   },
   radioLabel: {
-    fontSize: 12, 
-    paddingLeft: 10, 
-    paddingTop: 15, 
+    fontSize: 12,
+    paddingLeft: 10,
+    paddingTop: 15,
     paddingBottom: 10,
     marginBottom: 2,
     color: colors.lightGray

@@ -87,10 +87,11 @@ export default class SocialSecurityNumberSelection extends Component {
     whyWeAsk = () => {
         if (this.state.showWhyWeAsk) {
             return (
-                <View style={[styles_2.whyWeAskView]}>
+                <View style={[styles_2.whyWeAskView, {borderWidth: 1, borderColor: 'red', }]}>
                     <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-                        All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here: <Text style={{color: "#18c3ff"}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>
+                        All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here:
                     </Text>
+                    <Text style={[styles_2.whyWeAskText, fonts.hindGunturRg, {color: "#18c3ff"}]} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>
                     <Image source={this.props.colors['illustration']} style={{ width: 358, height: 150, marginRight: -52 }} />
                 </View>
             );
@@ -99,15 +100,11 @@ export default class SocialSecurityNumberSelection extends Component {
     }
 
     getSocialSecurityLink() {
-      return (<Text style={{color: "#18c3ff"}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>);
+      return (<Text style={{color: "#18c3ff", fontSize: 18}} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>);
     }
 
     render() {
         const { registrationDataJS } = registrationStore;
-
-
-
-
         return (
             <KeyboardAvoidingView
                 behavior={this.props.behavior}

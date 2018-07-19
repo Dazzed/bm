@@ -113,7 +113,7 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
 export const parseSmallGraphData = (data) => {
 
     let graphMax = 0;
-    let graphMin = 9999999;
+    let graphMin = 999999999999999;
 
     let lineData = [];
     let dateData = [];
@@ -139,120 +139,142 @@ export const parseSmallGraphData = (data) => {
     }
 }
 
-export const parseLargeGraphData = (data) => {
-
-    let graphYMax = 0;
-    let graphYMin = 999999999999;
-
-    let graphXMax = 0;
-    let graphXMin = 999999999999;
 
 
-    let allGraphData = {
-        dates: []
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+export const parseLargeGraphData = (inputData, height, width) => {
+
+    let d = {
+        xMax: 0,
+        xMin: 99999999999999999999999,
+        yMax: 0,
+        yMin: 99999999999999999999999,
+        dataPoints: inputData,
+        gridYArray: [],
+        gridXArray: [],
+        xLineCount: 5,
+        yLineCount: 4,
+        xRange: 0,
+        yRange: 0
     };
 
-    // for(let i = 0; i < data.length; i++) {
-    //     // console.log('eavh elem', data[i])
-    //
-    //     // calculate max
-    //     if(data[i].vwap > graphYMax) {
-    //         graphYMax = data[i].vwap;
-    //     }
-    //     if(data[i].open > graphYMax) {
-    //         graphYMax = data[i].open;
-    //     }
-    //     if(data[i].close > graphYMax) {
-    //         graphYMax = data[i].close;
-    //     }
-    //     if(data[i].high > graphYMax) {
-    //         graphYMax = data[i].high;
-    //     }
-    //     if(data[i].low > graphYMax) {
-    //         graphYMax = data[i].low
-    //     }
-    //
-    //     // calculate min
-    //     if(data[i].vwap < graphYMin) {
-    //         graphYMin = data[i].vwap;
-    //     }
-    //     if(data[i].open < graphYMin) {
-    //         graphYMin = data[i].open;
-    //     }
-    //     if(data[i].close < graphYMin) {
-    //         graphYMin = data[i].close;
-    //     }
-    //     if(data[i].high < graphYMin) {
-    //         graphYMin = data[i].high;
-    //     }
-    //     if(data[i].low < graphYMin) {
-    //         graphYMin = data[i].low
-    //     }
-    // }
+    // add date stamp and calculate maximums and minimums
+    d.dataPoints = d.dataPoints.map((elem, i) => {
+      const dateUnix = parseInt(moment(elem.date).format('X'));
+      // console.log('==== date unix', dateUnix)
 
-    // for(let i = 0; i < data.length; i++) {
-    //
-    //     // TODO: get proper date stamps from sameep in here
-    //
-    //     let timeStamp = moment(data[i].date).format('X');
-    //
-    //     if(timeStamp > graphXMax) {
-    //         graphXMax = timeStamp;
-    //     }
-    //     if(timeStamp < graphYMin) {
-    //         graphYMin = timeStamp;
-    //     }
-    //
-    //     // TODO: ask ben if I can do this in the same linear time. Calculate max and min and assemble all data in a relative sense
-    // }
+      // calculate min and max
+      // time / x value
+      if( dateUnix > d.xMax ) d.xMax = dateUnix;
+      if( dateUnix < d.xMin ) d.xMin = dateUnix;
+      // vwap
+      if( elem.vwap > d.yMax ) d.yMax = elem.vwap;
+      if( elem.vwap < d.yMin ) d.yMin = elem.vwap;
+      // open
+      if( elem.open > d.yMax ) d.yMax = elem.open;
+      if( elem.open < d.yMin ) d.yMin = elem.open;
+      // close
+      if( elem.close > d.yMax ) d.yMax = elem.close;
+      if( elem.close < d.yMin ) d.yMin = elem.close;
+      // high
+      if( elem.high > d.yMax ) d.yMax = elem.high;
+      if( elem.high < d.yMin ) d.yMin = elem.high;
+      // low
+      if( elem.low > d.yMax ) d.yMax = elem.low;
+      if( elem.low < d.yMin ) d.yMin = elem.low;
 
-    // for(let i = 0; i < data.length; i++) {
-    //
-    //     let timeStamp = moment(data[i].date).format('X');
-    //
-    //     // console.log('----- time', data[i].date, timeStamp)
-    //
-    //     allGraphData.dates.push({
-    //         dateStamp: data[i].date,
-    //         unixTime: timeStamp,
-    //         vwap: data[i].vwap,
-    //         vwapCoordinate: {
-    //             x: timeStamp / xGraphMax,
-    //             y: vwap / yGraphMax
-    //         }
-    //     })
-    // }
+      return {
+        ...elem,
+        dateUnix
+      }
+    })
+
+    // Save range
+    d.xRange = d.xMax - d.xMin;
+    d.yRange = d.yMax - d.yMin;
+
+    // add relative and coordinate positional data to all pertinent points
+    d.dataPoints = d.dataPoints.map((elem, i) => {
+      const thisUnix = elem.dateUnix;
+      const open = elem.open;
+      const close = elem.close;
+      const high = elem.high;
+      const low = elem.low;
+
+      const thisXValScaled = thisUnix - d.xMin;
+      const openPositionScaled = open - d.yMin;
+      const closePositionScaled = close - d.yMin;
+      const highPositionScaled = high - d.yMin;
+      const lowPositionScaled = low - d.yMin;
+
+      const xPositionRelative = thisXValScaled / d.xRange;
+      const openYPositionRelative = openPositionScaled / d.yRange;
+      const closeYPositionRelative = closePositionScaled / d.yRange;
+      const highYPositionRelative = highPositionScaled / d.yRange;
+      const lowYPositionRelative = lowPositionScaled / d.yRange;
+
+      const xPositionCoordinates = xPositionRelative * width;
+      const openYPositionCoordinates = flipYAxisValue( height, openYPositionRelative * height );
+      const closeYPositionCoordinates = flipYAxisValue( height, closeYPositionRelative * height );
+      const highYPositionCoordinates = flipYAxisValue( height, highYPositionRelative * height );
+      const lowYPositionCoordinates = flipYAxisValue( height, lowYPositionRelative * height );
+
+      const newElem = {
+        ...elem,
+        xPositionRelative,
+        openYPositionRelative,
+        closeYPositionRelative,
+        highYPositionRelative,
+        lowYPositionRelative,
+        xPositionCoordinates,
+        openYPositionCoordinates,
+        closeYPositionCoordinates,
+        highYPositionCoordinates,
+        lowYPositionCoordinates
+      }
+      return newElem
+    });
+
+    // generate grid x and y bars
+    for( let i = 0; i < d.yLineCount; i++) {
+      // for y lines
+      let spaceBetweenEachLine = height / d.yLineCount;
+      let lineOffest = spaceBetweenEachLine / 2;
+      let multiplier = i / d.yLineCount;
+      let yPosition = ((d.yMax * multiplier) / d.yMax ) * height;
+      let actualYPosition = yPosition + lineOffest;
+      const yObj = {
+        label: actualYPosition.toFixed(2),
+        position: flipYAxisValue( height - lineOffest, yPosition )
+      }
+      d.gridYArray.push(yObj);
+    }
+    for( let j = 0; j < d.xLineCount; j++) {
+      // for x lines
+      let spaceBetweenEachLine = width / d.xLineCount;
+      let lineOffest = spaceBetweenEachLine / 2;
+      let multiplier = j / d.xLineCount;
+      let xPosition = ((d.xMax * multiplier) / d.xMax ) * width;
+      let exactPixelLocation = lineOffest + xPosition;
+      const relativePixelLocation = exactPixelLocation / width;
+      const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
+      // console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
+
+      const label = moment.unix(unixPoint).format('MM-DD-YY')
+      const xObj = {
+        label: label,
+        position: exactPixelLocation
+      }
+      d.gridXArray.push(xObj);
+    }
 
 
-
-    // let thisClosePoint = data[i].close;
-    //
-    // if(thisClosePoint > graphYMax) {
-    //     graphYMax = thisClosePoint
-    // }
-    // if(thisClosePoint < graphYMin) {
-    //     graphYMin = thisClosePoint
-    // }
-
-
-    // lineData.push(data[i].close);
-    // dateData.push(data[i].date);
-
-
-    // {
-    //     x: 0, y: 0
-    // },
-    // {
-    //     x: 50, y: 100
-    // },
-    // {
-    //     x: 100, y: 50
-    // },
-    // {
-    //     x: 150, y: 50
-    // },
-
-    return allGraphData
+    // console.log('====== ALL GRAPH DATA', d)
+    return d
 }
 
 

@@ -22,7 +22,7 @@ const rootApiCall = (path, method, body) => {
         fullReq: req
       };
 
-      console.log('respose -------- ', logData);
+      console.log('respose -------- ', path, logData);
 
       // set up response formatting
       const formattedRes = {
