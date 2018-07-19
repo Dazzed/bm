@@ -135,7 +135,7 @@ class Chart extends Component {
   addSymbol(ticker){
     Alert.alert(
       '',
-      'You added '+ticker+' to your watchlist.',
+      'Add '+ticker+' to your watchlist?',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
         {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker)},
@@ -147,7 +147,7 @@ class Chart extends Component {
   removeSymbol(ticker){
     Alert.alert(
       '',
-      'Remove '+ticker+' from your watchlist.',
+      'Remove '+ticker+' from your watchlist?',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
         {text: 'OK', onPress: () => watchListStore.removeTickerFromWatchList(ticker)},

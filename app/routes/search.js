@@ -37,7 +37,7 @@ import watchstyle from '../style/watchlist';
 import search from '../style/search';
 import fonts from '../style/fonts';
 import { observer } from 'mobx-react';
-import { watchListStore, searchStore } from "../mobxStores";
+import { watchListStore, searchStore, colorStore } from "../mobxStores";
 
 @observer
 class Search extends React.Component {
@@ -101,19 +101,32 @@ class Search extends React.Component {
       searchTerm: '',
       colors: colors(props.globalData.isDarkThemeActive)
     };
-
   }
-  addSymbol(sym){
+  
+  addSymbol(ticker){
     Alert.alert(
       '',
-      'You added '+sym+' to your watchlist.',
+      'Add '+ticker+' to your watchlist?',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(sym)},
+        {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker)},
       ],
       { cancelable: true }
     )
   }
+
+  removeSymbol(ticker){
+    Alert.alert(
+      '',
+      'Remove '+ticker+' from your watchlist?',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => watchListStore.removeTickerFromWatchList(ticker)},
+      ],
+      { cancelable: true }
+    )
+  }
+  
   hideSearch() {
     this.props.hideSearch();
   }
@@ -204,6 +217,7 @@ class Search extends React.Component {
     }
   }
 
+
   renderListElement(data, i) {
     return <TouchableOpacity
         key={i}
@@ -233,43 +247,58 @@ class Search extends React.Component {
       </View>
   }
 
-
   renderAddToWatchlistTouchable(ticker) {
-    let source = this.state.colors['addImage'];
-    if(false) {
-      // check for watchlist presence and overwrite source here
+    
+    const { isTickerInWatchlist, watchlistDataJS } = watchListStore;
+    let image = this.state.colors['addImage'];
+    let functionToFire = this.addSymbol;
+    if(isTickerInWatchlist(ticker)) {
+      image = this.state.colors['watchlistAdded'];
+      functionToFire = this.removeSymbol
     }
-    return <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(ticker)}} >
-        <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
+    return <TouchableOpacity style={styles.rightCta} onPress={() => functionToFire(ticker)}>
+        <Image source={image} style={{ width: 23, height: 23 }} />
     </TouchableOpacity>
+    
+    // let source = this.state.colors['addImage'];
+    // if(false) {
+    //   // check for watchlist presence and overwrite source here
+    // }
+    // 
+    // return <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(ticker)}} >
+    //     <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
+    // </TouchableOpacity>
   }
 
 
     renderListOrSearchView() {
         const { searchData, searchDataJS } = searchStore;
-
+        const { theme } = colorStore;
+        console.log('============= render search view', searchData, searchDataJS)
         if(searchData === null) {
             return this.getSearchView()
         }
-        if(searchDataJS.length === 0) {
+        if(!searchDataJS || searchDataJS.result.length === 0) {
           return <View>
-            <Text>No results</Text>
+            <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
           </View>
         } else {
-          return searchDataJS.map((elem, i) => {
+          return searchDataJS.result.map((elem, i) => {
             return this.renderListElement(elem, i)
           })
         }
     }
 
-    renderLoadingWheel() {
+    renderLoadingWheelOrContent() {
       const { searchLoading } = searchStore;
       if(searchLoading) {
-        return <View>
+        return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator />
         </View>
       } else {
-        return null;
+        return <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }]}>
+          {this.renderListOrSearchView()}
+        </ScrollView>
       }
     }
 
@@ -305,10 +334,7 @@ class Search extends React.Component {
             </View>   
           </View>
         </View>
-        <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }]}>
-            {this.renderLoadingWheel()}
-            {this.renderListOrSearchView()}
-        </ScrollView>
+        {this.renderLoadingWheelOrContent()}
       </View>
     )
   }
