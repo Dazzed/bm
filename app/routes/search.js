@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -25,17 +24,15 @@ import {
   Alert,
     ActivityIndicator
 } from 'react-native';
-
+import trending from '../style/trending';
+import fonts from '../style/fonts';
 import Modal from 'react-native-modal'
-import {setTheme, getTheme, colors} from '../store/store';
-
+import { setTheme, getTheme, colors } from '../store/store';
 import OrderTypes from './ordertypes';
 import OrderPlaced from './orderplaced';
-
 import styles from '../style/style';
 import watchstyle from '../style/watchlist';
 import search from '../style/search';
-import fonts from '../style/fonts';
 import { observer } from 'mobx-react';
 import { watchListStore, searchStore, colorStore } from "../mobxStores";
 
@@ -259,34 +256,24 @@ class Search extends React.Component {
     return <TouchableOpacity style={styles.rightCta} onPress={() => functionToFire(ticker)}>
         <Image source={image} style={{ width: 23, height: 23 }} />
     </TouchableOpacity>
-    
-    // let source = this.state.colors['addImage'];
-    // if(false) {
-    //   // check for watchlist presence and overwrite source here
-    // }
-    // 
-    // return <TouchableOpacity style={search.symbolsAdd} onPress={(value) => {this.addSymbol(ticker)}} >
-    //     <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-    // </TouchableOpacity>
   }
 
-
     renderListOrSearchView() {
-        const { searchData, searchDataJS } = searchStore;
-        const { theme } = colorStore;
-        console.log('============= render search view', searchData, searchDataJS)
-        if(searchData === null) {
-            return this.getSearchView()
-        }
-        if(!searchDataJS || searchDataJS.result.length === 0) {
-          return <View>
-            <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
-          </View>
-        } else {
-          return searchDataJS.result.map((elem, i) => {
-            return this.renderListElement(elem, i)
-          })
-        }
+      const { searchData, searchDataJS } = searchStore;
+      const { theme } = colorStore;
+      console.log('============= render search view', searchData, searchDataJS)
+      if(searchData === null) {
+          return this.getSearchView()
+      }
+      if(!searchDataJS || searchDataJS.result.length === 0) {
+        return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', height: 200}}>
+          <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+        </View>
+      } else {
+        return searchDataJS.result.map((elem, i) => {
+          return this.renderListElement(elem, i)
+        })
+      }
     }
 
     renderLoadingWheelOrContent() {
