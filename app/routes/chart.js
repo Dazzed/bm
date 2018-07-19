@@ -144,6 +144,18 @@ class Chart extends Component {
     )
   }
 
+  removeSymbol(ticker){
+    Alert.alert(
+      '',
+      'Remove '+ticker+' from your watchlist.',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => watchListStore.removeTickerFromWatchList(ticker)},
+      ],
+      { cancelable: true }
+    )
+  }
+
   forceSetToLandscape() {
     // Orientation.lockToLandscape()
     // this.setState({
@@ -359,6 +371,28 @@ class Chart extends Component {
   }
 
 
+  renderLongBar() {
+    {/* TODO: YOU ARE LONG */}
+    return <View style={[{borderTopColor: this.state.colors['borderGray'], backgroundColor: this.state.colors['white'],}, chart.symbolPosition]}>
+      <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnFirst, fonts.hindGunturRg]}>You are long</Text>
+      <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
+      <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
+    </View>
+  }
+
+  renderWatchListButton(ticker) {
+    const { isTickerInWatchlist, watchlistDataJS } = watchListStore;
+    let image = this.state.colors['addImage'];
+    let functionToFire = this.addSymbol;
+    if(isTickerInWatchlist(ticker)) {
+      image = this.state.colors['watchlistAdded'];
+      functionToFire = this.removeSymbol
+    }
+    return <TouchableOpacity style={styles.rightCta} onPress={() => functionToFire(ticker)}>
+        <Image source={image} style={{ width: 23, height: 23 }} />
+    </TouchableOpacity>
+  }
+
   renderPortrait(params) {
     let {
         Price,
@@ -406,19 +440,11 @@ class Chart extends Component {
               style={styles.searchImg}
             />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rightCta} onPress={() => this.addSymbol(ticker)}>
-            <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-        </TouchableOpacity>
+        {this.renderWatchListButton(ticker)}
       </View>
     </View>
 
-      {/* TODO: YOU ARE LONG */}
-
-    <View style={[{borderTopColor: this.state.colors['borderGray'], backgroundColor: this.state.colors['white'],}, chart.symbolPosition]}>
-      <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnFirst, fonts.hindGunturRg]}>You are long</Text>
-      <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
-      <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
-    </View>
+    {this.renderLongBar()}
 
 
     {/* Bottom Menu nav bar */}

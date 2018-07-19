@@ -13,6 +13,7 @@ import searchCancelImage from '../images/searchcancel.png';
 import searchCancelImageDark from '../images/searchcancel_dark.png';
 import logoImage from '../images/logo.png';
 import logoImageDark from '../images/logo_dark.png';
+import watchlistAdded from '../images/watchlist_added.png';
 
 const LIGHT_THEME = {
     realWhite: '#ffffff',
@@ -34,7 +35,8 @@ const LIGHT_THEME = {
     documentImage: documentImage,
     addImage: addImage,
     searchCancelImage: searchCancelImage,
-    logoImage: logoImage
+    logoImage: logoImage,
+    watchlistAdded: watchlistAdded
 };
 
 const DARK_THEME = {
@@ -56,7 +58,8 @@ const DARK_THEME = {
     documentImage: documentImageDark,
     addImage: addImageDark,
     searchCancelImage: searchCancelImageDark,
-    logoImage: logoImageDark
+    logoImage: logoImageDark,
+    watchlistAdded: watchlistAdded
 };
 
 export {

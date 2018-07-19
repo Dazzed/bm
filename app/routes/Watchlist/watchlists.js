@@ -152,7 +152,7 @@ class Watchlists extends React.Component {
       }));
     }
   };
-  
+
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
@@ -166,7 +166,7 @@ class Watchlists extends React.Component {
       return <Text></Text>;
     }
     console.log('rowwwwwwww', row)
-    
+
     var thisRow = (
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
         <TouchableOpacity
