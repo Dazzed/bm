@@ -100,6 +100,9 @@ export default class Watchlist {
       }
       return thisData
     });
+    if (this.isEditingWatchList) {
+      return sortNumberArrayByParam(formattedData, 'position');
+    }
 
     switch (this.sortByIndex) {
       case 0:
