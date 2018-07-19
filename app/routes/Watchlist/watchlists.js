@@ -152,20 +152,20 @@ class Watchlists extends React.Component {
       }));
     }
   };
-  
+
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
 
   renderRow = row => {
     if (!row) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
     const { deletingRecordId } = watchListStore;
     if (row.id === deletingRecordId) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
-    
+
     var thisRow = (
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
         <TouchableOpacity
@@ -212,11 +212,11 @@ class Watchlists extends React.Component {
 
   renderEditableRow = row => {
     if (!row) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
     const { deletingRecordId } = watchListStore;
     if (row.id === deletingRecordId) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
     return (
       <TouchableOpacity
