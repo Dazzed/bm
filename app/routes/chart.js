@@ -1,5 +1,4 @@
 //  Turn back now...
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -15,10 +14,10 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Dimensions,
-  Alert
+  Alert,
+  Linking
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import Modal from '../components/react-native-modal'
 import Orientation from 'react-native-orientation';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from '../components/react-native-simple-radio-button';
@@ -26,12 +25,10 @@ import CheckBox from '../components/react-native-check-box'
 import Tabs from 'react-native-tabs';
 import ResponsiveImage from 'react-native-responsive-image';
 import { setTheme, getTheme, colors } from '../store/store';
-
 import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
 import AppNav from './appnav';
 import Search from './search';
-
 import styles from '../style/style';
 import navstyle from '../style/nav';
 import chart from '../style/chart';
@@ -39,12 +36,14 @@ import chartland from '../style/chartlandscape';
 import order from '../style/order';
 import fonts from '../style/fonts';
 import { selectGlobalData } from '../selectors';
-
+import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
-
-import { chartStore, watchListStore } from '../mobxStores';
+import { chartStore, watchListStore, deviceSizeStore } from '../mobxStores';
 import { observer } from 'mobx-react';
+import moment from 'moment-timezone';
+import { millionBillionFormatter } from '../utility';
+
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -106,14 +105,31 @@ class Chart extends Component {
   _orientationDidChange(orientation) {
     if (orientation == 'LANDSCAPE') {
       this.setState({ orientation: 'landscape' })
+
     } else if(orientation == 'PORTRAIT') {
       this.setState({ orientation: 'portrait' })
+
       if(this.state.isRotateVisible) {
         this.setState({isRotateVisible: false})
         var that = this;
         setTimeout(function(){that.showOrder(that.state.orderType)}, 500);
       }
     }
+  }
+
+  navToLink(link) {
+    Linking.canOpenURL(link)
+    .then((res) => {
+      if(res === true) {
+        return Linking.openURL('http://' + link)
+      }
+    })
+    .then((res) => {
+      console.log('success', res)
+    })
+    .catch((err) => {
+      console.log('err', err)
+    })
   }
 
   addSymbol(ticker){
@@ -223,8 +239,6 @@ class Chart extends Component {
       }
     }
 
-
-
     console.log("movin on");
     //if it doesn't exists and we aren't at 5 indicators add it
     if(!exists && indicates.length < 5) {
@@ -274,8 +288,11 @@ class Chart extends Component {
 
 
 
-
   setRange(el) {
+    let name = el.props.name;
+    console.log('name', name);
+    // TODO: maybe rewrite the name query here for the range picker
+
     const { setRange } = chartStore;
     this.setState({
         page: el.props.name
@@ -294,19 +311,56 @@ class Chart extends Component {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  renderExecutives(executives) {
+    // {/* TODO: get executives list. Not in this data yet */}
 
-  renderPortrait() {
+    // executives = [
+    //   {
+    //     title: 'Timothy Donald Cook',
+    //     role: 'Chief Executive Officer'
+    //   },
+    //   {
+    //     title: 'Jeffrey E Williams',
+    //     role: 'Chief Operating Officer'
+    //   }
+    // ]
 
-    const { chartLoading, tickerDataJS } = chartStore;
-
-    console.log('==========================================================================')
-    console.log(tickerDataJS)
-
-    if(!tickerDataJS) {
-      return null;
+    if(!executives || executives.length === 0) {
+      return <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+    } else {
+      return <View>
+        {executives.map((elem, i) => {
+            return <View key={i} style={chart.profileTxt}>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>{elem.title}</Text>
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>{elem.role}</Text>
+            </View>
+        })}
+      </View>
     }
+  }
 
-    const {
+  renderRelated() {
+    {/* TODO: get related stocks. not yet in data */}
+    return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
+        <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
+        <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>MSFT</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Microsoft Corporation</Text>
+        </View>
+        <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>DVMT</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Dell Technologies</Text>
+        </View>
+        <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
+        </View>
+    </View>
+  }
+
+
+  renderPortrait(params) {
+    let {
         Price,
         Volume,
         address,
@@ -327,29 +381,14 @@ class Chart extends Component {
         profile,
         ticker,
         website,
-    } = tickerDataJS;
-
-    // keyStats
-    //   avgTotalVolume
-    //   beta
-    //   divYield
-    //   eps
-    //   float
-    //   mktCap
-    //   nextEarningsDate
-    //   peRatio
-    //   week52high
-    //   week52low
-    //   float
-
-
-    // overview
-    //   institutionPercent
-    //   lastStockSplit
-    //     forFactor
-    //     paymentDate
-    //     toFactor
-    //   sharesOutstanding
+        formattedTime,
+        formattedVolume,
+        formattedPrice,
+        formattedOpen,
+        formattedLow,
+        formattedHigh,
+        formattedSharesOutstanding
+    } = params;
 
     return <View>
     <View style={styles.menuBorder}>
@@ -380,6 +419,10 @@ class Chart extends Component {
       <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
       <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
     </View>
+
+
+    {/* Bottom Menu nav bar */}
+
     <View style={[{borderTopColor: this.state.colors['borderGray']}, {backgroundColor: this.state.colors['white']}, chart.fakeTabNav]}>
       <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Account')}>
           <View style={chart.fakeIcon}>
@@ -429,27 +472,25 @@ class Chart extends Component {
     </View>
 
 
+
+
+
+
     <ScrollView style={chart.wrapper}>
       <View style={chart.header}>
         <View style={chart.titleContainer}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
           <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
         </View>
-
-        {/* TODO: nav to news with ticker */}
-
         <TouchableOpacity style={[{borderColor: this.state.colors['lightGray']}, chart.newsBtn]} onPress={() => this.showNews()}>
           <Text style={[{color: this.state.colors['lightGray']}, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
         </TouchableOpacity>
       </View>
 
       <View style={chart.prices}>
-        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>${Price}</Text>
+        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-
-          {/* TODO: don't have this yet */}
-
-          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>12:30 PM PT TODO!!</Text>
+          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
           {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{change}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{changePercent}%</Text>}
         </TouchableOpacity>
       </View>
@@ -458,19 +499,19 @@ class Chart extends Component {
         <View style={chart.pricePoints}>
           <View style={chart.priceOpen}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${open}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
           </View>
           <View style={chart.priceHigh}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${high}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
           </View>
           <View style={chart.priceLow}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${low}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
           </View>
           <View style={chart.priceVol}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>${Volume}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
           </View>
         </View>
       </View>
@@ -525,59 +566,7 @@ class Chart extends Component {
         </View>
       </View>
 
-      {/* TODO: BID LIST not getting this from server yet */}
-
-      <View style={chart.bidAsksWrapper}>
-        <View style={chart.bid}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>BID</Text>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-        </View>
-
-        {/* TODO: ASK LIST not getting this from server yet */}
-
-        <View style={chart.bid}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>ASK</Text>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>dev
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>10</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.00</Text>
-          </View>
-          <View style={chart.bidaskRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.bidaskNum, fonts.hindGunturRg]}>100</Text>
-            <Text style={[{color: this.state.colors['darkGray']}, chart.bidaskPrice, fonts.hindGunturRg]}>$155.80</Text>
-          </View>
-        </View>
-      </View>
+      {this.renderBidAsk()}
 
       <View style={chart.statsWrapper}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
@@ -595,7 +584,7 @@ class Chart extends Component {
               {/* TODO: do we want to format with a B for billions? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.avgTotalVolume}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.avgTotalVolume)}</Text>
           </View>
         </View>
         <View style={chart.statsRow}>
@@ -604,7 +593,7 @@ class Chart extends Component {
               {/* TODO: do we want to format with a B for billions? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>MKT CAP</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.mktCap}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.mktCap)}</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO</Text>
@@ -621,7 +610,7 @@ class Chart extends Component {
                 {/* TODO: what is this referencing?? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>PRICE/EARNINGS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>17.19</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????? 17.19</Text>
           </View>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
@@ -635,7 +624,7 @@ class Chart extends Component {
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.float}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
           </View>
           <View style={chart.statsColumnLong}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>NEXT EARNINGS DATE</Text>
@@ -667,65 +656,26 @@ class Chart extends Component {
 
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
-          <View style={chart.profileTxt}>
-                {/* TODO: make this a link?? */}
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
-          </View>
+          <TouchableOpacity onPress={() => this.navToLink(website)}>
+            <View style={chart.profileTxt}>
+                  {/* TODO: make this a link?? */}
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
+            </View>
+          </TouchableOpacity>
       </View>
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
-          <View style={chart.profileTxt}>
-
-              {/* TODO: get executives list. Not in this data yet */}
-
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Timothy Donald Cook</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Executive Officer</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Jeffrey E Williams</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Operating Officer</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Jonathan Ive</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Chief Design Officer</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>Luca Maestri</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/CFO</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>D Bruce Sewell</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Senior VP/Secy/General Counsel</Text>
-          </View>
+          {this.renderExecutives(executives)}
       </View>
 
-                {/* TODO: get related stocks. not yet in data */}
-
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>MSFT</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Microsoft Corporation</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>DVMT</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Dell Technologies</Text>
-          </View>
-          <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
-          </View>
-      </View>
+      {this.renderRelated()}
 
       <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
-
-                {/* TODO: format number with a B?? */}
-
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>SHARES OUTSTANDING</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{overview.sharesOutstanding}</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{formattedSharesOutstanding}</Text>
             </View>
             <View style={chart.statsColumn}>
 
@@ -763,8 +713,58 @@ class Chart extends Component {
   }
 
 
+  renderBidAsk() {
 
-
+      // {/* TODO: BID LIST not getting this from server yet */}
+     return <View style={chartland.bidAsksWrapper}>
+       <View style={chartland.bid}>
+         <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+       </View>
+       <View style={chartland.bid}>
+         <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+         <View style={chartland.bidaskRow}>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
+         </View>
+       </View>
+     </View>
+  }
 
 
 
@@ -778,7 +778,46 @@ class Chart extends Component {
 
 
 
-  renderLandscape() {
+  renderLandscape(params) {
+    const {
+        Price,
+        Volume,
+        address,
+        ask,
+        bid,
+        change,
+        changePercent,
+        companyName,
+        exchange,
+        executives,
+        high,
+        keyStats,
+        latestUpdate,
+        low,
+        momentum,
+        open,
+        overview,
+        profile,
+        ticker,
+        website,
+        formattedTime,
+        formattedVolume,
+        formattedPrice,
+        formattedOpen,
+        formattedLow,
+        formattedHigh,
+        formattedSharesOutstanding
+    } = params;
+
+    const { longSide, shortSide } = deviceSizeStore;
+
+    let headerHeight = 58;
+    let footerHeight = 35;
+    let rightWidth = 220;
+
+    let chartHeight = shortSide - headerHeight - footerHeight;
+    let chartWidth = longSide - rightWidth;
+
     return <View style={chartland.landscape}>
        <View style={chartland.header}>
            <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
@@ -788,50 +827,53 @@ class Chart extends Component {
              />
            </TouchableOpacity>
          <View style={chartland.titleContainer}>
-           <Text style={[{color: this.state.colors['darkSlate']}, chartland.name, fonts.hindGunturBd]}>{this.props.navigation.state.params.data['name']}</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.symbol, fonts.hindGunturRg]}>{this.props.navigation.state.params.data['sym']}: NASDAQ</Text>
+           <Text style={[{color: this.state.colors['darkSlate']}, chartland.name, fonts.hindGunturBd]}>{companyName}</Text>
+           <Text style={[{color: this.state.colors['lightGray']}, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
          </View>
          <View style={chartland.currentPrice}>
-           <Text style={[{color: this.state.colors['darkSlate']}, chartland.stockPrice, fonts.hindGunturRg]}>$153.53</Text>
+           <Text style={[{color: this.state.colors['darkSlate']}, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
 
            <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-             <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>12:30 PM PT</Text>
+             <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
              {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
            </TouchableOpacity>
          </View>
          <View style={chartland.prices}>
            <View style={chartland.pricePoints}>
+
              <View style={chartland.priceOpen}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$153.53</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
              </View>
              <View style={chartland.priceHigh}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$153.98</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
              </View>
              <View style={chartland.priceLow}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$153.01</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
              </View>
              <View style={chartland.priceVol}>
                <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>$24.9M</Text>
+               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
              </View>
            </View>
          </View>
          <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol(ticker)}>
-          <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
+           <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
          </TouchableOpacity>
 
        </View>
+
        <View style={chartland.chartWrapper}>
-         <View style={chartland.leftSide}>
-           <View style={chartland.chartFPO}>
 
-             <ChartGraph height={this.largeGraphHeight} viewLargeGraph={true} />
+         <View style={[chartland.leftSide]}>
 
+           <View style={[chartland.chartFPO, {height: chartHeight}]}>
+             <ChartGraph height={chartHeight} width={chartWidth} viewLargeGraph={true} />
            </View>
-           <View style={chartland.options}>
+
+           <View style={[chartland.options, {flex: 1}]}>
              <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
                <View style={chartland.indicatorsWrap}>
                  <Text style={[{color: this.state.colors['darkSlate']}, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>
@@ -866,7 +908,10 @@ class Chart extends Component {
              </Tabs>
              </View>
            </View>
+
+
          </View>
+
          <View style={chartland.right}>
 
            <View style={chartland.momentumWrapper}>
@@ -882,54 +927,8 @@ class Chart extends Component {
 
            </View>
 
-           <View style={chartland.bidAsksWrapper}>
-             <View style={chartland.bid}>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-             </View>
-             <View style={chartland.bid}>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-               <View style={chartland.bidaskRow}>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-               </View>
-             </View>
-           </View>
+           {this.renderBidAsk()}
+
            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
@@ -963,171 +962,171 @@ class Chart extends Component {
                <Text style={[chartland.radioSubTitle, fonts.hindGunturRg]}>Select up to 5</Text>
              </View>
              <ScrollView style={chartland.radioWrap}>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('VLM')}
-                   isChecked={this.checkIndicators('VLM')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'VLM'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Volume'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('TRND')}
-                   isChecked={this.checkIndicators('TRND')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'TRND'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Trend Lines'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('ICHI')}
-                   isChecked={this.checkIndicators('ICHI')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'ICHI'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Ichimoku Cloud'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_split.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('OBV')}
-                   isChecked={this.checkIndicators('OBV')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'OBV'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'On Balance Volume'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('SMA')}
-                   isChecked={this.checkIndicators('SMA')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'SMA'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Simple Moving Average'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('EMA')}
-                   isChecked={this.checkIndicators('EMA')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'EMA'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Exponential Moving Average'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('MACD')}
-                   isChecked={this.checkIndicators('MACD')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'MACD'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Moving Average Convergence Divergence'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('RSI')}
-                   isChecked={this.checkIndicators('RSI')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'RSI'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Relative Strength Index'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('A/D Line')}
-                   isChecked={this.checkIndicators('A/D Line')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'A/D Line'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Accumulation/Distribution Line'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('FIB')}
-                   isChecked={this.checkIndicators('FIB')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'FIB'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Fibonacci'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
-             <View style={styles.checkBoxWrap}>
-               <CheckBox
-                   style={styles.checkField}
-                   onClick={()=>this.toggleCheck('BOL')}
-                   isChecked={this.checkIndicators('BOL')}
-                   isDisabled={this.state.isDisabled}
-                   rightTextViewStyle={styles.checkBoxLabelWrap}
-                   rightText={'BOL'}
-                   rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                   rightSubText={'Bollinger Bands'}
-                   rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                   checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                   unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-               />
-             </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('VLM')}
+                     isChecked={this.checkIndicators('VLM')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'VLM'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Volume'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('TRND')}
+                     isChecked={this.checkIndicators('TRND')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'TRND'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Trend Lines'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('ICHI')}
+                     isChecked={this.checkIndicators('ICHI')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'ICHI'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Ichimoku Cloud'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_split.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('OBV')}
+                     isChecked={this.checkIndicators('OBV')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'OBV'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'On Balance Volume'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('SMA')}
+                     isChecked={this.checkIndicators('SMA')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'SMA'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Simple Moving Average'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('EMA')}
+                     isChecked={this.checkIndicators('EMA')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'EMA'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Exponential Moving Average'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('MACD')}
+                     isChecked={this.checkIndicators('MACD')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'MACD'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Moving Average Convergence Divergence'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('RSI')}
+                     isChecked={this.checkIndicators('RSI')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'RSI'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Relative Strength Index'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('A/D Line')}
+                     isChecked={this.checkIndicators('A/D Line')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'A/D Line'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Accumulation/Distribution Line'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('FIB')}
+                     isChecked={this.checkIndicators('FIB')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'FIB'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Fibonacci'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
+               <View style={styles.checkBoxWrap}>
+                 <CheckBox
+                     style={styles.checkField}
+                     onClick={()=>this.toggleCheck('BOL')}
+                     isChecked={this.checkIndicators('BOL')}
+                     isDisabled={this.state.isDisabled}
+                     rightTextViewStyle={styles.checkBoxLabelWrap}
+                     rightText={'BOL'}
+                     rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
+                     rightSubText={'Bollinger Bands'}
+                     rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
+                     checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                     unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+                 />
+               </View>
              </ScrollView>
            </View>
          </Modal>
@@ -1151,12 +1150,69 @@ class Chart extends Component {
 
 
   showOrientation(){
+    const { chartLoading, tickerDataJS } = chartStore;
+
+    console.log('==========================================================================')
+    console.log(tickerDataJS)
+
+    if(!tickerDataJS) {
+      return null;
+    }
+
+    let {
+        Price,
+        Volume,
+        address,
+        ask,
+        bid,
+        change,
+        changePercent,
+        companyName,
+        exchange,
+        executives,
+        high,
+        keyStats,
+        latestUpdate,
+        low,
+        momentum,
+        open,
+        overview,
+        profile,
+        ticker,
+        website,
+    } = tickerDataJS;
+
+
+    //  formatting data
+
+    {/* TODO: TIME don't have this yet with time zone */}
+
+    let formattedTime = moment(latestUpdate).format('h:mm A');
+    let formattedVolume = millionBillionFormatter(Volume);
+    let formattedPrice = '$' + Price.toFixed(2);
+    let formattedOpen = '$' + open.toFixed(2);
+    let formattedLow = low.toFixed(2);
+    let formattedHigh = high.toFixed(2);
+
+    let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
+
+    const params = {
+      ...tickerDataJS,
+      formattedTime,
+      formattedVolume,
+      formattedPrice,
+      formattedOpen,
+      formattedLow,
+      formattedHigh,
+      formattedSharesOutstanding
+    }
+
     switch (this.state.orientation) {
       case 'portrait':
-        return this.renderPortrait()
+        return this.renderPortrait(params)
         break;
       case 'landscape':
-       return this.renderLandscape()
+       return this.renderLandscape(params)
         break;
       }
   }

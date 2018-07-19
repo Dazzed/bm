@@ -16,61 +16,26 @@ import {
 import {
     View,
     Text,
-    Animated
+    Animated,
+    ActivityIndicator
 } from 'react-native';
 import { observer } from "mobx-react";
 import { generatePolygonsFromTwoLines, flipYAxisValue, parseLargeGraphData } from './utility';
+import fonts from '../../style/fonts';
+import trending from '../../style/trending';
 
 @observer
 export default class LargeGraph extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.thinLineWidth = .5;
-        this.thickLineWidth = 8;
-
-        // this.state = {
-        //     height: 0,
-        //     width: 0,
-        // }
     }
 
-
-    largeGraphBarData() {
-        const { theme } = colorStore;
-        return [
-            {
-                xPosition: 10,
-                hardTop: 100,
-                hardBottom: 10,
-                softTop: 50,
-                softBottom: 100,
-                color: theme.red
-            },
-            {
-                xPosition: 30,
-                hardTop: 200,
-                hardBottom: 80,
-                softTop: 80,
-                softBottom: 40,
-                color: theme.green
-            },
-            {
-                xPosition: 200,
-                hardTop: 300,
-                hardBottom: 80,
-                softTop: 180,
-                softBottom: 90,
-                color: theme.green
-            },
-        ]
-    }
 
     getLineList() {
         const { theme } = colorStore;
 
-        console.log('----------------- GET LINE LIST', this.props.data)
+        // console.log('----------------- GET LINE LIST', this.props.data)
 
         return [
             {
@@ -131,127 +96,129 @@ export default class LargeGraph extends React.Component {
         ]
     }
 
-    renderFlipYAxis(input) {
-        return input;
-    }
-
-    getParsedData() {
-        const { chartDetailDataJS } = chartStore;
-        return parseLargeGraphData(chartDetailDataJS);
-    }
-
     render() {
+
         const { theme } = colorStore;
 
+        const { stockChartLoading, chartDetailDataJS } = chartStore;
+
+        if(stockChartLoading) {
+          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+            <ActivityIndicator />
+          </View>
+        }
+
+        if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
+          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+          </View>
+        }
+
+        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width);
+        console.log('---- parsed Data', parsedData);
+
         let inlineContainerStyle = {
-            borderWidth: 1,
-            borderColor: 'green',
-            flex: 1,
-            height: '100%'
+            // borderWidth: 3,
+            // borderColor: 'green',
+            // flex: 1,
+            height: this.props.height
         }
 
-        let gridXArray = [];
-        let gridYArray = [];
-
-        let lineCount = 8;
-
-        for(let i = 0; i < lineCount; i++) {
-            let multiplier = i / lineCount;
-            gridXArray.push(this.props.height * multiplier);
-            gridYArray.push(this.props.width * multiplier);
-        }
-
-        let lineYVal = 0;
-        let boxWidth = 50;
-        let boxHeight = 9;
-        let pointOffset = 10;
-        let xPosition = 5;
-
-        let textLeftOffset = 5;
-        let topOffset = 2;
-
-        const generateXLineGroup = (number, key) => {
-
-            let inverseY = flipYAxisValue(this.props.height, number);
-
-            let formattednumber = inverseY.toFixed(1);
-
+        const generateXLineGroup = (data, key) => {
+            const { position, label } = data;
             return <G key={key}>
                 <G>
                     <Line
                         key={ 'zero-axis' }
-                        x1={ '0%' }
-                        x2={ '92%' }
-                        y1={ inverseY }
-                        y2={ inverseY }
+                        x1={ position }
+                        x2={ position }
+                        y1={ '0%' }
+                        y2={ '100%' }
                         stroke={ theme.borderGray }
                         strokeDasharray={ [ 4, 8 ] }
                         strokeWidth={ 1 }
                     />
                     <TextSvg
+                        key={Math.random()}
                         fontSize={12}
                         fill={theme.borderGray}
                         stroke={theme.borderGray}
-                        y={number + topOffset}
-                        x={'95%'}
+                        y={'95%'}
+                        x={ position }
                         textAnchor="middle"
                     >
-                        {formattednumber}
+                      {label}
                     </TextSvg>
                 </G>
             </G>
         }
 
-        const generateYLineGroup = (number, key) => {
-            let formattednumber = number.toFixed(1);
+
+        const generateYLineGroup = (data, key) => {
+            const { position, label } = data;
+            let verticalOffset = 4;
             return <G key={key}>
                 <Line
                     key={ 'zero-axis' }
-                    x1={ number }
-                    x2={ number }
-                    y1={ '0%' }
-                    y2={ '100%' }
+                    y1={ position }
+                    y2={ position }
+                    x1={ '0%' }
+                    x2={ '95%' }
                     stroke={ theme.borderGray }
                     strokeDasharray={ [ 4, 8 ] }
                     strokeWidth={ 1 }
                 />
                 <TextSvg
+                    key={Math.random()}
                     fontSize={12}
                     fill={theme.borderGray}
                     stroke={theme.borderGray}
-                    y={'95%'}
-                    x={number}
+                    x={'95%'}
+                    y={ position + verticalOffset}
                     textAnchor="middle"
                 >
-                    {formattednumber}
+                    {label}
                 </TextSvg>
             </G>
         }
 
 
+        const generateCandlestickBars = (params, key) => {
+            let thickLineTop = params.closeYPositionCoordinates;
+            let thickLineBottom = params.openYPositionCoordinates
+            let color = theme.red;
+            if(params.close <= params.open) {
+              color = theme.green;
+              thickLineTop = params.openYPositionCoordinates;
+              thickLineBottom = params.closeYPositionCoordinates;
+            }
 
-        let barDataList = this.largeGraphBarData();
+            let thinLineWidth = .5;
+            let thickLineWidth = 2;
 
-        const generateBarLine = (params, key) => {
             return <G key={key}>
+                {/* Thin line -  high / low */}
                 <Rect
-                    x={params.xPosition - (this.thickLineWidth / 2)}
-                    y={params.softTop}
-                    width={this.thickLineWidth}
-                    height={params.softBottom - params.softTop}
-                    fill={params.color}
-                    strokeWidth={'3'}
-                    stroke={params.color}
+                    key={Math.random()}
+                    x={params.xPositionCoordinates - (thinLineWidth / 2)}
+                    y={params.lowYPositionCoordinates}
+                    width={thinLineWidth}
+                    height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
+                    fill={'red'}
+                    strokeWidth={'1'}
+                    stroke={color}
                     strokeLinejoin={'round'}
                 />
+
+                {/* Thick line - open / close */}
                 <Rect
-                    x={params.xPosition - (this.thinLineWidth / 2)}
-                    y={params.hardTop}
-                    width={this.thinLineWidth}
-                    height={params.hardBottom - params.hardTop}
-                    fill={params.color}
-                    strokeWidth={'2'}
-                    stroke={params.color}
+                    x={params.xPositionCoordinates - (thickLineWidth / 2)}
+                    y={thickLineBottom}
+                    width={thickLineWidth}
+                    height={thickLineTop - thickLineBottom}
+                    fill={color}
+                    strokeWidth={'1'}
+                    stroke={color}
                     strokeLinejoin={'round'}
                 />
             </G>
@@ -265,7 +232,6 @@ export default class LargeGraph extends React.Component {
                 let flippedY = flipYAxisValue(this.props.height, elem.y);
                 points += ` ${elem.x},${flippedY}`
             })
-
             return <Polyline
                 key={key}
                 points={points}
@@ -283,7 +249,7 @@ export default class LargeGraph extends React.Component {
         let polygonsList = generatePolygonsFromTwoLines(line1, line2, this.props.height);
 
 
-        console.log('POLYGONGS', polygonsList)
+        // console.log('POLYGONGS', polygonsList)
 
         const generateGraphPolygonFill = (elem, key) => {
             let points = elem.points;
@@ -302,30 +268,22 @@ export default class LargeGraph extends React.Component {
             />
         }
 
-
         return <View style={inlineContainerStyle}>
             <Svg
                 height={'100%'}
                 width={'100%'}
             >
 
-                {gridYArray.map((elem, i) => {
+                {parsedData.gridYArray.map((elem, i) => {
                     return generateYLineGroup(elem, i)
                 })}
-                {gridXArray.map((elem, i) => {
+
+                {parsedData.gridXArray.map((elem, i) => {
                     return generateXLineGroup(elem, i)
                 })}
 
-                {barDataList.map((elem, i) => {
-                    return generateBarLine(elem, i)
-                })}
-
-                {polygonsList.map((elem, i) => {
-                    return generateGraphPolygonFill(elem, i)
-                })}
-
-                {lineList.map((elem, i) => {
-                    return generateGraphPolygon(elem, i)
+                {parsedData.dataPoints.map((elem, i) => {
+                    return generateCandlestickBars(elem, i)
                 })}
 
 
@@ -334,4 +292,11 @@ export default class LargeGraph extends React.Component {
     }
 }
 
-
+//
+// {polygonsList.map((elem, i) => {
+//     return generateGraphPolygonFill(elem, i)
+// })}
+//
+// {lineList.map((elem, i) => {
+//     return generateGraphPolygon(elem, i)
+// })}

@@ -129,7 +129,6 @@ export default class NumericalSelector extends React.Component {
                     </TouchableOpacity>
                 </View>
 
-
                 <View style={rowStyle}>
                     <TouchableOpacity disabled={this.isDisabled('.')} onPress={() => this.addNumber('.')} style={eachNumberStyleOpacityContainer}>
                         <Text style={getNumberStyle('.')}>.</Text>
@@ -139,7 +138,7 @@ export default class NumericalSelector extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.backspace()} style={eachNumberStyleOpacityContainer}>
                         <Image
-                            style={{height: '50%'}}
+                            style={{height: '50%', marginRight: 30}}
                             resizeMode="contain"
                             source={deleteSource}
                         />

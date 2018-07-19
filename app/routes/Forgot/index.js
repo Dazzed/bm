@@ -4,11 +4,13 @@ import { colorStore, authStore } from '../../mobxStores';
 import Button from '../../sharedComponents/Button1';
 import {
     View,
-    // TextInput,
+    Text,
     TouchableOpacity,
-    Image
+    Image,
+    KeyboardAvoidingView
 } from 'react-native';
-import Text from '../../sharedComponents/Text';
+
+import SharedText from '../../sharedComponents/Text';
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
 import StyledTextInput from '../../sharedComponents/TextInput';
@@ -46,12 +48,15 @@ export default class ForgotPassword extends React.Component {
       const { theme } = colorStore;
       let height = 25;
       let color = theme.red;
+      let message = resetErrorMessage;
       if( resetSuccess ) {
-        color = theme.graySlate;
+        color = theme.blue;
+        message = 'Check your email to reset your password!';
       }
+
       if(resetErrorMessage) {
         return <View style={{height: height}}>
-          <Text style={{ color: color}}>{resetErrorMessage}</Text>
+          <Text style={{ color: color}}>{message}</Text>
         </View>
       } else {
           return <View style={{height: height}}></View>
@@ -62,7 +67,7 @@ export default class ForgotPassword extends React.Component {
         const { theme } = colorStore;
         const { resetLoading } = authStore;
 
-        return <View style={{flex: 1}}>
+        return <View style={{flex: 1, backgroundColor: theme.contentBg}}>
             <View style={styles.menuBorder}>
                 <View style={styles.menuContainer}>
                     <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
@@ -71,21 +76,21 @@ export default class ForgotPassword extends React.Component {
                             style={styles.closeImg}
                         />
                     </TouchableOpacity>
-                    <Text style={[{ color: theme.darkSlate }, styles.mainCta, fonts.gothamBld]}>Recover</Text>
-                    <Text style={styles.rightCta}></Text>
+                    <SharedText style={[{ color: theme.darkSlate }, styles.mainCta, fonts.gothamBld]}>Recover</SharedText>
+                    <SharedText style={styles.rightCta}></SharedText>
                 </View>
             </View>
 
 
-            <View style={{flex: 1, paddingVertical: 40, alignItems: 'center', padding: 20, justifyContent: 'center'}}>
-                <Text style={{fontSize: 30, marginVertical: 10}}>Reset Password?</Text>
-                <Text>Please enter your email address.</Text>
-                <Text>We will send you a link to reset your password.</Text>
+            <KeyboardAvoidingView behavior={'height'} style={{flex: 1, paddingVertical: 60, width: '100%', alignItems: 'center', padding: 20, justifyContent: 'center'}}>
+                <Text style={[{ fontSize: 30, width: '100%', alignText: 'left', color: theme.darkSlate}]}>Reset Password</Text>
+                <Text style={{alignText: 'left', width: '100%', color: theme.darkGray}}>Please enter your email address.</Text>
+                <Text style={{alignText: 'left', width: '100%', color: theme.darkGray}}>We will send you a link to reset your password.</Text>
                 <StyledTextInput
                     value={this.state.email}
                     placeholder={'Email'}
                     onChangeText={(e) => this.updateEmail(e)}
-                    style={{marginVertical: 20, fontSize: 25}}
+                    style={{marginVertical: 20, fontSize: 25, color: theme.darkSlate}}
                 />
                 {this.renderForgotError()}
                 <Button
@@ -93,7 +98,7 @@ export default class ForgotPassword extends React.Component {
                   onPress={() => this.submitForgotRequest()}
                   title={resetLoading ? "LOADING..." : "RESET PASSWORD"}
                 />
-            </View>
+            </KeyboardAvoidingView>
         </View>
     }
 }

@@ -10,7 +10,9 @@ const getTrendingData = (params) => get('users/trendingList', params);
 const getNewsList = (params) => get('/tickerLists/getNews', params);
 const withdraw = (params) => get('/users/withdraw', params);
 const deposit = (params) => get('users/deposit', params);
-const getStockChartDetail = (params) => get('tickerLists/stockCharts', params);
+const getStockChartDetail = (params) => post('tickerLists/stockCharts', params);
+const searchStocks = (params) => get('users/stockSearch', params);
+const getSectorIndustries = (params) => get('tickerLists/sectors-industries', params);
 
 export {
     login,
@@ -23,5 +25,7 @@ export {
     getNewsList,
     withdraw,
     deposit,
-    getStockChartDetail
+    getStockChartDetail,
+    searchStocks,
+    getSectorIndustries
 }

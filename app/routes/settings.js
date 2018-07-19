@@ -171,7 +171,7 @@ class Settings extends Component {
       this.setState({ isAutoLogVisible: false });
     }
   }
-  
+
   showEmail() {
     console.log('showEmail');
   }
@@ -181,7 +181,7 @@ class Settings extends Component {
   showPassword() {
     console.log('showPassword');
   }
-  
+
 
   handleTouch = (value) => {
     // if (value) {
@@ -219,14 +219,6 @@ class Settings extends Component {
     }
   }
 
-  componentDidMount() {
-    if(forceDarkTheme) {
-      this.props.setThemeToDark()
-    } else {
-      this.props.setThemeToLight()
-    }
-  }
-
   navToDeposit() {
     this.props.navigation.navigate('AccountSelect', {
       widthdrawDepositMode: 'deposit'
@@ -249,7 +241,7 @@ class Settings extends Component {
     } else {
       selectedCaratImageSource = require('../images/right_arrow.png');
     }
-    
+
     return <View>
       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>BANKING</Text>
       <TouchableOpacity onPress={() => this.navToDeposit()}>
@@ -316,30 +308,30 @@ class Settings extends Component {
             <View style={styles.rightCta}></View>
           </View>
         </View>
-        
+
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, settings.contentBg]}>
-          
+
           // Banking
 
           {this.renderBankingSettings()}
-          
+
           // Account Info
-          
+
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
-          
+
           // TODO: need edit functions. what are we doint here?
           {this.renderOption('Email', globalData.currentUser.email, this.showEmail )}
           {this.renderOption('Mobile', globalData.currentUser.phone, this.showPhone )}
           {this.renderOption('Password', '***********', this.showPassword )}
-      
+
           {this.renderOption('Address', globalData.currentUser.address, this.showAddress)}
           {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.showMaritalStatus)}
           {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.showDependents)}
           {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
           {this.renderOption('Investment experience', globalData.currentUser.experience, this.showExperience)}
-          
+
           // Color Scheme
-          
+
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>COLOR SCHEME</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Dark Theme</Text>
@@ -348,9 +340,9 @@ class Settings extends Component {
               onValueChange={this.props.toggleTheme}
               value={globalData.isDarkThemeActive} />
           </View>
-          
+
           // Touch ID
-          
+
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>TOUCH ID</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Touch ID Log-in</Text>
@@ -359,17 +351,17 @@ class Settings extends Component {
               onValueChange={(value) => this.handleTouch(value)}
               value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
-          
+
           // Auto Log Off
-          
+
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
           <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
             <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[this.state.autoLog].label} inactivity</Text>
           </TouchableOpacity>
-          
+
           // Notifications
-          
+
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Orders</Text>
@@ -378,9 +370,9 @@ class Settings extends Component {
               onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
               value={this.state.trueSwitchIsOn} />
           </View>
-          
+
           // News Source
-          
+
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>CNBC</Text>
@@ -469,8 +461,8 @@ class Settings extends Component {
             />
           </View>
         </Modal>
-        
-        
+
+
         <Modal
           isVisible={this.state.isFaqVisible}
           animationIn={'slideInUp'}
@@ -489,7 +481,7 @@ class Settings extends Component {
           animationOut={'slideOutDown'}>
           <ContactUs hideContact={() => this.hideContact()} />
         </Modal>
-        
+
         // Address modal
         {
           this.state.isAddressVisible &&
@@ -503,7 +495,7 @@ class Settings extends Component {
             />
           </Modal>
         }
-        
+
         {
           this.state.isMaritalStatusVisible &&
           <Modal

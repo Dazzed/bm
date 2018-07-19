@@ -3,7 +3,7 @@
 
 // const productionMode = false;
 const productionMode = true;
-//
+
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -18,14 +18,9 @@ const productionMode = true;
 // app requires real data so this is now unuseable
 const displayPreviewButtonOnHome = false;
 
-
-// force dark theme all the time
-const forceDarkTheme = false;
-// const forceDarkTheme = true;
-
 // force navigation on top level navigator
-// const firstNavDefaultRoute = 'Home';
-const firstNavDefaultRoute = 'Login';
+const firstNavDefaultRoute = 'Home';
+// const firstNavDefaultRoute = 'Login';
 // AppNav
 // Login
 // Home
@@ -69,6 +64,9 @@ const verifyAuthOnHomeView = true;
 const chosenServer = 'staging';
 
 console.disableYellowBox = true;
+
+let forceDarkTheme = false;
+
 
 
 ///////////////////////////////////////////////////////////////////////

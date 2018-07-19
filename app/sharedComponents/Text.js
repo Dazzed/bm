@@ -8,6 +8,10 @@ export default class StyledText extends React.Component {
 
     render() {
         const { theme } = colorStore;
-        return <Text style={[{color: theme.darkSlate}, fonts.hindGunturRg]} {...this.props}>{this.props.children}</Text>
+
+        let inlineStyle = {color: theme.darkSlate}
+        let style = [fonts.hindGunturRg, {...inlineStyle}]
+
+        return <Text style={style}>{this.props.children}</Text>
     }
 }

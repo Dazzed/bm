@@ -45,7 +45,7 @@ export default class StyledTextInput extends React.Component {
         const { theme } = colorStore;
 
         let inlineStyle = [
-            // {color: theme.darkSlate},
+            {color: theme.darkSlate},
             fonts.hindGunturRg,
             styles_2.registrationFormField,
         ]
@@ -60,6 +60,7 @@ export default class StyledTextInput extends React.Component {
             <TextInput
                 {...this.props}
                 style={inlineStyle}
+                placeholderTextColor={theme.darkGray}
             />
         </View>
     }

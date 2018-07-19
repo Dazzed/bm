@@ -38,7 +38,6 @@ export default class FundMyAccount extends React.Component {
         super(props)
         this.state = {
             fundingString: '',
-            accountBalance: '30000',
             errorRemainingFunds: false
         }
     }
@@ -104,9 +103,10 @@ export default class FundMyAccount extends React.Component {
     calculateError() {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             let displayError = false;
-            let accountBalanceInt = parseInt(this.state.accountBalance);
-            let currentEntryInt = parseInt(this.state.fundingString);
-            if(currentEntryInt > accountBalanceInt) {
+            const { selectedAccount } = accountStore;
+            let entryValue = parseFloat(this.state.fundingString);
+            let existingAmount = parseFloat(selectedAccount.amount);
+            if(entryValue > existingAmount) {
                 displayError = true;
             }
             this.setState({
@@ -152,7 +152,6 @@ export default class FundMyAccount extends React.Component {
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
                 <View style={{marginVertical: 10}}></View>
                 <Text style={textStyle}>{selectedAccount.title}</Text>
-                <Text style={textStyle}>{selectedAccount.subtitle}</Text>
                 <View style={{marginVertical: 0}}></View>
                 {this.renderAccountDropdown()}
             </View>;
@@ -174,26 +173,24 @@ export default class FundMyAccount extends React.Component {
             alignItems: 'center',
             justifyContent: 'center',
             margin: 5,
-            marginHorizontal: 20
+            marginHorizontal: 30
         };
         let textStyle = {
             color: theme.inactiveDarkSlate,
             flex: 0
         };
 
-
-        let string = 'FROM'
+        let string = ''
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             string = 'TO'
         }
 
-
-            return <View style={style}>
-            <View style={{flex: 0, height: '100%', alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={textStyle}>
-                    {string + ''} {selectedAccount.title}
-                </Text>
-            </View>
+        return <View style={style}>
+          <View style={{flex: 0, height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={textStyle}>
+                {string + ''} {selectedAccount.subtitle}
+            </Text>
+          </View>
         </View>
     }
 

@@ -2,7 +2,6 @@ import {
   TabNavigator,
   StackNavigator
 } from 'react-navigation';
-
 import Account from './Account/account';
 import Watchlists from './Watchlist/watchlists';
 import Trending from './Trending/trending';
@@ -10,20 +9,15 @@ import Scanner from './scanner';
 import Settings from './settings';
 import CustomTabBar from './customtabbar';
 import Chart from './chart';
-
 import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
-
 import FundAccountSplash from './Registration/components/FundAccountSplash';
-
 import { colors } from '../store/store';
-
 import {
     appNavDefaultTabRoute,
     stackNavDefaultRoute
 } from '../devControlPanel';
-
 var color = colors();
 
 const AppNavTabs = TabNavigator({

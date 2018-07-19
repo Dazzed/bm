@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginRight: 25
   },
   formValid: {
-    backgroundColor: '#41EF89', 
+    backgroundColor: '#41EF89',
     borderColor: '#41EF89'
   },
   formInvalid: {
@@ -60,15 +60,19 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   whyWeAsk: {
-    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderColor: "#9a9ea8", borderWidth: 1, width: 125, alignContent: 'center', marginLeft: '50%', left: -62.5, borderRadius: 15, paddingTop: 1, paddingLeft: 5, paddingRight: 5, paddingBottom: 0    
+    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderColor: "#9a9ea8", borderWidth: 1, width: 125, alignContent: 'center', marginLeft: '50%', left: -62.5, borderRadius: 15, paddingTop: 1, paddingLeft: 5, paddingRight: 5, paddingBottom: 0
   },
   whyWeAskLabel: {
     fontSize: 11
   },
   whyWeAskView: {
-    flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', paddingTop: 2.5, paddingLeft: 2.5, paddingRight: 5, paddingBottom: 3 
+    flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', paddingTop: 2.5, paddingLeft: 2.5, paddingRight: 5, paddingBottom: 3
   },
-  whyWeAskText: { margin: 30, lineHeight: 30, fontSize: 20 },
+  whyWeAskText: {
+    marginVertical: 30,
+    lineHeight: 30,
+    fontSize: 20
+  },
   registrationFormView: {
     // height: 50,
     flexDirection: 'column',
@@ -206,7 +210,7 @@ const styles = StyleSheet.create({
     width: 50,
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: 60
-    // borderBottomColor: colors.borderGray    
+    // borderBottomColor: colors.borderGray
   },
   radioLabel: {
     // borderWidth: 1,

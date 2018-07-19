@@ -2,6 +2,7 @@ import { observable, action, computed, toJS } from 'mobx';
 import { getTrendingData as getTrendingDataApi } from '../../api';
 import { watchListStore, colorStore } from '../index';
 import { millionBillionFormatter, formatPrice } from '../../utility';
+import { sectorIndustriesStore } from '../';
 
 import {
   scan_props,
@@ -88,9 +89,6 @@ export default class Trending {
           latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
           posNegColor: data.change > 0 ? theme.green : theme.red
         }
-
-        // console.log('data', parseData)
-
         if(watchListItems.length > 0) {
           parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
         }
@@ -112,65 +110,20 @@ export default class Trending {
     this.displayDecimal = newVal;
   }
 
-  @computed get currentIndustryOptions() {
-    console.log('=============== CURRENT INDUSTRY OPTIONS SELECOT', this.industryOption)
-     if(this.sectorOption === null) {
-       return null;
-     }
-     if(this.sectorOption === 0) {
-       return industry_consumerdiscretionary
-     }
-     if(this.sectorOption === 1) {
-       return industry_consumerdiscretionary
-     }
-     if(this.sectorOption === 2) {
-       return industry_consumerstaples
-     }
-     if(this.sectorOption === 3) {
-       return industry_energy
-     }
-     if(this.sectorOption === 4) {
-       return industry_financials
-     }
-     if(this.sectorOption === 5) {
-       return industry_health
-     }
-     if(this.sectorOption === 6) {
-       return industry_industrials
-     }
-     if(this.sectorOption === 7) {
-       return industry_infotech
-     }
-     if(this.sectorOption === 8) {
-       return industry_materials
-     }
-     if(this.sectorOption === 9) {
-       return industry_realestate
-     }
-     if(this.sectorOption === 10) {
-       return industry_telecomm
-     }
-     if(this.sectorOption === 11) {
-       return industry_utilities
-     }
-  }
-
-
   @action getTrendingData = () => {
     this.setLoading(true);
 
     let filterOptions = {
       "trending": scan_props[this.trendingOption].queryString,
     }
-    if(this.sectorOption > 0) {
-      filterOptions.sector = sector_props[this.sectorOption].queryString;
+
+    if(sectorIndustriesStore.selectedSectorJS !== 'All') {
+      filterOptions.sector = sectorIndustriesStore.selectedSectorJS
     }
 
-    if(this.sectorOption > 0 && this.industryOption > 0) {
-      filterOptions.industry = industry_utilities[this.industryOption]
+    if(sectorIndustriesStore.selectedIndustryJS !== 'All') {
+      filterOptions.industry = sectorIndustriesStore.selectedIndustryJS;
     }
-
-    // console.log('=============== params', filterOptions)
 
     let params = {
       filter: JSON.stringify(filterOptions)
