@@ -885,9 +885,7 @@ class Chart extends Component {
              </View>
            </View>
          </View>
-         <TouchableOpacity style={chartland.rightCta} onPress={() => this.addSymbol(ticker)}>
-           <Image source={this.state.colors['addImage']} style={{ width: 23, height: 23 }} />
-         </TouchableOpacity>
+         {this.renderWatchListButton(ticker)}
 
        </View>
 
