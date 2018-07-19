@@ -1187,7 +1187,9 @@ class Chart extends Component {
 
     {/* TODO: TIME don't have this yet with time zone */}
 
-    let formattedTime = moment(latestUpdate).format('h:mm A');
+    let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
+    console.log('======================= FRATTTIME', formattedTime)
+
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);
