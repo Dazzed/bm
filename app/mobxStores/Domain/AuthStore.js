@@ -126,7 +126,7 @@ export default class ColorStore {
                         console.log('got user data', res)
                         resolve(res)
                     } else {
-                        this.setLoginErrorMessage(res.json.error.message)
+                        // this.setLoginErrorMessage(res.json.error.message)
                     }
                 })
                 .catch((err) => {
@@ -138,12 +138,12 @@ export default class ColorStore {
     @observable loginErrorPresent = false;
 
     @action login = (params) => {
+        this.loginLoading = true;
+        this.loginErrorPresent = false;
+        this.setLoginErrorMessage(null);
+        let userId = 0;
+        let loginData = null;
         return new Promise((resolve, reject) => {
-            this.loginLoading = true;
-            this.loginErrorPresent = false;
-            let userId = 0;
-            let loginData = null;
-
             console.log('======= LOGIN FIRES', params)
             login(params)
             .then((res) => {
@@ -155,9 +155,14 @@ export default class ColorStore {
 
                     return saveToken(res.json.id)
                 } else {
-                    this.setLoginErrorMessage(res.json.error.message)
+                    // this.setLoginErrorMessage(res.json.error.message)
                     this.loginLoading = false;
                     this.loginErrorPresent = true;
+                    if (res.json.error.code === 'LOGIN_FAILED_EMAIL_NOT_VERIFIED') {
+                      this.setLoginErrorMessage('You must verify your email before you login');
+                    } else {
+                      this.setLoginErrorMessage('Invalid email/password');
+                    }
                     reject(res);
                 }
             })
@@ -185,9 +190,6 @@ export default class ColorStore {
                 }
             })
             .catch((err) => {
-                console.log('err', err)
-                this.loginErrorPresent = true;
-                this.loginLoading = false;
                 reject(err)
             })
         })
