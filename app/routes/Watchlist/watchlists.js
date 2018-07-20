@@ -159,13 +159,12 @@ class Watchlists extends React.Component {
 
   renderRow = row => {
     if (!row) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
     const { deletingRecordId } = watchListStore;
     if (row.id === deletingRecordId) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
-    console.log('rowwwwwwww', row)
 
     var thisRow = (
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
@@ -190,7 +189,7 @@ class Watchlists extends React.Component {
               onPress={this.toggleWatchListPercent.bind(this, row.id)}
             >
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${Number(row['latestPrice']).toFixed(2)}</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symTime, fonts.hindGunturRg]}>{moment.unix(row['latestUpdate']).format('hh:MM A PT')}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.symTime, fonts.hindGunturRg]}>{moment.unix(row['latestUpdate']).format('h:mm A PT')}</Text>
               {this.state.showWatchListPercent.includes(row.id) ?
                 <Text
                   style={[{ backgroundColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
@@ -213,11 +212,11 @@ class Watchlists extends React.Component {
 
   renderEditableRow = row => {
     if (!row) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
     const { deletingRecordId } = watchListStore;
     if (row.id === deletingRecordId) {
-      return <Text></Text>;
+      return <Text style={{ display: 'none' }}></Text>;
     }
     return (
       <TouchableOpacity

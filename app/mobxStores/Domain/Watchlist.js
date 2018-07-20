@@ -116,6 +116,9 @@ export default class Watchlist {
       }
       return thisData
     });
+    if (this.isEditingWatchList) {
+      return sortNumberArrayByParam(formattedData, 'position');
+    }
 
     switch (this.sortByIndex) {
       case 0:
@@ -123,7 +126,7 @@ export default class Watchlist {
       case 1:
         return sortStringArrayByParam(formattedData, 'companyName');
       case 2:
-        return sortNumberArrayByParam(formattedData, 'avgTotalVolume', 'DESC');
+        return sortNumberArrayByParam(formattedData, 'latestVolume', 'DESC');
       case 3:
         return sortNumberArrayByParam(formattedData, 'changePercent', 'DESC');
       default:
