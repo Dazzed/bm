@@ -335,6 +335,8 @@ class Watchlists extends React.Component {
             disableSorting={false}
             navigation={this.props.navigation}
             renderRow={this.renderEditableRow}
+            disableAnimatedScrolling
+            limitScrolling
           />
         }
         <Modal
