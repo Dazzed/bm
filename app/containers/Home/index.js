@@ -20,7 +20,10 @@ import { colors } from '../../store/store';
 import * as globalActions from '../../store/actions/global';
 import { selectGlobalData } from '../../selectors';
 import { displayPreviewButtonOnHome, verifyAuthOnHomeView } from '../../devControlPanel';
+import { colorStore, authStore, watchListStore } from '../../mobxStores';
+import { observer } from 'mobx-react';
 
+@observer
 class HomeScreen extends Component {
   static navigationOptions = {
     title: 'Home',
@@ -48,11 +51,17 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     Orientation.lockToPortrait();
-    if (this.props.globalData.isAuthenticated === true) {
-      this.props.navigation.navigate('AppNavTabs');
-    }
     if(verifyAuthOnHomeView) {
-      this.props.verifyAuth();
+      authStore.verifyAuth()
+      .then((res) => {
+        // console.log('==== verify auth success now nav on', res);
+        watchListStore.getWatchlistData();
+        this.props.saveUserData(res.userData.data);
+        this.props.navigation.navigate('AppNavTabs');
+      })
+      .catch((err) => {
+        console.log('error verifying', err)
+      });
     }
   }
 
@@ -63,15 +72,26 @@ class HomeScreen extends Component {
     const {
       globalData: currentGlobalData
     } = this.props;
+
+    console.log('======== HOME LOADS ============ NAV', prevGlobalData, currentGlobalData)
+
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
-    if (prevGlobalData.isAuthenticated === true && currentGlobalData.isAuthenticated === false) {
-      this.props.navigation.navigate('Home');
-    }
-    if (prevGlobalData.isAuthenticated === false && currentGlobalData.isAuthenticated === true) {
-      this.props.navigation.navigate('AppNavTabs');
-    }
+
+    // if (prevGlobalData.isAuthenticated === true && currentGlobalData.isAuthenticated === false) {
+    //   this.props.navigation.navigate('Home');
+    // }
+    //
+    // if (prevGlobalData.isAuthenticated === false && currentGlobalData.isAuthenticated === true) {
+    //   if(currentGlobalData.loginData && currentGlobalData.loginData.firstLogin) {
+    //     // handle logging into funding flow
+    //     this.props.navigation.navigate('Funding');
+    //   } else {
+    //     // handle logging normally
+    //     this.props.navigation.navigate('AppNavTabs');
+    //   }
+    // }
   }
 
   renderAppPreviewButton() {
@@ -93,7 +113,11 @@ class HomeScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const { globalData } = this.props;
-    if (globalData.isVerifyingAuth) {
+    const { theme } = colorStore;
+    const { verifyingAuth } = authStore;
+    console.log(' ====== render home', verifyingAuth)
+
+    if (verifyingAuth) {
       return (
         <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
           <View style={styles.landingIcon}>
@@ -150,7 +174,7 @@ HomeScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
   setThemeFromLocal: PropTypes.func.isRequired,
   globalData: PropTypes.object.isRequired,
-  verifyAuth: PropTypes.func.isRequired
+  // verifyAuth: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

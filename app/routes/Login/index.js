@@ -75,12 +75,12 @@ class SignIn extends Component {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
 
+    // console.log('================= LOGIN =========== ', prevProps.globalData)
     // handle navigation with mobx
     // if (!prevProps.globalData.isAuthenticated && this.props.globalData.isAuthenticated) {
     //   const { navigate } = this.props.navigation;
-    //   navigate('AppNavTabs', { color: this.state.activeColor })
+    //   // navigate('AppNavTabs', { color: this.state.activeColor })
     // }
-
   }
 
   setColor(value) {
@@ -107,7 +107,6 @@ class SignIn extends Component {
   }
 
   _signIn = () => {
-
     // // Alert.alert(
     // //   'Enable Touch ID',
     // //   '',
@@ -118,22 +117,17 @@ class SignIn extends Component {
     // //   { cancelable: true }
     // // )
 
-    if (this.props.globalData.isAuthenticating) {
-      return;
-    }
-
-    this.props.loginAction({ email: this.state.email, password: this.state.password });
-
-    // doing login in parrallel in mobx
     let params = {
       email: this.state.email,
       password: this.state.password
     }
     authStore.login(params)
     .then((res) => {
-      console.log('ress', authStore.loginDataJS)
+      this.props.saveUserData(res.userData.json)
 
-      if(authStore.loginDataJS.firstLogin || forceLoginToFundingEveryTime) {
+      console.log('LOGIN SUCCESS =============== ', res, res.loginData);
+
+      if(res.loginData.firstLogin || forceLoginToFundingEveryTime) {
         this.props.navigation.navigate('FundAccountSplash')
       } else {
         this.props.navigation.navigate('AppNavTabs');
@@ -143,36 +137,17 @@ class SignIn extends Component {
     .catch((err) => {
       console.log('err', err)
     })
+
   }
 
   navToForgotPassword() {
     this.props.navigation.navigate('ForgotPassword');
   }
 
-  // renderLoading() {
-  //   const { loginLoading } = authStore;
-  //   const { theme } = colorStore;
-  //   if(loginLoading) {
-  //     return <View style={{marginVertical: 5, }}>
-  //       <Text style={[fonts.hindGunturRg, { color: theme.darkSlate, fontSize: 16 }]}>Loading...</Text>
-  //     </View>
-  //   } else {
-  //     return null;
-  //   }
-  // }
-  //
-  // renderLoginError() {
-  //   const { loginErrorMessage } = authStore;
-  //   if(loginErrorMessage) {
-  //     return <View style={[{marginVertical: 5}]}>
-  //       <Text style={{color: 'red'}}>Error: {loginErrorMessage}</Text>
-  //     </View>
-  //   }
-  // }
-
   render() {
     const { navigate } = this.props.navigation;
     const { theme } = colorStore;
+    const { loginErrorPresent, loginLoading, isVerifyingAuth } = authStore
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
@@ -212,9 +187,9 @@ class SignIn extends Component {
               secureTextEntry={true}
             />
           </View>
-          <View style={{ marginTop: 10, flexDirection: 'row', display: this.props.globalData.loginErrorPresent ? 'flex' : 'none' }}>
+          <View style={{ marginTop: 10, flexDirection: 'row', display: loginErrorPresent ? 'flex' : 'none' }}>
             <Text style={{ color: 'red', fontWeight: 'bold' }}>Error: </Text>
-            <Text style={{ color: 'red' }}>invalid email/password</Text>
+            <Text style={{ color: 'red' }}>Invalid email/password</Text>
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
@@ -235,7 +210,7 @@ class SignIn extends Component {
             onPress={this._signIn}
           >
             <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>
-              {this.props.globalData.isAuthenticating ? 'LOADING...' : 'SIGN IN'}
+              {(this.props.globalData.isAuthenticating || loginLoading || isVerifyingAuth) ? 'LOADING...' : 'SIGN IN'}
             </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
@@ -250,7 +225,7 @@ class SignIn extends Component {
 
 SignIn.propTypes = {
   globalData: PropTypes.object.isRequired,
-  loginAction: PropTypes.func.isRequired,
+  // loginAction: PropTypes.func.isRequired,
   navigation: PropTypes.object.isRequired,
   toggleRemindBioProtectionAfterLoggingIn: PropTypes.func.isRequired,
 };

@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
-
-const ACCESS_TOKEN_KEY = '@Blu:accessToken';
-
+import {
+  ACCESS_TOKEN_KEY
+} from '../constants';
 
 const saveToken = async (token) => {
     await AsyncStorage.setItem(ACCESS_TOKEN_KEY, token);

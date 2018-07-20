@@ -217,6 +217,7 @@ class Settings extends Component {
         isDarkThemeActive: currentGlobalData.isDarkThemeActive
       });
     }
+    console.log('------ SETTINGS UPDATES')
   }
 
   navToDeposit() {
@@ -281,6 +282,12 @@ class Settings extends Component {
         <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
       </Text>
     </TouchableOpacity>
+  }
+
+  logoutPressed() {
+    console.log('======= LOGOUT PRESSEDD')
+    this.props.logoutAction()
+    this.props.navigation.navigate('Login', { color: this.state.activeColor })
   }
 
   render() {
@@ -422,11 +429,11 @@ class Settings extends Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showBug()}>Report a bug</Text>
           </View>
           <View style={{ marginTop: 5 }}></View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} onPress={() => { console.log('am here'); this.props.navigation.navigate('Login', { color: this.state.activeColor }); }}>
-            <Text onPress={this.props.logoutAction} style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]}>
+          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} onPress={() => this.logoutPressed()}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]}>
               {globalData.isLoggingOut ? 'Loading...' : 'Logout'}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View style={{ marginTop: 20 }}></View>
         </ScrollView>
         <Modal

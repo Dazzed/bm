@@ -2,6 +2,17 @@ import { observable, action, computed, toJS } from 'mobx';
 import { login, getUserById, resetPassword } from '../../api';
 import { saveToken } from '../../api/tokenUtility';
 import { watchListStore } from '../index';
+import axios from 'axios';
+import {
+  AsyncStorage
+} from 'react-native';
+import { API_URL } from '../../config';
+import {
+  THEME_KEY,
+  ACCESS_TOKEN_KEY,
+  CURRENT_USER_ID_KEY,
+  TOUCH_ID_ENABLED_KEY
+} from '../../constants';
 
 export default class ColorStore {
     constructor() {
@@ -15,6 +26,10 @@ export default class ColorStore {
     @observable resetLoading = false;
     @observable resetErrorMessage = null;
     @observable resetSuccess = true;
+
+    @computed get isAuthenticated() {
+      return true;
+    }
 
     @action setResetSuccess = (bool) => {
       this.resetSuccess = bool;
@@ -45,6 +60,63 @@ export default class ColorStore {
         return toJS(this.loginData);
     }
 
+
+    @observable verifyingAuth = false;
+
+    @action verifyAuth = () => {
+
+      return new Promise((resolve, reject) => {
+        console.log('GO verify auth')
+        this.verifyingAuth = true;
+        let accessToken = null;
+        let userId = null;
+        AsyncStorage.getItem(ACCESS_TOKEN_KEY)
+        .then((res) => {
+          console.log('verify auth res token', res);
+          if (!res) {
+            throw 'No access token present on verification check!'
+          }
+          accessToken = res;
+          return AsyncStorage.getItem(CURRENT_USER_ID_KEY)
+        })
+        .then((res) => {
+          if(!res) {
+            throw 'No User ID present on verification check!'
+          }
+          userId = res;
+          return axios.get(`${API_URL}/api/users/${userId}?access_token=${accessToken}`);
+        })
+        .then((res) => {
+          console.log('api call check res', res)
+          this.verifyingAuth = false;
+          resolve({
+
+            userData: res
+          })
+        })
+        .catch((err) => {
+          console.log('VERIFY ERROR: ', err)
+          this.verifyingAuth = false;
+
+          const promises = [
+            AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
+            AsyncStorage.removeItem(CURRENT_USER_ID_KEY),
+            AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY),
+            AsyncStorage.removeItem(THEME_KEY)
+          ];
+          Promise.all(promises)
+          .then((res) => {
+            console.log('---- ALL DATA DELETED', res)
+          })
+          .catch((err) => {
+            cosnole.log('ERROR deleting data: ', err)
+          });
+
+          // do nothing for navigation, leave it on this page
+        })
+      })
+    }
+
     @action populateUserById = (id) => {
         return new Promise((resolve, reject) => {
             getUserById(id)
@@ -63,44 +135,61 @@ export default class ColorStore {
         })
     }
 
+    @observable loginErrorPresent = false;
+
     @action login = (params) => {
         return new Promise((resolve, reject) => {
-
             this.loginLoading = true;
-
+            this.loginErrorPresent = false;
             let userId = 0;
+            let loginData = null;
 
+            console.log('======= LOGIN FIRES', params)
             login(params)
-                .then((res) => {
-                    console.log('res', res)
-                    if (res.ok) {
-                        this.setLoginData(res.json)
-                        userId = res.json.userId;
-                        return saveToken(res.json.id)
-                    } else {
-                        this.setLoginErrorMessage(res.json.error.message)
-                        this.loginLoading = false;
-                        reject(err);
-                    }
-                })
-                .then(() => {
-                    return this.populateUserById(userId)
-                })
-                .then((res) => {
-                    // nav out
-                    if (res.ok) {
-                        this.setUserData(res.json)
-                        resolve()
-                    } else {
-                        this.setLoginErrorMessage(res.json.error.message);
-                    }
-                })
-                .catch((err) => {
-                    console.log('err', err)
-                    this.loginLoading = false;
-                    reject(err)
-                })
+            .then((res) => {
+                console.log('login first call res', res)
+                if (res.ok) {
+                    loginData = res.json;
+                    this.setLoginData(res.json)
+                    userId = res.json.userId;
 
+                    return saveToken(res.json.id)
+                } else {
+                    this.setLoginErrorMessage(res.json.error.message)
+                    this.loginLoading = false;
+                    this.loginErrorPresent = true;
+                    reject(res);
+                }
+            })
+            .then(() => {
+              return AsyncStorage.setItem(CURRENT_USER_ID_KEY, userId.toString());
+            })
+            .then(() => {
+              return this.populateUserById(userId)
+            })
+            .then((res) => {
+                console.log('======= res from populate by user id', res)
+                return this.populateUserById(userId)
+            })
+            .then((res) => {
+                console.log('after populate user by id', res)
+                this.loginLoading = false;
+                if(res.ok) {
+                  this.setUserData(res.json)
+                  resolve({
+                    userData: res,
+                    loginData: loginData
+                  })
+                } else {
+                  this.loginErrorPresent = true;
+                }
+            })
+            .catch((err) => {
+                console.log('err', err)
+                this.loginErrorPresent = true;
+                this.loginLoading = false;
+                reject(err)
+            })
         })
     }
 

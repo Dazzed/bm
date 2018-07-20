@@ -250,6 +250,11 @@ const industry_consumerdiscretionary = [
   { label: 'Textiles, Apparel & Luxury Goods', value: 12 },
 ];
 
+const THEME_KEY = '@Blu:isDarkThemeActive';
+const ACCESS_TOKEN_KEY = '@Blu:accessToken';
+const CURRENT_USER_ID_KEY = '@Blu:currentUserId';
+const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled'
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -269,5 +274,10 @@ export {
   industry_financials,
   industry_energy,
   industry_consumerstaples,
-  industry_consumerdiscretionary
+  industry_consumerdiscretionary,
+
+  THEME_KEY,
+  ACCESS_TOKEN_KEY,
+  CURRENT_USER_ID_KEY,
+  TOUCH_ID_ENABLED_KEY
 }
