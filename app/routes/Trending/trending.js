@@ -373,6 +373,7 @@ class Trending extends React.Component {
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
+    this.companyNameLength = 20;
   }
 
   componentDidMount() {
@@ -459,7 +460,7 @@ class Trending extends React.Component {
             return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
               <TouchableOpacity style={[trending.symbolsSpacer]} onPress={() => this.navigateToChart(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName'].length > 23 ? `${data['companyName'].slice(0, 20)}...` : data['companyName']}</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName'].length > this.companyNameLength ? `${data['companyName'].slice(0, this.companyNameLength - 3)}...` : data['companyName']}</Text>
               </TouchableOpacity>
               <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
               <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>

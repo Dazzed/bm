@@ -62,9 +62,7 @@ class ChartNews extends React.Component {
 
   componentDidMount() {
     const { getNewsData } = newsStore;
-
     let ticker = this.props.ticker;
-
     getNewsData({ticker})
   }
 
@@ -100,7 +98,7 @@ class ChartNews extends React.Component {
                   formattedTime = parseInt(hoursAway) + 'h ago'
                 }
 
-                return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
+                return <View key={i} style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
                     <TouchableOpacity style={chartnews.rowBtn}>
                         <Image
                             source={{ uri: elem.urlToImage }}
@@ -124,12 +122,12 @@ class ChartNews extends React.Component {
         <View style={[{borderBottomColor: this.state.colors['borderGray']}, styles.menuBorderptions]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideNews()}>
-              <Image 
+              <Image
                 source={require('../images/close.png')}
                 style={styles.closeImg}
               />
             </TouchableOpacity>
-            <Text style={[{color: this.state.colors['darkSlate']}, styles.boldTitle, fonts.hindGunturBd]}>{this.state.page} APPL News</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, styles.boldTitle, fonts.hindGunturBd]}>{this.state.page}{this.props.ticker} News</Text>
           </View>
         </View>
           {this.renderList()}
