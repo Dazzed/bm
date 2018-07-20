@@ -17,7 +17,8 @@ const initialState = {
   remindBioAfterLoggingIn: false,
     // bio for settings page
   isInititatingBioProtection: false,
-  isCancellingBioProtection: false
+  isCancellingBioProtection: false,
+  loginData: null
 }
 
 export default (state = initialState, action) => {
@@ -28,6 +29,11 @@ export default (state = initialState, action) => {
         isAuthenticating: true,
         loginErrorPresent: false
       };
+    case `${PREFIX}_SAVE_USER_DATA`:
+      return {
+        ...state,
+        currentUser: action.payload
+      }
     case `${PREFIX}_SET_CURRENT_USER`:
       return {
         ...state,
@@ -156,6 +162,11 @@ export default (state = initialState, action) => {
         ...state,
         isCancellingBioProtection: false
       }
+    case `${PREFIX}_SAVE_LOGIN_DATA`:
+      return {
+        ...state,
+        loginData: action.payload
+      };
   }
   return state;
 };

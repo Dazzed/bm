@@ -2,15 +2,15 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { API_URL } from '../../config';
 import { colorStore, watchListStore } from '../../mobxStores';
-
+import { forceDarkTheme } from '../../devControlPanel';
+import {
+  THEME_KEY,
+  ACCESS_TOKEN_KEY,
+  CURRENT_USER_ID_KEY,
+  TOUCH_ID_ENABLED_KEY
+} from '../../constants';
 export const PREFIX = 'APP_GLOBAL';
 
-const THEME_KEY = '@Blu:isDarkThemeActive';
-const ACCESS_TOKEN_KEY = '@Blu:accessToken';
-const CURRENT_USER_ID_KEY = '@Blu:currentUserId';
-const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled'
-
-import { forceDarkTheme } from '../../devControlPanel';
 
 export function startLoggingIn() {
   return {
@@ -18,24 +18,36 @@ export function startLoggingIn() {
   };
 }
 
-export function loginAction({ email, password }) {
-  return async (dispatch) => {
-    try {
-      dispatch(startLoggingIn());
-      const body = {
-        email: email.toLowerCase(),
-        password
-      };
-      let authDetails = await axios.post(`${API_URL}/api/users/login`, body);
-      await AsyncStorage.setItem(ACCESS_TOKEN_KEY, authDetails.data.id);
-      await AsyncStorage.setItem(CURRENT_USER_ID_KEY, authDetails.data.userId.toString());
-      dispatch(authSuccess(authDetails.data.id, authDetails.data.userId));
-    } catch (e) {
-      console.log('Error in loginAction', e);
-      dispatch(authFailure());
-    }
-  };
-}
+// export function loginAction({ email, password }) {
+//   return async (dispatch) => {
+//     try {
+//       dispatch(startLoggingIn());
+//       const body = {
+//         email: email.toLowerCase(),
+//         password
+//       };
+// 
+//       console.log('===== bod', body)
+// 
+//       let authDetails = await axios.post(`${API_URL}/api/users/login`, body);
+// 
+//       console.log('--------- AUTH details', authDetails)
+// 
+//       await AsyncStorage.setItem(ACCESS_TOKEN_KEY, authDetails.data.id);
+//       await AsyncStorage.setItem(CURRENT_USER_ID_KEY, authDetails.data.userId.toString());
+// 
+//       dispatch({
+//         type: `${PREFIX}_SAVE_LOGIN_DATA`,
+//         payload: authDetails.data
+//       });
+// 
+//       dispatch(authSuccess(authDetails.data.id, authDetails.data.userId));
+//     } catch (e) {
+//       console.log('Error in loginAction', e);
+//       dispatch(authFailure());
+//     }
+//   };
+// }
 
 export function logoutAction() {
   return async (dispatch, getState) => {
@@ -57,47 +69,54 @@ export function logoutAction() {
   };
 }
 
-export function verifyAuth() {
-  return async dispatch => {
-    try {
-      dispatch({
-        type: `${PREFIX}_START_VERIFYING_AUTH`
-      });
-      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-      const userId = await AsyncStorage.getItem(CURRENT_USER_ID_KEY);
-      if (!accessToken || !userId) {
-        return dispatch({
-          type: `${PREFIX}_STOP_VERIFYING_AUTH`
-        });
-      }
-      
-      const { data: currentUser } = await axios.get(`${API_URL}/api/users/${userId}?access_token=${accessToken}`);
+// export function verifyAuth() {
+//   return async dispatch => {
+//     try {
+//       dispatch({
+//         type: `${PREFIX}_START_VERIFYING_AUTH`
+//       });
+//       const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+//       const userId = await AsyncStorage.getItem(CURRENT_USER_ID_KEY);
+//       if (!accessToken || !userId) {
+//         return dispatch({
+//           type: `${PREFIX}_STOP_VERIFYING_AUTH`
+//         });
+//       }
+// 
+//       const { data: currentUser } = await axios.get(`${API_URL}/api/users/${userId}?access_token=${accessToken}`);
+// 
+//       // authStore.populateUserById(userId)
+// 
+//       console.warn('--- currentUser', currentUser)
+// 
+// 
+//       dispatch({
+//         type: `${PREFIX}_SET_CURRENT_USER`,
+//         payload: currentUser
+//       });
+//       watchListStore.getWatchlistData();
+//       dispatch({
+//         type: `${PREFIX}_STOP_VERIFYING_AUTH`
+//       });
+//     } catch (e) {
+//       const promises = [
+//         AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
+//         AsyncStorage.removeItem(CURRENT_USER_ID_KEY),
+//         AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY),
+//         AsyncStorage.removeItem(THEME_KEY)
+//       ];
+//       await Promise.all(promises);
+//       dispatch({
+//         type: `${PREFIX}_STOP_VERIFYING_AUTH`
+//       });
+//     }
+//   };
+// }
 
-      // authStore.populateUserById(userId)
-
-      console.warn('--- currentUser', currentUser)
-
-      
-      dispatch({
-        type: `${PREFIX}_SET_CURRENT_USER`,
-        payload: currentUser
-      });
-      watchListStore.getWatchlistData();
-      dispatch({
-        type: `${PREFIX}_STOP_VERIFYING_AUTH`
-      });
-    } catch (e) {
-      const promises = [
-        AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
-        AsyncStorage.removeItem(CURRENT_USER_ID_KEY),
-        AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY),
-        AsyncStorage.removeItem(THEME_KEY)
-      ];
-      await Promise.all(promises);
-      dispatch({
-        type: `${PREFIX}_STOP_VERIFYING_AUTH`
-      });
-    }
+export function saveUserData(userData) {
+  return {
+    type: `${PREFIX}_SAVE_USER_DATA`,
+    payload: userData
   };
 }
 
@@ -125,6 +144,9 @@ export function authSuccess(access_token, id) {
     try {
       const currentUser = await axios.get(`${API_URL}/api/users/${id}?access_token=${access_token}`);
       currentUser.data["access_token"] = access_token;
+      
+      console.log('=== AUTH SUCCESS', currentUser, currentUser.data);
+      
       dispatch({
         type: `${PREFIX}_SET_CURRENT_USER`,
         payload: currentUser.data

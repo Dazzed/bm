@@ -25,6 +25,22 @@ export default class Watchlist {
     this.scannerData = data;
   }
 
+  @action isTickerInWatchlist = (ticker) => {
+    // console.log('============== IS TICKE RIN WATTH', ticker, toJS(this.watchlistData));
+    let result = false;
+    if(!this.watchlistData) {
+      return result;
+    }
+    toJS(this.watchlistData).every((elem, i) => {
+      if(elem.ticker == ticker) {
+        result = true;
+        return false;
+      }
+      return true;
+    })
+    return result;
+  }
+
   /* IMPORTANT */
   // The AuthStore.js will call *getWatchlistData* after the user logs in for the first time..
   // The store/actions/global.js verifyAuth action will call *getWatchlistData* after existing auth token is validated successfully.
@@ -131,7 +147,6 @@ export default class Watchlist {
 
   @action removeTickerFromWatchList = async ticker => {
     // console.info('removeTickerFromWatchList', ticker);
-
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);

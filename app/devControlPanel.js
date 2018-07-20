@@ -30,8 +30,8 @@ const registrationInitialStep = 0;
 const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
-// const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Trending';
+const appNavDefaultTabRoute = 'Settings';
+// const appNavDefaultTabRoute = 'Trending';
 
 // Account
 // Watchlists
@@ -49,8 +49,8 @@ const stackNavDefaultRoute = 'AppNavTabs';
 
 const showConsole = true;
 
-// const autoLogin = false;
-const autoLogin = true;
+const autoLogin = false;
+// const autoLogin = true;
 if(autoLogin) {
   firstNavDefaultRoute = 'Login';
 }
@@ -66,7 +66,6 @@ const chosenServer = 'staging';
 console.disableYellowBox = true;
 
 let forceDarkTheme = false;
-
 
 
 ///////////////////////////////////////////////////////////////////////

@@ -75,7 +75,7 @@ class Account extends Component {
   }
 
   componentDidMount() {
-      myAccountStore.getMyAccountData()
+      // myAccountStore.getMyAccountData()
   }
 
 
@@ -99,10 +99,10 @@ class Account extends Component {
   }
 
   render() {
-    
+
     const { myAccoutDataJS } = myAccountStore;
     const { totalAccountValue, todaysChange, todaysChangePercentage } = myAccoutDataJS;
-    
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>

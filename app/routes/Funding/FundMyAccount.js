@@ -13,6 +13,8 @@ import { numberWithCommas } from '../../utility';
 import { colorStore, accountStore, depositWithdrawStore, myAccountStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 import { generateHeaderStyles } from '../../utility';
+import up from '../../images/up.png';
+import down from '../../images/down.png';
 const SearchCancelLight = require('../../images/searchcancel.png');
 const SearchCancelDark = require('../../images/searchcancel_dark.png');
 
@@ -24,7 +26,6 @@ export default class FundMyAccount extends React.Component {
         if(navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Fund my account'
         }
-
         const { theme } = colorStore;
         let headerStyleToExtend = generateHeaderStyles(theme);
 
@@ -38,7 +39,8 @@ export default class FundMyAccount extends React.Component {
         super(props)
         this.state = {
             fundingString: '',
-            errorRemainingFunds: false
+            errorRemainingFunds: false,
+            dropdownOpen: false
         }
     }
 
@@ -147,6 +149,7 @@ export default class FundMyAccount extends React.Component {
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 0}}></View>
                 {this.renderAccountDropdown()}
+                {this.renderDroppedDownView()}
             </View>
         } else {
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
@@ -154,9 +157,27 @@ export default class FundMyAccount extends React.Component {
                 <Text style={textStyle}>{selectedAccount.title}</Text>
                 <View style={{marginVertical: 0}}></View>
                 {this.renderAccountDropdown()}
+                {this.renderDroppedDownView()}
             </View>;
         }
 
+    }
+
+    renderDroppedDownView() {
+      return null;
+      if(this.state.dropdownOpen) {
+        return <View>
+          <Text>Dropdown open</Text>
+        </View>
+      } else {
+        return null;
+      }
+    }
+    
+    toggleDropdown() {
+      this.setState({
+        dropdownOpen: !this.state.dropdownOpen
+      })
     }
 
     renderAccountDropdown() {
@@ -184,15 +205,18 @@ export default class FundMyAccount extends React.Component {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             string = 'TO'
         }
-
-        return <View style={style}>
-          <View style={{flex: 0, height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+        
+        return <TouchableOpacity disabled={true} onPress={() => this.toggleDropdown()} style={style}>
+          <View style={{flex: 0, height: '100%', alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}>
             <Text style={textStyle}>
                 {string + ''} {selectedAccount.subtitle}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
     }
+
+    // <Image style={{opacity: .5}} source={this.state.dropdownOpen ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
+
 
     renderErrorOrNull() {
       const { theme } = colorStore;

@@ -9,26 +9,6 @@ time the price was registered
 
 
 
-
-
-
-
-
-CONFLICT (content): Merge conflict in app/mobxStores/Domain/Watchlist.js
-
-=======
-      this.deletingRecordId = deletingItem.id;
-      this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
-      await deleteRequest(`userWatchLists/${deletingItem.id}`);
-      await this.getWatchlistData();
-      this.deletingRecordId = null;
->>>>>>> master
-
-
-
-
-
-
 // raw code from landscape mode
   // <View style={chart.bidAsksWrapper}>
   //   <View style={chart.bid}>
@@ -81,4 +61,55 @@ CONFLICT (content): Merge conflict in app/mobxStores/Domain/Watchlist.js
   //     </View>
   //   </View>
   // </View>
-  // 
+  //
+
+
+
+
+
+
+
+
+
+
+  //////////////////////////////////////
+
+
+Check for listeners -
+
+  Auto login on Home
+
+  component listen for change on Home
+
+  component listen for change on LOGIN
+
+  component listen for change on settings / logout
+
+  make sure we are still dumping data into redux
+
+
+
+
+
+
+
+  ////////////////////////
+  FLOWS TO TEST
+
+  Login with existing credentials first time
+    should forward to accounts page
+
+  Invalid login credentials
+    should show error message
+
+  Registration with new data
+    Should forward to login view
+    Login should work and forward to Funding view
+
+
+  Close / Refresh app while logged in
+    Should verify and forward to accounts page
+
+  Logout button pressed
+    Should logout
+    Forward to home screen

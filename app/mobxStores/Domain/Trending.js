@@ -113,15 +113,16 @@ export default class Trending {
   @action getTrendingData = () => {
     this.setLoading(true);
 
+    // Deal with adding props to api request around here
     let filterOptions = {
       "trending": scan_props[this.trendingOption].queryString,
     }
 
-    if(sectorIndustriesStore.selectedSectorJS !== 'All') {
+    if(sectorIndustriesStore.selectedSectorJS !== 'All' && sectorIndustriesStore.selectedSectorJS !== null) {
       filterOptions.sector = sectorIndustriesStore.selectedSectorJS
     }
 
-    if(sectorIndustriesStore.selectedIndustryJS !== 'All') {
+    if(sectorIndustriesStore.selectedIndustryJS !== 'All' && sectorIndustriesStore.selectedIndustryJS !== null) {
       filterOptions.industry = sectorIndustriesStore.selectedIndustryJS;
     }
 

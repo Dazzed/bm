@@ -120,7 +120,9 @@ export default class AccountSelection extends Component {
     
     renderEmailErrorMessage() {
       const { registrationErrorDataJS } = registrationStore;
+      
       console.log('=============== regis', registrationErrorDataJS)
+      
       if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'email' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.email.length > 0 ) {
         return <View style={{ marginTop: 10 }}>
             <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.email[0]}</Text>
@@ -189,8 +191,12 @@ export default class AccountSelection extends Component {
 
         registrationStore.submitRegistration()
             .then((res) => {
-                console.log('submit res', res)
-                this.props.onForwardStep();
+              console.log('submit res', res)
+              if(res.ok) {
+                this.props.onForwardStep();  
+              } else {
+                console.log('============== registration error', res)
+              }
             })
             .catch((err) => {
                 console.log('subimt err', err)
