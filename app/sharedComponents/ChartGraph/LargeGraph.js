@@ -226,8 +226,8 @@ export default class LargeGraph extends React.Component {
           </View>
         }
 
-        if( !chartDetailDataJS || chartDetailDataJS.length === 0 ) {
-          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+        if( !chartDetailDataJS || chartDetailDataJS.length === 0) {
+          return <View style={{height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
             <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
           </View>
         }
