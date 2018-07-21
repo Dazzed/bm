@@ -164,8 +164,18 @@ export const parseLargeGraphData = (inputData, height, width) => {
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
-      const dateUnix = parseInt(moment(elem.date).format('X'));
-      // console.log('==== date unix', dateUnix)
+
+      let dateUnix = null;
+      if(elem.minute) {
+        // handle parsing with minutes
+        dateUnix = parseInt( moment(elem.date + ' ' + elem.minute, "YYYYMMDD HH:mm").format('X') );
+      } else {
+        // handle standard date stamps
+        dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
+      }
+
+
+      console.log('==== date unix', dateUnix)
 
       // calculate min and max
       // time / x value
@@ -278,40 +288,6 @@ export const parseLargeGraphData = (inputData, height, width) => {
       d.gridXArray.push(xObj);
     }
 
-
     // console.log('====== ALL GRAPH DATA', d)
     return d
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
