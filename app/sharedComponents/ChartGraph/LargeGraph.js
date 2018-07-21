@@ -199,16 +199,23 @@ export default class LargeGraph extends React.Component {
     }
 
     generateGraphPolygon(params, key) {
+
+      let formattedData = params.formattedLineData;
+      let lineTargetValue = params.lineTargetValue;
+
         const { theme } = colorStore;
 
-        let points = `0,${flipYAxisValue(this.props.height, 0)}`;
-        params.lineData.map((elem, i) => {
-            let flippedY = flipYAxisValue(this.props.height, elem.y);
-            points += ` ${elem.x},${flippedY}`
-        })
+        // let points = `0,${flipYAxisValue(this.props.height, 0)}`;
+        // let points = formattedData;
+
+        // params.lineData.map((elem, i) => {
+        //     let flippedY = flipYAxisValue(this.props.height, elem.y);
+        //     points += ` ${elem.x},${elem.y}`
+        // })
+
         return <Polyline
             key={key}
-            points={points}
+            points={formattedData}
             fill={'none'}
             stroke={params.color}
             strokeWidth={2}
@@ -287,6 +294,10 @@ export default class LargeGraph extends React.Component {
                     return this.generateCandlestickBars(elem, i)
                 })}
 
+                {parsedData.formattedLines.map((elem, i) => {
+                    return this.generateGraphPolygon(elem, i)
+                })}
+
 
             </Svg>
         </View>
@@ -298,6 +309,3 @@ export default class LargeGraph extends React.Component {
 //     return generateGraphPolygonFill(elem, i)
 // })}
 //
-// {lineList.map((elem, i) => {
-//     return generateGraphPolygon(elem, i)
-// })}

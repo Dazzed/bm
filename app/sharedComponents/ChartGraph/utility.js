@@ -159,7 +159,8 @@ export const parseLargeGraphData = (inputData, height, width) => {
         xLineCount: 5,
         yLineCount: 4,
         xRange: 0,
-        yRange: 0
+        yRange: 0,
+        formattedLines: []
     };
 
     // add date stamp and calculate maximums and minimums
@@ -174,8 +175,7 @@ export const parseLargeGraphData = (inputData, height, width) => {
         dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
       }
 
-
-      console.log('==== date unix', dateUnix)
+      // console.log('==== date unix', dateUnix)
 
       // calculate min and max
       // time / x value
@@ -248,6 +248,31 @@ export const parseLargeGraphData = (inputData, height, width) => {
       }
       return newElem
     });
+
+
+    const generateLineData = (targetValue, color) => {
+      let lineData = [];
+      d.dataPoints.forEach((elem, i) => {
+        let chosenValue = elem[targetValue];
+        let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
+        let xCoord = xRel * width;
+        let yRel = (chosenValue - d.yMin) / d.yRange;
+        let yCoord = flipYAxisValue(height, yRel * height);
+        lineData.push(`${xCoord},${yCoord}`)
+      })
+      let formattedLineData = lineData.join(' ')
+      return {
+        color: color,
+        lineTargetValue: targetValue,
+        formattedLineData: formattedLineData
+      }
+    }
+
+    // Generate lines here
+    // d.formattedLines.push(generateLineData('high', 'red'));
+    // d.formattedLines.push(generateLineData('low', 'blue'));
+    // d.formattedLines.push(generateLineData('open', 'green'));
+    // d.formattedLines.push(generateLineData('close', 'orange'));
 
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {
