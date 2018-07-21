@@ -96,6 +96,126 @@ export default class LargeGraph extends React.Component {
         ]
     }
 
+    generateXLineGroup(data, key) {
+        const { position, label } = data;
+        const { theme } = colorStore;
+        return <G key={key}>
+            <G>
+                <Line
+                    key={ 'zero-axis' }
+                    x1={ position }
+                    x2={ position }
+                    y1={ '0%' }
+                    y2={ '100%' }
+                    stroke={ theme.borderGray }
+                    strokeDasharray={ [ 4, 8 ] }
+                    strokeWidth={ 1 }
+                />
+                <TextSvg
+                    key={Math.random()}
+                    fontSize={12}
+                    fill={theme.borderGray}
+                    stroke={theme.borderGray}
+                    y={'95%'}
+                    x={ position }
+                    textAnchor="middle"
+                >
+                  {label}
+                </TextSvg>
+            </G>
+        </G>
+    }
+
+    generateYLineGroup(data, key) {
+        const { position, label } = data;
+        const { theme } = colorStore;
+
+        let verticalOffset = 4;
+        return <G key={key}>
+            <Line
+                key={ 'zero-axis' }
+                y1={ position }
+                y2={ position }
+                x1={ '0%' }
+                x2={ '95%' }
+                stroke={ theme.borderGray }
+                strokeDasharray={ [ 4, 8 ] }
+                strokeWidth={ 1 }
+            />
+            <TextSvg
+                key={Math.random()}
+                fontSize={12}
+                fill={theme.borderGray}
+                stroke={theme.borderGray}
+                x={'95%'}
+                y={ position + verticalOffset}
+                textAnchor="middle"
+            >
+                {label}
+            </TextSvg>
+        </G>
+    }
+
+    generateCandlestickBars(params, key) {
+        const { theme } = colorStore;
+        let thickLineTop = params.closeYPositionCoordinates;
+        let thickLineBottom = params.openYPositionCoordinates
+        let color = theme.red;
+        if(params.close <= params.open) {
+          color = theme.green;
+          thickLineTop = params.openYPositionCoordinates;
+          thickLineBottom = params.closeYPositionCoordinates;
+        }
+
+        let thinLineWidth = .5;
+        let thickLineWidth = 2;
+
+        return <G key={key}>
+            {/* Thin line -  high / low */}
+            <Rect
+                key={Math.random()}
+                x={params.xPositionCoordinates - (thinLineWidth / 2)}
+                y={params.lowYPositionCoordinates}
+                width={thinLineWidth}
+                height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
+                fill={'red'}
+                strokeWidth={'1'}
+                stroke={color}
+                strokeLinejoin={'round'}
+            />
+
+            {/* Thick line - open / close */}
+            <Rect
+                x={params.xPositionCoordinates - (thickLineWidth / 2)}
+                y={thickLineBottom}
+                width={thickLineWidth}
+                height={thickLineTop - thickLineBottom}
+                fill={color}
+                strokeWidth={'1'}
+                stroke={color}
+                strokeLinejoin={'round'}
+            />
+        </G>
+    }
+
+    generateGraphPolygon(params, key) {
+        const { theme } = colorStore;
+
+        let points = `0,${flipYAxisValue(this.props.height, 0)}`;
+        params.lineData.map((elem, i) => {
+            let flippedY = flipYAxisValue(this.props.height, elem.y);
+            points += ` ${elem.x},${flippedY}`
+        })
+        return <Polyline
+            key={key}
+            points={points}
+            fill={'none'}
+            stroke={params.color}
+            strokeWidth={2}
+            strokeLinejoin={'round'}
+        />
+    }
+
     render() {
 
         const { theme } = colorStore;
@@ -103,7 +223,7 @@ export default class LargeGraph extends React.Component {
         const { stockChartLoading, chartDetailDataJS } = chartStore;
 
         if(stockChartLoading) {
-          return <View style={{flex: 1, height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
+          return <View style={{ height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
             <ActivityIndicator />
           </View>
         }
@@ -124,130 +244,13 @@ export default class LargeGraph extends React.Component {
             height: this.props.height
         }
 
-        const generateXLineGroup = (data, key) => {
-            const { position, label } = data;
-            return <G key={key}>
-                <G>
-                    <Line
-                        key={ 'zero-axis' }
-                        x1={ position }
-                        x2={ position }
-                        y1={ '0%' }
-                        y2={ '100%' }
-                        stroke={ theme.borderGray }
-                        strokeDasharray={ [ 4, 8 ] }
-                        strokeWidth={ 1 }
-                    />
-                    <TextSvg
-                        key={Math.random()}
-                        fontSize={12}
-                        fill={theme.borderGray}
-                        stroke={theme.borderGray}
-                        y={'95%'}
-                        x={ position }
-                        textAnchor="middle"
-                    >
-                      {label}
-                    </TextSvg>
-                </G>
-            </G>
-        }
-
-
-        const generateYLineGroup = (data, key) => {
-            const { position, label } = data;
-            let verticalOffset = 4;
-            return <G key={key}>
-                <Line
-                    key={ 'zero-axis' }
-                    y1={ position }
-                    y2={ position }
-                    x1={ '0%' }
-                    x2={ '95%' }
-                    stroke={ theme.borderGray }
-                    strokeDasharray={ [ 4, 8 ] }
-                    strokeWidth={ 1 }
-                />
-                <TextSvg
-                    key={Math.random()}
-                    fontSize={12}
-                    fill={theme.borderGray}
-                    stroke={theme.borderGray}
-                    x={'95%'}
-                    y={ position + verticalOffset}
-                    textAnchor="middle"
-                >
-                    {label}
-                </TextSvg>
-            </G>
-        }
-
-
-        const generateCandlestickBars = (params, key) => {
-            let thickLineTop = params.closeYPositionCoordinates;
-            let thickLineBottom = params.openYPositionCoordinates
-            let color = theme.red;
-            if(params.close <= params.open) {
-              color = theme.green;
-              thickLineTop = params.openYPositionCoordinates;
-              thickLineBottom = params.closeYPositionCoordinates;
-            }
-
-            let thinLineWidth = .5;
-            let thickLineWidth = 2;
-
-            return <G key={key}>
-                {/* Thin line -  high / low */}
-                <Rect
-                    key={Math.random()}
-                    x={params.xPositionCoordinates - (thinLineWidth / 2)}
-                    y={params.lowYPositionCoordinates}
-                    width={thinLineWidth}
-                    height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
-                    fill={'red'}
-                    strokeWidth={'1'}
-                    stroke={color}
-                    strokeLinejoin={'round'}
-                />
-
-                {/* Thick line - open / close */}
-                <Rect
-                    x={params.xPositionCoordinates - (thickLineWidth / 2)}
-                    y={thickLineBottom}
-                    width={thickLineWidth}
-                    height={thickLineTop - thickLineBottom}
-                    fill={color}
-                    strokeWidth={'1'}
-                    stroke={color}
-                    strokeLinejoin={'round'}
-                />
-            </G>
-        }
-
         let lineList = this.getLineList();
-
-        const generateGraphPolygon = (params, key) => {
-            let points = `0,${flipYAxisValue(this.props.height, 0)}`;
-            params.lineData.map((elem, i) => {
-                let flippedY = flipYAxisValue(this.props.height, elem.y);
-                points += ` ${elem.x},${flippedY}`
-            })
-            return <Polyline
-                key={key}
-                points={points}
-                fill={'none'}
-                stroke={params.color}
-                strokeWidth={2}
-                strokeLinejoin={'round'}
-            />
-        }
 
         let lines = this.getLineList();
         let line1 = lines[0];
         let line2 = lines[1];
 
         let polygonsList = generatePolygonsFromTwoLines(line1, line2, this.props.height);
-
 
         // console.log('POLYGONGS', polygonsList)
 
@@ -275,15 +278,15 @@ export default class LargeGraph extends React.Component {
             >
 
                 {parsedData.gridYArray.map((elem, i) => {
-                    return generateYLineGroup(elem, i)
+                    return this.generateYLineGroup(elem, i)
                 })}
 
                 {parsedData.gridXArray.map((elem, i) => {
-                    return generateXLineGroup(elem, i)
+                    return this.generateXLineGroup(elem, i)
                 })}
 
                 {parsedData.dataPoints.map((elem, i) => {
-                    return generateCandlestickBars(elem, i)
+                    return this.generateCandlestickBars(elem, i)
                 })}
 
 

@@ -26,6 +26,7 @@ export default class Index extends React.Component {
     const { chartDetailDataJS } = chartStore;
     const { theme } = colorStore;
 
+    console.log('===================== THIS PROPS HEIGHT', this.props.height)
     if(this.props.viewLargeGraph) {
       return <LargeGraph data={chartDetailDataJS} height={this.props.height} width={this.props.width} {...this.props}/>
     } else {

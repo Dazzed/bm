@@ -248,7 +248,8 @@ export const parseLargeGraphData = (inputData, height, width) => {
       let yPosition = ((d.yMax * multiplier) / d.yMax ) * height;
       let actualYPosition = yPosition + lineOffest;
       const yObj = {
-        label: actualYPosition.toFixed(2),
+        pixelValue: actualYPosition.toFixed(2),
+        label: 'label',
         position: flipYAxisValue( height - lineOffest, yPosition )
       }
       d.gridYArray.push(yObj);
@@ -264,8 +265,10 @@ export const parseLargeGraphData = (inputData, height, width) => {
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
       // console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
 
-      const label = moment.unix(unixPoint).format('MM-DD-YY')
+      const label = moment.unix(unixPoint).format('MM-DD-YY');
+
       const xObj = {
+        pixelValue: label,
         label: label,
         position: exactPixelLocation
       }
