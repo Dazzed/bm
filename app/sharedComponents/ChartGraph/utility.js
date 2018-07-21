@@ -243,14 +243,17 @@ export const parseLargeGraphData = (inputData, height, width) => {
     for( let i = 0; i < d.yLineCount; i++) {
       // for y lines
       let spaceBetweenEachLine = height / d.yLineCount;
-      let lineOffest = spaceBetweenEachLine / 2;
+      let lineOffset = spaceBetweenEachLine / 2;
       let multiplier = i / d.yLineCount;
-      let yPosition = ((d.yMax * multiplier) / d.yMax ) * height;
-      let actualYPosition = yPosition + lineOffest;
+      let yPosition = (((d.yMax * multiplier) / d.yMax ) * height) + lineOffset;
+      let flippedYPosition = flipYAxisValue(height, yPosition);
+      let relativeYPosition = flippedYPosition / height;
+      let calculatedValue = relativeYPosition * d.yMax;
+      let formattedLabel = '$' + calculatedValue.toFixed(2);
+
       const yObj = {
-        pixelValue: actualYPosition.toFixed(2),
-        label: 'label',
-        position: flipYAxisValue( height - lineOffest, yPosition )
+        label: formattedLabel,
+        position: yPosition
       }
       d.gridYArray.push(yObj);
     }

@@ -217,9 +217,7 @@ export default class LargeGraph extends React.Component {
     }
 
     render() {
-
         const { theme } = colorStore;
-
         const { stockChartLoading, chartDetailDataJS } = chartStore;
 
         if(stockChartLoading) {
