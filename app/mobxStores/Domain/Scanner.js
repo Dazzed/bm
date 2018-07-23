@@ -5,13 +5,23 @@ export default class Scanner {
 
   @observable scannerData = null;
   @observable scannerDataLoading = false;
+  @observable newPageLoading = false;
 
   @action setScannerDataLoading = (loadingBool) => {
-    this.scannerDataLoading = loadingBool;
+    if(this.currentPage > 1) {
+      this.newPageLoading = loadingBool;
+    } else {
+      this.scannerDataLoading = loadingBool;
+    }
   }
 
   @action setScannerData = (data) => {
-    this.scannerData = data;
+    if(this.currentPage > 1) {
+      this.scannerData = toJS(this.scannerData).concat(data);
+    } else {
+      this.scannerData = data;
+    }
+
   }
 
   @computed get scannerDataJS() {
@@ -22,13 +32,38 @@ export default class Scanner {
     }
   }
 
+  @observable savedParams = null;
+
+  @action saveRecentParamaters(params) {
+    this.savedParams = params;
+  }
+
+  @observable currentPage = 1;
+
+  @action getNewPage = () => {
+    console.log('Get new page')
+    this.currentPage = this.currentPage + 1;
+    this.getScannerDataApiCall(null, true);
+  }
+
   @action getScannerData = (params) => {
+    this.setScannerData(null);
+    this.getScannerDataApiCall(params)
+  }
+
+  @action getScannerDataApiCall = (params, newPage) => {
+
+    if(!newPage) {
+      this.saveRecentParamaters(params);
+      this.currentPage = 1;
+    }
+
+    let paramsForThisCall = this.savedParams;
+    paramsForThisCall.page = this.currentPage;
+
     console.log('===== GETTING SCANNER DATA ========')
 
-    // reset
-    this.setScannerData(null)
-
-    let stringifyParams = JSON.stringify(params)
+    let stringifyParams = JSON.stringify(paramsForThisCall)
     let newparams = {
       filter: stringifyParams
     }
