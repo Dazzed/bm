@@ -2,7 +2,7 @@ import { checkIntersection } from "line-intersect";
 import moment from 'moment';
 
 export const flipYAxisValue = (height, inverseY) => {
-    return height - inverseY;
+  return height - inverseY;
 }
 
 export const generatePolygonsFromTwoLines = (line1, line2, height) => {
@@ -163,6 +163,16 @@ export const parseLargeGraphData = (inputData, height, width) => {
         formattedLines: []
     };
 
+    const manipulateXMaxMin = (input) => {
+      if( input > d.xMax ) d.xMax = input;
+      if( input < d.xMin ) d.xMin = input;
+    }
+
+    const manipulateYMaxMin = (input) => {
+      if( input > d.yMax ) d.yMax = input;
+      if( input < d.yMin ) d.yMin = input;
+    }
+
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
 
@@ -175,27 +185,17 @@ export const parseLargeGraphData = (inputData, height, width) => {
         dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
       }
 
-      // console.log('==== date unix', dateUnix)
-
       // calculate min and max
       // time / x value
-      if( dateUnix > d.xMax ) d.xMax = dateUnix;
-      if( dateUnix < d.xMin ) d.xMin = dateUnix;
-      // vwap
-      if( elem.vwap > d.yMax ) d.yMax = elem.vwap;
-      if( elem.vwap < d.yMin ) d.yMin = elem.vwap;
-      // open
-      if( elem.open > d.yMax ) d.yMax = elem.open;
-      if( elem.open < d.yMin ) d.yMin = elem.open;
-      // close
-      if( elem.close > d.yMax ) d.yMax = elem.close;
-      if( elem.close < d.yMin ) d.yMin = elem.close;
-      // high
-      if( elem.high > d.yMax ) d.yMax = elem.high;
-      if( elem.high < d.yMin ) d.yMin = elem.high;
-      // low
-      if( elem.low > d.yMax ) d.yMax = elem.low;
-      if( elem.low < d.yMin ) d.yMin = elem.low;
+      manipulateXMaxMin(dateUnix)
+      manipulateYMaxMin(elem.vwap);
+      manipulateYMaxMin(elem.open);
+      manipulateYMaxMin(elem.close);
+      manipulateYMaxMin(elem.high);
+      manipulateYMaxMin(elem.low);
+
+      // handle optionally editing things here
+      // manipulateYMaxMin(elem.rsi);
 
       return {
         ...elem,
@@ -273,6 +273,9 @@ export const parseLargeGraphData = (inputData, height, width) => {
     // d.formattedLines.push(generateLineData('low', 'blue'));
     // d.formattedLines.push(generateLineData('open', 'green'));
     // d.formattedLines.push(generateLineData('close', 'orange'));
+    // d.formattedLines.push(generateLineData('ema', 'orange'));
+    // d.formattedLines.push(generateLineData('rsi', 'green'));
+    // d.formattedLines.push(generateLineData('vwap', 'blue'));
 
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {
