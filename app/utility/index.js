@@ -175,3 +175,9 @@ export const zacksRatingFormatter = num => {
   }
   return num * 0.2;
 }
+
+export const isScrollViewCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 20;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+};

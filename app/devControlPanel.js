@@ -30,8 +30,8 @@ const registrationInitialStep = 0;
 const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
-const appNavDefaultTabRoute = 'Settings';
-// const appNavDefaultTabRoute = 'Trending';
+// const appNavDefaultTabRoute = 'Settings';
+const appNavDefaultTabRoute = 'Trending';
 
 // Account
 // Watchlists

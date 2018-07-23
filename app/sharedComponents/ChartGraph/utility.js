@@ -159,12 +159,22 @@ export const parseLargeGraphData = (inputData, height, width) => {
         xLineCount: 5,
         yLineCount: 4,
         xRange: 0,
-        yRange: 0
+        yRange: 0,
+        formattedLines: []
     };
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
-      const dateUnix = parseInt(moment(elem.date).format('X'));
+
+      let dateUnix = null;
+      if(elem.minute) {
+        // handle parsing with minutes
+        dateUnix = parseInt( moment(elem.date + ' ' + elem.minute, "YYYYMMDD HH:mm").format('X') );
+      } else {
+        // handle standard date stamps
+        dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
+      }
+
       // console.log('==== date unix', dateUnix)
 
       // calculate min and max
@@ -239,17 +249,46 @@ export const parseLargeGraphData = (inputData, height, width) => {
       return newElem
     });
 
+
+    const generateLineData = (targetValue, color) => {
+      let lineData = [];
+      d.dataPoints.forEach((elem, i) => {
+        let chosenValue = elem[targetValue];
+        let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
+        let xCoord = xRel * width;
+        let yRel = (chosenValue - d.yMin) / d.yRange;
+        let yCoord = flipYAxisValue(height, yRel * height);
+        lineData.push(`${xCoord},${yCoord}`)
+      })
+      let formattedLineData = lineData.join(' ')
+      return {
+        color: color,
+        lineTargetValue: targetValue,
+        formattedLineData: formattedLineData
+      }
+    }
+
+    // Generate lines here
+    // d.formattedLines.push(generateLineData('high', 'red'));
+    // d.formattedLines.push(generateLineData('low', 'blue'));
+    // d.formattedLines.push(generateLineData('open', 'green'));
+    // d.formattedLines.push(generateLineData('close', 'orange'));
+
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {
       // for y lines
       let spaceBetweenEachLine = height / d.yLineCount;
-      let lineOffest = spaceBetweenEachLine / 2;
+      let lineOffset = spaceBetweenEachLine / 2;
       let multiplier = i / d.yLineCount;
-      let yPosition = ((d.yMax * multiplier) / d.yMax ) * height;
-      let actualYPosition = yPosition + lineOffest;
+      let yPosition = (((d.yMax * multiplier) / d.yMax ) * height) + lineOffset;
+      let flippedYPosition = flipYAxisValue(height, yPosition);
+      let relativeYPosition = flippedYPosition / height;
+      let calculatedValue = relativeYPosition * d.yMax;
+      let formattedLabel = '$' + calculatedValue.toFixed(2);
+
       const yObj = {
-        label: actualYPosition.toFixed(2),
-        position: flipYAxisValue( height - lineOffest, yPosition )
+        label: formattedLabel,
+        position: yPosition
       }
       d.gridYArray.push(yObj);
     }
@@ -264,48 +303,16 @@ export const parseLargeGraphData = (inputData, height, width) => {
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
       // console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
 
-      const label = moment.unix(unixPoint).format('MM-DD-YY')
+      const label = moment.unix(unixPoint).format('MM-DD-YY');
+
       const xObj = {
+        pixelValue: label,
         label: label,
         position: exactPixelLocation
       }
       d.gridXArray.push(xObj);
     }
 
-
     // console.log('====== ALL GRAPH DATA', d)
     return d
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//

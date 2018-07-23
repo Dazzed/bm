@@ -38,6 +38,7 @@ import navstyle from '../style/nav';
 import { scannerStore, sectorIndustriesStore } from '../mobxStores';
 import { observer } from 'mobx-react';
 import { sector_props } from '../constants';
+import { isScrollViewCloseToBottom } from '../utility';
 
 var scan_props = [
   { label: 'All', value: 0, queryString: 'all' },
@@ -195,26 +196,19 @@ class SubMenu extends React.Component {
     if(this.state.operator === 1) {
       formattedOperator = 'lt';
     }
-
     let formattedScanOption = scan_props[this.state.scanOption].queryString;
-
     let params = {
       last_trade: this.state.ltValue,
       operator: formattedOperator,
     }
-
     if(this.state.scanOption > 0) {
       params.scan = formattedScanOption;
     } else {
       params.scan = 'all'
     }
-
     if(selectedSectorJS && selectedSectorJS !== 'All') {
       params.sector = selectedSectorJS
     }
-
-    console.log('---------- paramas', selectedSectorJS)
-
     scannerStore.getScannerData(params)
   }
 
@@ -487,6 +481,22 @@ class Scanner extends React.Component {
     this.setState({ isSearchVisible: false });
   }
 
+  getNewPage() {
+    const { getNewPage } = scannerStore;
+    getNewPage()
+  }
+
+  renderNewPageLaoding() {
+    const { newPageLoading } = scannerStore;
+    if(newPageLoading) {
+      return <View style={{height: 50, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    } else {
+      return null;
+    }
+  }
+
   renderListOrLoading() {
     const { scannerDataLoading, scannerDataJS } = scannerStore;
     if(scannerDataLoading) {
@@ -498,9 +508,16 @@ class Scanner extends React.Component {
         <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
-      return <ScrollView style={scanner.symbolsContainer}>
+      return <ScrollView
+        onScroll={({nativeEvent}) => {
+          if (isScrollViewCloseToBottom(nativeEvent)) {
+            this.getNewPage();
+          }
+        }}
+        throttleScrollCallbackMS={1000}
+        style={scanner.symbolsContainer}
+      >
         {scannerDataJS.map((data, i) => {
-          console.log('-- each', data)
           return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
             <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
               <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
@@ -510,6 +527,7 @@ class Scanner extends React.Component {
             <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>${data.latestPrice}</Text></View>
           </View>
         })}
+        {this.renderNewPageLaoding()}
       </ScrollView>
     }
   }

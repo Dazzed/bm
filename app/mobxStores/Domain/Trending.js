@@ -57,7 +57,11 @@ export default class Trending {
 
 
   @action setLoading = (newVal) => {
-    this.trendingLoading = newVal;
+    if(this.pageNumber > 1) {
+      this.newPageLoading = newVal;
+    } else {
+      this.trendingLoading = newVal;
+    }
   }
 
   @action setTrendingData = (data) => {
@@ -66,11 +70,21 @@ export default class Trending {
       this.currentPage = 0;
       this.totalPages = 0;
       this.pageSize = 0;
-    } else {
+
+    } else if(this.pageNumber === 1) {
+
       this.trendingData = data.data;
       this.currentPage = data.current_page;
       this.totalPages = data.total_pages;
       this.pageSize = data.page_size;
+
+    } else if(this.pageNumber > 1) {
+      let oldDataPlusNewPage = toJS(this.trendingData).concat(data.data);
+      this.trendingData = oldDataPlusNewPage;
+      this.currentPage = data.current_page;
+      this.totalPages = data.total_pages;
+      this.pageSize = data.page_size;
+
     }
   }
 
@@ -110,12 +124,26 @@ export default class Trending {
     this.displayDecimal = newVal;
   }
 
-  @action getTrendingData = () => {
+  @observable newPageLoading = false;
+  @observable pageNumber = 1;
+
+  @action getFirstPage = () => {
+    this.pageNumber = 1;
+    this.getTrendingDataWithPageNumber()
+  }
+
+  @action getNextPage = () => {
+    this.pageNumber = this.pageNumber + 1;
+    this.getTrendingDataWithPageNumber()
+  }
+
+  @action getTrendingDataWithPageNumber = () => {
     this.setLoading(true);
 
     // Deal with adding props to api request around here
     let filterOptions = {
       "trending": scan_props[this.trendingOption].queryString,
+      "page": this.pageNumber
     }
 
     if(sectorIndustriesStore.selectedSectorJS !== 'All' && sectorIndustriesStore.selectedSectorJS !== null) {
@@ -144,7 +172,11 @@ export default class Trending {
       this.setLoading(false);
       console.log('trending data err', err)
     })
+  }
 
+  // this legacy function is called by a view
+  @action getTrendingData = () => {
+    this.getFirstPage()
   }
 
 }
