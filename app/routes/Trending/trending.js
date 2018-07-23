@@ -124,8 +124,8 @@ class SubMenu extends React.Component {
   }
 
   refreshData() {
-    const { getTrendingData } = trendingStore;
-    getTrendingData()
+    const { getFirstPage } = trendingStore;
+    getFirstPage();
   }
 
   setIndustry(value) {

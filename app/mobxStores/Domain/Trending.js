@@ -128,21 +128,22 @@ export default class Trending {
   @observable pageNumber = 1;
 
   @action getFirstPage = () => {
-    this.getTrendingDataWithPageNumber(1)
+    this.pageNumber = 1;
+    this.getTrendingDataWithPageNumber()
   }
 
   @action getNextPage = () => {
     this.pageNumber = this.pageNumber + 1;
-    this.getTrendingDataWithPageNumber(this.pageNumber)
+    this.getTrendingDataWithPageNumber()
   }
 
-  @action getTrendingDataWithPageNumber = (pageNumber) => {
+  @action getTrendingDataWithPageNumber = () => {
     this.setLoading(true);
 
     // Deal with adding props to api request around here
     let filterOptions = {
       "trending": scan_props[this.trendingOption].queryString,
-      "page": pageNumber
+      "page": this.pageNumber
     }
 
     if(sectorIndustriesStore.selectedSectorJS !== 'All' && sectorIndustriesStore.selectedSectorJS !== null) {
