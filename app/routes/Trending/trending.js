@@ -49,9 +49,9 @@ import Search from '../search';
 import styles from '../../style/style';
 import trending from '../../style/trending';
 import numbers from '../../style/numbers';
-var styleDefault;
-
 import Index from '../../sharedComponents/ChartGraph';
+import { isScrollViewCloseToBottom } from '../../utility';
+var styleDefault;
 
 @observer
 class SubMenu extends React.Component {
@@ -381,6 +381,11 @@ class Trending extends React.Component {
     getTrendingData()
   }
 
+  getNewPage() {
+    console.log('========= GET NEW PAGGGEEEEE');
+    trendingStore.getNextPage()
+  }
+
   componentDidUpdate(prevProps) {
     const {
       globalData: prevGlobalData
@@ -444,7 +449,15 @@ class Trending extends React.Component {
       </View>
     } else {
       return <View style={{ flex: 1 }}>
-        <ScrollView style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}>
+        <ScrollView
+          onScroll={({nativeEvent}) => {
+            if (isScrollViewCloseToBottom(nativeEvent)) {
+              this.getNewPage();
+            }
+          }}
+          throttleScrollCallbackMS={1000}
+          style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}
+        >
           {trendingDataJS.map((data, i) => {
             console.log('each data', data)
             let formattedDataChange = data.change
@@ -475,18 +488,24 @@ class Trending extends React.Component {
               </View>
             </View>)
           })}
+          {this.renderNewPageLoading()}
         </ScrollView>
       </View>
     }
   }
 
-//   renderChart() {
-//     return <Index viewLargeGraph={false}/>
-//   }
-// {this.renderChart()}
+  renderNewPageLoading() {
+    const { newPageLoading } = trendingStore;
+    if(newPageLoading) {
+      return <View style={{height: 50, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    } else {
+      return null;
+    }
+  }
 
-
-render() {
+  render() {
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
