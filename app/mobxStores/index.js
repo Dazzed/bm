@@ -12,6 +12,7 @@ import DepositWithdraw from './Domain/DepositWithdraw';
 import Search from './Domain/Search';
 import SectorIndustries from './Domain/sectorIndustries';
 import DeviceSize from './Domain/deviceSize';
+import Settings from './Domain/settings';
 
 // Import and init all stores here
 let colorStore = new ColorStore();
@@ -27,7 +28,8 @@ let newsStore = new News();
 let depositWithdrawStore = new DepositWithdraw();
 let searchStore = new Search();
 let sectorIndustriesStore = new SectorIndustries();
-let deviceSizeStore = new DeviceSize()
+let deviceSizeStore = new DeviceSize();
+let settingsStore = new Settings();
 
 export {
     colorStore,
@@ -43,5 +45,6 @@ export {
     depositWithdrawStore,
     searchStore,
     sectorIndustriesStore,
-    deviceSizeStore
+    deviceSizeStore,
+    settingsStore
 }

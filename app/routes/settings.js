@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types'
-
 import {
   Text,
   TextInput,
@@ -11,38 +9,30 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-
 import TouchID from 'react-native-touch-id';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import Faq from './faq';
 import ReportBug from './reportbug';
 import ContactUs from './contactus';
-
 import EditAddress from './editaddress';
 import EditMaritalStatus from './editmaritalstatus';
 import EditEmploymentStatus from './editemployment';
 import EditExperience from './editexperience';
 import EditDependents from './editdependents';
-
 import RadioForm from '../components/react-native-simple-radio-button';
 import { colors } from '../store/store';
-
 import styles from '../style/style';
 import settings from '../style/settings';
 import Search from './search';
 import navstyle from '../style/nav';
-
 import Modal from 'react-native-modal'
 import fonts from '../style/fonts';
-
 import * as globalActions from '../store/actions/global';
 import { selectGlobalData } from '../selectors';
-
 import { forceDarkTheme } from '../devControlPanel';
-
-import { authStore } from '../mobxStores';
+import { authStore, settingsStore } from '../mobxStores';
+import { observer } from 'mobx-react';
 
 var sort_props = [
   { label: '10 minutes', value: 0 },
@@ -51,6 +41,7 @@ var sort_props = [
   { label: '1 minute', value: 3 }
 ];
 
+@observer
 class Settings extends Component {
   static navigationOptions = {
     title: 'Settings',
@@ -290,6 +281,31 @@ class Settings extends Component {
     this.props.navigation.navigate('Login', { color: this.state.activeColor })
   }
 
+  toggleNewsByLabel(elem) {
+    const { setNewsSourceValue } = settingsStore;
+    setNewsSourceValue(elem);
+  }
+
+  renderNewsList() {
+    const { newsSourcesJS } = settingsStore;
+    if(!newsSourcesJS || newsSourcesJS.length < 1) {
+      return null;
+    } else {
+      return <View>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
+        {newsSourcesJS.map((elem, i) => {
+          return <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>{elem.name}</Text>
+            <Switch style={styles.switch}
+              onTintColor={this.state.colors['blue']}
+              onValueChange={(value) => this.toggleNewsByLabel(elem)}
+              value={elem.active} />
+          </View>
+        })}
+      </View>
+    }
+  }
+
   render() {
     const { navigate } = this.props.navigation;
 
@@ -378,44 +394,8 @@ class Settings extends Component {
               value={this.state.trueSwitchIsOn} />
           </View>
 
-          // News Source
+          {this.renderNewsList()}
 
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>CNBC</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Bloomberg</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>MSNBC</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={true} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Reuters</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={true} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>The Wall Street Journal</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={true} />
-          </View>
           <View style={{ marginTop: 20 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showFaq()}>FAQ</Text>
