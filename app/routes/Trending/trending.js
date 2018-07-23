@@ -459,7 +459,6 @@ class Trending extends React.Component {
           style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}
         >
           {trendingDataJS.map((data, i) => {
-            console.log('each data', data)
             let formattedDataChange = data.change
             if(data.change > 0) {
               data.formattedDataChange = '+' + data.change
