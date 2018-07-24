@@ -110,33 +110,48 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
     return polyGonList;
 }
 
-export const parseSmallGraphData = (data) => {
+export const parseSmallGraphData = (data, Price, graphHeight) => {
 
-    let graphMax = 0;
-    let graphMin = 999999999999999;
+    let d = {
+      yMax: 0,
+      yMin: 999999999999999,
+      yRange: 0,
+      lineData: [],
+      dateData: [],
+      priceLineHeight: 0
+    }
 
-    let lineData = [];
-    let dateData = [];
 
     for(let i = 0; i < data.length; i++) {
-        // console.log('eavh elem', data[i])
-        let thisClosePoint = data[i].close;
-        if(thisClosePoint > graphMax) {
-            graphMax = thisClosePoint
+        const thisClosePoint = data[i].close;
+        // get y max and min
+        if(thisClosePoint > d.yMax) {
+            d.yMax = thisClosePoint
         }
-        if(thisClosePoint < graphMin) {
-            graphMin = thisClosePoint
+        if(thisClosePoint < d.yMin) {
+            d.yMin = thisClosePoint
         }
-        lineData.push(data[i].close);
-        dateData.push(data[i].date);
     }
 
-    return {
-        graphMax: graphMax,
-        graphMin: graphMin,
-        lineData: lineData,
-        dateData: dateData
+    for(let i = 0; i < data.length; i++) {
+        console.log('line data', data[i])
+        d.lineData.push(data[i].close + d.yMin);
+        d.dateData.push(data[i].date);
     }
+
+    // Set range
+    d.yRange = d.yMax - d.yMin;
+
+    // calculate price line
+    let minAdjustedPrice = Price - d.yMin;
+    let minAdjustedMax = d.yMax - d.yMin;
+
+    let priceRelativePosition = minAdjustedPrice / minAdjustedMax;
+    d.priceLineHeight = (priceRelativePosition * d.yRange)  + d.yMin;
+
+    console.log('------- max min graphhehgt', d.yMax, d.yMin, d.priceLineHeight, graphHeight)
+
+    return d;
 }
 
 

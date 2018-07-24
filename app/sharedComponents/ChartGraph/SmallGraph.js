@@ -44,15 +44,14 @@ export default class SmallGraph extends React.Component {
             marginTop: 18
         }
 
-        const { height } = this.props.height;
-        const data = parseSmallGraphData(this.props.data);
         const { tickerDataJS } = chartStore;
         const { Price } = tickerDataJS;
+        const { height } = this.props.height;
 
         let xAxisHeight = 20;
         let graphHeight = this.props.height - xAxisHeight;
-
-        let lineYPosition = flipYAxisValue(graphHeight, Price);
+        const data = parseSmallGraphData(this.props.data, Price, graphHeight);
+        let lineYPosition = flipYAxisValue(graphHeight, data.priceLineHeight);
 
         let inlineGraphContainerStyle = {
             // borderWidth: 1,
@@ -72,6 +71,8 @@ export default class SmallGraph extends React.Component {
         }
 
         let xAxisData = data.dateData;
+        
+        let textColor = theme.darkSlate;
 
         return <View style={inlineContainerStyle}>
 
@@ -99,7 +100,7 @@ export default class SmallGraph extends React.Component {
                     }}
                     numberOfTicks={ 3 }
                     contentInset={{ left: 10, right: 10 }}
-                    svg={{ fontSize: 10, fill: 'black' }}
+                    svg={{ fontSize: 10, fill: textColor }}
                 />
 
             </View>
