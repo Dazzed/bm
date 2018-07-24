@@ -45,6 +45,22 @@ export default class Settings {
         }
     }
 
+    @action setLogOutAfterCount = (newValue) => {
+      console.log('set log out after count', newValue);
+      let newSettingsData = this.settingsData;
+      newSettingsData.autoLogOff = newValue;
+      this.hydrateSettings(newSettingsData);
+      this.updateSettings();
+    }
+
+    @computed get autoLog() {
+      if(this.settingsData) {
+        return this.settingsData.autoLogOff;
+      } else {
+        return 0;
+      }
+    }
+
     @action getSettings = () => {
       let params = {
         data: JSON.stringify({})
@@ -75,6 +91,5 @@ export default class Settings {
       .catch((err) => {
         console.log('err', err)
       })
-
     }
 }

@@ -71,7 +71,7 @@ class Settings extends Component {
       falseSwitchIsOn: false,
       isSearchVisible: false,
       isAutoLogVisible: false,
-      autoLog: 3,
+      // autoLog: 3,
       numField: null,
       colors: colors(props.globalData.isDarkThemeActive)
     };
@@ -155,12 +155,14 @@ class Settings extends Component {
     this.setState({ isAutoLogVisible: true });
   }
 
+  setAutoLog(value) {
+    const { logOutAfterCount, setLogOutAfterCount } = settingsStore;
+    setLogOutAfterCount(value);
+    this.hideAutoLog();
+  }
+
   hideAutoLog(value) {
-    if (value) {
-      this.setState({ isAutoLogVisible: false, autoLog: value });
-    } else {
-      this.setState({ isAutoLogVisible: false });
-    }
+    this.setState({ isAutoLogVisible: false });
   }
 
   showEmail() {
@@ -308,6 +310,7 @@ class Settings extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const { autoLog } = settingsStore;
 
     const {
       globalData
@@ -380,7 +383,7 @@ class Settings extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
           <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[this.state.autoLog].label} inactivity</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
           </TouchableOpacity>
 
           // Notifications
@@ -431,7 +434,7 @@ class Settings extends Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, styles.bottomModalTall]}>
             <RadioForm
               radio_props={sort_props}
-              initial={this.state.autoLog}
+              initial={autoLog}
               formHorizontal={false}
               labelHorizontal={true}
               borderWidth={1}
@@ -443,7 +446,7 @@ class Settings extends Component {
               labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
               radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
               labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => { this.hideAutoLog(value) }}
+              onPress={(value) => { this.setAutoLog(value) }}
               style={styles.radioField}
             />
           </View>

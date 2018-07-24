@@ -268,6 +268,8 @@ export const parseLargeGraphData = (inputData, height, width) => {
       }
     }
 
+    console.log('==================== MAX MIN', d.yMax, d.yMin)
+
     // Generate lines here
     // d.formattedLines.push(generateLineData('high', 'red'));
     // d.formattedLines.push(generateLineData('low', 'blue'));
@@ -286,9 +288,8 @@ export const parseLargeGraphData = (inputData, height, width) => {
       let yPosition = (((d.yMax * multiplier) / d.yMax ) * height) + lineOffset;
       let flippedYPosition = flipYAxisValue(height, yPosition);
       let relativeYPosition = flippedYPosition / height;
-      let calculatedValue = relativeYPosition * d.yMax;
+      let calculatedValue = (relativeYPosition * d.yRange) + d.yMin;
       let formattedLabel = '$' + calculatedValue.toFixed(2);
-
       const yObj = {
         label: formattedLabel,
         position: yPosition

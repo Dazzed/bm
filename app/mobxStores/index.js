@@ -13,6 +13,7 @@ import Search from './Domain/Search';
 import SectorIndustries from './Domain/sectorIndustries';
 import DeviceSize from './Domain/deviceSize';
 import Settings from './Domain/settings';
+import AutoLogOff from './Domain/AutoLogOff'
 
 // Import and init all stores here
 let colorStore = new ColorStore();
@@ -30,6 +31,7 @@ let searchStore = new Search();
 let sectorIndustriesStore = new SectorIndustries();
 let deviceSizeStore = new DeviceSize();
 let settingsStore = new Settings();
+let autoLogOff = new AutoLogOff();
 
 export {
     colorStore,
@@ -46,5 +48,6 @@ export {
     searchStore,
     sectorIndustriesStore,
     deviceSizeStore,
-    settingsStore
+    settingsStore,
+    autoLogOff
 }
