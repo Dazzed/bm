@@ -308,6 +308,11 @@ class Settings extends Component {
     }
   }
 
+  setOrderValue(value) {
+    const{ setOrderValue } = settingsStore;
+    setOrderValue(value);
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     const { autoLog } = settingsStore;
@@ -315,6 +320,8 @@ class Settings extends Component {
     const {
       globalData
     } = this.props;
+
+    const { orderValue } = settingsStore;
 
     // console.log('GLOooooooobal data', globalData)
     // {this.renderOption('Citizenship', globalData.currentUser.country)}
@@ -387,14 +394,14 @@ class Settings extends Component {
           </TouchableOpacity>
 
           // Notifications
-
+          
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Orders</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
+              onValueChange={(value) => this.setOrderValue(value)}
+              value={orderValue} />
           </View>
 
           {this.renderNewsList()}

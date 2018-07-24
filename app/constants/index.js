@@ -260,7 +260,9 @@ const newsSources = {
   'bloomberg': 'Bloomberg',
   'msnbc': 'MSNBC',
   'reuters': 'Reuters',
-  'wallStreet': 'Wall Street Journal'
+  'wallStreet': 'Wall Street Journal',
+  'morningStar': 'Morning Star',
+  'marketWatch': 'Market Watch'
 }
 
 export {

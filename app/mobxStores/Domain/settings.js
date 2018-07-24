@@ -45,6 +45,26 @@ export default class Settings {
         }
     }
 
+    @action setOrderValue = (value) => {
+      if(!this.settingsData || !this.settingsData.newsSource) {
+        return
+      } else {
+        let oldSettingsData = this.settingsData;
+        oldSettingsData.notification.orders = value;
+        this.hydrateSettings(oldSettingsData);
+        this.updateSettings();
+      }
+    }
+
+    @computed get orderValue() {
+      if(!this.settingsData || !this.settingsData.newsSource) {
+        return false
+      }
+      if(this.settingsData.notification.orders) {
+        return true;
+      }
+    }
+
     @action setLogOutAfterCount = (newValue) => {
       console.log('set log out after count', newValue);
       let newSettingsData = this.settingsData;
