@@ -11,38 +11,36 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-
-import TouchID from 'react-native-touch-id';
+import Modal from 'react-native-modal'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Faq from './faq';
-import ReportBug from './reportbug';
-import ContactUs from './contactus';
+import Faq from './components/faq';
+import ReportBug from './components/reportbug';
+import ContactUs from './components/contactus';
 
-import EditAddress from './editaddress';
-import EditMaritalStatus from './editmaritalstatus';
-import EditEmploymentStatus from './editemployment';
-import EditExperience from './editexperience';
-import EditDependents from './editdependents';
+import EditAddress from './components/editaddress';
+import EditMaritalStatus from './components/editmaritalstatus';
+import EditEmploymentStatus from './components/editemployment';
+import EditExperience from './components/editexperience';
+import EditDependents from './components/editdependents';
 
-import RadioForm from '../components/react-native-simple-radio-button';
-import { colors } from '../store/store';
+import RadioForm from '../../components/react-native-simple-radio-button';
+import { colors } from '../../store/store';
 
-import styles from '../style/style';
-import settings from '../style/settings';
-import Search from './search';
-import navstyle from '../style/nav';
+import styles from '../../style/style';
+import settings from '../../style/settings';
+import Search from '../search';
+import navstyle from '../../style/nav';
 
-import Modal from 'react-native-modal'
-import fonts from '../style/fonts';
+import fonts from '../../style/fonts';
 
-import * as globalActions from '../store/actions/global';
-import { selectGlobalData } from '../selectors';
+import * as globalActions from '../../store/actions/global';
+import { selectGlobalData } from '../../selectors';
 
-import { forceDarkTheme } from '../devControlPanel';
+import { forceDarkTheme } from '../../devControlPanel';
 
-import { authStore } from '../mobxStores';
+import { authStore } from '../../mobxStores';
 
 var sort_props = [
   { label: '10 minutes', value: 0 },
@@ -58,7 +56,7 @@ class Settings extends Component {
     gesturesEnabled: false,
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../images/settings.png')}
+        source={require('../../images/settings.png')}
         style={[navstyle.icon, { tintColor: tintColor }]}
       />
     ),
@@ -71,6 +69,7 @@ class Settings extends Component {
       isDependentsVisible: false,
       isExperienceVisible: false,
       isEmploymentVisible: false,
+      isPhoneVisible: false,
 
       isFaqVisible: false,
       isBugVisible: false,
@@ -175,27 +174,21 @@ class Settings extends Component {
   showEmail() {
     console.log('showEmail');
   }
-  showPhone() {
-    console.log('showPhone');
+
+  showPhone = () => {
+    this.setState({ isPhoneVisible: true });
   }
+
+  hidePhone = () => {
+    this.setState({ isPhoneVisible: false });
+  }
+
   showPassword() {
     console.log('showPassword');
   }
 
 
   handleTouch = (value) => {
-    // if (value) {
-    //   TouchID.authenticate('Authenticate to access your BluMartini account.', {})
-    //     .then(success => {
-    //       // Success code
-    //       console.log(success);
-    //     })
-    //     .catch(error => {
-    //       // Failure code
-    //       console.log(error)
-    //     });
-    // }
-    // this.setState({ falseSwitchIsOn: value })
     if (value) {
       this.props.initiateEnablingBioProtection();
     } else {
@@ -234,13 +227,13 @@ class Settings extends Component {
 
   renderBankingSettings() {
     const {
-        globalData: currentGlobalData
+      globalData: currentGlobalData
     } = this.props;
     let selectedCaratImageSource = null;
-    if(currentGlobalData.isDarkThemeActive) {
-      selectedCaratImageSource = require('../images/right_arrow_dark.png');
+    if (currentGlobalData.isDarkThemeActive) {
+      selectedCaratImageSource = require('../../images/right_arrow_dark.png');
     } else {
-      selectedCaratImageSource = require('../images/right_arrow.png');
+      selectedCaratImageSource = require('../../images/right_arrow.png');
     }
 
     return <View>
@@ -249,9 +242,9 @@ class Settings extends Component {
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Deposit Funds</Text>
           <Image
-              resizeMode={'contain'}
-              source={selectedCaratImageSource}
-              style={styles.caratImage}
+            resizeMode={'contain'}
+            source={selectedCaratImageSource}
+            style={styles.caratImage}
           />
         </View>
       </TouchableOpacity>
@@ -259,9 +252,9 @@ class Settings extends Component {
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Withdraw Funds</Text>
           <Image
-              resizeMode={'contain'}
-              source={selectedCaratImageSource}
-              style={styles.caratImage}
+            resizeMode={'contain'}
+            source={selectedCaratImageSource}
+            style={styles.caratImage}
           />
         </View>
       </TouchableOpacity>
@@ -275,13 +268,22 @@ class Settings extends Component {
   }
 
   renderOption(title, data, functionToFire) {
-    return <TouchableOpacity onPress={() => functionToFire()} style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-      <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>{title}</Text>
-      <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>{data}</Text>
-      <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-        <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
-      </Text>
-    </TouchableOpacity>
+    return (
+      <TouchableOpacity
+        onPress={functionToFire}
+        style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}
+      >
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>
+          {title}
+        </Text>
+        <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>
+          {data}
+        </Text>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+          <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+        </Text>
+      </TouchableOpacity>
+    );
   }
 
   logoutPressed() {
@@ -308,7 +310,7 @@ class Settings extends Component {
             <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
               <Image
-                source={require('../images/search.png')}
+                source={require('../../images/search.png')}
                 style={styles.searchImg}
               />
             </TouchableOpacity>
@@ -318,18 +320,18 @@ class Settings extends Component {
 
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, settings.contentBg]}>
 
-          // Banking
+          {/* Banking */}
 
           {this.renderBankingSettings()}
 
-          // Account Info
+          {/* Account Info */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
 
-          // TODO: need edit functions. what are we doint here?
-          {this.renderOption('Email', globalData.currentUser.email, this.showEmail )}
-          {this.renderOption('Mobile', globalData.currentUser.phone, this.showPhone )}
-          {this.renderOption('Password', '***********', this.showPassword )}
+          {/* TODO: need edit functions. what are we doint here? */}
+          {this.renderOption('Email', globalData.currentUser.email, this.showEmail)}
+          {this.renderOption('Mobile', globalData.currentUser.phone, this.showPhone)}
+          {this.renderOption('Password', '***********', this.showPassword)}
 
           {this.renderOption('Address', globalData.currentUser.address, this.showAddress)}
           {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.showMaritalStatus)}
@@ -337,7 +339,7 @@ class Settings extends Component {
           {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
           {this.renderOption('Investment experience', globalData.currentUser.experience, this.showExperience)}
 
-          // Color Scheme
+          {/* Color Scheme */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>COLOR SCHEME</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
@@ -348,7 +350,7 @@ class Settings extends Component {
               value={globalData.isDarkThemeActive} />
           </View>
 
-          // Touch ID
+          {/* Touch ID */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>TOUCH ID</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
@@ -359,15 +361,15 @@ class Settings extends Component {
               value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
 
-          // Auto Log Off
+          {/* Auto Log Off */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
+          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={this.showAutoLog}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
             <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[this.state.autoLog].label} inactivity</Text>
           </TouchableOpacity>
 
-          // Notifications
+          {/* Notifications */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
@@ -378,7 +380,7 @@ class Settings extends Component {
               value={this.state.trueSwitchIsOn} />
           </View>
 
-          // News Source
+          {/* News Source */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
@@ -469,7 +471,6 @@ class Settings extends Component {
           </View>
         </Modal>
 
-
         <Modal
           isVisible={this.state.isFaqVisible}
           animationIn={'slideInUp'}
@@ -489,13 +490,29 @@ class Settings extends Component {
           <ContactUs hideContact={() => this.hideContact()} />
         </Modal>
 
-        // Address modal
+        {/* Phone Modal */}
+        {/* {
+          this.state.isPhoneVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}
+          >
+          <PhoneSelection 
+            
+          />
+          </Modal>
+
+        } */}
+
+        {/* Address modal */}
         {
           this.state.isAddressVisible &&
           <Modal
             isVisible
             animationIn={'slideInUp'}
-            animationOut={'slideOutDown'}>
+            animationOut={'slideOutDown'}
+          >
             <EditAddress
               hideAddress={this.hideAddress}
               initiatePatchingUser={this.props.initiatePatchingUser}
@@ -556,7 +573,6 @@ class Settings extends Component {
     );
   }
 }
-
 
 Settings.propTypes = {
   navigation: PropTypes.object.isRequired,

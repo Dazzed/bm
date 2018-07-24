@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
-import axios from 'axios';
-import { API_URL } from '../config';
+import { selectGlobalData } from '../../../selectors';
 
 import {
   AppRegistry,
@@ -24,17 +22,14 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal'
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
+import styles from '../../../style/style';
+import styles_2 from '../../../style/style_2';
+import fonts from '../../../style/fonts';
+import { isPresent } from '../../Registration/validation';
 
-import styles from '../style/style';
-import styles_2 from '../style/style_2';
-import fonts from '../style/fonts';
-import { isPresent } from './Registration/validation';
-
-import { setTheme, getTheme, colors } from '../store/store';
+import { setTheme, getTheme, colors } from '../../../store/store';
 const state_list = [
   { "label": "Select", "value": 0 },
   { "label": "Alabama", "value": 1 },
@@ -235,7 +230,7 @@ class EditAddress extends React.Component {
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
-                source={require('../images/back.png')}
+                source={require('../../../images/back.png')}
                 style={styles.backImg}
               />
             </TouchableOpacity>
@@ -277,7 +272,7 @@ class EditAddress extends React.Component {
                 <View style={styles_2.subMenuRow}>
                   <TouchableOpacity style={[{ borderBottomColor: this.state.colors['borderGray'] }, styles_2.registrationFormFieldDropDown]} onPress={() => { this.showState() }}>
                     <Image onPress={() => { this.showState() }}
-                      source={require('../images/arrowblue.png')}
+                      source={require('../../../images/arrowblue.png')}
                       style={[styles_2.downArrow]}
                     />
                     <Text onPress={() => { this.showState() }}

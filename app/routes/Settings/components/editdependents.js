@@ -1,15 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
-import axios from 'axios';
-import { API_URL } from '../config';
+import { selectGlobalData } from '../../../selectors';
 
 import {
   AppRegistry,
@@ -29,20 +21,14 @@ import {
   Dimensions
 } from 'react-native';
 
-import { isDependentValid } from './Registration/validation';
+import {isDependentValid} from '../../Registration/validation';
 
-import Modal from 'react-native-modal'
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
+import styles from '../../../style/style';
+import styles_2 from '../../../style/style_2';
+import fonts from '../../../style/fonts';
+import numbers from '../../../style/numbers';
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
-
-import styles from '../style/style';
-import styles_2 from '../style/style_2';
-import fonts from '../style/fonts';
-import numbers from '../style/numbers';
-
-import { setTheme, getTheme, colors } from '../store/store';
+import { setTheme, getTheme, colors } from '../../../store/store';
 
 
 class EditDependents extends React.Component {
@@ -144,7 +130,7 @@ class EditDependents extends React.Component {
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
-                source={require('../images/back.png')}
+                source={require('../../../images/back.png')}
                 style={styles.backImg}
               />
             </TouchableOpacity>
