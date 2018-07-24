@@ -1,15 +1,9 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
+import { selectGlobalData } from '../../../selectors';
 import axios from 'axios';
-import { API_URL } from '../config';
+import { API_URL } from '../../../config';
 
 import {
   AppRegistry,
@@ -27,15 +21,10 @@ import {
   Dimensions
 } from 'react-native';
 
-import Modal from 'react-native-modal'
+import styles from '../../../style/style';
+import fonts from '../../../style/fonts';
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
-
-import styles from '../style/style';
-import fonts from '../style/fonts';
-
-import { setTheme, getTheme, colors } from '../store/store';
+import { setTheme, getTheme, colors } from '../../../store/store';
 
 class Faq extends React.Component {
   constructor(props) {
@@ -82,7 +71,7 @@ class Faq extends React.Component {
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideFaq()}>
               <Image
-                source={require('../images/close.png')}
+                source={require('../../../images/close.png')}
                 style={styles.closeImg}
               />
             </TouchableOpacity>

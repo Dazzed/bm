@@ -220,10 +220,6 @@ class SignIn extends Component {
   }
 }
 
-// {this.renderLoading()}
-// {this.renderLoginError()}
-
-
 SignIn.propTypes = {
   globalData: PropTypes.object.isRequired,
   // loginAction: PropTypes.func.isRequired,
