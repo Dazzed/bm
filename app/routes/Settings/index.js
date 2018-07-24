@@ -24,6 +24,8 @@ import EditMaritalStatus from './components/editmaritalstatus';
 import EditEmploymentStatus from './components/editemployment';
 import EditExperience from './components/editexperience';
 import EditDependents from './components/editdependents';
+import EditPhone from './components/EditPhone';
+import EditPassword from './components/EditPassword';
 
 import RadioForm from '../../components/react-native-simple-radio-button';
 import { colors } from '../../store/store';
@@ -37,8 +39,6 @@ import fonts from '../../style/fonts';
 
 import * as globalActions from '../../store/actions/global';
 import { selectGlobalData } from '../../selectors';
-
-import { forceDarkTheme } from '../../devControlPanel';
 
 import { authStore } from '../../mobxStores';
 
@@ -61,6 +61,7 @@ class Settings extends Component {
       />
     ),
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -70,6 +71,7 @@ class Settings extends Component {
       isExperienceVisible: false,
       isEmploymentVisible: false,
       isPhoneVisible: false,
+      isPasswordModalVisible: false,
 
       isFaqVisible: false,
       isBugVisible: false,
@@ -83,81 +85,9 @@ class Settings extends Component {
       numField: null,
       colors: colors(props.globalData.isDarkThemeActive)
     };
-    this.showSearch = this.showSearch.bind(this);
-    this.hideSearch = this.hideSearch.bind(this);
   }
 
-  showDependents = () => {
-    this.setState({ isDependentsVisible: true })
-  }
-
-  hideDependents = () => {
-    this.setState({ isDependentsVisible: false })
-  }
-
-  showExperience = () => {
-    this.setState({ isExperienceVisible: true })
-  }
-
-  hideExperience = () => {
-    this.setState({ isExperienceVisible: false })
-  }
-
-  showEmploymentStatus = () => {
-    this.setState({ isEmploymentStatusVisible: true })
-  }
-
-  hideEmploymentStatus = () => {
-    this.setState({ isEmploymentStatusVisible: false })
-  }
-
-  showMaritalStatus = () => {
-    this.setState({ isMaritalStatusVisible: true })
-  }
-
-  hideMaritalStatus = () => {
-    this.setState({ isMaritalStatusVisible: false })
-  }
-
-  showAddress = () => {
-    this.setState({ isAddressVisible: true })
-  }
-
-  hideAddress = () => {
-    this.setState({ isAddressVisible: false })
-  }
-
-  showContact = () => {
-    this.setState({ isContactVisible: true })
-  }
-
-  hideContact = () => {
-    this.setState({ isContactVisible: false })
-  }
-
-  showBug() {
-    this.setState({ isBugVisible: true })
-  }
-
-  hideBug() {
-    this.setState({ isBugVisible: false })
-  }
-
-  showFaq() {
-    this.setState({ isFaqVisible: true })
-  }
-
-  hideFaq() {
-    this.setState({ isFaqVisible: false })
-  }
-
-  showSearch() {
-    this.setState({ isSearchVisible: true });
-  }
-
-  hideSearch() {
-    this.setState({ isSearchVisible: false });
-  }
+  toggleModal = stateProp => this.setState(({ [stateProp]: statePropVal }) => ({ [stateProp]: !statePropVal }));
 
   showAutoLog() {
     this.setState({ isAutoLogVisible: true });
@@ -175,18 +105,9 @@ class Settings extends Component {
     console.log('showEmail');
   }
 
-  showPhone = () => {
-    this.setState({ isPhoneVisible: true });
-  }
-
-  hidePhone = () => {
-    this.setState({ isPhoneVisible: false });
-  }
-
   showPassword() {
     console.log('showPassword');
   }
-
 
   handleTouch = (value) => {
     if (value) {
@@ -195,7 +116,6 @@ class Settings extends Component {
       this.props.initiateDisablingBioProtection();
     }
   }
-
 
   componentDidUpdate(prevProps) {
     const {
@@ -307,7 +227,7 @@ class Settings extends Component {
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
-            <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
+            <TouchableOpacity style={styles.searchCta} onPress={this.toggleModal.bind(this, 'isSearchVisible')}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
               <Image
                 source={require('../../images/search.png')}
@@ -330,14 +250,14 @@ class Settings extends Component {
 
           {/* TODO: need edit functions. what are we doint here? */}
           {this.renderOption('Email', globalData.currentUser.email, this.showEmail)}
-          {this.renderOption('Mobile', globalData.currentUser.phone, this.showPhone)}
-          {this.renderOption('Password', '***********', this.showPassword)}
+          {this.renderOption('Mobile', globalData.currentUser.phone, this.toggleModal.bind(this, 'isPhoneVisible'))}
+          {this.renderOption('Password', '***********', this.toggleModal.bind(this, 'isPasswordModalVisible'))}
 
-          {this.renderOption('Address', globalData.currentUser.address, this.showAddress)}
-          {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.showMaritalStatus)}
-          {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.showDependents)}
-          {this.renderOption('Employment status', globalData.currentUser.employment, this.showEmploymentStatus)}
-          {this.renderOption('Investment experience', globalData.currentUser.experience, this.showExperience)}
+          {this.renderOption('Address', globalData.currentUser.address, this.toggleModal.bind(this, 'isAddressVisible'))}
+          {this.renderOption('Marital status', globalData.currentUser.maritalStatus, this.toggleModal.bind(this, 'isMaritalStatusVisible'))}
+          {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.toggleModal.bind(this, 'isDependentsVisible'))}
+          {this.renderOption('Employment status', globalData.currentUser.employment, this.toggleModal.bind(this, 'isEmploymentStatusVisible'))}
+          {this.renderOption('Investment experience', globalData.currentUser.experience, this.toggleModal.bind(this, 'isExperienceVisible'))}
 
           {/* Color Scheme */}
 
@@ -420,15 +340,15 @@ class Settings extends Component {
           </View>
           <View style={{ marginTop: 20 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showFaq()}>FAQ</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={this.toggleModal.bind(this, 'isFaqVisible')}>FAQ</Text>
           </View>
           <View style={{ marginTop: 5 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} >
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showContact()}>Contact us</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={this.toggleModal.bind(this, 'isContactVisible')}>Contact us</Text>
           </View>
           <View style={{ marginTop: 5 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={() => this.showBug()}>Report a bug</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={this.toggleModal.bind(this, 'isBugVisible')}>Report a bug</Text>
           </View>
           <View style={{ marginTop: 5 }}></View>
           <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]} onPress={() => this.logoutPressed()}>
@@ -442,7 +362,7 @@ class Settings extends Component {
           isVisible={this.state.isSearchVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'} >
-          <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
+          <Search hideSearch={this.toggleModal.bind(this, 'isSearchVisible')} navigation={this.props.navigation} />
         </Modal>
         <Modal
           isVisible={this.state.isAutoLogVisible}
@@ -475,35 +395,52 @@ class Settings extends Component {
           isVisible={this.state.isFaqVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}>
-          <Faq hideFaq={() => this.hideFaq()} />
+          <Faq hideFaq={this.toggleModal.bind(this, 'isFaqVisible')} />
         </Modal>
         <Modal
           isVisible={this.state.isBugVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}>
-          <ReportBug hideBug={() => this.hideBug()} />
+          <ReportBug hideBug={this.toggleModal.bind(this, 'isBugVisible')} />
         </Modal>
         <Modal
           isVisible={this.state.isContactVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}>
-          <ContactUs hideContact={() => this.hideContact()} />
+          <ContactUs hideContact={this.toggleModal.bind(this, 'isContactVisible')} />
         </Modal>
 
         {/* Phone Modal */}
-        {/* {
+        {
           this.state.isPhoneVisible &&
           <Modal
             isVisible
             animationIn={'slideInUp'}
             animationOut={'slideOutDown'}
           >
-          <PhoneSelection 
-            
-          />
+            <EditPhone
+              hidePhone={this.toggleModal.bind(this, 'isPhoneVisible')}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+              colors={this.state.colors}
+            />
           </Modal>
+        }
 
-        } */}
+        {/* Password Modal */}
+        {
+          this.state.isPasswordModalVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}
+          >
+            <EditPassword
+              hidePassword={this.toggleModal.bind(this, 'isPasswordModalVisible')}
+              initiatePatchingUser={this.props.initiatePatchingUser}
+              colors={this.state.colors}
+            />
+          </Modal>
+        }
 
         {/* Address modal */}
         {
@@ -514,7 +451,7 @@ class Settings extends Component {
             animationOut={'slideOutDown'}
           >
             <EditAddress
-              hideAddress={this.hideAddress}
+              hideAddress={this.toggleModal.bind(this, 'isAddressVisible')}
               initiatePatchingUser={this.props.initiatePatchingUser}
             />
           </Modal>
@@ -527,7 +464,7 @@ class Settings extends Component {
             animationIn={'slideInUp'}
             animationOut={'slideOutDown'}>
             <EditMaritalStatus
-              hideMaritalStatus={this.hideMaritalStatus}
+              hideMaritalStatus={this.toggleModal.bind(this, 'isMaritalStatusVisible')}
               initiatePatchingUser={this.props.initiatePatchingUser}
             />
           </Modal>
@@ -539,7 +476,7 @@ class Settings extends Component {
             animationIn={'slideInUp'}
             animationOut={'slideOutDown'}>
             <EditDependents
-              hideDependents={this.hideDependents}
+              hideDependents={this.toggleModal.bind(this, 'isDependentsVisible')}
               initiatePatchingUser={this.props.initiatePatchingUser}
             />
           </Modal>
@@ -551,7 +488,7 @@ class Settings extends Component {
             animationIn={'slideInUp'}
             animationOut={'slideOutDown'}>
             <EditEmploymentStatus
-              hideEmploymentStatus={this.hideEmploymentStatus}
+              hideEmploymentStatus={this.toggleModal.bind(this, 'isEmploymentStatusVisible')}
               initiatePatchingUser={this.props.initiatePatchingUser}
             />
           </Modal>
@@ -563,7 +500,7 @@ class Settings extends Component {
             animationIn={'slideInUp'}
             animationOut={'slideOutDown'}>
             <EditExperience
-              hideExperience={this.hideExperience}
+              hideExperience={this.toggleModal.bind(this, 'isExperienceVisible')}
               initiatePatchingUser={this.props.initiatePatchingUser}
             />
           </Modal>

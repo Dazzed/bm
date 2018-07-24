@@ -46,7 +46,7 @@ class EditEmployment extends React.Component {
 
     var result = status_list.find(x => x.label === employment)
     let employmentOption = 0;
-    if(result && 'value' in result) {
+    if (result && 'value' in result) {
       employmentOption = result.value;
     }
 
@@ -97,6 +97,7 @@ class EditEmployment extends React.Component {
   }
 
   render() {
+    const { globalData } = this.props;
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -143,8 +144,10 @@ class EditEmployment extends React.Component {
             </View>
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-            <TouchableHighlight onPress={this.updateEmploymentStatus} style={[styles_2.fullBtn, { height: 80 }, styles_2.formValid]}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>SAVE</Text>
+            <TouchableHighlight disabled={globalData.isPatchingUser} onPress={this.updateEmploymentStatus} style={[styles_2.fullBtn, { height: 80 }, styles_2.formValid]}>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
+                {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
+              </Text>
             </TouchableHighlight>
             <Text> </Text>
           </View>

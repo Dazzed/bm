@@ -326,7 +326,7 @@ class EditAddress extends React.Component {
             </View>
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-            <TouchableHighlight disabled={!this.state.formValid} onPress={this.updateAddress} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
+            <TouchableHighlight disabled={!this.state.formValid || globalData.isPatchingUser} onPress={this.updateAddress} style={[styles_2.fullBtn, { height: 80 }, this.state.formValidClass]}>
               <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
                 {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
               </Text>
