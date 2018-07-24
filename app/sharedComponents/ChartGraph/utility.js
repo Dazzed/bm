@@ -134,7 +134,6 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
     }
 
     for(let i = 0; i < data.length; i++) {
-        console.log('line data', data[i])
         d.lineData.push(data[i].close + d.yMin);
         d.dateData.push(data[i].date);
     }
@@ -149,7 +148,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
     let priceRelativePosition = minAdjustedPrice / minAdjustedMax;
     d.priceLineHeight = (priceRelativePosition * d.yRange)  + d.yMin;
 
-    console.log('------- max min graphhehgt', d.yMax, d.yMin, d.priceLineHeight, graphHeight)
+    // console.log('------- max min graphhehgt', d.yMax, d.yMin, d.priceLineHeight, graphHeight)
 
     return d;
 }

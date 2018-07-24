@@ -34,9 +34,6 @@ export default class LargeGraph extends React.Component {
 
     getLineList() {
         const { theme } = colorStore;
-
-        // console.log('----------------- GET LINE LIST', this.props.data)
-
         return [
             {
                 lineTitle: 'Test line 1',

@@ -1,5 +1,5 @@
 import React from 'react';
-import {chartStore, colorStore} from "../../mobxStores";
+import { chartStore, colorStore } from "../../mobxStores";
 import { observer } from "mobx-react";
 import { LineChart, Grid, YAxis, XAxis } from 'react-native-svg-charts'
 import {
@@ -35,7 +35,6 @@ export default class SmallGraph extends React.Component {
             <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
           </View>
         }
-
         let inlineContainerStyle = {
             // borderWidth: 1,
             // borderColor: 'red',
@@ -43,16 +42,13 @@ export default class SmallGraph extends React.Component {
             height: this.props.height,
             marginTop: 18
         }
-
         const { tickerDataJS } = chartStore;
         const { Price } = tickerDataJS;
         const { height } = this.props.height;
-
         let xAxisHeight = 20;
         let graphHeight = this.props.height - xAxisHeight;
         const data = parseSmallGraphData(this.props.data, Price, graphHeight);
         let lineYPosition = flipYAxisValue(graphHeight, data.priceLineHeight);
-
         let inlineGraphContainerStyle = {
             // borderWidth: 1,
             // borderColor: 'green',
@@ -60,8 +56,6 @@ export default class SmallGraph extends React.Component {
             width: '100%',
             height: graphHeight
         }
-
-
         let inlineTimeStampContainerStyle = {
             // borderWidth: 1,
             // borderColor: 'blue',
@@ -69,15 +63,11 @@ export default class SmallGraph extends React.Component {
             // alignItems: 'center',
             justifyContent: 'center'
         }
-
         let xAxisData = data.dateData;
-        
         let textColor = theme.darkSlate;
 
         return <View style={inlineContainerStyle}>
-
             <View style={inlineGraphContainerStyle}>
-
                 <View style={{ flex: 1,height: graphHeight}}>
                     <LineChart
                         style={{ height: graphHeight }}
@@ -88,9 +78,7 @@ export default class SmallGraph extends React.Component {
                         <HorizontalLine height={height} yVal={lineYPosition} title={Price} />
                     </LineChart>
                 </View>
-
             </View>
-
             <View style={inlineTimeStampContainerStyle}>
                 <XAxis
                     style={{ marginHorizontal: 5 }}
@@ -102,15 +90,10 @@ export default class SmallGraph extends React.Component {
                     contentInset={{ left: 10, right: 10 }}
                     svg={{ fontSize: 10, fill: textColor }}
                 />
-
             </View>
-
         </View>
     }
-
 }
-
-
 
 //     Y axis ready if we ever need it
 // <View style={{ width: 20, height: graphHeight, borderWidth: 1, borderColor: 'red', flexDirection: 'row' }}>
