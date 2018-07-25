@@ -70,6 +70,9 @@ export default class AccountStore {
     }
 
     @observable indicatorsList = [];
+    @observable get indicatorsListJS() {
+      return toJS(this.indicatorsList);
+    }
     @action setIndicatorsList = (newList) => {
         this.indicatorsList = newList;
         this.getStockChartDetails();

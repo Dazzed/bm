@@ -312,6 +312,23 @@ class Settings extends Component {
     const{ setOrderValue } = settingsStore;
     setOrderValue(value);
   }
+  
+  renderAutoLogOption() {
+    const { autoLog } = settingsStore;
+    console.log('==== AUTO LOG', autoLog)
+    if(autoLog !== null && autoLog !== undefined) {
+      return <View>
+        // Auto Log Off
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
+        <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
+          <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
+        </TouchableOpacity>
+      </View>  
+    } else {
+      return null;
+    }
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -385,13 +402,8 @@ class Settings extends Component {
               value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
 
-          // Auto Log Off
 
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
-          </TouchableOpacity>
+          {this.renderAutoLogOption()}
 
           // Notifications
           
