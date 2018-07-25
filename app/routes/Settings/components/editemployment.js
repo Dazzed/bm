@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
-import axios from 'axios';
-import { API_URL } from '../config';
+import { selectGlobalData } from '../../../selectors';
 
 import {
   AppRegistry,
@@ -23,55 +21,40 @@ import {
   Dimensions
 } from 'react-native';
 
-import Modal from 'react-native-modal'
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
+import styles from '../../../style/style';
+import styles_2 from '../../../style/style_2';
+import fonts from '../../../style/fonts';
 
-import styles from '../style/style';
-import styles_2 from '../style/style_2';
-import fonts from '../style/fonts';
-import { isPresent } from './Registration/validation';
+import { setTheme, getTheme, colors } from '../../../store/store';
+const status_list = [
+  { "label": "Employed", "value": 1 },
+  { "label": "Student", "value": 2 },
+  { "label": "Retired", "value": 3 },
+  { "label": "Unemployed", "value": 4 },
+  { "label": "Self-employed", "value": 5 },
+  { "label": "Other", "value": 6 }
+];
 
-import { setTheme, getTheme, colors } from '../store/store';
-
-import { maritalStatusList } from '../constants';
-
-const status_list = maritalStatusList;
-
-class EditMaritalStatus extends React.Component {
+class EditEmployment extends React.Component {
   constructor(props) {
     super(props);
     const {
-      maritalStatus
+      employment
     } = this.props.globalData.currentUser;
 
-
-    let maritalStatusOption = '';
-    let maritalStatusText = '';
-    
-    status_list.every((elem, i) => {
-      console.log('elem ', elem, maritalStatus)
-      if(elem.label == maritalStatus) {
-        maritalStatusOption = elem.value;
-        maritalStatusText = elem.label;
-        return false;
-      }
-      return true;
-    })
-    
-    // var result = status_list.find(x => x.label === maritalStatus)
-    // let maritalStatusOption = 0;
-    // if('value' in result) {
-    //   maritalStatusOption = result;
-    // }
+    var result = status_list.find(x => x.label === employment)
+    let employmentOption = 0;
+    if (result && 'value' in result) {
+      employmentOption = result.value;
+    }
 
     this.state = {
       page: 'presets',
       colors: colors(props.globalData.isDarkThemeActive),
-      maritalStatusOption: maritalStatusOption,
-      maritalStatus: maritalStatusText
+      employmentOption: employmentOption,
+      employment: employment
     };
   }
 
@@ -86,54 +69,46 @@ class EditMaritalStatus extends React.Component {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
     if (prevGlobalData.isPatchingUser === true && currentGlobalData.isPatchingUser === false) {
-      this.props.hideMaritalStatus();
+      this.props.hideEmploymentStatus();
     }
   }
 
-  setMaritalStatus = (value) => {
-      let textStatus = '';
-      status_list.every((elem, i) => {
-        if(value === elem.value) {
-          textStatus = elem.label;
-          return false;
-        }
-        return true;
-      })
+  hideStatus = value => {
+    if (value) {
       this.setState({
-        maritalStatusOption: value,
-        maritalStatus: textStatus
+        employmentOption: value,
+        employment: status_list.find(l => l.value === value).label
       });
+    }
   }
 
-  updateMaritalStatus = () => {
-    const user_marital_status = {
-      maritalStatus: this.state.maritalStatus
+  updateEmploymentStatus = async () => {
+    const user_employment = {
+      employment: this.state.employment
     }
-    this.props.initiatePatchingUser(user_marital_status);
+    this.props.initiatePatchingUser(user_employment);
   }
 
   onBackButtonPress = () => {
     if (this.props.globalData.isPatchingUser) {
       return;
     }
-    this.props.hideMaritalStatus();
+    this.props.hideEmploymentStatus();
   }
 
   render() {
-    const {
-      globalData
-    } = this.props;
+    const { globalData } = this.props;
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
-                source={require('../images/back.png')}
+                source={require('../../../images/back.png')}
                 style={styles.backImg}
               />
             </TouchableOpacity>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>Edit Marital Status</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>Edit Employment Status</Text>
             <Text style={styles.rightCta}></Text>
           </View>
         </View>
@@ -142,14 +117,14 @@ class EditMaritalStatus extends React.Component {
           style={styles_2.section}>
           <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'], paddingTop: 15 }]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationPageTitle, { paddingTop: 25 }]}>
-              MARITAL STATUS
+              EMPLOYMENT STATUS
                     </Text>
             <View style={[{ backgroundColor: this.state.colors['white'], marginTop: 20, paddingTop: 0 }]}>
               <View style={[styles_2.registrationFormView]}>
                 <View style={styles_2.subMenuRow}>
                   <RadioForm
                     radio_props={status_list}
-                    initial={this.state.maritalStatusOption}
+                    initial={this.state.employmentOption - 1}
                     formHorizontal={false}
                     labelHorizontal={true}
                     borderWidth={1}
@@ -161,7 +136,7 @@ class EditMaritalStatus extends React.Component {
                     labelStyle={[{ color: this.state.colors['darkSlate'] }, styles_2.radioLabel, fonts.hindGunturRg]}
                     radioLabelActive={[{ color: this.state.colors['blue'] }, styles_2.activeRadioLabel, fonts.hindGunturBd]}
                     labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles_2.radioLabelWrap]}
-                    onPress={this.setMaritalStatus}
+                    onPress={this.hideStatus}
                     style={styles_2.radioField}
                   />
                 </View>
@@ -169,7 +144,7 @@ class EditMaritalStatus extends React.Component {
             </View>
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-            <TouchableHighlight onPress={this.updateMaritalStatus} style={[styles_2.fullBtn, { height: 80 }, styles_2.formValid]}>
+            <TouchableHighlight disabled={globalData.isPatchingUser} onPress={this.updateEmploymentStatus} style={[styles_2.fullBtn, { height: 80 }, styles_2.formValid]}>
               <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
                 {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
               </Text>
@@ -182,14 +157,14 @@ class EditMaritalStatus extends React.Component {
   }
 }
 
-EditMaritalStatus.propTypes = {
+EditEmployment.propTypes = {
   globalData: PropTypes.object.isRequired,
   initiatePatchingUser: PropTypes.func.isRequired,
-  hideMaritalStatus: PropTypes.func.isRequired,
+  hideEmploymentStatus: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   globalData: selectGlobalData(state)
 });
 
-export default connect(mapStateToProps, null)(EditMaritalStatus);
+export default connect(mapStateToProps, null)(EditEmployment);

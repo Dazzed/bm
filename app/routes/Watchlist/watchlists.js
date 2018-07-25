@@ -262,7 +262,7 @@ class Watchlists extends React.Component {
     } = watchListStore;
     let dataSource = watchlistDataJS;
     let order = watchlistOrderJS;
-    console.log(dataSource);
+    console.log('datasource', dataSource);
 
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
@@ -310,7 +310,7 @@ class Watchlists extends React.Component {
         {!isFetchingWatchlistData && !isEditingWatchList &&
           <SortableListView
             data={dataSource}
-            order={order}
+            // order={order}
             onRowMoved={e => {
               console.log('row moved in NON EDITABLE MODE')
               {/*order.splice(e.to, 0, order.splice(e.from, 1)[0]);*/ }
@@ -330,11 +330,13 @@ class Watchlists extends React.Component {
         {!isFetchingWatchlistData && isEditingWatchList &&
           <SortableListView
             data={dataSource}
-            order={order}
+            // order={order}
             onRowMoved={watchListStore.onRowMove}
             disableSorting={false}
             navigation={this.props.navigation}
             renderRow={this.renderEditableRow}
+            disableAnimatedScrolling
+            limitScrolling
           />
         }
         <Modal

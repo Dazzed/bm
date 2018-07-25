@@ -6,7 +6,7 @@ import Account from './Account/account';
 import Watchlists from './Watchlist/watchlists';
 import Trending from './Trending/trending';
 import Scanner from './scanner';
-import Settings from './settings';
+import Settings from './Settings';
 import CustomTabBar from './customtabbar';
 import Chart from './chart';
 import AccountSelect from './Funding/AccountSelect';

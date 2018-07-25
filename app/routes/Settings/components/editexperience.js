@@ -1,16 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
-import axios from 'axios';
-import { API_URL } from '../config';
-
+import { selectGlobalData } from '../../../selectors';
 import {
   AppRegistry,
   StyleSheet,
@@ -29,18 +20,13 @@ import {
   Dimensions
 } from 'react-native';
 
-import Modal from 'react-native-modal'
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../components/react-native-simple-radio-button';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
+import styles from '../../../style/style';
+import styles_2 from '../../../style/style_2';
+import fonts from '../../../style/fonts';
 
-import styles from '../style/style';
-import styles_2 from '../style/style_2';
-import fonts from '../style/fonts';
-import { isPresent } from './Registration/validation';
-
-import { setTheme, getTheme, colors } from '../store/store';
+import { setTheme, getTheme, colors } from '../../../store/store';
 const status_list = [
   { "label": "None", "value": 1 },
   { "label": "Some", "value": 2 },
@@ -121,7 +107,7 @@ class EditExperience extends React.Component {
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
               <Image
-                source={require('../images/back.png')}
+                source={require('../../../images/back.png')}
                 style={styles.backImg}
               />
             </TouchableOpacity>

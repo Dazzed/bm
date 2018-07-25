@@ -136,6 +136,7 @@ class SignIn extends Component {
     })
     .catch((err) => {
       console.log('err', err)
+      console.log('code', err.json.error.code);
     })
 
   }
@@ -189,7 +190,7 @@ class SignIn extends Component {
           </View>
           <View style={{ marginTop: 10, flexDirection: 'row', display: loginErrorPresent ? 'flex' : 'none' }}>
             <Text style={{ color: 'red', fontWeight: 'bold' }}>Error: </Text>
-            <Text style={{ color: 'red' }}>Invalid email/password</Text>
+            <Text style={{ color: 'red' }}>{authStore.loginErrorMessage}</Text>
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
@@ -218,10 +219,6 @@ class SignIn extends Component {
     );
   }
 }
-
-// {this.renderLoading()}
-// {this.renderLoginError()}
-
 
 SignIn.propTypes = {
   globalData: PropTypes.object.isRequired,

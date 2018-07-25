@@ -155,7 +155,7 @@ export default class Trending {
     }
 
     let params = {
-      filter: JSON.stringify(filterOptions)
+      filter: encodeURIComponent(JSON.stringify(filterOptions))
     }
 
     getTrendingDataApi(params)

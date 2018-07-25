@@ -14,63 +14,63 @@ import {
   TOUCH_ID_ENABLED_KEY
 } from '../../constants';
 
-export default class ColorStore {
-    constructor() {
-    }
+export default class AuthStore {
+  constructor() {
+  }
 
-    @observable loginData = null;
-    @observable userData = null;
-    @observable loginLoading = false;
-    @observable loginErrorMessage = null;
+  @observable loginData = null;
+  @observable userData = null;
+  @observable loginLoading = false;
+  @observable loginErrorMessage = null;
 
-    @observable resetLoading = false;
-    @observable resetErrorMessage = null;
-    @observable resetSuccess = true;
+  @observable resetLoading = false;
+  @observable resetErrorMessage = null;
+  @observable resetSuccess = true;
 
-    @computed get isAuthenticated() {
-      return true;
-    }
+  @computed get isAuthenticated() {
+    return true;
+  }
 
-    @action setResetSuccess = (bool) => {
-      this.resetSuccess = bool;
-    }
+  @action setResetSuccess = (bool) => {
+    this.resetSuccess = bool;
+  }
 
-    @action setResetErrorMessage = (msg) => {
-        this.resetErrorMessage = msg;
-    }
+  @action setResetErrorMessage = (msg) => {
+    this.resetErrorMessage = msg;
+  }
 
-    @action setResetLoading = (bool) => {
-      this.resetLoading = bool;
-    }
+  @action setResetLoading = (bool) => {
+    this.resetLoading = bool;
+  }
 
-    @action setLoginErrorMessage = (msg) => {
-        this.loginErrorMessage = msg;
-    }
+  @action setLoginErrorMessage = (msg) => {
+    this.loginErrorMessage = msg;
+  }
 
-    @action setLoginData = (loginData) => {
-        this.loginData = loginData;
-    }
+  @action setLoginData = (loginData) => {
+    this.loginData = loginData;
+  }
 
-    @action setUserData = (userData) => {
-        this.userData = userData;
-        watchListStore.getWatchlistData();
-    }
+  @action setUserData = (userData) => {
+    this.userData = userData;
+    watchListStore.getWatchlistData();
+  }
 
-    @computed get loginDataJS() {
-        return toJS(this.loginData);
-    }
+  @computed get loginDataJS() {
+    return toJS(this.loginData);
+  }
 
 
-    @observable verifyingAuth = false;
+  @observable verifyingAuth = false;
 
-    @action verifyAuth = () => {
+  @action verifyAuth = () => {
 
-      return new Promise((resolve, reject) => {
-        console.log('GO verify auth')
-        this.verifyingAuth = true;
-        let accessToken = null;
-        let userId = null;
-        AsyncStorage.getItem(ACCESS_TOKEN_KEY)
+    return new Promise((resolve, reject) => {
+      console.log('GO verify auth')
+      this.verifyingAuth = true;
+      let accessToken = null;
+      let userId = null;
+      AsyncStorage.getItem(ACCESS_TOKEN_KEY)
         .then((res) => {
           console.log('verify auth res token', res);
           if (!res) {
@@ -80,7 +80,7 @@ export default class ColorStore {
           return AsyncStorage.getItem(CURRENT_USER_ID_KEY)
         })
         .then((res) => {
-          if(!res) {
+          if (!res) {
             throw 'No User ID present on verification check!'
           }
           userId = res;
@@ -105,121 +105,123 @@ export default class ColorStore {
             AsyncStorage.removeItem(THEME_KEY)
           ];
           Promise.all(promises)
-          .then((res) => {
-            console.log('---- ALL DATA DELETED', res)
-          })
-          .catch((err) => {
-            cosnole.log('ERROR deleting data: ', err)
-          });
+            .then((res) => {
+              console.log('---- ALL DATA DELETED', res)
+            })
+            .catch((err) => {
+              cosnole.log('ERROR deleting data: ', err)
+            });
 
           // do nothing for navigation, leave it on this page
         })
-      })
-    }
+    })
+  }
 
-    @action populateUserById = (id) => {
-        return new Promise((resolve, reject) => {
-            getUserById(id)
-                .then((res) => {
-                    console.log('GET YSER BY ID RES-------- ', res)
-                    if (res.ok) {
-                        console.log('got user data', res)
-                        resolve(res)
-                    } else {
-                        this.setLoginErrorMessage(res.json.error.message)
-                    }
-                })
-                .catch((err) => {
-                    console.log('err', err)
-                })
+  @action populateUserById = (id) => {
+    return new Promise((resolve, reject) => {
+      getUserById(id)
+        .then((res) => {
+          console.log('GET YSER BY ID RES-------- ', res)
+          if (res.ok) {
+            console.log('got user data', res)
+            resolve(res)
+          } else {
+            // this.setLoginErrorMessage(res.json.error.message)
+          }
         })
-    }
-
-    @observable loginErrorPresent = false;
-
-    @action login = (params) => {
-        return new Promise((resolve, reject) => {
-            this.loginLoading = true;
-            this.loginErrorPresent = false;
-            let userId = 0;
-            let loginData = null;
-
-            console.log('======= LOGIN FIRES', params)
-            login(params)
-            .then((res) => {
-                console.log('login first call res', res)
-                if (res.ok) {
-                    loginData = res.json;
-                    this.setLoginData(res.json)
-                    userId = res.json.userId;
-
-                    return saveToken(res.json.id)
-                } else {
-                    this.setLoginErrorMessage(res.json.error.message)
-                    this.loginLoading = false;
-                    this.loginErrorPresent = true;
-                    reject(res);
-                }
-            })
-            .then(() => {
-              return AsyncStorage.setItem(CURRENT_USER_ID_KEY, userId.toString());
-            })
-            .then(() => {
-              return this.populateUserById(userId)
-            })
-            .then((res) => {
-                console.log('======= res from populate by user id', res)
-                return this.populateUserById(userId)
-            })
-            .then((res) => {
-                console.log('after populate user by id', res)
-                this.loginLoading = false;
-                if(res.ok) {
-                  this.setUserData(res.json)
-                  resolve({
-                    userData: res,
-                    loginData: loginData
-                  })
-                } else {
-                  this.loginErrorPresent = true;
-                }
-            })
-            .catch((err) => {
-                console.log('err', err)
-                this.loginErrorPresent = true;
-                this.loginLoading = false;
-                reject(err)
-            })
+        .catch((err) => {
+          console.log('err', err)
         })
-    }
+    })
+  }
 
-    @action submitForgot = (params) => {
-        return new Promise((resolve, reject) => {
-            console.log('PRARMS', params);
-            this.setResetLoading(true);
-            this.setResetErrorMessage(null)
+  @observable loginErrorPresent = false;
+
+  @action login = (params) => {
+    this.loginLoading = true;
+    this.loginErrorPresent = false;
+    this.setLoginErrorMessage(null);
+    let userId = 0;
+    let loginData = null;
+    return new Promise((resolve, reject) => {
+      console.log('======= LOGIN FIRES', params)
+      login(params)
+        .then((res) => {
+          console.log('login first call res', res)
+          if (res.ok) {
+            loginData = res.json;
+            this.setLoginData(res.json)
+            userId = res.json.userId;
+
+            return saveToken(res.json.id)
+          } else {
+            // this.setLoginErrorMessage(res.json.error.message)
+            this.loginLoading = false;
+            this.loginErrorPresent = true;
+            if (res.json.error.code === 'LOGIN_FAILED_EMAIL_NOT_VERIFIED') {
+              this.setLoginErrorMessage('You must verify your email before you login');
+            } else {
+              this.setLoginErrorMessage('Invalid email/password');
+            }
+            reject(res);
+          }
+        })
+        .then(() => {
+          return AsyncStorage.setItem(CURRENT_USER_ID_KEY, userId.toString());
+        })
+        .then(() => {
+          return this.populateUserById(userId)
+        })
+        .then((res) => {
+          console.log('======= res from populate by user id', res)
+          return this.populateUserById(userId)
+        })
+        .then((res) => {
+          console.log('after populate user by id', res)
+          this.loginLoading = false;
+          if (res.ok) {
+            this.setUserData(res.json)
+            resolve({
+              userData: res,
+              loginData: loginData
+            })
+          } else {
+            this.loginErrorPresent = true;
+          }
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
+
+  @action submitForgot = (params) => {
+    return new Promise((resolve, reject) => {
+      console.log('PRARMS', params);
+      this.setResetLoading(true);
+      this.setResetErrorMessage(null)
+      this.setResetSuccess(false);
+
+      resetPassword(params)
+        .then((res) => {
+          console.log('RES reste', res)
+          if (res.ok) {
+            this.setResetSuccess(true);
+            this.setResetErrorMessage('Password reset email has been sent!')
+            resolve(res)
+          } else {
             this.setResetSuccess(false);
-
-            resetPassword(params)
-            .then((res) => {
-                console.log('RES reste', res)
-                if(res.ok) {
-                  this.setResetSuccess(true);
-                  this.setResetErrorMessage('Password reset email has been sent!')
-                  resolve(res)
-                } else {
-                  this.setResetSuccess(false);
-                  this.setResetErrorMessage(res.json.error.message)
-                }
-                this.setResetLoading(false);
-            })
-            .catch((err) => {
-                this.setResetSuccess(false);
-                this.setResetLoading(false);
-                reject(err)
-            })
-
+            this.setResetErrorMessage(res.json.error.message)
+          }
+          this.setResetLoading(false);
         })
-    }
+        .catch((err) => {
+          this.setResetSuccess(false);
+          this.setResetLoading(false);
+          reject(err)
+        })
+
+    })
+  }
 
 }
