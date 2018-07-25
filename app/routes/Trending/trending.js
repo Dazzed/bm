@@ -157,7 +157,7 @@ class SubMenu extends React.Component {
     console.log('=============== SECTOR DATA JS', sectorDataJS)
     const sectorOption = selectedSectorOption;
 
-    let label = sector_props[sectorOption].label;
+    let label = '';
 
     let disabled = false;
     if(sectorLoading || sectorDataJS.length === 0) {
@@ -167,6 +167,10 @@ class SubMenu extends React.Component {
       label = 'Loading...'
     }
 
+    if(!sectorLoading && sectorDataJS && sectorDataJS.length > 0) {
+      label = sector_props[sectorOption].label;
+    }
+    
     return <View style={{flex: 1}}>
       <TouchableOpacity disabled={disabled} style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
         <Image
