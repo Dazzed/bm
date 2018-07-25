@@ -52,7 +52,8 @@ export default class DialIndicator extends React.Component {
       {
         toValue: newValue,
         duration: this.animationSpeed,
-      }
+        useNativeDriver: true
+      },
     ).start();
   }
 

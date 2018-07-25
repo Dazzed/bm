@@ -154,10 +154,10 @@ class SubMenu extends React.Component {
 
   renderSectorPicker() {
     const { sectorDataJS, sectorLoading, selectedSectorOption } = sectorIndustriesStore;
-    console.log('=============== SECTOR DATA JS', sectorDataJS)
+    // console.log('=============== SECTOR DATA JS', sectorDataJS)
     const sectorOption = selectedSectorOption;
 
-    let label = sector_props[sectorOption].label;
+    let label = '';
 
     let disabled = false;
     if(sectorLoading || sectorDataJS.length === 0) {
@@ -167,6 +167,10 @@ class SubMenu extends React.Component {
       label = 'Loading...'
     }
 
+    if(!sectorLoading && sectorDataJS && sectorDataJS.length > 0) {
+      label = sector_props[sectorOption].label;
+    }
+    
     return <View style={{flex: 1}}>
       <TouchableOpacity disabled={disabled} style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
         <Image
@@ -459,7 +463,6 @@ class Trending extends React.Component {
           style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}
         >
           {trendingDataJS.map((data, i) => {
-            console.log('each data', data)
             let formattedDataChange = data.change
             if(data.change > 0) {
               data.formattedDataChange = '+' + data.change

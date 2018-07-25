@@ -38,7 +38,7 @@ const AppNavTabs = TabNavigator({
   }
 }, {
   initialRouteName: appNavDefaultTabRoute,
-  lazy: true,
+  lazy: false,
   animationEnabled: true,
   tabBarOptions: {
     activeTintColor: color['darkSlate'],
@@ -77,12 +77,7 @@ const StackNav = StackNavigator({
   animationEnabled: true,
   mode: 'modal',
   headerMode: 'float',
-  headerTransitionPreset: 'uikit',
-  // transitionConfig: () => ({
-  //   // transitionSpec: {
-  //   //   duration: 0,
-  //   // },
-  // }),
+  headerTransitionPreset: 'uikit'
 });
 
 

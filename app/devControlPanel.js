@@ -31,7 +31,7 @@ const fillRegistrationWithFakeData = true;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Trending';
+const appNavDefaultTabRoute = 'Account';
 
 // Account
 // Watchlists
@@ -47,7 +47,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
-const showConsole = true;
+const showConsole = false;
 
 const autoLogin = false;
 // const autoLogin = true;
@@ -63,6 +63,7 @@ const verifyAuthOnHomeView = true;
 
 const chosenServer = 'staging';
 
+// for console.warn() views
 console.disableYellowBox = true;
 
 let forceDarkTheme = false;

@@ -85,7 +85,7 @@ export default class AccountSelect extends React.Component {
         }
 
         let eachAccountStyle = {
-            height: 60,
+            height: 80,
             padding: 2,
             backgroundColor: theme.white,
             alignItems: 'center',
@@ -108,7 +108,7 @@ export default class AccountSelect extends React.Component {
         }
 
         let subTitleStyle = {
-            color: theme.lightGray
+            color: theme.lightGray,
         }
 
         let selectIcon = (i) => {
@@ -146,7 +146,8 @@ export default class AccountSelect extends React.Component {
                     ...eachAccountStyle,
                     borderLeftWidth: borderWidth,
                     borderRightWidth: borderWidth,
-                    borderColor: theme.borderGray
+                    borderColor: theme.borderGray,
+                    // borderColor: 'red',
                 }
                 if(i === 0) {
                     thisAccountStyle.borderTopLeftRadius = masterRadius;

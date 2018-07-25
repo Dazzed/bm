@@ -255,6 +255,16 @@ const ACCESS_TOKEN_KEY = '@Blu:accessToken';
 const CURRENT_USER_ID_KEY = '@Blu:currentUserId';
 const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled'
 
+const newsSources = {
+  'cnbc': 'CNBC',
+  'bloomberg': 'Bloomberg',
+  'msnbc': 'MSNBC',
+  'reuters': 'Reuters',
+  'wallStreet': 'Wall Street Journal',
+  'morningStar': 'Morning Star',
+  'marketWatch': 'Market Watch'
+}
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -279,5 +289,6 @@ export {
   THEME_KEY,
   ACCESS_TOKEN_KEY,
   CURRENT_USER_ID_KEY,
-  TOUCH_ID_ENABLED_KEY
+  TOUCH_ID_ENABLED_KEY,
+  newsSources
 }

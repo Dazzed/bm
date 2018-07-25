@@ -1,8 +1,9 @@
 import { checkIntersection } from "line-intersect";
 import moment from 'moment';
+import { indicatorDataMap } from '../../constants';
 
 export const flipYAxisValue = (height, inverseY) => {
-    return height - inverseY;
+  return height - inverseY;
 }
 
 export const generatePolygonsFromTwoLines = (line1, line2, height) => {
@@ -110,33 +111,47 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
     return polyGonList;
 }
 
-export const parseSmallGraphData = (data) => {
+export const parseSmallGraphData = (data, Price, graphHeight) => {
 
-    let graphMax = 0;
-    let graphMin = 999999999999999;
+    let d = {
+      yMax: 0,
+      yMin: 999999999999999,
+      yRange: 0,
+      lineData: [],
+      dateData: [],
+      priceLineHeight: 0
+    }
 
-    let lineData = [];
-    let dateData = [];
 
     for(let i = 0; i < data.length; i++) {
-        // console.log('eavh elem', data[i])
-        let thisClosePoint = data[i].close;
-        if(thisClosePoint > graphMax) {
-            graphMax = thisClosePoint
+        const thisClosePoint = data[i].close;
+        // get y max and min
+        if(thisClosePoint > d.yMax) {
+            d.yMax = thisClosePoint
         }
-        if(thisClosePoint < graphMin) {
-            graphMin = thisClosePoint
+        if(thisClosePoint < d.yMin) {
+            d.yMin = thisClosePoint
         }
-        lineData.push(data[i].close);
-        dateData.push(data[i].date);
     }
 
-    return {
-        graphMax: graphMax,
-        graphMin: graphMin,
-        lineData: lineData,
-        dateData: dateData
+    for(let i = 0; i < data.length; i++) {
+        d.lineData.push(data[i].close + d.yMin);
+        d.dateData.push(data[i].date);
     }
+
+    // Set range
+    d.yRange = d.yMax - d.yMin;
+
+    // calculate price line
+    let minAdjustedPrice = Price - d.yMin;
+    let minAdjustedMax = d.yMax - d.yMin;
+
+    let priceRelativePosition = minAdjustedPrice / minAdjustedMax;
+    d.priceLineHeight = (priceRelativePosition * d.yRange)  + d.yMin;
+
+    // console.log('------- max min graphhehgt', d.yMax, d.yMin, d.priceLineHeight, graphHeight)
+
+    return d;
 }
 
 
@@ -146,7 +161,7 @@ export const parseSmallGraphData = (data) => {
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-export const parseLargeGraphData = (inputData, height, width) => {
+export const parseLargeGraphData = (inputData, height, width, indicatorsList) => {
 
     let d = {
         xMax: 0,
@@ -163,6 +178,16 @@ export const parseLargeGraphData = (inputData, height, width) => {
         formattedLines: []
     };
 
+    const manipulateXMaxMin = (input) => {
+      if( input > d.xMax ) d.xMax = input;
+      if( input < d.xMin ) d.xMin = input;
+    }
+
+    const manipulateYMaxMin = (input) => {
+      if( input > d.yMax ) d.yMax = input;
+      if( input < d.yMin ) d.yMin = input;
+    }
+
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
 
@@ -175,27 +200,23 @@ export const parseLargeGraphData = (inputData, height, width) => {
         dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
       }
 
-      // console.log('==== date unix', dateUnix)
-
       // calculate min and max
       // time / x value
-      if( dateUnix > d.xMax ) d.xMax = dateUnix;
-      if( dateUnix < d.xMin ) d.xMin = dateUnix;
-      // vwap
-      if( elem.vwap > d.yMax ) d.yMax = elem.vwap;
-      if( elem.vwap < d.yMin ) d.yMin = elem.vwap;
-      // open
-      if( elem.open > d.yMax ) d.yMax = elem.open;
-      if( elem.open < d.yMin ) d.yMin = elem.open;
-      // close
-      if( elem.close > d.yMax ) d.yMax = elem.close;
-      if( elem.close < d.yMin ) d.yMin = elem.close;
-      // high
-      if( elem.high > d.yMax ) d.yMax = elem.high;
-      if( elem.high < d.yMin ) d.yMin = elem.high;
-      // low
-      if( elem.low > d.yMax ) d.yMax = elem.low;
-      if( elem.low < d.yMin ) d.yMin = elem.low;
+      manipulateXMaxMin(dateUnix)
+      manipulateYMaxMin(elem.vwap);
+      manipulateYMaxMin(elem.open);
+      manipulateYMaxMin(elem.close);
+      manipulateYMaxMin(elem.high);
+      manipulateYMaxMin(elem.low);
+
+
+      // handle optionally editing things here
+      if(indicatorsList.indexOf('EMA') > 0) {
+        manipulateYMaxMin('ema');
+      }
+      if(indicatorsList.indexOf('RSI') > 0) {
+        manipulateYMaxMin('rsi');
+      }
 
       return {
         ...elem,
@@ -268,11 +289,25 @@ export const parseLargeGraphData = (inputData, height, width) => {
       }
     }
 
+    console.log('==================== MAX MIN', d.yMax, d.yMin)
+
+    console.log('======== INDICATORS LIST', indicatorsList, indicatorDataMap)
+
+    if(indicatorsList.indexOf('EMA') > 0) {
+      d.formattedLines.push(generateLineData('ema', 'red'));
+    }
+    if(indicatorsList.indexOf('RSI') > 0) {
+      d.formattedLines.push(generateLineData('rsi', 'red'));
+    }
+
     // Generate lines here
     // d.formattedLines.push(generateLineData('high', 'red'));
     // d.formattedLines.push(generateLineData('low', 'blue'));
     // d.formattedLines.push(generateLineData('open', 'green'));
     // d.formattedLines.push(generateLineData('close', 'orange'));
+    // d.formattedLines.push(generateLineData('ema', 'orange'));
+    // d.formattedLines.push(generateLineData('rsi', 'green'));
+    // d.formattedLines.push(generateLineData('vwap', 'blue'));
 
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {
@@ -283,9 +318,8 @@ export const parseLargeGraphData = (inputData, height, width) => {
       let yPosition = (((d.yMax * multiplier) / d.yMax ) * height) + lineOffset;
       let flippedYPosition = flipYAxisValue(height, yPosition);
       let relativeYPosition = flippedYPosition / height;
-      let calculatedValue = relativeYPosition * d.yMax;
+      let calculatedValue = (relativeYPosition * d.yRange) + d.yMin;
       let formattedLabel = '$' + calculatedValue.toFixed(2);
-
       const yObj = {
         label: formattedLabel,
         position: yPosition

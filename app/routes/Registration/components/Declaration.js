@@ -112,38 +112,37 @@ export default class Declaration extends Component {
     }
 
     nextView() {
-        console.log('----- this', this)
-            this.props.onForwardStep();
+      this.props.onForwardStep();
     }
 
     render() {
-        return (
-            <KeyboardAvoidingView
-                behavior={this.props.behavior}
-                style={[styles_2.section, {position: 'relative'}]}>
-                <View style={[{ margin: 15 }]}>
-                    <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
-                    <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
-                </View>
-                <ScrollView style={{ height: '72%' }}>
-                  <RegistrationHeader headerText={'I DECLARE THAT I HAVE READ AND AGREE TO THE FOLLOWING'} generalText={null} whyWeAskText={null} extraContent={null} />
+      return (
+          <KeyboardAvoidingView
+              behavior={this.props.behavior}
+              style={[styles_2.section, {position: 'relative'}]}>
+              <View style={[{ margin: 15 }]}>
+                  <View style={{ position: 'relative', height: 3, backgroundColor: this.props.colors['progressFull'], borderRadius: 1.5 }}></View>
+                  <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
+              </View>
+              <ScrollView style={{ height: '72%' }}>
+                <RegistrationHeader headerText={'I DECLARE THAT I HAVE READ AND AGREE TO THE FOLLOWING'} generalText={null} whyWeAskText={null} extraContent={null} />
 
-                    <View style={[{ backgroundColor: this.props.colors['white'] }]}>
-                        <View style={[styles_2.registrationFormView]}>
-                            {this.renderLinks()}
-                        </View>
-                    </View>
-                </ScrollView>
-                {this.renderPopOver()}
-                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={() => this.nextView()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
-                            {this.state.loading ? 'LOADING...' : 'I AGREE'}
-                        </Text>
-                    </TouchableHighlight>
-                    <Text> </Text>
-                </View>
-            </KeyboardAvoidingView>
+                  <View style={[{ backgroundColor: this.props.colors['white'] }]}>
+                      <View style={[styles_2.registrationFormView]}>
+                          {this.renderLinks()}
+                      </View>
+                  </View>
+              </ScrollView>
+              {this.renderPopOver()}
+              <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
+                  <TouchableHighlight onPress={() => this.nextView()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+                      <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
+                          {this.state.loading ? 'LOADING...' : 'I AGREE'}
+                      </Text>
+                  </TouchableHighlight>
+                  <Text> </Text>
+              </View>
+          </KeyboardAvoidingView>
         )
     }
 }

@@ -13,6 +13,7 @@ const deposit = (params) => get('users/deposit', params);
 const getStockChartDetail = (params) => post('tickerLists/stockCharts', params);
 const searchStocks = (params) => get('users/stockSearch', params);
 const getSectorIndustries = (params) => get('tickerLists/sectors-industries', params);
+const updateSettings = (params) => get('/users/updateSettings', params);
 
 export {
     login,
@@ -27,5 +28,6 @@ export {
     deposit,
     getStockChartDetail,
     searchStocks,
-    getSectorIndustries
+    getSectorIndustries,
+    updateSettings
 }

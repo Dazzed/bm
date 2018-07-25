@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types'
-
 import {
   Text,
   TextInput,
@@ -11,36 +9,30 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import Modal from 'react-native-modal'
+import TouchID from 'react-native-touch-id';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import Faq from './components/faq';
-import ReportBug from './components/reportbug';
-import ContactUs from './components/contactus';
-
-import EditAddress from './components/editaddress';
-import EditMaritalStatus from './components/editmaritalstatus';
-import EditEmploymentStatus from './components/editemployment';
-import EditExperience from './components/editexperience';
-import EditDependents from './components/editdependents';
-import EditPhone from './components/EditPhone';
-import EditPassword from './components/EditPassword';
-
-import RadioForm from '../../components/react-native-simple-radio-button';
-import { colors } from '../../store/store';
-
-import styles from '../../style/style';
-import settings from '../../style/settings';
-import Search from '../search';
-import navstyle from '../../style/nav';
-
-import fonts from '../../style/fonts';
-
-import * as globalActions from '../../store/actions/global';
-import { selectGlobalData } from '../../selectors';
-
-import { authStore } from '../../mobxStores';
+import Faq from './faq';
+import ReportBug from './reportbug';
+import ContactUs from './contactus';
+import EditAddress from './editaddress';
+import EditMaritalStatus from './editmaritalstatus';
+import EditEmploymentStatus from './editemployment';
+import EditExperience from './editexperience';
+import EditDependents from './editdependents';
+import RadioForm from '../components/react-native-simple-radio-button';
+import { colors } from '../store/store';
+import styles from '../style/style';
+import settings from '../style/settings';
+import Search from './search';
+import navstyle from '../style/nav';
+import Modal from 'react-native-modal'
+import fonts from '../style/fonts';
+import * as globalActions from '../store/actions/global';
+import { selectGlobalData } from '../selectors';
+import { forceDarkTheme } from '../devControlPanel';
+import { authStore, settingsStore } from '../mobxStores';
+import { observer } from 'mobx-react';
 
 var sort_props = [
   { label: '10 minutes', value: 0 },
@@ -49,6 +41,7 @@ var sort_props = [
   { label: '1 minute', value: 3 }
 ];
 
+@observer
 class Settings extends Component {
   static navigationOptions = {
     title: 'Settings',
@@ -81,7 +74,7 @@ class Settings extends Component {
       falseSwitchIsOn: false,
       isSearchVisible: false,
       isAutoLogVisible: false,
-      autoLog: 3,
+      // autoLog: 3,
       numField: null,
       colors: colors(props.globalData.isDarkThemeActive)
     };
@@ -93,12 +86,14 @@ class Settings extends Component {
     this.setState({ isAutoLogVisible: true });
   }
 
+  setAutoLog(value) {
+    const { logOutAfterCount, setLogOutAfterCount } = settingsStore;
+    setLogOutAfterCount(value);
+    this.hideAutoLog();
+  }
+
   hideAutoLog(value) {
-    if (value) {
-      this.setState({ isAutoLogVisible: false, autoLog: value });
-    } else {
-      this.setState({ isAutoLogVisible: false });
-    }
+    this.setState({ isAutoLogVisible: false });
   }
 
   showEmail() {
@@ -207,17 +202,67 @@ class Settings extends Component {
   }
 
   logoutPressed() {
-    console.log('======= LOGOUT PRESSEDD')
+    // console.log('======= LOGOUT PRESSEDD')
     this.props.logoutAction()
     this.props.navigation.navigate('Login', { color: this.state.activeColor })
   }
 
+  toggleNewsByLabel(elem) {
+    const { setNewsSourceValue } = settingsStore;
+    setNewsSourceValue(elem);
+  }
+
+  renderNewsList() {
+    const { newsSourcesJS } = settingsStore;
+    if(!newsSourcesJS || newsSourcesJS.length < 1) {
+      return null;
+    } else {
+      return <View>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
+        {newsSourcesJS.map((elem, i) => {
+          return <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>{elem.name}</Text>
+            <Switch style={styles.switch}
+              onTintColor={this.state.colors['blue']}
+              onValueChange={(value) => this.toggleNewsByLabel(elem)}
+              value={elem.active} />
+          </View>
+        })}
+      </View>
+    }
+  }
+
+  setOrderValue(value) {
+    const{ setOrderValue } = settingsStore;
+    setOrderValue(value);
+  }
+  
+  renderAutoLogOption() {
+    const { autoLog } = settingsStore;
+    console.log('==== AUTO LOG', autoLog)
+    if(autoLog !== null && autoLog !== undefined) {
+      return <View>
+        // Auto Log Off
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
+        <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
+          <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
+        </TouchableOpacity>
+      </View>  
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { navigate } = this.props.navigation;
+    const { autoLog } = settingsStore;
 
     const {
       globalData
     } = this.props;
+
+    const { orderValue } = settingsStore;
 
     // console.log('GLOooooooobal data', globalData)
     // {this.renderOption('Citizenship', globalData.currentUser.country)}
@@ -281,63 +326,22 @@ class Settings extends Component {
               value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
 
-          {/* Auto Log Off */}
+          {this.renderAutoLogOption()}
 
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={this.showAutoLog}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[this.state.autoLog].label} inactivity</Text>
-          </TouchableOpacity>
-
-          {/* Notifications */}
-
+          // Notifications
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Orders</Text>
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
+              onValueChange={(value) => this.setOrderValue(value)}
+              value={orderValue} />
           </View>
 
           {/* News Source */}
+          {this.renderNewsList()}
 
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>CNBC</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Bloomberg</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={this.state.trueSwitchIsOn} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>MSNBC</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={true} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Reuters</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={true} />
-          </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>The Wall Street Journal</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.setState({ falseSwitchIsOn: value })}
-              value={true} />
-          </View>
+
           <View style={{ marginTop: 20 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLink, fonts.hindGunturRg]} onPress={this.toggleModal.bind(this, 'isFaqVisible')}>FAQ</Text>
@@ -373,7 +377,7 @@ class Settings extends Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, styles.bottomModalTall]}>
             <RadioForm
               radio_props={sort_props}
-              initial={this.state.autoLog}
+              initial={autoLog}
               formHorizontal={false}
               labelHorizontal={true}
               borderWidth={1}
@@ -385,7 +389,7 @@ class Settings extends Component {
               labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
               radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
               labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => { this.hideAutoLog(value) }}
+              onPress={(value) => { this.setAutoLog(value) }}
               style={styles.radioField}
             />
           </View>

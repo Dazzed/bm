@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 // import colors from './colors'
-import {colors} from '../store/store';
+import { colors } from '../store/store';
 
 const settings = StyleSheet.create({
   field: {
@@ -32,8 +32,8 @@ const settings = StyleSheet.create({
     // color: colors.darkSlate
   },
   image: {
-    width: 10, 
-    height: 18, 
+    width: 10,
+    height: 18,
     marginRight: 5,
     marginTop: 15,
     paddingLeft: 10,
