@@ -12,26 +12,28 @@ import {
 import TouchID from 'react-native-touch-id';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Faq from './faq';
-import ReportBug from './reportbug';
-import ContactUs from './contactus';
-import EditAddress from './editaddress';
-import EditMaritalStatus from './editmaritalstatus';
-import EditEmploymentStatus from './editemployment';
-import EditExperience from './editexperience';
-import EditDependents from './editdependents';
-import RadioForm from '../components/react-native-simple-radio-button';
-import { colors } from '../store/store';
-import styles from '../style/style';
-import settings from '../style/settings';
-import Search from './search';
-import navstyle from '../style/nav';
+import Faq from './components/faq';
+import ReportBug from './components/reportbug';
+import ContactUs from './components/contactus';
+import EditPassword from './components/EditPassword';
+import EditPhone from './components/EditPhone';
+import EditAddress from './components/editaddress';
+import EditMaritalStatus from './components/editmaritalstatus';
+import EditEmploymentStatus from './components/editemployment';
+import EditExperience from './components/editexperience';
+import EditDependents from './components/editdependents';
+import RadioForm from '../../components/react-native-simple-radio-button';
+import { colors } from '../../store/store';
+import styles from '../../style/style';
+import settings from '../../style/settings';
+import Search from './../search';
+import navstyle from '../../style/nav';
 import Modal from 'react-native-modal'
-import fonts from '../style/fonts';
-import * as globalActions from '../store/actions/global';
-import { selectGlobalData } from '../selectors';
-import { forceDarkTheme } from '../devControlPanel';
-import { authStore, settingsStore } from '../mobxStores';
+import fonts from '../../style/fonts';
+import * as globalActions from '../../store/actions/global';
+import { selectGlobalData } from '../../selectors';
+import { forceDarkTheme } from '../../devControlPanel';
+import { authStore, settingsStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 
 var sort_props = [
