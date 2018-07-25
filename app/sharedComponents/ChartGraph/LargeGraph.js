@@ -1,5 +1,5 @@
 import React from 'react';
-import {chartStore, colorStore} from "../../mobxStores";
+import { chartStore, colorStore } from "../../mobxStores";
 import { LineChart, Grid } from 'react-native-svg-charts'
 import {
     Svg,
@@ -222,7 +222,7 @@ export default class LargeGraph extends React.Component {
 
     render() {
         const { theme } = colorStore;
-        const { stockChartLoading, chartDetailDataJS } = chartStore;
+        const { stockChartLoading, chartDetailDataJS, indicatorsListJS } = chartStore;
 
         if(stockChartLoading) {
           return <View style={{ height: this.props.height, alignItems: 'center', justifyContent: 'center'}}>
@@ -236,7 +236,7 @@ export default class LargeGraph extends React.Component {
           </View>
         }
 
-        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width);
+        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS);
         console.log('---- parsed Data', parsedData);
 
         let inlineContainerStyle = {

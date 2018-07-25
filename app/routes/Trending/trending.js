@@ -154,7 +154,7 @@ class SubMenu extends React.Component {
 
   renderSectorPicker() {
     const { sectorDataJS, sectorLoading, selectedSectorOption } = sectorIndustriesStore;
-    console.log('=============== SECTOR DATA JS', sectorDataJS)
+    // console.log('=============== SECTOR DATA JS', sectorDataJS)
     const sectorOption = selectedSectorOption;
 
     let label = '';

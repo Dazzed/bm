@@ -69,8 +69,9 @@ export default class AccountStore {
         this.stockChartLoading = newBool;
     }
 
-    @observable indicatorsList = [];
-    @observable get indicatorsListJS() {
+    // make sure this initiates the same way in the view state at chart.js
+    @observable indicatorsList = ['ICHI'];
+    @computed get indicatorsListJS() {
       return toJS(this.indicatorsList);
     }
     @action setIndicatorsList = (newList) => {

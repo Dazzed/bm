@@ -1,5 +1,6 @@
 import { checkIntersection } from "line-intersect";
 import moment from 'moment';
+import { indicatorDataMap } from '../../constants';
 
 export const flipYAxisValue = (height, inverseY) => {
   return height - inverseY;
@@ -160,7 +161,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-export const parseLargeGraphData = (inputData, height, width) => {
+export const parseLargeGraphData = (inputData, height, width, indicatorsList) => {
 
     let d = {
         xMax: 0,
@@ -208,8 +209,14 @@ export const parseLargeGraphData = (inputData, height, width) => {
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
+
       // handle optionally editing things here
-      // manipulateYMaxMin(elem.rsi);
+      if(indicatorsList.indexOf('EMA') > 0) {
+        manipulateYMaxMin('ema');
+      }
+      if(indicatorsList.indexOf('RSI') > 0) {
+        manipulateYMaxMin('rsi');
+      }
 
       return {
         ...elem,
@@ -283,6 +290,15 @@ export const parseLargeGraphData = (inputData, height, width) => {
     }
 
     console.log('==================== MAX MIN', d.yMax, d.yMin)
+
+    console.log('======== INDICATORS LIST', indicatorsList, indicatorDataMap)
+
+    if(indicatorsList.indexOf('EMA') > 0) {
+      d.formattedLines.push(generateLineData('ema', 'red'));
+    }
+    if(indicatorsList.indexOf('RSI') > 0) {
+      d.formattedLines.push(generateLineData('rsi', 'red'));
+    }
 
     // Generate lines here
     // d.formattedLines.push(generateLineData('high', 'red'));
