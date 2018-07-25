@@ -147,13 +147,16 @@ class RegistrationPage extends React.Component {
   };
 
   onForwardStep = () => {
+    // console.log('== TO NExt step')
     if (this.state.step === this.totalSteps) {
+      // at the end, navigate to next view
       this.setState({
         step: 0
       }, () => {
         this.props.navigation.navigate('Login', { color: this.state.activeColor });
       })
     } else {
+      // just advance the view
       this.setState(({ step }) => ({ step: step + 1 }));
     }
   }
