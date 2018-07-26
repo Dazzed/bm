@@ -106,7 +106,7 @@ const rootApiCall = (path, method, body) => {
         ///////////////////////////////////////////////////////
         // Append Headers
 
-        if (method === 'POST') {
+        if (method === 'POST' || method === 'PATCH') {
           req.setRequestHeader('Accept', 'application/json');
           req.setRequestHeader('Content-Type', 'application/json');
         } else {
@@ -157,10 +157,12 @@ const get = (path, ...querifyArgs) => rootApiCall(path, 'GET', querify(...querif
 const post = (path, body) => rootApiCall(path, 'POST', body);
 const put = (path, body) => rootApiCall(path, 'PUT', body);
 const deleteRequest = path => rootApiCall(path, 'DELETE', null);
+const patch = (path, body) => rootApiCall(path, 'PATCH', body);
 
 export {
   get,
   post,
   put,
-  deleteRequest
+  deleteRequest,
+  patch
 };

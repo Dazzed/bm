@@ -22,7 +22,6 @@ import { colors } from '../../../store/store';
 class PhoneSelection extends Component {
   static propTypes = {
     onForwardStep: PropTypes.func.isRequired,
-    updateRegistrationParams: PropTypes.func.isRequired,
     colors: PropTypes.object.isRequired,
   }
 
@@ -130,7 +129,7 @@ class PhoneSelection extends Component {
             </Text>
             <View style={[{ backgroundColor: this.state.colors['white'], marginTop: 25, paddingTop: 40 }]}>
               <View style={[styles_2.registrationFormView]}>
-                <TextInput placeholder="XX" placeholderTextColor={this.state.colors['darkSlate']} value={phone}
+                <TextInput placeholder="XXXXXXXXXX" placeholderTextColor={this.state.colors['grey']} value={phone}
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
                 />
               </View>

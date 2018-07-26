@@ -6,7 +6,8 @@ import {
   TextInput,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -24,6 +25,7 @@ import {
 } from '../../../selectors';
 
 import { post } from '../../../api/apiUtility';
+import PasswordChecklist from '../../../sharedComponents/PasswordChecklist';
 
 @observer
 class EditPassword extends Component {
@@ -108,51 +110,53 @@ class EditPassword extends Component {
 
         <KeyboardAvoidingView
           behavior={this.state.behavior}
-          style={styles.formcontainer}>
-          <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>CURRENT PASSWORD</Text>
-            <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
-              placeholder=""
-              placeholderTextColor={this.state.colors['lightGray']}
-              value={this.state.password}
-              onChangeText={currentPassword => this.setState({ currentPassword })}
-              secureTextEntry={true}
+          style={styles.formcontainer}
+        >
+          <ScrollView style={{ height: '72%' }}>
+            <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>CURRENT PASSWORD</Text>
+              <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
+                placeholder=""
+                placeholderTextColor={this.state.colors['lightGray']}
+                value={this.state.password}
+                onChangeText={currentPassword => this.setState({ currentPassword })}
+                secureTextEntry={true}
+              />
+            </View>
+            <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>NEW PASSWORD</Text>
+              <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
+                placeholder=""
+                placeholderTextColor={this.state.colors['lightGray']}
+                value={this.state.newPassword}
+                onChangeText={newPassword => this.setState({ newPassword })}
+                secureTextEntry={true}
+              />
+            </View>
+            <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>CONFIRM NEW PASSWORD</Text>
+              <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
+                placeholder=""
+                placeholderTextColor={this.state.colors['lightGray']}
+                value={this.state.confirmNewPassword}
+                onChangeText={confirmNewPassword => this.setState({ confirmNewPassword })}
+                secureTextEntry={true}
+              />
+            </View>
+            <PasswordChecklist
+              password={this.state.newPassword}
+              extraLineItem={this.state.errorMessage}
             />
-          </View>
-          <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>NEW PASSWORD</Text>
-            <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
-              placeholder=""
-              placeholderTextColor={this.state.colors['lightGray']}
-              value={this.state.newPassword}
-              onChangeText={newPassword => this.setState({ newPassword })}
-              secureTextEntry={true}
-            />
-          </View>
-          <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>CONFIRM NEW PASSWORD</Text>
-            <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
-              placeholder=""
-              placeholderTextColor={this.state.colors['lightGray']}
-              value={this.state.confirmNewPassword}
-              onChangeText={confirmNewPassword => this.setState({ confirmNewPassword })}
-              secureTextEntry={true}
-            />
-          </View>
-          <Text style={[styles.details, fonts.hindGunturRg, { color: this.state.errorMessage ? 'red' : theme.darkSlate, fontSize: 16 }]}>
-            {
-              this.state.errorMessage || 'Please use 6 to 20 letters, numbers, and/or special characters. Letters are case-sensitive'
-            }
-          </Text>
-          <TouchableOpacity
-            style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
-            onPress={this.onSubmit}
-            disabled={this.state.loading}
-          >
-            <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>
-              {this.state.loading ? 'LOADING' : 'SAVE'}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
+              onPress={this.onSubmit}
+              disabled={this.state.loading}
+            >
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>
+                {this.state.loading ? 'LOADING' : 'SAVE'}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </KeyboardAvoidingView>
       </View>
     );

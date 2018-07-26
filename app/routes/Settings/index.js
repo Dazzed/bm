@@ -9,7 +9,6 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import TouchID from 'react-native-touch-id';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Faq from './components/faq';
@@ -18,6 +17,7 @@ import ContactUs from './components/contactus';
 import EditPassword from './components/EditPassword';
 import EditPhone from './components/EditPhone';
 import EditAddress from './components/editaddress';
+import EditEmail from './components/EditEmail';
 import EditMaritalStatus from './components/editmaritalstatus';
 import EditEmploymentStatus from './components/editemployment';
 import EditExperience from './components/editexperience';
@@ -66,6 +66,7 @@ class Settings extends Component {
       isExperienceVisible: false,
       isEmploymentVisible: false,
       isPhoneVisible: false,
+      isEmailVisible: false,
       isPasswordModalVisible: false,
 
       isFaqVisible: false,
@@ -88,22 +89,14 @@ class Settings extends Component {
     this.setState({ isAutoLogVisible: true });
   }
 
-  setAutoLog(value) {
-    const { logOutAfterCount, setLogOutAfterCount } = settingsStore;
+  setAutoLog = (value) => {
+    const { setLogOutAfterCount } = settingsStore;
     setLogOutAfterCount(value);
     this.hideAutoLog();
   }
 
-  hideAutoLog(value) {
+  hideAutoLog = () => {
     this.setState({ isAutoLogVisible: false });
-  }
-
-  showEmail() {
-    console.log('showEmail');
-  }
-
-  showPassword() {
-    console.log('showPassword');
   }
 
   handleTouch = (value) => {
@@ -216,41 +209,45 @@ class Settings extends Component {
 
   renderNewsList() {
     const { newsSourcesJS } = settingsStore;
-    if(!newsSourcesJS || newsSourcesJS.length < 1) {
+    if (!newsSourcesJS || newsSourcesJS.length < 1) {
       return null;
     } else {
       return <View>
         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
         {newsSourcesJS.map((elem, i) => {
-          return <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>{elem.name}</Text>
-            <Switch style={styles.switch}
-              onTintColor={this.state.colors['blue']}
-              onValueChange={(value) => this.toggleNewsByLabel(elem)}
-              value={elem.active} />
-          </View>
+          return (
+            <View key={`news_${i}`} style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>{elem.name}</Text>
+              <Switch style={styles.switch}
+                onTintColor={this.state.colors['blue']}
+                onValueChange={() => this.toggleNewsByLabel(elem)}
+                value={elem.active} />
+            </View>
+          );
         })}
       </View>
     }
   }
 
   setOrderValue(value) {
-    const{ setOrderValue } = settingsStore;
+    const { setOrderValue } = settingsStore;
     setOrderValue(value);
   }
-  
+
   renderAutoLogOption() {
     const { autoLog } = settingsStore;
     console.log('==== AUTO LOG', autoLog)
-    if(autoLog !== null && autoLog !== undefined) {
-      return <View>
-        // Auto Log Off
-        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-        <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-          <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
-        </TouchableOpacity>
-      </View>  
+    if (autoLog !== null && autoLog !== undefined) {
+      return (
+        <View>
+          {/* Auto Log Off */}
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
+          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
+            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
+          </TouchableOpacity>
+        </View>
+      );
     } else {
       return null;
     }
@@ -296,7 +293,7 @@ class Settings extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
 
           {/* TODO: need edit functions. what are we doint here? */}
-          {this.renderOption('Email', globalData.currentUser.email, this.showEmail)}
+          {this.renderOption('Email', globalData.currentUser.email, this.toggleModal.bind(this, 'isEmailVisible'))}
           {this.renderOption('Mobile', globalData.currentUser.phone, this.toggleModal.bind(this, 'isPhoneVisible'))}
           {this.renderOption('Password', '***********', this.toggleModal.bind(this, 'isPasswordModalVisible'))}
 
@@ -330,7 +327,7 @@ class Settings extends Component {
 
           {this.renderAutoLogOption()}
 
-          // Notifications
+          {/* Notifications */}
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NOTIFICATIONS</Text>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Orders</Text>
@@ -428,6 +425,20 @@ class Settings extends Component {
               hidePhone={this.toggleModal.bind(this, 'isPhoneVisible')}
               initiatePatchingUser={this.props.initiatePatchingUser}
               colors={this.state.colors}
+            />
+          </Modal>
+        }
+
+        {/* Email Modal */}
+        {
+          this.state.isEmailVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}
+          >
+            <EditEmail
+              hideEmail={this.toggleModal.bind(this, 'isEmailVisible')}
             />
           </Modal>
         }
