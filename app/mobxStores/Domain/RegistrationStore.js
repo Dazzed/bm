@@ -26,7 +26,6 @@ export default class RegistrationStore {
             zip: '',
             state: '',
             city: '',
-            zip: '',
             stateOption: 0,
 
             // phone selection

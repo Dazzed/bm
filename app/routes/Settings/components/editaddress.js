@@ -96,29 +96,11 @@ class EditAddress extends React.Component {
       zipCode,
     } = this.props.globalData.currentUser;
 
-    let stateAsInt = state;
-    if(typeof state !== 'number') {
-      stateAsInt = Number(state);
-    }
-
-    console.log('state as int', stateAsInt)
-
-    let stateOption = 0;
-    
-    state_list.every((elem, i) => {
-      
-      if(elem.value === stateAsInt) {
-        stateOption = elem.value;
-        return false;
-      }
-      return true;
-    })
-    
     this.state = {
       page: 'presets',
       colors: colors(props.globalData.isDarkThemeActive),
       isStateVisible: false,
-      stateOption: stateOption,
+      stateOption: state_list.findIndex(({label}) => label === state) || 0,
       addressOneClass: styles_2.registrationFormFieldInActive,
       addressTwoClass: styles_2.registrationFormFieldInActive,
       cityClass: styles_2.registrationFormFieldInActive,
