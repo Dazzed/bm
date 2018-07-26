@@ -518,13 +518,18 @@ class Scanner extends React.Component {
         style={scanner.symbolsContainer}
       >
         {scannerDataJS.map((data, i) => {
+          
+          let formattedOpen = '$' + data.open.toFixed(2);
+          let formattedHigh = '$' + data.high.toFixed(2);
+          let formattedLatestPrice = '$' + data.latestPrice.toFixed(2);
+          
           return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
             <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
               <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
             </TouchableOpacity>
-            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>${data.open}</Text></View>
-            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>${data.high}</Text></View>
-            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>${data.latestPrice}</Text></View>
+            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedOpen}</Text></View>
+            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedHigh}</Text></View>
+            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedLatestPrice}</Text></View>
           </View>
         })}
         {this.renderNewPageLaoding()}
