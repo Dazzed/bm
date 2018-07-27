@@ -76,8 +76,8 @@ export default class ForgotPassword extends React.Component {
                             style={styles.closeImg}
                         />
                     </TouchableOpacity>
-                    <SharedText style={[{ color: theme.darkSlate }, styles.mainCta, fonts.gothamBld]}>Recover</SharedText>
-                    <SharedText style={styles.rightCta}></SharedText>
+                    <Text style={[styles.mainCta, fonts.gothamBld, { color: theme.darkSlate }]}>Recover</Text>
+                    <Text style={styles.rightCta}></Text>
                 </View>
             </View>
 
