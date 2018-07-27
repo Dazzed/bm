@@ -242,8 +242,8 @@ class SubMenu extends React.Component {
           style={[trending.downArrow]}
         />
         <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
-        <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
-          { limitTextLength(label, 20) }
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
+          {label}
         </Text>
       </TouchableOpacity>
       <Modal
