@@ -50,7 +50,7 @@ export default class StyledTextInput extends React.Component {
             styles_2.registrationFormField,
         ]
 
-        if(this.state.active) {
+        if(this.state.active && !this.props.preventBlueUnderline) {
             inlineStyle.push(styles_2.registrationFormFieldActive)
         } else {
             inlineStyle.push(styles_2.registrationFormFieldInActive)
@@ -60,7 +60,7 @@ export default class StyledTextInput extends React.Component {
             <TextInput
                 {...this.props}
                 style={inlineStyle}
-                placeholderTextColor={theme.darkGray}
+                placeholderTextColor={theme.lightGray}
             />
         </View>
     }

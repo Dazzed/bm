@@ -83,10 +83,11 @@ export default class ForgotPassword extends React.Component {
 
 
             <KeyboardAvoidingView behavior={'height'} style={{flex: 1, paddingVertical: 60, width: '100%', alignItems: 'center', padding: 20, justifyContent: 'center'}}>
-                <Text style={[{ fontSize: 30, width: '100%', color: theme.darkSlate }]}>Reset Password</Text>
-                <Text style={{ width: '100%', color: theme.darkGray }}>Please enter your email address.</Text>
-                <Text style={{ width: '100%', color: theme.darkGray }}>We will send you a link to reset your password.</Text>
+                <Text style={[{ fontSize: 30, width: '100%', color: theme.darkSlate, textAlign: 'center' }]}>Reset Password</Text>
+                <Text style={{ width: '100%', color: theme.darkGray, textAlign: 'center' }}>Please enter your email address.</Text>
+                <Text style={{ width: '100%', color: theme.darkGray, textAlign: 'center' }}>We will send you a link to reset your password.</Text>
                 <StyledTextInput
+                    preventBlueUnderline={true}
                     value={this.state.email}
                     placeholder={'Email'}
                     onChangeText={(e) => this.updateEmail(e)}
