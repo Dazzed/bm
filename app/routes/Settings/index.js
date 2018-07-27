@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { observer } from 'mobx-react';
+
 import Faq from './components/faq';
 import ReportBug from './components/reportbug';
 import ContactUs from './components/contactus';
@@ -34,7 +36,7 @@ import * as globalActions from '../../store/actions/global';
 import { selectGlobalData } from '../../selectors';
 import { forceDarkTheme } from '../../devControlPanel';
 import { authStore, settingsStore } from '../../mobxStores';
-import { observer } from 'mobx-react';
+import { formatPhoneNumber } from '../../utility';
 
 var sort_props = [
   { label: '10 minutes', value: 0 },
@@ -180,17 +182,17 @@ class Settings extends Component {
   renderOption(title, data, functionToFire) {
     return (
       <TouchableOpacity
-        onPress={functionToFire}
+        onPress={functionToFire ? functionToFire : () => { }}
         style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}
       >
         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>
           {title}
         </Text>
-        <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['darkSlate'] }, settings.input, fonts.hindGunturRg]}>
+        <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.input, fonts.hindGunturRg]}>
           {data}
         </Text>
         <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
-          <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+          {functionToFire ? <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} /> : null}
         </Text>
       </TouchableOpacity>
     );
@@ -294,7 +296,7 @@ class Settings extends Component {
 
           {/* TODO: need edit functions. what are we doint here? */}
           {this.renderOption('Email', globalData.currentUser.email, this.toggleModal.bind(this, 'isEmailVisible'))}
-          {this.renderOption('Mobile', globalData.currentUser.phone, this.toggleModal.bind(this, 'isPhoneVisible'))}
+          {this.renderOption('Mobile', formatPhoneNumber(globalData.currentUser.phone, 'dot'), this.toggleModal.bind(this, 'isPhoneVisible'))}
           {this.renderOption('Password', '***********', this.toggleModal.bind(this, 'isPasswordModalVisible'))}
 
           {this.renderOption('Address', globalData.currentUser.address, this.toggleModal.bind(this, 'isAddressVisible'))}
@@ -302,6 +304,7 @@ class Settings extends Component {
           {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.toggleModal.bind(this, 'isDependentsVisible'))}
           {this.renderOption('Employment status', globalData.currentUser.employment, this.toggleModal.bind(this, 'isEmploymentStatusVisible'))}
           {this.renderOption('Investment experience', globalData.currentUser.experience, this.toggleModal.bind(this, 'isExperienceVisible'))}
+          {this.renderOption('Contry of citizenship', globalData.currentUser.country)}
 
           {/* Color Scheme */}
 

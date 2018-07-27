@@ -17,26 +17,26 @@ export const generateHeaderStyles = (theme) => {
 export const millionBillionFormatter = (inputNumber) => {
   let formattedNumber = '';
   let stringAppend = '';
-  if(!inputNumber) {
+  if (!inputNumber) {
     return '';
   }
-  if(isNaN(inputNumber)) {
+  if (isNaN(inputNumber)) {
     return 'NaN!'
   }
-  if(inputNumber.length < 4) {
+  if (inputNumber.length < 4) {
     // handle three digit items without modifying style
     return inputNumber;
-  } else if( inputNumber > 0 && inputNumber <= 99999) {
+  } else if (inputNumber > 0 && inputNumber <= 99999) {
     // format for thousands
     stringAppend = 'K';
     let dividedBy1000 = inputNumber / 1000;
     return dividedBy1000.toFixed(1) + stringAppend;
-  } else if( inputNumber >= 100000 && inputNumber <= 999999999) {
+  } else if (inputNumber >= 100000 && inputNumber <= 999999999) {
     // handle millions
     stringAppend = 'M';
     let dividedBy1000000 = inputNumber / 1000000;
     return dividedBy1000000.toFixed(1) + stringAppend;
-  } else if( inputNumber >= 1000000000 && inputNumber <= 999999999999) {
+  } else if (inputNumber >= 1000000000 && inputNumber <= 999999999999) {
     // handle billions
     stringAppend = 'B';
     let dividedBy1000000000 = inputNumber / 1000000000;
@@ -47,17 +47,17 @@ export const millionBillionFormatter = (inputNumber) => {
 }
 
 export const formatPrice = (priceInput) => {
-  if(!priceInput) {
+  if (!priceInput) {
     return ''
   }
-  if(isNaN(priceInput)) {
+  if (isNaN(priceInput)) {
     return priceInput
   }
   // make string
   let stringifiedPrice = priceInput.toString();
   // check if decimal exists
   let hasDecimal = stringifiedPrice.indexOf('.') > 0;
-  if(!hasDecimal) {
+  if (!hasDecimal) {
     // if it does not, add it and two 00s
     return priceInput + '.00';
   } else {
@@ -151,7 +151,7 @@ export const sortNumberArrayByParam = (targetArray, param, order = 'ASC') => {
 }
 
 export const kFormatter = num => {
-  switch(String(num).length) {
+  switch (String(num).length) {
     case 1:
     case 2:
     case 3:
@@ -176,7 +176,7 @@ export const zacksRatingFormatter = num => {
   return num * 0.2;
 }
 
-export const isScrollViewCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+export const isScrollViewCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
   const paddingToBottom = 20;
   return layoutMeasurement.height + contentOffset.y >=
     contentSize.height - paddingToBottom;
@@ -189,4 +189,16 @@ export const limitTextLength = (text, limit) => {
   } else {
     return text;
   }
+}
+
+// type = 'dot' || 'dash'
+export const formatPhoneNumber = (numb, type = 'dash') => {
+  const _symbol = type === 'dot' ? '.' : '-';
+  const numbers = numb.replace(/\D/g, '');
+  const char = { 3: _symbol, 6: _symbol };
+  numb = '';
+  for (var i = 0; i < numbers.length; i++) {
+    numb += (char[i] || '') + numbers[i];
+  }
+  return numb;
 }

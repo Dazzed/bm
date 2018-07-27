@@ -6,7 +6,9 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Alert,
+  ActionSheetIOS
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -35,6 +37,18 @@ class EditEmail extends React.Component {
     this.setState({
       email
     });
+  }
+
+  startSubmitting = () => {
+    Alert.alert(
+      'Are you sure',
+      `Do you want to change your email to ${this.state.email}? You will be logged out and can only login after you verify the new email`,
+      [
+        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+        { text: 'OK', onPress: this.onSubmit },
+      ],
+      { cancelable: true }
+    )
   }
 
   onSubmit = async () => {
@@ -123,18 +137,19 @@ class EditEmail extends React.Component {
 
         <KeyboardAvoidingView behavior={'height'} style={{ flex: 1, paddingVertical: 60, width: '100%', alignItems: 'center', padding: 20, justifyContent: 'center' }}>
           <Text style={[{ fontSize: 30, width: '100%', color: theme.darkSlate }]}>Change Email</Text>
-          <Text style={{ width: '100%', color: theme.darkGray }}>You will be logged out and we will send confirmation link to the new Email.</Text>
+          <Text style={{ width: '100%', color: theme.darkGray, marginVertical: 25 }}>You will be logged out and we will send confirmation link to the new Email.</Text>
           <StyledTextInput
             value={email}
             placeholder=""
             onChangeText={this.updateEmail}
-            style={{ marginVertical: 20, fontSize: 25, color: theme.darkSlate }}
+            style={{ marginVertical: 15, fontSize: 25, color: theme.darkSlate }}
           />
           {this.renderErrors()}
           <Button
             disabled={email.length === 0 || loading || globalData.currentUser.email === email}
-            onPress={this.onSubmit}
+            onPress={this.startSubmitting}
             title={loading ? 'LOADING...' : 'CHANGE EMAIL'}
+            style={{marginVertical: 15}}
           />
         </KeyboardAvoidingView>
       </View>
