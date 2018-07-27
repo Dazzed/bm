@@ -182,6 +182,15 @@ export const isScrollViewCloseToBottom = ({ layoutMeasurement, contentOffset, co
     contentSize.height - paddingToBottom;
 };
 
+export const limitTextLength = (text, limit) => {
+  if(text.length > limit) {
+    // return text limited - 3 and add ellipses
+    return text.slice(0, limit - 3) + '...'
+  } else {
+    return text;
+  }
+}
+
 // type = 'dot' || 'dash'
 export const formatPhoneNumber = (numb, type = 'dash') => {
   const _symbol = type === 'dot' ? '.' : '-';

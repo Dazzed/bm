@@ -154,10 +154,10 @@ const trending = StyleSheet.create({
     flex: 1.7
   },
   symbolsLabel: {
-    flex: 1
+    flex: 1,
   },
   symbolsVolume: {
-    flex: 2,
+    // flex: 2,
     alignItems: 'center'
   },
   addBtn: {
