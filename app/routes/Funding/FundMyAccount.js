@@ -17,6 +17,8 @@ import up from '../../images/up.png';
 import down from '../../images/down.png';
 const SearchCancelLight = require('../../images/searchcancel.png');
 const SearchCancelDark = require('../../images/searchcancel_dark.png');
+import trending from '../../style/trending';
+import fonts from '../../style/fonts';
 
 @observer
 export default class FundMyAccount extends React.Component {
@@ -152,10 +154,16 @@ export default class FundMyAccount extends React.Component {
                 {this.renderDroppedDownView()}
             </View>
         } else {
+            // deposit view
+            let subtitleStyle = {
+              color: theme.lightGray,
+              textAlign: 'center'
+            }
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
-                <View style={{marginVertical: 10}}></View>
-                <Text style={textStyle}>{selectedAccount.title}</Text>
-                <View style={{marginVertical: 0}}></View>
+                <View style={{marginVertical: 5}}></View>
+                <Text style={[trending.symbolsTxtDetail, fonts.hindGunturRg, textStyle]}>{selectedAccount.title}</Text>
+                <Text style={[trending.symbolsTxtDetail, fonts.hindGunturRg, subtitleStyle]}>{selectedAccount.subtitle}</Text>
+                <View style={{marginVertical: 5}}></View>
                 {this.renderAccountDropdown()}
                 {this.renderDroppedDownView()}
             </View>;
@@ -204,6 +212,9 @@ export default class FundMyAccount extends React.Component {
         let string = ''
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             string = 'TO'
+        }
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
+          return null;
         }
         
         return <TouchableOpacity disabled={true} onPress={() => this.toggleDropdown()} style={style}>
@@ -309,6 +320,9 @@ export default class FundMyAccount extends React.Component {
             disabled = true;
             buttonTitle = 'LOADING...'
         }
+        if(this.state.fundingString == '') {
+          disabled = true;
+        }
 
         return <Button disabled={disabled} {...this.props} title={buttonTitle} onPress={() => this.submitPressed()}/>
     }
@@ -323,7 +337,7 @@ export default class FundMyAccount extends React.Component {
                 {this.renderInputAmount()}
                 {this.renderErrorOrNull()}
                 <NumericalSelector disabledList={this.getDisabledList()} onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
-                <View style={{padding: 30, backgroundColor: theme.white}}>
+                <View style={{paddingVertical: 15, paddingHorizontal: 30, backgroundColor: theme.white}}>
                     {this.renderButton()}
                 </View>
             </View>
