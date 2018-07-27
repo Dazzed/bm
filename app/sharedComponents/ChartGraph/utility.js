@@ -2,6 +2,21 @@ import { checkIntersection } from "line-intersect";
 import moment from 'moment';
 import { indicatorDataMap } from '../../constants';
 
+Object.byString = (o, s) => {
+    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    var a = s.split('.');
+    for (var i = 0, n = a.length; i < n; ++i) {
+        var k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return;
+        }
+    }
+    return o;
+}
+
 export const flipYAxisValue = (height, inverseY) => {
   return height - inverseY;
 }
@@ -111,6 +126,11 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
     return polyGonList;
 }
 
+
+
+/////////////////////////////////////////////////////////////////////
+
+
 export const parseSmallGraphData = (data, Price, graphHeight) => {
 
     let d = {
@@ -154,8 +174,6 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
     return d;
 }
 
-
-
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -164,18 +182,18 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 export const parseLargeGraphData = (inputData, height, width, indicatorsList) => {
 
     let d = {
-        xMax: 0,
-        xMin: 99999999999999999999999,
-        yMax: 0,
-        yMin: 99999999999999999999999,
-        dataPoints: inputData,
-        gridYArray: [],
-        gridXArray: [],
-        xLineCount: 5,
-        yLineCount: 4,
-        xRange: 0,
-        yRange: 0,
-        formattedLines: []
+      xMax: 0,
+      xMin: 99999999999999999999999,
+      yMax: 0,
+      yMin: 99999999999999999999999,
+      dataPoints: inputData,
+      gridYArray: [],
+      gridXArray: [],
+      xLineCount: 5,
+      yLineCount: 4,
+      xRange: 0,
+      yRange: 0,
+      formattedLines: []
     };
 
     const manipulateXMaxMin = (input) => {
@@ -209,13 +227,17 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
-
-      // handle optionally editing things here
-      if(indicatorsList.indexOf('EMA') > 0) {
-        manipulateYMaxMin('ema');
+      // Manipulate max with other values
+      if(indicatorsList.indexOf('EMA') > -1) {
+        manipulateYMaxMin(elem.ema);
       }
-      if(indicatorsList.indexOf('RSI') > 0) {
-        manipulateYMaxMin('rsi');
+      if(indicatorsList.indexOf('RSI') > -1) {
+        manipulateYMaxMin(elem.rsi);
+      }
+      if(indicatorsList.indexOf('BOL') > -1) {
+        manipulateYMaxMin(elem.bol.lower);
+        manipulateYMaxMin(elem.bol.middle);
+        manipulateYMaxMin(elem.bol.upper);
       }
 
       return {
@@ -274,7 +296,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
     const generateLineData = (targetValue, color) => {
       let lineData = [];
       d.dataPoints.forEach((elem, i) => {
-        let chosenValue = elem[targetValue];
+        let chosenValue = Object.byString(elem, targetValue);
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
@@ -287,17 +309,25 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
         lineTargetValue: targetValue,
         formattedLineData: formattedLineData
       }
+
     }
 
     console.log('==================== MAX MIN', d.yMax, d.yMin)
 
     console.log('======== INDICATORS LIST', indicatorsList, indicatorDataMap)
 
-    if(indicatorsList.indexOf('EMA') > 0) {
+    if(indicatorsList.indexOf('EMA') > -1) {
       d.formattedLines.push(generateLineData('ema', 'red'));
     }
-    if(indicatorsList.indexOf('RSI') > 0) {
+    if(indicatorsList.indexOf('RSI') > -1) {
       d.formattedLines.push(generateLineData('rsi', 'red'));
+    }
+
+    if(indicatorsList.indexOf('BOL') > -1) {
+      d.formattedLines.push(generateLineData('bol.lower', 'red'));
+      d.formattedLines.push(generateLineData('bol.middle', 'green'));
+      d.formattedLines.push(generateLineData('bol.upper', 'blue'));
+      // d.formattedLines.push(generateLineData('rsi', 'red'));
     }
 
     // Generate lines here

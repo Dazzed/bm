@@ -31,7 +31,7 @@ const fillRegistrationWithFakeData = false;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Account';
+const appNavDefaultTabRoute = 'Watchlists';
 
 // Account
 // Watchlists
@@ -47,7 +47,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
-const showConsole = false;
+const showConsole = true;
 
 const autoLogin = false;
 // const autoLogin = true;
