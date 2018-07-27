@@ -465,6 +465,9 @@ class Trending extends React.Component {
             if(data.change > 0) {
               formattedDataChange = '+' + data.change
             }
+            if(data.change === 0) {
+              formattedDataChange = '0.00'
+            }
 
             let watchListIconSrc = require('../../images/add.png');
             if (data.inWatchList) {
@@ -474,6 +477,9 @@ class Trending extends React.Component {
             let formattedChangePercent = data['changePercent'].toFixed(3) + '%';
             if(data['changePercent'] > 0) {
               formattedChangePercent = '+' + formattedChangePercent;
+            }
+            if(data['changePercent'] === 0) {
+              formattedChangePercent = '+0.00%'
             }
             
             return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
