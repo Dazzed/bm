@@ -50,7 +50,7 @@ import styles from '../../style/style';
 import trending from '../../style/trending';
 import numbers from '../../style/numbers';
 import Index from '../../sharedComponents/ChartGraph';
-import { isScrollViewCloseToBottom } from '../../utility';
+import { isScrollViewCloseToBottom, limitTextLength } from '../../utility';
 var styleDefault;
 
 @observer
@@ -154,7 +154,6 @@ class SubMenu extends React.Component {
 
   renderSectorPicker() {
     const { sectorDataJS, sectorLoading, selectedSectorOption } = sectorIndustriesStore;
-    // console.log('=============== SECTOR DATA JS', sectorDataJS)
     const sectorOption = selectedSectorOption;
 
     let label = '';
@@ -244,7 +243,7 @@ class SubMenu extends React.Component {
         />
         <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd, styleDefault]}>INDUSTRY</Text>
         <Text style={[{ color: this.state.colors['lightGray'] }, trending.subMenuTxt, fonts.hindGunturRg]}>
-          {label}
+          { limitTextLength(label, 20) }
         </Text>
       </TouchableOpacity>
       <Modal
@@ -276,7 +275,7 @@ class SubMenu extends React.Component {
               labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
               radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
               labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => { sectorOption == 0 ? console.log('this') : this.setIndustry(value) }}
+              onPress={(value) => { sectorOption == 0 ? console.log('do nothing') : this.setIndustry(value) }}
               style={trending.radioField}
             />
           </ScrollView>
@@ -377,7 +376,7 @@ class Trending extends React.Component {
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
-    this.companyNameLength = 20;
+    this.companyNameLength = 30;
   }
 
   componentDidMount() {
@@ -386,7 +385,6 @@ class Trending extends React.Component {
   }
 
   getNewPage() {
-    console.log('========= GET NEW PAGGGEEEEE');
     trendingStore.getNextPage()
   }
 
@@ -465,7 +463,7 @@ class Trending extends React.Component {
           {trendingDataJS.map((data, i) => {
             let formattedDataChange = data.change
             if(data.change > 0) {
-              data.formattedDataChange = '+' + data.change
+              formattedDataChange = '+' + data.change
             }
 
             let watchListIconSrc = require('../../images/add.png');
@@ -479,21 +477,26 @@ class Trending extends React.Component {
             }
             
             return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
+              
               <TouchableOpacity style={[trending.symbolsSpacer]} onPress={() => this.navigateToChart(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName'].length > this.companyNameLength ? `${data['companyName'].slice(0, this.companyNameLength - 3)}...` : data['companyName']}</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{limitTextLength(data['companyName'], this.companyNameLength)}</Text>
               </TouchableOpacity>
-              <View style={trending.symbolsVolume}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
-              <TouchableOpacity style={trending.symbolsLabel} onPress={() => this.toggleDecimalOrPercentage(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPriceFormatted']}</Text>
+              
+              <View style={[trending.symbolsVolume, {width: 80}]}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
+              
+              <TouchableOpacity style={[trending.symbolsLabel, {width: 70}]} onPress={() => this.toggleDecimalOrPercentage(data)}>
+                <Text style={[{ color: this.state.colors['darkSlate'], alignSelf: 'center' }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPriceFormatted']}</Text>
                 {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedDataChange}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
               </TouchableOpacity>
-              <View style={trending.addBtn}>
+              
+              <View style={[trending.addBtn]}>
                 <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data, data.inWatchList)} >
                   <Image
                     source={watchListIconSrc} style={styles.addImg} />
                 </TouchableOpacity>
               </View>
+              
             </View>)
           })}
           {this.renderNewPageLoading()}
