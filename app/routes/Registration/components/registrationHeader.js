@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { colorStore } from '../../../mobxStores';
+import { colorStore, deviceSizeStore } from '../../../mobxStores';
 import fonts from '../../../style/fonts';
 import styles_2 from '../../../style/style_2';
 import up from '../../../images/up.png';
@@ -47,11 +47,29 @@ export default class RegistrationHeader extends React.Component {
 
   renderExpandedContent() {
     const { theme } = colorStore;
+    const { shortSide } = deviceSizeStore;
+    
+    let rightSpacing = 15;
+    let paddingExists = 5;
+    
+    let imageStyle = {
+      width: shortSide,
+      position: 'relative',
+      right: -rightSpacing + paddingExists,
+      // borderWidth: 1,
+      // borderColor: 'red'
+    };
     if(this.state.showWhyWeAsk) {
-      return <View style={{flex: 1, paddingHorizontal: 40}}>
-        {this.renderWhyWeAskText()}
-        {this.renderExtraContent()}
-        <Image source={theme.illustration} style={{ width: 358, height: 150, position: 'relative', right: 14}} />
+      return <View style={{flex: 1}}>
+        <View style={{paddingHorizontal: 40, position: 'relative'}}>
+          {this.renderWhyWeAskText()}
+          {this.renderExtraContent()}
+        </View>
+        <Image
+          resizeMode={'contain'}
+          source={theme.illustration}
+          style={imageStyle}
+        />
       </View>
     } else {
       return null;

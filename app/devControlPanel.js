@@ -27,7 +27,7 @@ const firstNavDefaultRoute = 'Home';
 
 const registrationInitialStep = 0;
 
-const fillRegistrationWithFakeData = true;
+const fillRegistrationWithFakeData = false;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';

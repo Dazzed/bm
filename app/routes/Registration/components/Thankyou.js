@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,9 +15,11 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel
+} from '../../../components/react-native-simple-radio-button';
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
@@ -26,11 +27,9 @@ import numbers from '../../../style/numbers';
 import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
-
-let showWhyWeAsk = false;
-
 import { observer } from 'mobx-react';
-import { registrationStore } from '../../../mobxStores';
+import { registrationStore, deviceSizeStore } from '../../../mobxStores';
+let showWhyWeAsk = false;
 
 @observer
 export default class Declaration extends Component {
@@ -38,6 +37,26 @@ export default class Declaration extends Component {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
+    }
+
+    renderIllustration() {
+      const { shortSide } = deviceSizeStore;
+      
+      let paddingExists = 5;
+      let rightSpacing = 15;
+      
+      let imageStyle = {
+        position: 'relative',
+        width: shortSide,
+        right: -rightSpacing + paddingExists,
+        // borderWidth: 1,
+        // borderColor: 'red'
+      }
+      return <Image
+        resizeMode={'contain'}
+        source={this.props.colors['illustration']}
+        style={imageStyle}
+      />
     }
 
     render() {
@@ -59,7 +78,7 @@ export default class Declaration extends Component {
                             </Text>
                         </View>
                     </View>
-                    <Image source={this.props.colors['illustration']} style={{ position: 'relative', width: 358, height: 150, right: -67 }} />
+                    {this.renderIllustration()}
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <TouchableHighlight onPress={() => this.props.onForwardStep()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>

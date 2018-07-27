@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Button from '../../sharedComponents/Button1';
 import { numberWithCommas } from '../../utility';
 import { observer } from 'mobx-react';
-import { colorStore, accountStore } from '../../mobxStores';
+import { colorStore, accountStore, deviceSizeStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
 
 @observer
@@ -179,16 +179,30 @@ export default class AccountSelect extends React.Component {
 
     renderBackgroundImage() {
         const { themeType } = colorStore;
+        const { shortSide, longSide } = deviceSizeStore;
+        
+        let rightSpacing = 15;
+        
+        let imageStyle = {
+          width: shortSide,
+          alignSelf: 'flex-end',
+          position: 'absolute',
+          right: -rightSpacing,
+          top: longSide / 3,
+          zIndex: 0,
+          // borderWidth: 1,
+          // borderColor: 'red'
+        }
         if(themeType == 'light') {
             return <Image
                 resizeMode={'contain'}
-                style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -25, top: '60%', zIndex: 0}}
+                style={imageStyle}
                 source={require('../../images/illustration.png')}
             />
         } else {
           return <Image
               resizeMode={'contain'}
-              style={{width: '80%', alignSelf: 'flex-end', position: 'absolute', right: -25, top: '60%', zIndex: 0}}
+              style={imageStyle}
               source={require('../../images/illustration_dark.png')}
           />
         }
@@ -198,31 +212,27 @@ export default class AccountSelect extends React.Component {
         const { theme } = colorStore;
         let instruction = null;
         if(this.state.withdrawDepositMode === 'deposit') {
-            instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM';
-            return <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{instruction}</Text>
+          instruction = 'PLEASE SELECT AN ACCOUNT TO DRAW FROM';
+          return <Text style={{textAlign: 'center', fontSize: 20, color: theme.darkSlate}}>{instruction}</Text>
         } else {
-            return null
+          return null
         }
     }
 
-
     renderButtonAndContent() {
         const { theme } = colorStore;
-        return <View style={{flexDirection: 'column', height: '100%', backgroundColor: theme.contentBg, padding: 5}}>
-
-            <View style={{flex: 1, position: 'relative'}}>
-                {this.renderBackgroundImage()}
-                <View style={{marginVertical: 10}}></View>
-                {this.renderTopInstruction()}
-                <View style={{marginVertical: 10}}></View>
-                {this.renderCashAvailable()}
-                {this.renderAccountList()}
+        return <View style={{flexDirection: 'column', position: 'relative', height: '100%', backgroundColor: theme.contentBg}}>
+            {this.renderBackgroundImage()}
+            <View style={{flex: 1, padding: 5}}>
+              <View style={{marginVertical: 10}}></View>
+              {this.renderTopInstruction()}
+              <View style={{marginVertical: 10}}></View>
+              {this.renderCashAvailable()}
+              {this.renderAccountList()}
             </View>
-
             <View style={{flex: 0, padding: 30}}>
-                <Button {...this.props} title="NEXT" onPress={() => this.navToFundAccount()}/>
+              <Button {...this.props} title="NEXT" onPress={() => this.navToFundAccount()}/>
             </View>
-
         </View>
     }
 
