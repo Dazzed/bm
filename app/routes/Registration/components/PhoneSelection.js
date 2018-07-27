@@ -15,19 +15,14 @@ import {
   TouchableOpacity,
   TouchableHighlight
 } from 'react-native';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-import up from '../../../images/up.png';
-import numbers from '../../../style/numbers';
-import { isPhoneValid } from '../validation';
 import NumericalSelector from '../../../sharedComponents/NumericalSelector';
-import down from '../../../images/down.png';
-import { Label } from 'native-base';
 import { observer } from 'mobx-react';
 import { registrationStore, colorStore } from '../../../mobxStores';
 import RegistrationHeader from './registrationHeader';
+import { formatPhoneNumber } from '../../../utility';
 
 
 @observer
@@ -53,16 +48,6 @@ export default class PhoneSelection extends Component {
 
   returnFormValidClass() {
     return this.formValid() ? styles_2.formValid : styles_2.formInvalid
-  }
-
-  formatPhone(numb) {
-    var numbers = numb.replace(/\D/g, '');
-    var char = { 3: '-', 6: '-' };
-    numb = '';
-    for (var i = 0; i < numbers.length; i++) {
-      numb += (char[i] || '') + numbers[i];
-    }
-    return numb;
   }
 
   addNum = (num) => {
@@ -106,7 +91,7 @@ export default class PhoneSelection extends Component {
           <RegistrationHeader headerText={'PHONE NUMBER'} generalText={null} whyWeAskText={'Uncle Sam requires all brokerages to collect this info for identification verification'} />
           <View style={[{ backgroundColor: this.props.colors['white'], paddingVertical: 40 }]}>
             <View style={[styles_2.registrationFormView]}>
-              <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatPhone(registrationDataJS.phoneField)}
+              <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={formatPhoneNumber(registrationDataJS.phoneField)}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField]} maxLength={12} editable={false}
               />
             </View>

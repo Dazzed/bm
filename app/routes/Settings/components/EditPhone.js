@@ -18,6 +18,7 @@ import fonts from '../../../style/fonts';
 import numbers from '../../../style/numbers';
 
 import { colors } from '../../../store/store';
+import { formatPhoneNumber } from '../../../utility';
 
 class PhoneSelection extends Component {
   static propTypes = {
@@ -54,16 +55,6 @@ class PhoneSelection extends Component {
 
   returnFormValidClass() {
     return this.formValid() ? styles_2.formValid : styles_2.formInvalid
-  }
-
-  formatPhone(numb) {
-    var numbers = numb.replace(/\D/g, '');
-    var char = { 3: '-', 6: '-' };
-    numb = '';
-    for (var i = 0; i < numbers.length; i++) {
-      numb += (char[i] || '') + numbers[i];
-    }
-    return numb;
   }
 
   addNum = num => {
@@ -129,7 +120,7 @@ class PhoneSelection extends Component {
             </Text>
             <View style={[{ backgroundColor: this.state.colors['white'], marginTop: 25, paddingTop: 40 }]}>
               <View style={[styles_2.registrationFormView]}>
-                <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.state.colors['grey']} value={phone}
+                <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.state.colors['grey']} value={formatPhoneNumber(phone)}
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
                 />
               </View>
