@@ -486,7 +486,7 @@ class Trending extends React.Component {
               
               <TouchableOpacity style={[trending.symbolsSpacer]} onPress={() => this.navigateToChart(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{limitTextLength(data['companyName'], this.companyNameLength)}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName']}</Text>
               </TouchableOpacity>
               
               <View style={[trending.symbolsVolume, {width: 80}]}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
