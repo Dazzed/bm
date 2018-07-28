@@ -21,21 +21,63 @@ export const flipYAxisValue = (height, inverseY) => {
   return height - inverseY;
 }
 
-export const generatePolygonsFromTwoLines = (line1, line2, height) => {
+export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
     let polyGonList = [];
 
     // Make sure we actually have the right data
-    if(!line1 || !line2) {
+    if(!lineA || !lineB) {
         return null;
     }
+
+    let objectFormatter = (elem, i) => {
+      let entry = elem.split(',');
+      return {
+        x: parseFloat(entry[0]),
+        y: parseFloat(entry[1])
+      }
+    }
+
+    let objectFormattedLine1 = lineA.formattedLineData.split(' ').map((elem, i) => objectFormatter(elem, i));
+    let objectFormattedLine2 = lineB.formattedLineData.split(' ').map((elem, i) => objectFormatter(elem, i));
+
+    // test data
+    // let objectFormattedLine1 = [{
+    //   x: 0,
+    //   y: flipYAxisValue(height, 0)
+    // }, {
+    //   x: 50,
+    //   y: flipYAxisValue(height, 100)
+    // }, {
+    //   x: 100,
+    //   y: flipYAxisValue(height, 100)
+    // }, {
+    //   x: 150,
+    //   y: flipYAxisValue(height, 100)
+    // }]
+    //
+    // let objectFormattedLine2 = [{
+    //   x: 0,
+    //   y: flipYAxisValue(height, 0)
+    // }, {
+    //   x: 50,
+    //   y: flipYAxisValue(height, 200)
+    // }, {
+    //   x: 100,
+    //   y: flipYAxisValue(height, 0)
+    // },
+    // {
+    //   x: 150,
+    //   y: flipYAxisValue(height, 0)
+    // }]
+
 
     // And that it's the correct length
-    if(line1.lineData.length !== line2.lineData.length) {
+    if(objectFormattedLine1.length !== objectFormattedLine2.length) {
         return null;
     }
 
-    let data1 = line1.lineData;
-    let data2 = line2.lineData;
+    let data1 = objectFormattedLine1;
+    let data2 = objectFormattedLine2;
 
     // Reminder
     // Lines must have points normalized at similiar distances on the x axis for this to work
@@ -81,43 +123,58 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
 
 
         let intersection = checkIntersection(
-            lineSegment1[0].x, lineSegment1[0].y, lineSegment1[1].x, lineSegment1[1].y,
-            lineSegment2[0].x, lineSegment2[0].y, lineSegment2[1].x, lineSegment2[1].y
+          lineSegment1[0].x, lineSegment1[0].y, lineSegment1[1].x, lineSegment1[1].y,
+          lineSegment2[0].x, lineSegment2[0].y, lineSegment2[1].x, lineSegment2[1].y
         )
 
-        let point1 = `${lineSegment1[0].x},${flipYAxisValue(height, lineSegment1[0].y)}`;
-        let point2 = `${lineSegment1[1].x},${flipYAxisValue(height, lineSegment1[1].y)}`;
-        let point3 = `${lineSegment2[1].x},${flipYAxisValue(height, lineSegment2[1].y)}`;
-        let point4 = `${lineSegment2[0].x},${flipYAxisValue(height, lineSegment2[0].y)}`;
+        let point1 = `${lineSegment1[0].x},${lineSegment1[0].y}`;
+        let point2 = `${lineSegment1[1].x},${lineSegment1[1].y}`;
+        let point3 = `${lineSegment2[1].x},${lineSegment2[1].y}`;
+        let point4 = `${lineSegment2[0].x},${lineSegment2[0].y}`;
 
-        // console.log('point1', point1)
-        // console.log('point2', point2)
-        // console.log('point3', point3)
-        // console.log('point4', point4)
+        console.log('point1', point1)
+        console.log('point2', point2)
+        console.log('point3', point3)
+        console.log('point4', point4)
+
+        let point1YVal = parseFloat(point1.split(',')[1]);
+        let point2YVal = parseFloat(point2.split(',')[1]);
+        let point3YVal = parseFloat(point3.split(',')[1]);
+        let point4YVal = parseFloat(point4.split(',')[1]);
+
+        // console.log('=============================', intersection)
+        // console.log('point1YVal', point1YVal)
+        // console.log('point2YVal', point2YVal)
+        // console.log('point3YVal', point3YVal)
+        // console.log('point4YVal', point4YVal)
 
         // if there is no intersection, of if the intersection is an origin point
         if(intersection.type !== 'intersecting') {
-            let thisPolygonPoints = `${point1}  ${point2} ${point3} ${point4}`
+            let thisPolygonPoints = `${point1} ${point2} ${point3} ${point4}`
             let data = {
-                positive: point1 > point4 ? true : false,
+                positive: point4YVal > point1YVal ? true : false,
                 points: thisPolygonPoints
             }
-            console.log('no intserection', thisPolygonPoints)
+            console.log('no intserection')
             polyGonList.push(data);
 
         } else {
-            let intersectionPoint = `${intersection.point.x},${flipYAxisValue(height, intersection.point.y)}`;
+            console.log('intersecting indeed')
+            let intersectionPoint = `${intersection.point.x},${intersection.point.y}`;
 
             let thisPolygonPointsLeft = `${point1} ${intersectionPoint} ${point4}`
+            console.log('polygon points left: ', thisPolygonPointsLeft);
+
             let data1 = {
-                positive: point1 > point4 ? true : false,
+                positive: point4YVal > point1YVal ? true : false,
                 points: thisPolygonPointsLeft
             }
             polyGonList.push(data1);
 
             let thisPolygonPointsRightSide = `${point2} ${intersectionPoint} ${point3}`
+            console.log('polygon points right', thisPolygonPointsRightSide)
             let data2 = {
-                positive: point3 < point2 ? true : false,
+                positive: point3YVal > point2YVal ? true : false,
                 points: thisPolygonPointsRightSide
             }
             polyGonList.push(data2);
@@ -179,7 +236,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-export const parseLargeGraphData = (inputData, height, width, indicatorsList) => {
+export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme) => {
 
     let d = {
       xMax: 0,
@@ -195,7 +252,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       yRange: 0,
       formattedLines: [],
       volumeMin: 9999999999999999999999,
-      volumeMax: 0
+      volumeMax: 0,
+      ichiCloudLines: []
     };
 
     const manipulateXMaxMin = (input) => {
@@ -218,6 +276,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
     let emaHasNullValue = false;
     let rsiHasNullValue = false;
     let volumeHasNullValue = false;
+    let ichiHasNullValue = false;
 
     d.dataPoints.forEach((elem, i) => {
       if(elem.bol === null) {
@@ -232,6 +291,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       if(elem.volume === null) {
         volumeHasNullValue = true;
       }
+      if(elem.ichi === null) {
+        ichiHasNullValue = true;
+      }
     })
 
     // setup render variables
@@ -239,6 +301,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
     let renderEma = false;
     let renderRsi = false;
     let renderVolume = false;
+    let renderIchi = false;
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
@@ -256,6 +319,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       }
       if(!volumeHasNullValue) {
         renderVolume = ( indicatorsList.indexOf('VLM') > -1);
+      }
+      if(!ichiHasNullValue) {
+        renderIchi = ( indicatorsList.indexOf('ICHI') > -1);
       }
 
 
@@ -398,9 +464,12 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
     }
     if(renderVolume) {
       d.formattedLines.push(generateRelativeLineData('volume', 'orange', d.volumeMax, d.volumeMin));
-      // generateRelativeLineData('volume', 'orange', d.volumeMax, d.volumeMin)
     }
 
+    if(renderIchi) {
+      d.ichiCloudLines.push(generateLineData('ichi.spanA', theme.green));
+      d.ichiCloudLines.push(generateLineData('ichi.spanB', theme.red));
+    }
 
     // Generate lines here
     // d.formattedLines.push(generateLineData('high', 'red'));
