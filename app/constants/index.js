@@ -265,6 +265,9 @@ const newsSources = {
   'marketWatch': 'Market Watch'
 }
 
+// const initialIndicators = ['ICHI', 'BOL', 'EMA', 'VOL'];
+const initialIndicators = ['VLM'];
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -290,5 +293,6 @@ export {
   ACCESS_TOKEN_KEY,
   CURRENT_USER_ID_KEY,
   TOUCH_ID_ENABLED_KEY,
-  newsSources
+  newsSources,
+  initialIndicators
 }

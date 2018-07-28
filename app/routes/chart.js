@@ -43,7 +43,7 @@ import { chartStore, watchListStore, deviceSizeStore } from '../mobxStores';
 import { observer } from 'mobx-react';
 import moment from 'moment-timezone';
 import { millionBillionFormatter } from '../utility';
-
+import { initialIndicators } from '../constants';
 
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -86,7 +86,7 @@ class Chart extends Component {
       isSearchVisible: false,
       isIndicatorsVisible: false,
       page: '1H',
-      indicators: ['ICHI'],
+      indicators: initialIndicators,
       indicatorCnt: 0,
       isDisabled: false,
       stockChange: false,
@@ -907,9 +907,9 @@ class Chart extends Component {
                  {
                    this.state.indicators.map(function(indicate, index) {
                      if(index < 3) {
-                       return <Text>{indicate} </Text>
+                       return <Text key={index}>{indicate} </Text>
                      } else if(index == 3) {
-                       return <Text>...</Text>
+                       return <Text key={index}>...</Text>
                      }
                    })
                  }

@@ -193,7 +193,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       yLineCount: 4,
       xRange: 0,
       yRange: 0,
-      formattedLines: []
+      formattedLines: [],
+      volumeMin: 9999999999999999999999,
+      volumeMax: 0
     };
 
     const manipulateXMaxMin = (input) => {
@@ -206,8 +208,56 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       if( input < d.yMin ) d.yMin = input;
     }
 
+    const manipulateVolumeMaxMin = (input) => {
+      if( input > d.volumeMax ) d.volumeMax = input;
+      if( input < d.volumeMin ) d.volumeMin = input;
+    }
+
+    // check if any of the values contain a null value
+    let bolHasNullValue = false;
+    let emaHasNullValue = false;
+    let rsiHasNullValue = false;
+    let volumeHasNullValue = false;
+
+    d.dataPoints.forEach((elem, i) => {
+      if(elem.bol === null) {
+        bolHasNullValue = true;
+      }
+      if(elem.rsi === null) {
+        rsiHasNullValue = true;
+      }
+      if(elem.ema === null) {
+        emaHasNullValue = true;
+      }
+      if(elem.volume === null) {
+        volumeHasNullValue = true;
+      }
+    })
+
+    // setup render variables
+    let renderBol = false;
+    let renderEma = false;
+    let renderRsi = false;
+    let renderVolume = false;
+
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
+      console.log('======= ELEM', elem)
+
+      // if data is valid, check for indicator list and set render variables
+      if(!rsiHasNullValue) {
+        renderRsi = ( indicatorsList.indexOf('RSI') > -1);
+      }
+      if(!bolHasNullValue) {
+        renderBol = ( indicatorsList.indexOf('BOL') > -1);
+      }
+      if(!emaHasNullValue) {
+        renderEma = ( indicatorsList.indexOf('EMA') > -1);
+      }
+      if(!volumeHasNullValue) {
+        renderVolume = ( indicatorsList.indexOf('VLM') > -1);
+      }
+
 
       let dateUnix = null;
       if(elem.minute) {
@@ -227,17 +277,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
-      // Manipulate max with other values
-      if(indicatorsList.indexOf('EMA') > -1) {
+      if(renderEma) {
         manipulateYMaxMin(elem.ema);
       }
-      if(indicatorsList.indexOf('RSI') > -1) {
+      if(renderRsi) {
         manipulateYMaxMin(elem.rsi);
       }
-      if(indicatorsList.indexOf('BOL') > -1) {
+      if(renderBol) {
         manipulateYMaxMin(elem.bol.lower);
         manipulateYMaxMin(elem.bol.middle);
         manipulateYMaxMin(elem.bol.upper);
+      }
+      if(renderVolume) {
+        manipulateVolumeMaxMin(elem.volume);
       }
 
       return {
@@ -257,19 +309,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       const close = elem.close;
       const high = elem.high;
       const low = elem.low;
-
+      // scaled values
       const thisXValScaled = thisUnix - d.xMin;
       const openPositionScaled = open - d.yMin;
       const closePositionScaled = close - d.yMin;
       const highPositionScaled = high - d.yMin;
       const lowPositionScaled = low - d.yMin;
-
+      // relative values
       const xPositionRelative = thisXValScaled / d.xRange;
       const openYPositionRelative = openPositionScaled / d.yRange;
       const closeYPositionRelative = closePositionScaled / d.yRange;
       const highYPositionRelative = highPositionScaled / d.yRange;
       const lowYPositionRelative = lowPositionScaled / d.yRange;
-
+      // actual coordinates
       const xPositionCoordinates = xPositionRelative * width;
       const openYPositionCoordinates = flipYAxisValue( height, openYPositionRelative * height );
       const closeYPositionCoordinates = flipYAxisValue( height, closeYPositionRelative * height );
@@ -309,26 +361,46 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
         lineTargetValue: targetValue,
         formattedLineData: formattedLineData
       }
-
     }
 
-    console.log('==================== MAX MIN', d.yMax, d.yMin)
+    const generateRelativeLineData = (targetValue, color, max, min) => {
+      let lineData = [];
+      d.dataPoints.forEach((elem, i) => {
+        let chosenValue = Object.byString(elem, targetValue);
+        let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
+        let xCoord = xRel * width;
+        let yRelative = ( chosenValue - min) / ( max - min);
+        let graphYPosition = yRelative * height;
+        let yCoord = flipYAxisValue(height, graphYPosition);
+        lineData.push(`${xCoord},${yCoord}`)
+      })
 
-    console.log('======== INDICATORS LIST', indicatorsList, indicatorDataMap)
-
-    if(indicatorsList.indexOf('EMA') > -1) {
-      d.formattedLines.push(generateLineData('ema', 'red'));
+      let formattedLineData = lineData.join(' ')
+      return {
+        color: color,
+        lineTargetValue: targetValue,
+        formattedLineData: formattedLineData
+      }
     }
-    if(indicatorsList.indexOf('RSI') > -1) {
+
+    if(renderRsi) {
       d.formattedLines.push(generateLineData('rsi', 'red'));
     }
 
-    if(indicatorsList.indexOf('BOL') > -1) {
+    if(renderBol) {
       d.formattedLines.push(generateLineData('bol.lower', 'red'));
       d.formattedLines.push(generateLineData('bol.middle', 'green'));
       d.formattedLines.push(generateLineData('bol.upper', 'blue'));
-      // d.formattedLines.push(generateLineData('rsi', 'red'));
     }
+
+    if(renderEma) {
+      d.formattedLines.push(generateLineData('ema', 'orange'));
+    }
+    if(renderVolume) {
+      d.formattedLines.push(generateRelativeLineData('volume', 'orange', d.volumeMax, d.volumeMin));
+      // generateRelativeLineData('volume', 'orange', d.volumeMax, d.volumeMin)
+    }
+
 
     // Generate lines here
     // d.formattedLines.push(generateLineData('high', 'red'));
