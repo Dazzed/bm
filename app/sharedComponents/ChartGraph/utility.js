@@ -29,6 +29,8 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
         return null;
     }
 
+    // Get the line data, formatted like this: '123,432 543,234 etc..'
+    // put it back into an object notation and parse strings to floats
     let objectFormatter = (elem, i) => {
       let entry = elem.split(',');
       return {
@@ -40,37 +42,6 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
     let objectFormattedLine1 = lineA.formattedLineData.split(' ').map((elem, i) => objectFormatter(elem, i));
     let objectFormattedLine2 = lineB.formattedLineData.split(' ').map((elem, i) => objectFormatter(elem, i));
 
-    // test data
-    // let objectFormattedLine1 = [{
-    //   x: 0,
-    //   y: flipYAxisValue(height, 0)
-    // }, {
-    //   x: 50,
-    //   y: flipYAxisValue(height, 100)
-    // }, {
-    //   x: 100,
-    //   y: flipYAxisValue(height, 100)
-    // }, {
-    //   x: 150,
-    //   y: flipYAxisValue(height, 100)
-    // }]
-    //
-    // let objectFormattedLine2 = [{
-    //   x: 0,
-    //   y: flipYAxisValue(height, 0)
-    // }, {
-    //   x: 50,
-    //   y: flipYAxisValue(height, 200)
-    // }, {
-    //   x: 100,
-    //   y: flipYAxisValue(height, 0)
-    // },
-    // {
-    //   x: 150,
-    //   y: flipYAxisValue(height, 0)
-    // }]
-
-
     // And that it's the correct length
     if(objectFormattedLine1.length !== objectFormattedLine2.length) {
         return null;
@@ -78,9 +49,6 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
 
     let data1 = objectFormattedLine1;
     let data2 = objectFormattedLine2;
-
-    // Reminder
-    // Lines must have points normalized at similiar distances on the x axis for this to work
 
     let length = data1.length;
 
@@ -105,7 +73,6 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
             {x: data2[i].x,   y: data2[i].y},
             {x: data2[i+1].x, y: data2[i+1].y},
         ]
-
 
         // console.log('LINE 1 start')
         // console.log(lineSegment1[0].x)
@@ -132,17 +99,16 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
         let point3 = `${lineSegment2[1].x},${lineSegment2[1].y}`;
         let point4 = `${lineSegment2[0].x},${lineSegment2[0].y}`;
 
-        console.log('point1', point1)
-        console.log('point2', point2)
-        console.log('point3', point3)
-        console.log('point4', point4)
+        // console.log('point1', point1)
+        // console.log('point2', point2)
+        // console.log('point3', point3)
+        // console.log('point4', point4)
 
         let point1YVal = parseFloat(point1.split(',')[1]);
         let point2YVal = parseFloat(point2.split(',')[1]);
         let point3YVal = parseFloat(point3.split(',')[1]);
         let point4YVal = parseFloat(point4.split(',')[1]);
 
-        // console.log('=============================', intersection)
         // console.log('point1YVal', point1YVal)
         // console.log('point2YVal', point2YVal)
         // console.log('point3YVal', point3YVal)
@@ -155,24 +121,22 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
                 positive: point4YVal > point1YVal ? true : false,
                 points: thisPolygonPoints
             }
-            console.log('no intserection')
             polyGonList.push(data);
 
         } else {
-            console.log('intersecting indeed')
+            // Generate left side of intersection
             let intersectionPoint = `${intersection.point.x},${intersection.point.y}`;
-
             let thisPolygonPointsLeft = `${point1} ${intersectionPoint} ${point4}`
-            console.log('polygon points left: ', thisPolygonPointsLeft);
-
+            // console.log('polygon points left: ', thisPolygonPointsLeft);
             let data1 = {
                 positive: point4YVal > point1YVal ? true : false,
                 points: thisPolygonPointsLeft
             }
             polyGonList.push(data1);
 
+            // Generate right side of intersection
             let thisPolygonPointsRightSide = `${point2} ${intersectionPoint} ${point3}`
-            console.log('polygon points right', thisPolygonPointsRightSide)
+            // console.log('polygon points right', thisPolygonPointsRightSide)
             let data2 = {
                 positive: point3YVal > point2YVal ? true : false,
                 points: thisPolygonPointsRightSide
@@ -183,16 +147,13 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
     return polyGonList;
 }
 
-
-
 /////////////////////////////////////////////////////////////////////
-
 
 export const parseSmallGraphData = (data, Price, graphHeight) => {
 
     let d = {
       yMax: 0,
-      yMin: 999999999999999,
+      yMin: 9999999999999999999,
       yRange: 0,
       lineData: [],
       dateData: [],
@@ -201,19 +162,19 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 
 
     for(let i = 0; i < data.length; i++) {
-        const thisClosePoint = data[i].close;
-        // get y max and min
-        if(thisClosePoint > d.yMax) {
-            d.yMax = thisClosePoint
-        }
-        if(thisClosePoint < d.yMin) {
-            d.yMin = thisClosePoint
-        }
+      const thisClosePoint = data[i].close;
+      // get y max and min
+      if(thisClosePoint > d.yMax) {
+        d.yMax = thisClosePoint
+      }
+      if(thisClosePoint < d.yMin) {
+        d.yMin = thisClosePoint
+      }
     }
 
     for(let i = 0; i < data.length; i++) {
-        d.lineData.push(data[i].close + d.yMin);
-        d.dateData.push(data[i].date);
+      d.lineData.push(data[i].close + d.yMin);
+      d.dateData.push(data[i].date);
     }
 
     // Set range
@@ -277,6 +238,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
+    let obvHasNullValue = false;
 
     d.dataPoints.forEach((elem, i) => {
       if(elem.bol === null) {
@@ -294,6 +256,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.ichi === null) {
         ichiHasNullValue = true;
       }
+      if(elem.obv === null) {
+        obvHasNullValue = true;
+      }
     })
 
     // setup render variables
@@ -302,26 +267,30 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
+    let renderObv = false;
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
-      console.log('======= ELEM', elem)
+      // console.log('======= ELEM', elem)
 
       // if data is valid, check for indicator list and set render variables
       if(!rsiHasNullValue) {
-        renderRsi = ( indicatorsList.indexOf('RSI') > -1);
+        renderRsi = indicatorsList.indexOf('RSI') > -1;
       }
       if(!bolHasNullValue) {
-        renderBol = ( indicatorsList.indexOf('BOL') > -1);
+        renderBol = indicatorsList.indexOf('BOL') > -1;
       }
       if(!emaHasNullValue) {
-        renderEma = ( indicatorsList.indexOf('EMA') > -1);
+        renderEma = indicatorsList.indexOf('EMA') > -1;
       }
       if(!volumeHasNullValue) {
-        renderVolume = ( indicatorsList.indexOf('VLM') > -1);
+        renderVolume = indicatorsList.indexOf('VLM') > -1;
       }
       if(!ichiHasNullValue) {
-        renderIchi = ( indicatorsList.indexOf('ICHI') > -1);
+        renderIchi = indicatorsList.indexOf('ICHI') > -1;
+      }
+      if(!obvHasNullValue) {
+        renderObv = indicatorsList.indexOf('OBV') > -1;
       }
 
 
@@ -343,6 +312,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
+      // conditional rendering based on indicators menu
       if(renderEma) {
         manipulateYMaxMin(elem.ema);
       }
@@ -356,6 +326,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderVolume) {
         manipulateVolumeMaxMin(elem.volume);
+      }
+      if(renderObv) {
+        manipulateVolumeMaxMin(elem.obv)
       }
 
       return {
@@ -450,7 +423,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
 
     if(renderRsi) {
-      d.formattedLines.push(generateLineData('rsi', 'red'));
+      d.formattedLines.push(generateLineData('rsi', theme.blue));
     }
 
     if(renderBol) {
@@ -460,15 +433,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
 
     if(renderEma) {
-      d.formattedLines.push(generateLineData('ema', 'orange'));
+      d.formattedLines.push(generateLineData('ema', theme.blue));
     }
     if(renderVolume) {
-      d.formattedLines.push(generateRelativeLineData('volume', 'orange', d.volumeMax, d.volumeMin));
+      d.formattedLines.push(generateRelativeLineData('volume', theme.blue, d.volumeMax, d.volumeMin));
     }
 
     if(renderIchi) {
       d.ichiCloudLines.push(generateLineData('ichi.spanA', theme.green));
       d.ichiCloudLines.push(generateLineData('ichi.spanB', theme.red));
+    }
+    
+    if(renderObv) {
+      d.formattedLines.push(generateRelativeLineData('obv', theme.blue, d.volumeMax, d.volumeMin));
     }
 
     // Generate lines here
@@ -506,10 +483,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       let exactPixelLocation = lineOffest + xPosition;
       const relativePixelLocation = exactPixelLocation / width;
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
-      // console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
-
       const label = moment.unix(unixPoint).format('MM-DD-YY');
-
       const xObj = {
         pixelValue: label,
         label: label,
@@ -517,7 +491,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       d.gridXArray.push(xObj);
     }
-
     // console.log('====== ALL GRAPH DATA', d)
     return d
 }

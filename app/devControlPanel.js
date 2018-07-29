@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ const fillRegistrationWithFakeData = false;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
-const appNavDefaultTabRoute = 'Watchlists';
+const appNavDefaultTabRoute = 'Account';
 
 // Account
 // Watchlists
