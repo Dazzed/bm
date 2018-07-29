@@ -1,29 +1,56 @@
 import { observable, action, computed, toJS } from 'mobx';
+import { settingsStore, authStore } from '../index';
+import { autoLogOffOptions } from '../../constants';
 
 export default class AutoLogOff {
     constructor() {
       this.checkInterval = 5000;
-      // this.setIntervalID = setInterval(() => {
-      //   this.checkLogin()
-      // }, checkInterval)
+      this.setIntervalID = null;
+      this.navObject = null;
     }
 
-    @observable autoLogOffTime = 1000 * 60 * 1;
+    @action saveNavObject = (navObject) => {
+      this.navObject = navObject;
+    }
+
+    @action startTimer = () => {
+      this.activityPing()
+      this.setIntervalID = setInterval(() => {
+        this.checkLogin()
+      }, this.checkInterval)
+    }
+
+    @action stopTimer = () => {
+      clearInterval(this.setIntervalID);
+    }
 
     @action checkLogin = () => {
-      console.log('check login', Date.now())
-
-      if(Date.now() > this.lastPingTime + this.autoLogOffTime) {
-
+      const { getSettingsDataJS } = settingsStore;
+      let settingsDataJS = getSettingsDataJS();
+      if( settingsDataJS && 'autoLogOff' in settingsDataJS) {
+        let autoLogOffTimeSeconds = autoLogOffOptions[settingsDataJS.autoLogOff].minutes * 60;
+        let timeNowUnixSeconds = Date.now() / 1000;
+        if(timeNowUnixSeconds > this.lastPingTimeUnixSeconds + autoLogOffTimeSeconds) {
+          authStore.autoLogOut()
+          .then((res) => {
+            this.navObject.navigate('Home');
+            this.stopTimer();
+          })
+          .catch((err) => {
+            console.log('====== ERROR', error);
+          })
+        }
       }
-
-
     }
 
-    @observable lastPingTime = Date.now();
+    @observable lastPingTimeUnixSeconds = Date.now() / 1000;
 
-    @action pingAutoLogOff = () => {
-      this.lastPingTime = Date.now();
+    @action activityPing = () => {
+      this.lastPingTimeUnixSeconds = Date.now() / 1000;
+    }
+
+    @action isLoginExpired = () => {
+      return false;
     }
 
 }

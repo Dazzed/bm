@@ -14,6 +14,7 @@ const getStockChartDetail = (params) => post('tickerLists/stockCharts', params);
 const searchStocks = (params) => get('users/stockSearch', params);
 const getSectorIndustries = (params) => get('tickerLists/sectors-industries', params);
 const updateSettings = (params) => get('/users/updateSettings', params);
+const logout = (params) => post('users/logout', params)
 
 export {
     login,
@@ -29,5 +30,6 @@ export {
     getStockChartDetail,
     searchStocks,
     getSectorIndustries,
-    updateSettings
+    updateSettings,
+    logout
 }

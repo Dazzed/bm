@@ -1,7 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
-import { login, getUserById, resetPassword } from '../../api';
+import { login, getUserById, resetPassword, logout as logoutApiCall } from '../../api';
 import { saveToken } from '../../api/tokenUtility';
-import { watchListStore } from '../index';
+import { watchListStore, autoLogOffStore } from '../index';
 import axios from 'axios';
 import {
   AsyncStorage
@@ -11,7 +11,7 @@ import {
   THEME_KEY,
   ACCESS_TOKEN_KEY,
   CURRENT_USER_ID_KEY,
-  TOUCH_ID_ENABLED_KEY
+  TOUCH_ID_ENABLED_KEY,
 } from '../../constants';
 
 export default class AuthStore {
@@ -67,6 +67,9 @@ export default class AuthStore {
 
     return new Promise((resolve, reject) => {
       console.log('GO verify auth')
+      
+      // check if login is expired before anything
+      
       this.verifyingAuth = true;
       let accessToken = null;
       let userId = null;
@@ -89,15 +92,12 @@ export default class AuthStore {
         .then((res) => {
           console.log('api call check res', res)
           this.verifyingAuth = false;
-          resolve({
-
-            userData: res
-          })
+          autoLogOffStore.startTimer();
+          resolve({ userData: res })
         })
         .catch((err) => {
           console.log('VERIFY ERROR: ', err)
           this.verifyingAuth = false;
-
           const promises = [
             AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
             AsyncStorage.removeItem(CURRENT_USER_ID_KEY),
@@ -111,7 +111,6 @@ export default class AuthStore {
             .catch((err) => {
               cosnole.log('ERROR deleting data: ', err)
             });
-
           // do nothing for navigation, leave it on this page
         })
     })
@@ -178,6 +177,7 @@ export default class AuthStore {
         })
         .then((res) => {
           console.log('after populate user by id', res)
+          autoLogOffStore.startTimer();
           this.loginLoading = false;
           if (res.ok) {
             this.setUserData(res.json)
@@ -220,7 +220,32 @@ export default class AuthStore {
           this.setResetLoading(false);
           reject(err)
         })
-
+    })
+  }
+  
+  @action autoLogOut = () => {
+    return new Promise((resolve, reject) => {
+      logoutApiCall()
+      .then(() => {
+        console.log('logout fired')
+        return AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
+      })
+      .then(() => {
+        return AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
+      })
+      .then(() => {
+        return AsyncStorage.removeItem(CURRENT_USER_ID_KEY);
+      })
+      .then(() => {
+        return AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY);
+      })
+      .then(() => {
+        console.log('success')
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
     })
   }
 

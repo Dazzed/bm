@@ -18,6 +18,8 @@ import {
     appNavDefaultTabRoute,
     stackNavDefaultRoute
 } from '../devControlPanel';
+import { autoLogOffStore } from '../mobxStores';
+
 var color = colors();
 
 const AppNavTabs = TabNavigator({
@@ -48,6 +50,12 @@ const AppNavTabs = TabNavigator({
       paddingBottom: 5,
       paddingTop: 5
     }
+  },
+  navigationOptions: {
+    tabBarOnPress: ({ jumpToIndex, scene }) => {
+      autoLogOffStore.activityPing()
+      return jumpToIndex(scene.index);
+    },
   },
   tabBarComponent: CustomTabBar,
 });
