@@ -49,8 +49,11 @@ class EditAddress extends React.Component {
       colors: colors(props.globalData.isDarkThemeActive),
       isStateVisible: false,
       stateOption: state_list.findIndex(({label, value}) => {
-        console.log('=== label', label, value);
-        return label === state || 0;
+        if(label === state) {
+          return label === state;
+        } else {
+          return 0;
+        }
       }),
       addressOneClass: styles_2.registrationFormFieldInActive,
       addressTwoClass: styles_2.registrationFormFieldInActive,
@@ -157,6 +160,11 @@ class EditAddress extends React.Component {
       globalData
     } = this.props;
     
+    let stateTextLabel = '';
+    if(state_list[this.state.stateOption]) {
+      stateTextLabel = state_list[this.state.stateOption].label;
+    }
+    
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -210,7 +218,7 @@ class EditAddress extends React.Component {
                     />
                     <Text onPress={() => { this.showState() }}
                       style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField]}
-                    >{state_list[this.state.stateOption].label}</Text>
+                    >{stateTextLabel}</Text>
                   </TouchableOpacity>
                   <Modal
                     isVisible={this.state.isStateVisible}

@@ -1,6 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { settingsStore, authStore } from '../index';
 import { autoLogOffOptions } from '../../constants';
+import { autoLogOffEnabled } from '../../devControlPanel';
 
 export default class AutoLogOff {
     constructor() {
@@ -24,6 +25,13 @@ export default class AutoLogOff {
       clearInterval(this.setIntervalID);
     }
 
+    @action doLogOut = () => {
+      if(autoLogOffEnabled) {
+        this.navObject.navigate('Home');
+        this.stopTimer();
+      }
+    }
+
     @action checkLogin = () => {
       const { getSettingsDataJS } = settingsStore;
       let settingsDataJS = getSettingsDataJS();
@@ -33,8 +41,7 @@ export default class AutoLogOff {
         if(timeNowUnixSeconds > this.lastPingTimeUnixSeconds + autoLogOffTimeSeconds) {
           authStore.autoLogOut()
           .then((res) => {
-            this.navObject.navigate('Home');
-            this.stopTimer();
+            this.doLogOut()
           })
           .catch((err) => {
             console.log('====== ERROR', error);

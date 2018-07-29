@@ -68,6 +68,8 @@ console.disableYellowBox = true;
 
 let forceDarkTheme = false;
 
+let autoLogOffEnabled = false;
+
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -96,6 +98,7 @@ if(productionMode) {
     forceLoginToFundingEveryTime = false;
     verifyAuthOnHomeView = true;
     chosenServer = 'staging';
+    autoLogOffEnabled = true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -114,5 +117,6 @@ export {
     fillRegistrationWithFakeData,
     forceLoginToFundingEveryTime,
     verifyAuthOnHomeView,
-    chosenServer
+    chosenServer,
+    autoLogOffEnabled
 };

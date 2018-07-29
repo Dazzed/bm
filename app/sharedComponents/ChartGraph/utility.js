@@ -233,6 +233,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
 
     // check if any of the values contain a null value
+    // prevent them from rendering if that is the case
+    // we don't want to ever reference a null variable
+    // in the line rendering functions
+
     let bolHasNullValue = false;
     let emaHasNullValue = false;
     let rsiHasNullValue = false;
@@ -292,7 +296,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(!obvHasNullValue) {
         renderObv = indicatorsList.indexOf('OBV') > -1;
       }
-
 
       let dateUnix = null;
       if(elem.minute) {
@@ -443,7 +446,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.ichiCloudLines.push(generateLineData('ichi.spanA', theme.green));
       d.ichiCloudLines.push(generateLineData('ichi.spanB', theme.red));
     }
-    
+
     if(renderObv) {
       d.formattedLines.push(generateRelativeLineData('obv', theme.blue, d.volumeMax, d.volumeMin));
     }
