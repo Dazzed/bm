@@ -19,7 +19,6 @@ import {
     stackNavDefaultRoute
 } from '../devControlPanel';
 import { autoLogOffStore } from '../mobxStores';
-
 var color = colors();
 
 const AppNavTabs = TabNavigator({
