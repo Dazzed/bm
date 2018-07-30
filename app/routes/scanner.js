@@ -518,11 +518,14 @@ class Scanner extends React.Component {
         style={scanner.symbolsContainer}
       >
         {scannerDataJS.map((data, i) => {
-          
+
           let formattedOpen = '$' + data.open.toFixed(2);
           let formattedHigh = '$' + data.high.toFixed(2);
-          let formattedLatestPrice = '$' + data.latestPrice.toFixed(2);
-          
+          let formattedLatestPrice = '$';
+          if(data.latestPrice && typeof data.latestPrice === 'number') {
+            formattedLatestPrice = '$' + data.latestPrice.toFixed(2);
+          }
+
           return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
             <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
               <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
