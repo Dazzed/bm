@@ -12,7 +12,6 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { observer } from 'mobx-react';
-
 import Faq from './components/faq';
 import ReportBug from './components/reportbug';
 import ContactUs from './components/contactus';
@@ -37,13 +36,9 @@ import { selectGlobalData } from '../../selectors';
 import { forceDarkTheme } from '../../devControlPanel';
 import { authStore, settingsStore } from '../../mobxStores';
 import { formatPhoneNumber } from '../../utility';
+import { autoLogOffOptions } from '../../constants';
 
-var sort_props = [
-  { label: '10 minutes', value: 0 },
-  { label: '5 minutes', value: 1 },
-  { label: '2 minutes', value: 2 },
-  { label: '1 minute', value: 3 }
-];
+var sort_props = autoLogOffOptions;
 
 @observer
 class Settings extends Component {
@@ -238,7 +233,6 @@ class Settings extends Component {
 
   renderAutoLogOption() {
     const { autoLog } = settingsStore;
-    console.log('==== AUTO LOG', autoLog)
     if (autoLog !== null && autoLog !== undefined) {
       return (
         <View>
@@ -342,7 +336,6 @@ class Settings extends Component {
 
           {/* News Source */}
           {this.renderNewsList()}
-
 
           <View style={{ marginTop: 20 }}></View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'], borderTopColor: this.state.colors['borderGray'] }, settings.fieldLink]}>

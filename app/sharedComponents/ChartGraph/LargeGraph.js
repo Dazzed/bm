@@ -31,94 +31,32 @@ export default class LargeGraph extends React.Component {
         super(props);
     }
 
-
-    getLineList() {
-        const { theme } = colorStore;
-        return [
-            {
-                lineTitle: 'Test line 1',
-                color: theme.red,
-                lineData: [
-                    {
-                        x: 0, y: 0
-                    },
-                    {
-                        x: 50, y: 50
-                    },
-                    {
-                        x: 100, y: 100
-                    },
-                    {
-                        x: 150, y: 110
-                    },
-                    // {
-                    //     x: 200, y: 500
-                    // },
-                    // {
-                    //     x: 250, y: 0
-                    // },
-                    // {
-                    //     x: 300, y: 100
-                    // }
-                ]
-            },
-
-            {
-                lineTitle: 'Test line 1',
-                color: theme.green,
-                lineData: [
-                    {
-                        x: 0, y: 0
-                    },
-                    {
-                        x: 50, y: 100
-                    },
-                    {
-                        x: 100, y: 50
-                    },
-                    {
-                        x: 150, y: 50
-                    },
-                //     {
-                //         x: 200, y: 50
-                //     },
-                //     {
-                //         x: 250, y: 100
-                //     },
-                //     {
-                //         x: 300, y: 150
-                //     }
-                ]
-            }
-        ]
-    }
-
     generateXLineGroup(data, key) {
         const { position, label } = data;
         const { theme } = colorStore;
         return <G key={key}>
             <G>
-                <Line
-                    key={ 'zero-axis' }
-                    x1={ position }
-                    x2={ position }
-                    y1={ '0%' }
-                    y2={ '100%' }
-                    stroke={ theme.borderGray }
-                    strokeDasharray={ [ 4, 8 ] }
-                    strokeWidth={ 1 }
-                />
-                <TextSvg
-                    key={Math.random()}
-                    fontSize={12}
-                    fill={theme.borderGray}
-                    stroke={theme.borderGray}
-                    y={'95%'}
-                    x={ position }
-                    textAnchor="middle"
-                >
-                  {label}
-                </TextSvg>
+              <Line
+                key={ 'zero-axis' }
+                x1={ position }
+                x2={ position }
+                y1={ '0%' }
+                y2={ '100%' }
+                stroke={ theme.borderGray }
+                strokeDasharray={ [ 4, 8 ] }
+                strokeWidth={ 1 }
+              />
+              <TextSvg
+                key={Math.random()}
+                fontSize={12}
+                fill={theme.borderGray}
+                stroke={theme.borderGray}
+                y={'95%'}
+                x={ position }
+                textAnchor="middle"
+              >
+                {label}
+              </TextSvg>
             </G>
         </G>
     }
@@ -129,27 +67,27 @@ export default class LargeGraph extends React.Component {
 
         let verticalOffset = 4;
         return <G key={key}>
-            <Line
-                key={ 'zero-axis' }
-                y1={ position }
-                y2={ position }
-                x1={ '0%' }
-                x2={ '95%' }
-                stroke={ theme.borderGray }
-                strokeDasharray={ [ 4, 8 ] }
-                strokeWidth={ 1 }
-            />
-            <TextSvg
-                key={Math.random()}
-                fontSize={12}
-                fill={theme.borderGray}
-                stroke={theme.borderGray}
-                x={'95%'}
-                y={ position + verticalOffset}
-                textAnchor="middle"
-            >
-                {label}
-            </TextSvg>
+          <Line
+            key={ 'zero-axis' }
+            y1={ position }
+            y2={ position }
+            x1={ '0%' }
+            x2={ '95%' }
+            stroke={ theme.borderGray }
+            strokeDasharray={ [ 4, 8 ] }
+            strokeWidth={ 1 }
+          />
+          <TextSvg
+            key={Math.random()}
+            fontSize={12}
+            fill={theme.borderGray}
+            stroke={theme.borderGray}
+            x={'95%'}
+            y={ position + verticalOffset}
+            textAnchor="middle"
+          >
+            {label}
+          </TextSvg>
         </G>
     }
 
@@ -170,27 +108,27 @@ export default class LargeGraph extends React.Component {
         return <G key={key}>
             {/* Thin line -  high / low */}
             <Rect
-                key={Math.random()}
-                x={params.xPositionCoordinates - (thinLineWidth / 2)}
-                y={params.lowYPositionCoordinates}
-                width={thinLineWidth}
-                height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
-                fill={'red'}
-                strokeWidth={'1'}
-                stroke={color}
-                strokeLinejoin={'round'}
+              key={Math.random()}
+              x={params.xPositionCoordinates - (thinLineWidth / 2)}
+              y={params.lowYPositionCoordinates}
+              width={thinLineWidth}
+              height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
+              fill={'red'}
+              strokeWidth={'1'}
+              stroke={color}
+              strokeLinejoin={'round'}
             />
 
             {/* Thick line - open / close */}
             <Rect
-                x={params.xPositionCoordinates - (thickLineWidth / 2)}
-                y={thickLineBottom}
-                width={thickLineWidth}
-                height={thickLineTop - thickLineBottom}
-                fill={color}
-                strokeWidth={'1'}
-                stroke={color}
-                strokeLinejoin={'round'}
+              x={params.xPositionCoordinates - (thickLineWidth / 2)}
+              y={thickLineBottom}
+              width={thickLineWidth}
+              height={thickLineTop - thickLineBottom}
+              fill={color}
+              strokeWidth={'1'}
+              stroke={color}
+              strokeLinejoin={'round'}
             />
         </G>
     }
@@ -236,7 +174,7 @@ export default class LargeGraph extends React.Component {
           </View>
         }
 
-        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS);
+        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS, theme);
         console.log('---- parsed Data', parsedData);
 
         let inlineContainerStyle = {
@@ -246,17 +184,25 @@ export default class LargeGraph extends React.Component {
             height: this.props.height
         }
 
-        let lineList = this.getLineList();
+        let polyGonList = [];
+        
+        let renderIHCI = false;
+        if(indicatorsListJS.indexOf('ICHI') > -1 && parsedData.ichiCloudLines.length === 2) {
+          renderIHCI = true;
+        }
+        
+        if(renderIHCI) {
+          polygonsList = generatePolygonsFromTwoLines(parsedData.ichiCloudLines[0], parsedData.ichiCloudLines[1], this.props.height);  
+        }
 
-        let lines = this.getLineList();
-        let line1 = lines[0];
-        let line2 = lines[1];
-
-        let polygonsList = generatePolygonsFromTwoLines(line1, line2, this.props.height);
-
-        // console.log('POLYGONGS', polygonsList)
+        console.log('POLYGONGS', polygonsList)
 
         const generateGraphPolygonFill = (elem, key) => {
+          
+            if(!renderIHCI) {
+              return null;
+            }
+          
             let points = elem.points;
             let color = theme.red;
             if(elem.positive) {
@@ -294,6 +240,14 @@ export default class LargeGraph extends React.Component {
                 {parsedData.formattedLines.map((elem, i) => {
                     return this.generateGraphPolygon(elem, i)
                 })}
+                
+                {parsedData.ichiCloudLines.map((elem, i) => {
+                    return this.generateGraphPolygon(elem, i)
+                })}
+                
+                {polygonsList.map((elem, i) => {
+                    return generateGraphPolygonFill(elem, i)
+                })}
 
 
             </Svg>
@@ -302,7 +256,6 @@ export default class LargeGraph extends React.Component {
 }
 
 //
-// {polygonsList.map((elem, i) => {
-//     return generateGraphPolygonFill(elem, i)
-// })}
+
+
 //

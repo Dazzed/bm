@@ -265,6 +265,33 @@ const newsSources = {
   'marketWatch': 'Market Watch'
 }
 
+// const initialIndicators = ['ICHI', 'BOL', 'EMA', 'VOL'];
+const initialIndicators = ['ICHI'];
+
+
+var autoLogOffOptions = [
+  {
+    label: '10 minutes',
+    minutes: 10,
+    value: 0
+  },
+  {
+    label: '5 minutes',
+    minutes: 5,
+    value: 1
+  },
+  {
+    label: '2 minutes',
+    minutes: 2,
+    value: 2
+  },
+  {
+    label: '1 minute',
+    minutes: 1,
+    value: 3
+  }
+];
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -290,5 +317,7 @@ export {
   ACCESS_TOKEN_KEY,
   CURRENT_USER_ID_KEY,
   TOUCH_ID_ENABLED_KEY,
-  newsSources
+  newsSources,
+  initialIndicators,
+  autoLogOffOptions
 }

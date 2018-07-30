@@ -10,6 +10,14 @@ export default class Settings {
 
     @observable settingsData = {}
 
+    @computed get settingsDataJS() {
+      return toJS(this.settingsData);
+    }
+
+    @action getSettingsDataJS = () => {
+      return toJS(this.settingsData);
+    }
+
     @action hydrateSettings = (data) => {
       this.settingsData = data;
     }
@@ -17,10 +25,8 @@ export default class Settings {
     @action setNewsSourceValue = (elem) => {
       // copy current data
       let settingsData = toJS(this.settingsData);
-
       // toggle value
       settingsData.newsSource[elem.code] = !elem.active;
-
       // overwrite new data
       this.hydrateSettings(settingsData);
       this.updateSettings();
@@ -87,7 +93,7 @@ export default class Settings {
       };
       updateSettingsApiCall(params)
       .then((res) => {
-        console.log('-Just get res', res)
+        console.log('========= GET SETTTINGS', res)
         if(res.ok) {
           this.hydrateSettings(res.json.data);
         }

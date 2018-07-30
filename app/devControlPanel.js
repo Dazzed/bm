@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -27,7 +27,7 @@ const firstNavDefaultRoute = 'Home';
 
 const registrationInitialStep = 0;
 
-const fillRegistrationWithFakeData = true;
+const fillRegistrationWithFakeData = false;
 
 // force navigation on app nav footer control
 // const appNavDefaultTabRoute = 'Settings';
@@ -47,7 +47,7 @@ const stackNavDefaultRoute = 'AppNavTabs';
 // Deposit
 // Withdraw
 
-const showConsole = false;
+const showConsole = true;
 
 const autoLogin = false;
 // const autoLogin = true;
@@ -67,6 +67,8 @@ const chosenServer = 'staging';
 console.disableYellowBox = true;
 
 let forceDarkTheme = false;
+
+let autoLogOffEnabled = false;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -96,6 +98,7 @@ if(productionMode) {
     forceLoginToFundingEveryTime = false;
     verifyAuthOnHomeView = true;
     chosenServer = 'staging';
+    autoLogOffEnabled = true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -114,5 +117,6 @@ export {
     fillRegistrationWithFakeData,
     forceLoginToFundingEveryTime,
     verifyAuthOnHomeView,
-    chosenServer
+    chosenServer,
+    autoLogOffEnabled
 };

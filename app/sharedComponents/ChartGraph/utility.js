@@ -2,28 +2,53 @@ import { checkIntersection } from "line-intersect";
 import moment from 'moment';
 import { indicatorDataMap } from '../../constants';
 
+Object.byString = (o, s) => {
+    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    var a = s.split('.');
+    for (var i = 0, n = a.length; i < n; ++i) {
+        var k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return;
+        }
+    }
+    return o;
+}
+
 export const flipYAxisValue = (height, inverseY) => {
   return height - inverseY;
 }
 
-export const generatePolygonsFromTwoLines = (line1, line2, height) => {
+export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
     let polyGonList = [];
 
     // Make sure we actually have the right data
-    if(!line1 || !line2) {
+    if(!lineA || !lineB) {
         return null;
     }
+
+    // Get the line data, formatted like this: '123,432 543,234 etc..'
+    // put it back into an object notation and parse strings to floats
+    let objectFormatter = (elem, i) => {
+      let entry = elem.split(',');
+      return {
+        x: parseFloat(entry[0]),
+        y: parseFloat(entry[1])
+      }
+    }
+
+    let objectFormattedLine1 = lineA.formattedLineData.split(' ').map((elem, i) => objectFormatter(elem, i));
+    let objectFormattedLine2 = lineB.formattedLineData.split(' ').map((elem, i) => objectFormatter(elem, i));
 
     // And that it's the correct length
-    if(line1.lineData.length !== line2.lineData.length) {
+    if(objectFormattedLine1.length !== objectFormattedLine2.length) {
         return null;
     }
 
-    let data1 = line1.lineData;
-    let data2 = line2.lineData;
-
-    // Reminder
-    // Lines must have points normalized at similiar distances on the x axis for this to work
+    let data1 = objectFormattedLine1;
+    let data2 = objectFormattedLine2;
 
     let length = data1.length;
 
@@ -49,7 +74,6 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
             {x: data2[i+1].x, y: data2[i+1].y},
         ]
 
-
         // console.log('LINE 1 start')
         // console.log(lineSegment1[0].x)
         // console.log(lineSegment1[0].y)
@@ -66,43 +90,55 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
 
 
         let intersection = checkIntersection(
-            lineSegment1[0].x, lineSegment1[0].y, lineSegment1[1].x, lineSegment1[1].y,
-            lineSegment2[0].x, lineSegment2[0].y, lineSegment2[1].x, lineSegment2[1].y
+          lineSegment1[0].x, lineSegment1[0].y, lineSegment1[1].x, lineSegment1[1].y,
+          lineSegment2[0].x, lineSegment2[0].y, lineSegment2[1].x, lineSegment2[1].y
         )
 
-        let point1 = `${lineSegment1[0].x},${flipYAxisValue(height, lineSegment1[0].y)}`;
-        let point2 = `${lineSegment1[1].x},${flipYAxisValue(height, lineSegment1[1].y)}`;
-        let point3 = `${lineSegment2[1].x},${flipYAxisValue(height, lineSegment2[1].y)}`;
-        let point4 = `${lineSegment2[0].x},${flipYAxisValue(height, lineSegment2[0].y)}`;
+        let point1 = `${lineSegment1[0].x},${lineSegment1[0].y}`;
+        let point2 = `${lineSegment1[1].x},${lineSegment1[1].y}`;
+        let point3 = `${lineSegment2[1].x},${lineSegment2[1].y}`;
+        let point4 = `${lineSegment2[0].x},${lineSegment2[0].y}`;
 
         // console.log('point1', point1)
         // console.log('point2', point2)
         // console.log('point3', point3)
         // console.log('point4', point4)
 
+        let point1YVal = parseFloat(point1.split(',')[1]);
+        let point2YVal = parseFloat(point2.split(',')[1]);
+        let point3YVal = parseFloat(point3.split(',')[1]);
+        let point4YVal = parseFloat(point4.split(',')[1]);
+
+        // console.log('point1YVal', point1YVal)
+        // console.log('point2YVal', point2YVal)
+        // console.log('point3YVal', point3YVal)
+        // console.log('point4YVal', point4YVal)
+
         // if there is no intersection, of if the intersection is an origin point
         if(intersection.type !== 'intersecting') {
-            let thisPolygonPoints = `${point1}  ${point2} ${point3} ${point4}`
+            let thisPolygonPoints = `${point1} ${point2} ${point3} ${point4}`
             let data = {
-                positive: point1 > point4 ? true : false,
+                positive: point4YVal > point1YVal ? true : false,
                 points: thisPolygonPoints
             }
-            console.log('no intserection', thisPolygonPoints)
             polyGonList.push(data);
 
         } else {
-            let intersectionPoint = `${intersection.point.x},${flipYAxisValue(height, intersection.point.y)}`;
-
+            // Generate left side of intersection
+            let intersectionPoint = `${intersection.point.x},${intersection.point.y}`;
             let thisPolygonPointsLeft = `${point1} ${intersectionPoint} ${point4}`
+            // console.log('polygon points left: ', thisPolygonPointsLeft);
             let data1 = {
-                positive: point1 > point4 ? true : false,
+                positive: point4YVal > point1YVal ? true : false,
                 points: thisPolygonPointsLeft
             }
             polyGonList.push(data1);
 
+            // Generate right side of intersection
             let thisPolygonPointsRightSide = `${point2} ${intersectionPoint} ${point3}`
+            // console.log('polygon points right', thisPolygonPointsRightSide)
             let data2 = {
-                positive: point3 < point2 ? true : false,
+                positive: point3YVal > point2YVal ? true : false,
                 points: thisPolygonPointsRightSide
             }
             polyGonList.push(data2);
@@ -111,11 +147,13 @@ export const generatePolygonsFromTwoLines = (line1, line2, height) => {
     return polyGonList;
 }
 
+/////////////////////////////////////////////////////////////////////
+
 export const parseSmallGraphData = (data, Price, graphHeight) => {
 
     let d = {
       yMax: 0,
-      yMin: 999999999999999,
+      yMin: 9999999999999999999,
       yRange: 0,
       lineData: [],
       dateData: [],
@@ -124,19 +162,19 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 
 
     for(let i = 0; i < data.length; i++) {
-        const thisClosePoint = data[i].close;
-        // get y max and min
-        if(thisClosePoint > d.yMax) {
-            d.yMax = thisClosePoint
-        }
-        if(thisClosePoint < d.yMin) {
-            d.yMin = thisClosePoint
-        }
+      const thisClosePoint = data[i].close;
+      // get y max and min
+      if(thisClosePoint > d.yMax) {
+        d.yMax = thisClosePoint
+      }
+      if(thisClosePoint < d.yMin) {
+        d.yMin = thisClosePoint
+      }
     }
 
     for(let i = 0; i < data.length; i++) {
-        d.lineData.push(data[i].close + d.yMin);
-        d.dateData.push(data[i].date);
+      d.lineData.push(data[i].close + d.yMin);
+      d.dateData.push(data[i].date);
     }
 
     // Set range
@@ -154,28 +192,29 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
     return d;
 }
 
-
-
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-export const parseLargeGraphData = (inputData, height, width, indicatorsList) => {
+export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme) => {
 
     let d = {
-        xMax: 0,
-        xMin: 99999999999999999999999,
-        yMax: 0,
-        yMin: 99999999999999999999999,
-        dataPoints: inputData,
-        gridYArray: [],
-        gridXArray: [],
-        xLineCount: 5,
-        yLineCount: 4,
-        xRange: 0,
-        yRange: 0,
-        formattedLines: []
+      xMax: 0,
+      xMin: 99999999999999999999999,
+      yMax: 0,
+      yMin: 99999999999999999999999,
+      dataPoints: inputData,
+      gridYArray: [],
+      gridXArray: [],
+      xLineCount: 5,
+      yLineCount: 4,
+      xRange: 0,
+      yRange: 0,
+      formattedLines: [],
+      volumeMin: 9999999999999999999999,
+      volumeMax: 0,
+      ichiCloudLines: []
     };
 
     const manipulateXMaxMin = (input) => {
@@ -188,8 +227,75 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       if( input < d.yMin ) d.yMin = input;
     }
 
+    const manipulateVolumeMaxMin = (input) => {
+      if( input > d.volumeMax ) d.volumeMax = input;
+      if( input < d.volumeMin ) d.volumeMin = input;
+    }
+
+    // check if any of the values contain a null value
+    // prevent them from rendering if that is the case
+    // we don't want to ever reference a null variable
+    // in the line rendering functions
+
+    let bolHasNullValue = false;
+    let emaHasNullValue = false;
+    let rsiHasNullValue = false;
+    let volumeHasNullValue = false;
+    let ichiHasNullValue = false;
+    let obvHasNullValue = false;
+
+    d.dataPoints.forEach((elem, i) => {
+      if(elem.bol === null) {
+        bolHasNullValue = true;
+      }
+      if(elem.rsi === null) {
+        rsiHasNullValue = true;
+      }
+      if(elem.ema === null) {
+        emaHasNullValue = true;
+      }
+      if(elem.volume === null) {
+        volumeHasNullValue = true;
+      }
+      if(elem.ichi === null) {
+        ichiHasNullValue = true;
+      }
+      if(elem.obv === null) {
+        obvHasNullValue = true;
+      }
+    })
+
+    // setup render variables
+    let renderBol = false;
+    let renderEma = false;
+    let renderRsi = false;
+    let renderVolume = false;
+    let renderIchi = false;
+    let renderObv = false;
+
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
+      // console.log('======= ELEM', elem)
+
+      // if data is valid, check for indicator list and set render variables
+      if(!rsiHasNullValue) {
+        renderRsi = indicatorsList.indexOf('RSI') > -1;
+      }
+      if(!bolHasNullValue) {
+        renderBol = indicatorsList.indexOf('BOL') > -1;
+      }
+      if(!emaHasNullValue) {
+        renderEma = indicatorsList.indexOf('EMA') > -1;
+      }
+      if(!volumeHasNullValue) {
+        renderVolume = indicatorsList.indexOf('VLM') > -1;
+      }
+      if(!ichiHasNullValue) {
+        renderIchi = indicatorsList.indexOf('ICHI') > -1;
+      }
+      if(!obvHasNullValue) {
+        renderObv = indicatorsList.indexOf('OBV') > -1;
+      }
 
       let dateUnix = null;
       if(elem.minute) {
@@ -209,13 +315,23 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
-
-      // handle optionally editing things here
-      if(indicatorsList.indexOf('EMA') > 0) {
-        manipulateYMaxMin('ema');
+      // conditional rendering based on indicators menu
+      if(renderEma) {
+        manipulateYMaxMin(elem.ema);
       }
-      if(indicatorsList.indexOf('RSI') > 0) {
-        manipulateYMaxMin('rsi');
+      if(renderRsi) {
+        manipulateYMaxMin(elem.rsi);
+      }
+      if(renderBol) {
+        manipulateYMaxMin(elem.bol.lower);
+        manipulateYMaxMin(elem.bol.middle);
+        manipulateYMaxMin(elem.bol.upper);
+      }
+      if(renderVolume) {
+        manipulateVolumeMaxMin(elem.volume);
+      }
+      if(renderObv) {
+        manipulateVolumeMaxMin(elem.obv)
       }
 
       return {
@@ -235,19 +351,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       const close = elem.close;
       const high = elem.high;
       const low = elem.low;
-
+      // scaled values
       const thisXValScaled = thisUnix - d.xMin;
       const openPositionScaled = open - d.yMin;
       const closePositionScaled = close - d.yMin;
       const highPositionScaled = high - d.yMin;
       const lowPositionScaled = low - d.yMin;
-
+      // relative values
       const xPositionRelative = thisXValScaled / d.xRange;
       const openYPositionRelative = openPositionScaled / d.yRange;
       const closeYPositionRelative = closePositionScaled / d.yRange;
       const highYPositionRelative = highPositionScaled / d.yRange;
       const lowYPositionRelative = lowPositionScaled / d.yRange;
-
+      // actual coordinates
       const xPositionCoordinates = xPositionRelative * width;
       const openYPositionCoordinates = flipYAxisValue( height, openYPositionRelative * height );
       const closeYPositionCoordinates = flipYAxisValue( height, closeYPositionRelative * height );
@@ -274,7 +390,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
     const generateLineData = (targetValue, color) => {
       let lineData = [];
       d.dataPoints.forEach((elem, i) => {
-        let chosenValue = elem[targetValue];
+        let chosenValue = Object.byString(elem, targetValue);
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
@@ -289,15 +405,50 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       }
     }
 
-    console.log('==================== MAX MIN', d.yMax, d.yMin)
+    const generateRelativeLineData = (targetValue, color, max, min) => {
+      let lineData = [];
+      d.dataPoints.forEach((elem, i) => {
+        let chosenValue = Object.byString(elem, targetValue);
+        let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
+        let xCoord = xRel * width;
+        let yRelative = ( chosenValue - min) / ( max - min);
+        let graphYPosition = yRelative * height;
+        let yCoord = flipYAxisValue(height, graphYPosition);
+        lineData.push(`${xCoord},${yCoord}`)
+      })
 
-    console.log('======== INDICATORS LIST', indicatorsList, indicatorDataMap)
-
-    if(indicatorsList.indexOf('EMA') > 0) {
-      d.formattedLines.push(generateLineData('ema', 'red'));
+      let formattedLineData = lineData.join(' ')
+      return {
+        color: color,
+        lineTargetValue: targetValue,
+        formattedLineData: formattedLineData
+      }
     }
-    if(indicatorsList.indexOf('RSI') > 0) {
-      d.formattedLines.push(generateLineData('rsi', 'red'));
+
+    if(renderRsi) {
+      d.formattedLines.push(generateLineData('rsi', theme.blue));
+    }
+
+    if(renderBol) {
+      d.formattedLines.push(generateLineData('bol.lower', 'red'));
+      d.formattedLines.push(generateLineData('bol.middle', 'green'));
+      d.formattedLines.push(generateLineData('bol.upper', 'blue'));
+    }
+
+    if(renderEma) {
+      d.formattedLines.push(generateLineData('ema', theme.blue));
+    }
+    if(renderVolume) {
+      d.formattedLines.push(generateRelativeLineData('volume', theme.blue, d.volumeMax, d.volumeMin));
+    }
+
+    if(renderIchi) {
+      d.ichiCloudLines.push(generateLineData('ichi.spanA', theme.green));
+      d.ichiCloudLines.push(generateLineData('ichi.spanB', theme.red));
+    }
+
+    if(renderObv) {
+      d.formattedLines.push(generateRelativeLineData('obv', theme.blue, d.volumeMax, d.volumeMin));
     }
 
     // Generate lines here
@@ -335,10 +486,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       let exactPixelLocation = lineOffest + xPosition;
       const relativePixelLocation = exactPixelLocation / width;
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
-      // console.log('=============== REL PIXWL', ' width: ', width, ' rel: ', relativePixelLocation, ' range: ', d.xRange, ' min: ', d.xMin, ' unix point: ', unixPoint)
-
       const label = moment.unix(unixPoint).format('MM-DD-YY');
-
       const xObj = {
         pixelValue: label,
         label: label,
@@ -346,7 +494,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList) =>
       }
       d.gridXArray.push(xObj);
     }
-
     // console.log('====== ALL GRAPH DATA', d)
     return d
 }

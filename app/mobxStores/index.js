@@ -10,9 +10,9 @@ import Chart from './Domain/Chart';
 import News from './Domain/News';
 import DepositWithdraw from './Domain/DepositWithdraw';
 import Search from './Domain/Search';
-import SectorIndustries from './Domain/sectorIndustries';
-import DeviceSize from './Domain/deviceSize';
-import Settings from './Domain/settings';
+import SectorIndustries from './Domain/SectorIndustries';
+import DeviceSize from './Domain/DeviceSize';
+import Settings from './Domain/Settings';
 import AutoLogOff from './Domain/AutoLogOff'
 
 // Import and init all stores here
@@ -31,7 +31,7 @@ let searchStore = new Search();
 let sectorIndustriesStore = new SectorIndustries();
 let deviceSizeStore = new DeviceSize();
 let settingsStore = new Settings();
-let autoLogOff = new AutoLogOff();
+let autoLogOffStore = new AutoLogOff();
 
 export {
     colorStore,
@@ -49,5 +49,5 @@ export {
     sectorIndustriesStore,
     deviceSizeStore,
     settingsStore,
-    autoLogOff
+    autoLogOffStore
 }

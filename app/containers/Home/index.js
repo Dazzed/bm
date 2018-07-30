@@ -9,18 +9,15 @@ import {
 import Orientation from 'react-native-orientation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import Modal from '../../components/react-native-modal'
-
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
 import Terms from '../../routes/terms';
-
 import { colors } from '../../store/store';
 import * as globalActions from '../../store/actions/global';
 import { selectGlobalData } from '../../selectors';
 import { displayPreviewButtonOnHome, verifyAuthOnHomeView } from '../../devControlPanel';
-import { colorStore, authStore, watchListStore } from '../../mobxStores';
+import { colorStore, authStore, watchListStore, autoLogOffStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 
 @observer
@@ -51,18 +48,27 @@ class HomeScreen extends Component {
 
   componentDidMount() {
     Orientation.lockToPortrait();
-    if(verifyAuthOnHomeView) {
-      authStore.verifyAuth()
-      .then((res) => {
-        // console.log('==== verify auth success now nav on', res);
-        watchListStore.getWatchlistData();
-        this.props.saveUserData(res.userData.data);
-        this.props.navigation.navigate('AppNavTabs');
-      })
-      .catch((err) => {
-        console.log('error verifying', err)
-      });
+    autoLogOffStore.saveNavObject(this.props.navigation)
+    let loginExpired = autoLogOffStore.isLoginExpired();
+    if(loginExpired) {
+      // stop verifying, hang here
+      
+    } else {
+      // do verification
+      if(verifyAuthOnHomeView) {
+        authStore.verifyAuth()
+        .then((res) => {
+          // console.log('==== verify auth success now nav on', res);
+          watchListStore.getWatchlistData();
+          this.props.saveUserData(res.userData.data);
+          this.props.navigation.navigate('AppNavTabs');
+        })
+        .catch((err) => {
+          console.log('error verifying', err);
+        });
+      }
     }
+    
   }
 
   componentDidUpdate(prevProps) {

@@ -18,37 +18,6 @@ export function startLoggingIn() {
   };
 }
 
-// export function loginAction({ email, password }) {
-//   return async (dispatch) => {
-//     try {
-//       dispatch(startLoggingIn());
-//       const body = {
-//         email: email.toLowerCase(),
-//         password
-//       };
-// 
-//       console.log('===== bod', body)
-// 
-//       let authDetails = await axios.post(`${API_URL}/api/users/login`, body);
-// 
-//       console.log('--------- AUTH details', authDetails)
-// 
-//       await AsyncStorage.setItem(ACCESS_TOKEN_KEY, authDetails.data.id);
-//       await AsyncStorage.setItem(CURRENT_USER_ID_KEY, authDetails.data.userId.toString());
-// 
-//       dispatch({
-//         type: `${PREFIX}_SAVE_LOGIN_DATA`,
-//         payload: authDetails.data
-//       });
-// 
-//       dispatch(authSuccess(authDetails.data.id, authDetails.data.userId));
-//     } catch (e) {
-//       console.log('Error in loginAction', e);
-//       dispatch(authFailure());
-//     }
-//   };
-// }
-
 export function logoutAction() {
   return async (dispatch, getState) => {
     try {
@@ -68,50 +37,6 @@ export function logoutAction() {
     }
   };
 }
-
-// export function verifyAuth() {
-//   return async dispatch => {
-//     try {
-//       dispatch({
-//         type: `${PREFIX}_START_VERIFYING_AUTH`
-//       });
-//       const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-//       const userId = await AsyncStorage.getItem(CURRENT_USER_ID_KEY);
-//       if (!accessToken || !userId) {
-//         return dispatch({
-//           type: `${PREFIX}_STOP_VERIFYING_AUTH`
-//         });
-//       }
-// 
-//       const { data: currentUser } = await axios.get(`${API_URL}/api/users/${userId}?access_token=${accessToken}`);
-// 
-//       // authStore.populateUserById(userId)
-// 
-//       console.warn('--- currentUser', currentUser)
-// 
-// 
-//       dispatch({
-//         type: `${PREFIX}_SET_CURRENT_USER`,
-//         payload: currentUser
-//       });
-//       watchListStore.getWatchlistData();
-//       dispatch({
-//         type: `${PREFIX}_STOP_VERIFYING_AUTH`
-//       });
-//     } catch (e) {
-//       const promises = [
-//         AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
-//         AsyncStorage.removeItem(CURRENT_USER_ID_KEY),
-//         AsyncStorage.removeItem(TOUCH_ID_ENABLED_KEY),
-//         AsyncStorage.removeItem(THEME_KEY)
-//       ];
-//       await Promise.all(promises);
-//       dispatch({
-//         type: `${PREFIX}_STOP_VERIFYING_AUTH`
-//       });
-//     }
-//   };
-// }
 
 export function saveUserData(userData) {
   return {
@@ -144,9 +69,6 @@ export function authSuccess(access_token, id) {
     try {
       const currentUser = await axios.get(`${API_URL}/api/users/${id}?access_token=${access_token}`);
       currentUser.data["access_token"] = access_token;
-      
-      console.log('=== AUTH SUCCESS', currentUser, currentUser.data);
-      
       dispatch({
         type: `${PREFIX}_SET_CURRENT_USER`,
         payload: currentUser.data
@@ -190,10 +112,8 @@ export function setThemeFromLocal() {
 export function setThemeToDark() {
   return async dispatch => {
     await AsyncStorage.setItem(THEME_KEY, 'true');
-
     // do changes in mobx in parrallel
     colorStore.setTheme('dark');
-
     return dispatch({
       type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
       payload: true
@@ -204,10 +124,8 @@ export function setThemeToDark() {
 export function setThemeToLight() {
   return async dispatch => {
     await AsyncStorage.removeItem(THEME_KEY);
-
     // do changes in mobx in parrallel
     colorStore.setTheme('light');
-
     return dispatch({
       type: `${PREFIX}_SET_THEME_FROM_LOCAL`,
       payload: false

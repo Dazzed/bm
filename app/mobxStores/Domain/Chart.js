@@ -1,5 +1,6 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { getTickerDetails, getStockChartDetail } from '../../api';
+import { initialIndicators } from '../../constants';
 
 export default class AccountStore {
 
@@ -70,7 +71,7 @@ export default class AccountStore {
     }
 
     // make sure this initiates the same way in the view state at chart.js
-    @observable indicatorsList = ['ICHI'];
+    @observable indicatorsList = initialIndicators;
     @computed get indicatorsListJS() {
       return toJS(this.indicatorsList);
     }
