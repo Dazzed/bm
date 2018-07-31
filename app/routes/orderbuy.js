@@ -49,8 +49,8 @@ class OrderBuy extends React.Component {
     this.state = {
       numField: null,
       isTypeVisible: false,
-      orderValidity: 0,
-      marketPrice: 153.53,
+      // orderValidity: 0,
+      // marketPrice: 153.53,
       // estimatedCost: 0,
       colors: colors(props.globalData.isDarkThemeActive)
     };
@@ -68,48 +68,32 @@ class OrderBuy extends React.Component {
     }
   }
 
-  calculateEstimatedCost() {
-    const { calculatedCost } = buySellStore;
-    return calculatedCost;
+  addNum(num) {
+    const { addNumber } = buySellStore;
+    addNumber(num)
   }
 
-  addNum(num) {
-    const { quantity, setQuantity } = buySellStore;
-    var curNums;
-    var cost = 0;
-    if(quantity == null) {
-     curNums = num;
-    } else {
-     curNums = quantity + ''+num;
-    }
-    setQuantity(curNums);
-  }
   removeNum(num) {
-    const { quantity, setQuantity } = buySellStore;
-    if(quantity) {
-      var delNums = quantity;
-      console.log(delNums);
-      delNums = delNums.substr(0, delNums.length - 1);
-      console.log(delNums);
-      setQuantity(delNums);
-    }
+    const { removeNumber } = buySellStore;
+    removeNumber(num)
   }
+
   showOrderTypes(){
     this.setState({ isTypeVisible: true })
   }
-  hideOrderTypes(value){
-    if(value) {
-      this.setState({ isTypeVisible: false, orderValidity: value })
-    } else {
-      this.setState({ isTypeVisible: false })
-    }
+  setOrderTypes(value) {
+    const { setValidityIndex } = buySellStore;
+    setValidityIndex(value);
+    this.hideOrderTypes()
   }
+  hideOrderTypes(value){
+    this.setState({ isTypeVisible: false })
+  }
+
   render() {
     const { tickerDataJS } = chartStore;
     const { quantity } = buySellStore;
-
-    console.log('====', tickerDataJS.Price)
-
+    const { calculatedCost, validityIndex } = buySellStore;
     return(
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
@@ -127,7 +111,7 @@ class OrderBuy extends React.Component {
           </View>
           <View style={order.detailsRow}>
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>ESTIMATED COST</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${this.calculateEstimatedCost()}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${calculatedCost}</Text>
           </View>
         </View>
 
@@ -163,7 +147,7 @@ class OrderBuy extends React.Component {
           <View style={[{borderTopColor: this.state.colors['borderGray']}, order.purchaseDetails]}>
             <View style={order.purchaseDetailsWrap}>
               <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtLeft, fonts.hindGunturRg]}>Validity</Text>
-              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[this.state.orderValidity].label}</Text>
+              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[validityIndex].label}</Text>
               <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtBtn, fonts.hindGunturBd]} onPress={() => {this.showOrderTypes(); }}>EDIT</Text>
             </View>
           </View>
@@ -189,7 +173,7 @@ class OrderBuy extends React.Component {
           <View style={[ordertypes.tabContent, {backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
-              initial={this.state.orderValidity}
+              initial={validityIndex}
               formHorizontal={false}
               labelHorizontal={true}
               borderWidth={1}
@@ -201,7 +185,7 @@ class OrderBuy extends React.Component {
               labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
               radioLabelActive={[{color: this.state.colors['darkGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
               labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => {this.hideOrderTypes(value)}}
+              onPress={(value) => {this.setOrderTypes(value)}}
               style={ordertypes.radioField}
             />
           </View>

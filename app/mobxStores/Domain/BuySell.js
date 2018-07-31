@@ -9,10 +9,33 @@ export default class BuySellStore {
   @observable buyInProgress = false;
   @observable sellInProgress = false;
   @observable quantity = '';
+  @observable validityIndex = 0;
+
+  @action setValidityIndex = (val) => {
+    this.validityIndex = val;
+  }
 
   @action setQuantity = (val) => {
-    console.log('set quantity', val);
     this.quantity = val;
+  }
+
+  @action addNumber = (num) => {
+    let curNums;
+    if(this.quantity == null) {
+     curNums = num;
+    } else {
+     curNums = this.quantity + '' + num;
+    }
+    this.setQuantity(curNums);
+  }
+  @action removeNumber = (num) => {
+    if(this.quantity) {
+      var delNums = this.quantity;
+      console.log(delNums);
+      delNums = delNums.substr(0, delNums.length - 1);
+      console.log(delNums);
+      this.setQuantity(delNums);
+    }
   }
 
   @computed get calculatedCost() {
