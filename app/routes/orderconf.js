@@ -20,17 +20,17 @@ import {
   TabPane,
   Dimensions
 } from 'react-native';
-
 import Modal from 'react-native-modal'
-
 import OrderTypes from './ordertypes';
 import OrderPlaced from './orderplaced';
-
 import styles from '../style/style';
 import order from '../style/order';
 import fonts from '../style/fonts';
-
-import {setTheme, getTheme, colors} from '../store/store';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../store/store';
 
 class OrderConf extends React.Component {
   constructor(props) {
@@ -54,8 +54,10 @@ class OrderConf extends React.Component {
     }
   }
 
-  showOrderPlaced() {
-    this.setState({ isOrderPlaced: true })
+  confirmOrder() {
+    console.log('======== ORDER CONFIRM PRESSED', this)
+
+    // this.setState({ isOrderPlaced: true })
   }
   hideOrderPlaced() {
     this.setState({ isOrderPlaced: false, animateOut: 'slideOutDown' })
@@ -68,7 +70,7 @@ class OrderConf extends React.Component {
         <View style={[{ borderBottomColor: this.state.colors['lightGray'], backgroundColor: this.state.colors['white']}, order.menuBorder]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideOrderConfirm()}>
-              <Image 
+              <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
               />
@@ -115,12 +117,12 @@ class OrderConf extends React.Component {
               <Text style={[order.confirmColRight, fonts.hindGunturRg]}>Market order</Text>
             </View>
             <Text style={order.confSpacing}></Text>
-            <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, styles.fullBtn]} onPress={() => {this.showOrderPlaced()}}>
+            <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, styles.fullBtn]} onPress={() => {this.confirmOrder()}}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturBd]}>CONFIRM</Text>
-            </TouchableOpacity>            
-          </View>   
+            </TouchableOpacity>
+          </View>
         </View>
-        <Modal 
+        <Modal
           isVisible={this.state.isOrderPlaced}
           animationIn={'slideInRight'}
           animationOut={this.state.animateOut}

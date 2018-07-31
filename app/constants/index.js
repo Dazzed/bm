@@ -292,6 +292,12 @@ var autoLogOffOptions = [
   }
 ];
 
+var validity_props = [
+  { label: 'Good until canceled', value: 0 },
+  { label: 'Day only', value: 1 },
+  { label: 'Extended hours', value: 2 }
+];
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -319,5 +325,6 @@ export {
   TOUCH_ID_ENABLED_KEY,
   newsSources,
   initialIndicators,
-  autoLogOffOptions
+  autoLogOffOptions,
+  validity_props
 }
