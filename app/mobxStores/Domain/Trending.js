@@ -99,7 +99,7 @@ export default class Trending {
       .map(data => {
         let parseData = {
           ...data,
-          latestPriceFormatted: formatPrice(data.latestPrice),
+          latestPriceFormatted: formatPrice(Number(data.latestPrice || 0)),
           latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
           posNegColor: data.change > 0 ? theme.green : theme.red
         }
