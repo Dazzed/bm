@@ -1,6 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { buy as buyApiCall, sell as sellApiCall } from '../../api';
 import { chartStore } from '../';
+import { validity_props, order_type } from '../../constants';
 
 export default class BuySellStore {
   constructor() {
@@ -70,13 +71,11 @@ export default class BuySellStore {
   }
 
   @action makeTransaction = () => {
-    return new Promise((resolve, reject) => {
-      this.transactionLoading = true;
-      setTimeout(() => {
-        this.transactionLoading = false;
-        resolve();
-      }, 2000)
-    })
+    console.log('======= TRANSACTION TYPE', this.transactionType)
+
+    if(this.transactionType === 'Buy') {
+      return this.buy()
+    }
   }
 
   @action sell = () => {
@@ -92,12 +91,36 @@ export default class BuySellStore {
 
   @action buy = () => {
     return new Promise((resolve, reject) => {
-      console.log('BUY')
+
+
       this.buyInProgress = true;
-      setInterval(() => {
+
+      // orderOption[market, limit]
+      // orderValidity[dayOnly, extended, GTC]
+      // account[savings, checking]
+
+      let params = {
+        ticker: 'AAPL',
+        shares: 10,
+        orderOption: 'market',
+        account: 'savings',
+        commission: 10
+      }
+
+      console.log('BUY', params, validity_props[this.validityIndex].query, order_type[this.orderTypeIndex].query)
+
+      buyApiCall(params)
+      .then((res) => {
+        console.log('buy res', res);
         this.buyInProgress = false;
         resolve();
       })
+      .catch((err) => {
+        console.log('buy err', err);
+        this.buyInProgress = false;
+        reject(err);
+      })
+
     })
   }
 

@@ -54,6 +54,10 @@ class PlaceOrder extends React.Component {
       page:this.props.orderType,
       colors: colors(props.globalData.isDarkThemeActive)
     };
+    
+    // save order type into mobx on page load
+    buySellStore.setTransactionType(this.props.orderType);
+    
     this.hideOrderChild = this.props.hideOrder.bind(this);
     this.hideOrderValidity = this.hideOrderValidity.bind(this);
     this.showOrderConfirm = this.showOrderConfirm.bind(this);
