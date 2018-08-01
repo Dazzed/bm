@@ -352,7 +352,10 @@ class Chart extends Component {
   }
 
   renderRelated() {
+    // return null;
+    
     {/* TODO: get related stocks. not yet in data */}
+    
     return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
         <View style={chart.profileTxt}>
@@ -443,7 +446,9 @@ class Chart extends Component {
         formattedOpen,
         formattedLow,
         formattedHigh,
-        formattedSharesOutstanding
+        formattedSharesOutstanding,
+        formattedChangePercent,
+        formattedChangeDecimal
     } = params;
 
     return <View>
@@ -520,10 +525,6 @@ class Chart extends Component {
     </View>
 
 
-
-
-
-
     <ScrollView style={chart.wrapper}>
       <View style={chart.header}>
         <View style={chart.titleContainer}>
@@ -539,7 +540,7 @@ class Chart extends Component {
         <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
           <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{change}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{changePercent}%</Text>}
+          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
         </TouchableOpacity>
       </View>
 
@@ -642,13 +643,15 @@ class Chart extends Component {
           </View>
         </View>
         <View style={chart.statsRow}>
+          
           <View style={chart.statsColumn}>
 
                 {/* TODO: what is this referencing?? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>PRICE/EARNINGS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????? 17.19</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>??????</Text>
           </View>
+          
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.divYield}%</Text>
@@ -719,7 +722,7 @@ class Chart extends Component {
                 {/* TODO: get this data, don't have anything for last stock split */}
 
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>7 TO 1 - Jun 2014</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????</Text>
             </View>
           </View>
 
@@ -830,7 +833,9 @@ class Chart extends Component {
         formattedOpen,
         formattedLow,
         formattedHigh,
-        formattedSharesOutstanding
+        formattedSharesOutstanding,
+        formattedChangePercent,
+        formattedChangeDecimal
     } = params;
 
     const { longSide, shortSide } = deviceSizeStore;
@@ -859,7 +864,7 @@ class Chart extends Component {
 
            <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
              <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
+             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}%</Text>}
            </TouchableOpacity>
          </View>
          <View style={chartland.prices}>
@@ -935,41 +940,33 @@ class Chart extends Component {
          </View>
 
          <View style={chartland.right}>
+          
+          <ScrollView>
+            {this.renderPortraitMomentum(params)}
+            {this.renderBidAsk(params)}
 
-           <View style={chartland.momentumWrapper}>
-
-             <View style={chartland.momentumInfo}>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>MOMENTUM</Text>
-               <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
-             </View>
-
-             <View style={{ flex: 1}}>
-               <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
-             </View>
-
-           </View>
-
-           {this.renderBidAsk(params)}
-
-           <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
-             <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
-             <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
-             <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
-           </View>
-           <View style={chartland.profileWrapper}>
-             <View style={chartland.statsRow}>
-               <View style={chartland.statsColumn}>
-                 <TouchableOpacity style={styles.sellBtnShort} onPress={() => {this.showOrder('Sell')}}>
-                   <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
-                 </TouchableOpacity>
-               </View>
-               <View style={chartland.statsColumn}>
-                 <TouchableOpacity style={styles.buyBtnShort} onPress={() => {this.showOrder('Buy')}}>
-                   <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
-                 </TouchableOpacity>
-               </View>
-             </View>
-           </View>
+            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
+              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
+            </View>
+            <View style={chartland.profileWrapper}>
+              <View style={chartland.statsRow}>
+                <View style={chartland.statsColumn}>
+                  <TouchableOpacity style={styles.sellBtnShort} onPress={() => {this.showOrder('Sell')}}>
+                    <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={chartland.statsColumn}>
+                  <TouchableOpacity style={styles.buyBtnShort} onPress={() => {this.showOrder('Buy')}}>
+                    <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+           
+           
          </View>
        </View>
          <Modal
@@ -1217,7 +1214,13 @@ class Chart extends Component {
     let formattedOpen = '$' + open.toFixed(2);
     let formattedLow = low.toFixed(2);
     let formattedHigh = high.toFixed(2);
-
+    let formattedChangePercent = changePercent.toFixed(4) + '%';
+    let formattedChangeDecimal = change.toFixed(2);
+    if(change > 0) {
+      formattedChangeDecimal = '+' + change.toFixed(2);
+    } else if( change < 0) {
+      formattedChangeDecimal = '-' + change.toFixed(2);
+    }
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
 
     const params = {
@@ -1228,7 +1231,9 @@ class Chart extends Component {
       formattedOpen,
       formattedLow,
       formattedHigh,
-      formattedSharesOutstanding
+      formattedSharesOutstanding,
+      formattedChangePercent,
+      formattedChangeDecimal
     }
 
     switch (this.state.orientation) {
