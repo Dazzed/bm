@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -20,18 +19,26 @@ import {
   TabPane,
   Dimensions
 } from 'react-native';
-
 import Modal from 'react-native-modal'
-
 import OrderTypes from './ordertypes';
 import OrderPlaced from './orderplaced';
-
 import styles from '../style/style';
 import order from '../style/order';
 import fonts from '../style/fonts';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../store/store';
+import { observer } from 'mobx-react';
+import { buySellStore, chartStore } from '../mobxStores';
+import { numberWithCommas } from '../utility';
+import {
+  validity_props,
+  order_type
+} from '../constants';
 
-import {setTheme, getTheme, colors} from '../store/store';
-
+@observer
 class OrderConf extends React.Component {
   constructor(props) {
     super(props);
@@ -54,8 +61,17 @@ class OrderConf extends React.Component {
     }
   }
 
-  showOrderPlaced() {
-    this.setState({ isOrderPlaced: true })
+  confirmOrder() {
+    const { makeTransaction } = buySellStore;
+    console.log('======== ORDER CONFIRM PRESSED', this);
+    makeTransaction()
+    .then((res) => {
+      console.log('=== order placed')
+      this.setState({ isOrderPlaced: true });
+    })
+    .catch((err) => {
+      console.log('err', err);
+    })
   }
   hideOrderPlaced() {
     this.setState({ isOrderPlaced: false, animateOut: 'slideOutDown' })
@@ -63,12 +79,35 @@ class OrderConf extends React.Component {
   }
 
   render() {
+
+    const { tickerDataJS } = chartStore;
+    const {
+      quantity,
+      calculatedCost,
+      transactionType,
+      validityIndex,
+      orderTypeIndex
+    } = buySellStore;
+
+    let ticker = 'APPL';
+    let pricePerShare = tickerDataJS.Price;
+    let totalPrice = calculatedCost;
+
+    let purchaseAction = transactionType + 'ing';
+    let sharesOrShareText = 'shares';
+    if(quantity === 1) {
+      sharesOrShareText = 'share';
+    }
+
+    let validity = validity_props[validityIndex].label;
+    let type = order_type[orderTypeIndex].label;
+
     return(
       <View>
         <View style={[{ borderBottomColor: this.state.colors['lightGray'], backgroundColor: this.state.colors['white']}, order.menuBorder]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideOrderConfirm()}>
-              <Image 
+              <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
               />
@@ -82,21 +121,21 @@ class OrderConf extends React.Component {
         </View>
         <View style={[{backgroundColor: this.state.colors['white']}, order.tabContent]}>
           <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.confDetails]}>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>You are buying</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>10 shares of APPL</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>You are {purchaseAction}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>{numberWithCommas(quantity)} {sharesOrShareText} of {ticker}</Text>
             <Text style={order.confSpacing}></Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>Each share is $153.53</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>for a total of <Text style={styles.greentTxt}>$1,535.30</Text></Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>Each share is ${numberWithCommas(pricePerShare)}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>for a total of <Text style={styles.greentTxt}>${numberWithCommas(totalPrice)}</Text></Text>
             <Text style={order.confSpacing}></Text>
           </View>
           <View style={order.confirmContainer}>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>QUANTITY</Text>
-              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>10</Text>
+              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>{numberWithCommas(quantity)}</Text>
             </View>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>MARKET PRICE</Text>
-              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>$153.53</Text>
+              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>${numberWithCommas(pricePerShare)}</Text>
             </View>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>COMMISSION</Text>
@@ -104,23 +143,23 @@ class OrderConf extends React.Component {
             </View>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>ESTIMATED COST</Text>
-              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>$1,535.30</Text>
+              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>${numberWithCommas(totalPrice)}</Text>
             </View>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>VALIDITY</Text>
-              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>Day only</Text>
+              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>{validity}</Text>
             </View>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>TYPE</Text>
-              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>Market order</Text>
+              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>{type}</Text>
             </View>
             <Text style={order.confSpacing}></Text>
-            <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, styles.fullBtn]} onPress={() => {this.showOrderPlaced()}}>
+            <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, styles.fullBtn]} onPress={() => {this.confirmOrder()}}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturBd]}>CONFIRM</Text>
-            </TouchableOpacity>            
-          </View>   
+            </TouchableOpacity>
+          </View>
         </View>
-        <Modal 
+        <Modal
           isVisible={this.state.isOrderPlaced}
           animationIn={'slideInRight'}
           animationOut={this.state.animateOut}

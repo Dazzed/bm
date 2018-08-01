@@ -134,28 +134,41 @@ export default class LargeGraph extends React.Component {
     }
 
     generateGraphPolygon(params, key) {
-
       let formattedData = params.formattedLineData;
       let lineTargetValue = params.lineTargetValue;
+      const { theme } = colorStore;
+      return <Polyline
+          key={key}
+          points={formattedData}
+          fill={'none'}
+          stroke={params.color}
+          strokeWidth={2}
+          strokeLinejoin={'round'}
+      />
+    }
 
-        const { theme } = colorStore;
+    generateVerticalBottomBars(params, key) {
+      let barWidth = .01;
+      return <Rect
+        x={params.xCoord - (barWidth / 2)}
+        y={params.yCoord}
+        width={barWidth}
+        height={params.lineHeight}
+        fill={params.color}
+        strokeWidth={'1'}
+        stroke={params.color}
+        strokeLinejoin={'round'}
+      />
+    }
 
-        // let points = `0,${flipYAxisValue(this.props.height, 0)}`;
-        // let points = formattedData;
-
-        // params.lineData.map((elem, i) => {
-        //     let flippedY = flipYAxisValue(this.props.height, elem.y);
-        //     points += ` ${elem.x},${elem.y}`
-        // })
-
-        return <Polyline
-            key={key}
-            points={formattedData}
-            fill={'none'}
-            stroke={params.color}
-            strokeWidth={2}
-            strokeLinejoin={'round'}
-        />
+    renderBottomVolumeLines(parsedData) {
+      if(parsedData.volumeBottomLinesData) {
+        return parsedData.volumeBottomLinesData.dataSet.map((elem, i) => {
+          return this.generateVerticalBottomBars(elem,i);
+        })
+      } else {
+        return null;
+      }
     }
 
     render() {
@@ -175,7 +188,7 @@ export default class LargeGraph extends React.Component {
         }
 
         const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS, theme);
-        console.log('---- parsed Data', parsedData);
+        // console.log('---- parsed Data', parsedData);
 
         let inlineContainerStyle = {
             // borderWidth: 3,
@@ -185,24 +198,24 @@ export default class LargeGraph extends React.Component {
         }
 
         let polyGonList = [];
-        
+
         let renderIHCI = false;
         if(indicatorsListJS.indexOf('ICHI') > -1 && parsedData.ichiCloudLines.length === 2) {
           renderIHCI = true;
         }
-        
+
         if(renderIHCI) {
-          polygonsList = generatePolygonsFromTwoLines(parsedData.ichiCloudLines[0], parsedData.ichiCloudLines[1], this.props.height);  
+          polygonsList = generatePolygonsFromTwoLines(parsedData.ichiCloudLines[0], parsedData.ichiCloudLines[1], this.props.height);
         }
 
         console.log('POLYGONGS', polygonsList)
 
         const generateGraphPolygonFill = (elem, key) => {
-          
+
             if(!renderIHCI) {
               return null;
             }
-          
+
             let points = elem.points;
             let color = theme.red;
             if(elem.positive) {
@@ -218,6 +231,7 @@ export default class LargeGraph extends React.Component {
                 fillOpacity={.2}
             />
         }
+
 
         return <View style={inlineContainerStyle}>
             <Svg
@@ -240,14 +254,16 @@ export default class LargeGraph extends React.Component {
                 {parsedData.formattedLines.map((elem, i) => {
                     return this.generateGraphPolygon(elem, i)
                 })}
-                
+
                 {parsedData.ichiCloudLines.map((elem, i) => {
                     return this.generateGraphPolygon(elem, i)
                 })}
-                
+
                 {polygonsList.map((elem, i) => {
                     return generateGraphPolygonFill(elem, i)
                 })}
+
+                {this.renderBottomVolumeLines(parsedData)}
 
 
             </Svg>

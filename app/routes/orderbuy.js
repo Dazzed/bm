@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,36 +18,44 @@ import {
   TabbedArea,
   TabPane
 } from 'react-native';
-
 import Modal from 'react-native-modal'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-import {setTheme, getTheme, colors} from '../store/store';
-
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel
+} from 'react-native-simple-radio-button';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../store/store';
 import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
 import numbers from '../style/numbers';
 import fonts from '../style/fonts';
 // import colors from '../style/colors';
+import {
+  chartStore,
+  buySellStore
+} from '../mobxStores';
+import { validity_props } from '../constants';
+import { observer } from 'mobx-react';
 
-var validity_props = [
-  {label: 'Good until canceled', value: 0 },
-  {label: 'Day only', value: 1 },
-  {label: 'Extended hours', value: 2 }
-];
-
+@observer
 class OrderBuy extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       numField: null,
       isTypeVisible: false,
-      orderValidity: 0,
-      marketPrice: 153.53,
-      estimatedCost: 0,
+      // orderValidity: 0,
+      // marketPrice: 153.53,
+      // estimatedCost: 0,
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
+
   componentDidUpdate(prevProps) {
     const {
       globalData: prevGlobalData
@@ -62,48 +69,41 @@ class OrderBuy extends React.Component {
   }
 
   addNum(num) {
-    var curNums;
-    var cost = 0;
-    if(this.state.numField == null) {
-     curNums = num;
-    } else {
-     curNums = this.state.numField + ''+num;
-     cost = (this.state.marketPrice * curNums).toLocaleString();
-    }
-    this.setState({numField: curNums, estimatedCost: cost});
+    const { addNumber } = buySellStore;
+    addNumber(num)
   }
+
   removeNum(num) {
-    if(this.state.numField) {
-      var delNums = this.state.numField;
-      var cost = 0;
-      console.log(delNums);
-      delNums = delNums.substr(0, delNums.length - 1);
-      cost = (delNums * this.state.marketPrice).toLocaleString()
-      console.log(delNums)
-      this.setState({numField: delNums, estimatedCost: cost})
-    }
+    const { removeNumber } = buySellStore;
+    removeNumber(num)
   }
+
   showOrderTypes(){
     this.setState({ isTypeVisible: true })
   }
-  hideOrderTypes(value){ 
-    if(value) {
-      this.setState({ isTypeVisible: false, orderValidity: value })
-    } else {
-      this.setState({ isTypeVisible: false })
-    }
+  setOrderTypes(value) {
+    const { setValidityIndex } = buySellStore;
+    setValidityIndex(value);
+    this.hideOrderTypes()
   }
+  hideOrderTypes(value){
+    this.setState({ isTypeVisible: false })
+  }
+
   render() {
+    const { tickerDataJS } = chartStore;
+    const { quantity } = buySellStore;
+    const { calculatedCost, validityIndex } = buySellStore;
     return(
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
           <View style={[{borderBottomColor: this.state.colors['darkSlate']}, order.detailsFirstRow]}>
             <Text style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}>QUANTITY</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.inputQty, fonts.hindGunturRg]}>{this.state.numField}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, order.inputQty, fonts.hindGunturRg]}>{quantity}</Text>
           </View>
           <View style={order.detailsRow}>
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>MARKET PRICE</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${this.state.marketPrice}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${tickerDataJS.Price}</Text>
           </View>
           <View style={order.detailsRow}>
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>COMMISSION</Text>
@@ -111,11 +111,11 @@ class OrderBuy extends React.Component {
           </View>
           <View style={order.detailsRow}>
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>ESTIMATED COST</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${this.state.estimatedCost}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${calculatedCost}</Text>
           </View>
         </View>
 
-        <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, order.numContainer]}>        
+        <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, order.numContainer]}>
           <View style={order.digitContainer}>
             <View style={numbers.row}>
               <Text style={[{color: this.state.colors['darkSlate']}, numbers.numbers, fonts.hindGunturRg]} onPress={() => {this.addNum(1); }}>1</Text>
@@ -147,7 +147,7 @@ class OrderBuy extends React.Component {
           <View style={[{borderTopColor: this.state.colors['borderGray']}, order.purchaseDetails]}>
             <View style={order.purchaseDetailsWrap}>
               <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtLeft, fonts.hindGunturRg]}>Validity</Text>
-              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[this.state.orderValidity].label}</Text>
+              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[validityIndex].label}</Text>
               <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtBtn, fonts.hindGunturBd]} onPress={() => {this.showOrderTypes(); }}>EDIT</Text>
             </View>
           </View>
@@ -164,7 +164,7 @@ class OrderBuy extends React.Component {
             </View>
           </View>
         </View>
-        <Modal 
+        <Modal
           isVisible={this.state.isTypeVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
@@ -173,7 +173,7 @@ class OrderBuy extends React.Component {
           <View style={[ordertypes.tabContent, {backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
-              initial={this.state.orderValidity}
+              initial={validityIndex}
               formHorizontal={false}
               labelHorizontal={true}
               borderWidth={1}
@@ -185,7 +185,7 @@ class OrderBuy extends React.Component {
               labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
               radioLabelActive={[{color: this.state.colors['darkGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
               labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => {this.hideOrderTypes(value)}}
+              onPress={(value) => {this.setOrderTypes(value)}}
               style={ordertypes.radioField}
             />
           </View>

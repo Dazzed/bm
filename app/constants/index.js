@@ -266,7 +266,7 @@ const newsSources = {
 }
 
 // const initialIndicators = ['ICHI', 'BOL', 'EMA', 'VOL'];
-const initialIndicators = ['ICHI'];
+const initialIndicators = ['ICHI', 'VLM'];
 
 
 var autoLogOffOptions = [
@@ -290,6 +290,18 @@ var autoLogOffOptions = [
     minutes: 1,
     value: 3
   }
+];
+
+let validity_props = [
+  { label: 'Good until canceled', value: 0 },
+  { label: 'Day only', value: 1 },
+  { label: 'Extended hours', value: 2 }
+];
+
+let order_type = [
+  { label: 'Market order', value: 0 },
+  { label: 'Limit order', value: 1 },
+  { label: 'Stop Loss order', value: 2 }
 ];
 
 export {
@@ -319,5 +331,7 @@ export {
   TOUCH_ID_ENABLED_KEY,
   newsSources,
   initialIndicators,
-  autoLogOffOptions
+  autoLogOffOptions,
+  validity_props,
+  order_type
 }
