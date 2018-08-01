@@ -393,6 +393,28 @@ class Chart extends Component {
     </TouchableOpacity>
   }
 
+  renderPortraitMomentum(params) {
+    if(params.momentum == 'na') {
+      return null
+    } else {
+      return <View style={[chart.momentumWrapper, {width: '100%'}]}>
+        <View style={[chart.momentumInfo, {flex: 1}]}>
+
+          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
+
+          <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
+        </View>
+
+        {/* TODO: add value to dial indicator, where does it come from */}
+
+        <View style={{ flex: 1}}>
+          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+        </View>
+      </View>    
+    }
+  }
+  
   renderPortrait(params) {
     let {
         Price,
@@ -544,19 +566,22 @@ class Chart extends Component {
 
       <View style={chart.verticalChart}>
         <View style={chart.timeWrap}>
-        <Tabs selected={this.state.page} style={chart.timePeriod}
-              selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=> this.setRange(el)}>
-              <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
-              <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
-              <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
-              <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
-              <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
-              <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
-              <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
-              <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
-              <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+        <Tabs
+          selected={this.state.page}
+          style={chart.timePeriod}
+          selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
+          onSelect={el=> this.setRange(el)}
+        >
+          <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
+          <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
+          <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
+          <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
+          <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
+          <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
+          <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
+          <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
+          <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
         </Tabs>
-
 
         </View>
         <View style={chart.chartWrapper}>
@@ -564,23 +589,9 @@ class Chart extends Component {
         </View>
 
       </View>
-      <View style={[chart.momentumWrapper, {width: '100%'}]}>
-        <View style={[chart.momentumInfo, {flex: 1}]}>
-
-          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
-
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
-        </View>
-
-        {/* TODO: add value to dial indicator, where does it come from */}
-
-        <View style={{ flex: 1}}>
-          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
-        </View>
-
-      </View>
-
+      
+      {this.renderPortraitMomentum(params)}
+      
       <View style={chart.profileWrapper}>
         <View style={chart.statsRow}>
             <TouchableOpacity style={styles.sellBtn} onPress={() => {this.showOrder('Sell')}}>
@@ -592,7 +603,7 @@ class Chart extends Component {
         </View>
       </View>
 
-      {this.renderBidAsk()}
+      {this.renderBidAsk(params)}
 
       <View style={chart.statsWrapper}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
@@ -738,56 +749,43 @@ class Chart extends Component {
   </View>
   }
 
+  renderBidListOrNothing(params) {
+    if(params.bid.length === 0) {
+      return <View style={chartland.bid}>
+      <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>No Bids</Text>
+      </View>
+    }
+    return params.bid.map((elem, i) => {
+      return <View style={chartland.bidaskRow}>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>{elem.size}</Text>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>${elem.price}</Text>
+      </View>
+    })
+  }
+  
+  renderAskListOrNothing(params) {
+    if(params.ask.length === 0) {
+      return <View style={chartland.bid}>
+      <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>No Asks</Text>
+      </View>
+    }
+    return params.ask.map((elem, i) => {
+      return <View style={chartland.bidaskRow}>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>{elem.size}</Text>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>${elem.price}</Text>
+      </View>
+    })
+  }
 
-  renderBidAsk() {
-
-      // {/* TODO: BID LIST not getting this from server yet */}
-     return <View style={chartland.bidAsksWrapper}>
+  renderBidAsk(params) {
+     return <View style={[chartland.bidAsksWrapper, {marginVertical: 10}]}>
        <View style={chartland.bid}>
          <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
+         {this.renderBidListOrNothing(params)}
        </View>
        <View style={chartland.bid}>
          <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
+         {this.renderAskListOrNothing(params)}
        </View>
      </View>
   }
@@ -951,7 +949,7 @@ class Chart extends Component {
 
            </View>
 
-           {this.renderBidAsk()}
+           {this.renderBidAsk(params)}
 
            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
