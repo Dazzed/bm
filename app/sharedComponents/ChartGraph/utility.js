@@ -214,8 +214,16 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       formattedLines: [],
       volumeMin: 9999999999999999999999,
       volumeMax: 0,
-      ichiCloudLines: []
+      ichiCloudLines: [],
+      yPaddingModifier: .8,
+      xPaddingModifier: .9,
+      volumeBottomLinesData: null
     };
+
+    // adds bottom padding
+    height = height * d.yPaddingModifier;
+    // adds right padding
+    width = width * d.xPaddingModifier;
 
     const manipulateXMaxMin = (input) => {
       if( input > d.xMax ) d.xMax = input;
@@ -425,6 +433,36 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
     }
 
+    const generateVolumeBottomLinesData = (targetValue) => {
+      let lineData = [];
+      d.dataPoints.forEach((elem, i) => {
+        let volumeValue = Object.byString(elem, targetValue);
+        let openValue = Object.byString(elem, 'open');
+        let closeValue = Object.byString(elem, 'close');
+        let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
+        let xCoord = xRel * width;
+        // percentage of total height to allow max
+        let maxLineHeightModifier = .3;
+        let lineHeightRel = volumeValue / d.volumeMax;
+        let lineHeightCoords = (maxLineHeightModifier * height) * lineHeightRel;
+        let bottomAdjust = height * .1;
+        let yCoord = ( height + bottomAdjust )- lineHeightCoords;
+        let color = theme.red;
+        if(closeValue > openValue) {
+          color = theme.green;
+        }
+        lineData.push({
+          color: color,
+          lineHeight: lineHeightCoords,
+          yCoord: yCoord,
+          xCoord: xCoord
+        })
+      })
+      return {
+        dataSet: lineData
+      }
+    }
+
     if(renderRsi) {
       d.formattedLines.push(generateLineData('rsi', theme.blue));
     }
@@ -438,8 +476,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     if(renderEma) {
       d.formattedLines.push(generateLineData('ema', theme.blue));
     }
+
     if(renderVolume) {
-      d.formattedLines.push(generateRelativeLineData('volume', theme.blue, d.volumeMax, d.volumeMin));
+      d.volumeBottomLinesData = generateVolumeBottomLinesData('volume')
     }
 
     if(renderIchi) {

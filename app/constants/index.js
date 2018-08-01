@@ -266,7 +266,7 @@ const newsSources = {
 }
 
 // const initialIndicators = ['ICHI', 'BOL', 'EMA', 'VOL'];
-const initialIndicators = ['ICHI'];
+const initialIndicators = ['ICHI', 'VLM'];
 
 
 var autoLogOffOptions = [
