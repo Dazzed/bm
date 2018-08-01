@@ -292,10 +292,16 @@ var autoLogOffOptions = [
   }
 ];
 
-var validity_props = [
+let validity_props = [
   { label: 'Good until canceled', value: 0 },
   { label: 'Day only', value: 1 },
   { label: 'Extended hours', value: 2 }
+];
+
+let order_type = [
+  { label: 'Market order', value: 0 },
+  { label: 'Limit order', value: 1 },
+  { label: 'Stop Loss order', value: 2 }
 ];
 
 export {
@@ -326,5 +332,6 @@ export {
   newsSources,
   initialIndicators,
   autoLogOffOptions,
-  validity_props
+  validity_props,
+  order_type
 }

@@ -1,15 +1,21 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { buy as buyApiCall, sell as sellApiCall } from '../../api';
-import { chartStore } from '../'
+import { chartStore } from '../';
 
 export default class BuySellStore {
   constructor() {
   }
 
-  @observable buyInProgress = false;
-  @observable sellInProgress = false;
+  @observable transactionInProgress = false;
+
   @observable quantity = '';
   @observable validityIndex = 0;
+
+  @observable orderTypeIndex = 0;
+  @action setOrderTypeIndex = (value) => {
+    console.log('====== setOrderTypeIndex')
+    this.orderTypeIndex = value;
+  }
 
   @action setValidityIndex = (val) => {
     this.validityIndex = val;
@@ -56,7 +62,7 @@ export default class BuySellStore {
   }
 
   @computed get transactionLoading() {
-    if(buyInProgress || sellInProgress) {
+    if(transactionInProgress) {
       return true;
     } else {
       return false;
@@ -64,7 +70,13 @@ export default class BuySellStore {
   }
 
   @action makeTransaction = () => {
-    console.log('=========== MAKE TRANSACTION!!!')
+    return new Promise((resolve, reject) => {
+      this.transactionLoading = true;
+      setTimeout(() => {
+        this.transactionLoading = false;
+        resolve();
+      }, 2000)
+    })
   }
 
   @action sell = () => {

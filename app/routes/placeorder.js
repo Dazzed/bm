@@ -38,13 +38,10 @@ import ordertypes from '../style/ordertypes';
 import fonts from '../style/fonts';
 import { setTheme, getTheme, colors } from '../store/store';
 import { buySellStore } from '../mobxStores';
+import { order_type } from '../constants';
+import { observer } from 'mobx-react';
 
-var validity_props = [
-  {label: 'Market order', value: 0 },
-  {label: 'Limit order', value: 1 },
-  {label: 'Stop Loss order', value: 2 }
-];
-
+@observer
 class PlaceOrder extends React.Component {
   constructor(props){
     super(props);
@@ -54,7 +51,6 @@ class PlaceOrder extends React.Component {
       isConfirmVisible: false,
       isOrderPlaced: false,
       animateOut: 'slideOutRight',
-      orderTypeTitle: 0,
       page:this.props.orderType,
       colors: colors(props.globalData.isDarkThemeActive)
     };
@@ -99,13 +95,16 @@ class PlaceOrder extends React.Component {
   showOrderValidity(){
     this.setState({ isValidityVisible: true })
   }
-  hideOrderValidity(value){
-    if(value) {
-      this.setState({ isValidityVisible: false, orderTypeTitle: value })
-    } else {
-      this.setState({ isValidityVisible: false})
-    }
+  setOrderValidity(value) {
+    const { setOrderTypeIndex } = buySellStore;
+    setOrderTypeIndex(value);
+    this.hideOrderValidity();
   }
+
+  hideOrderValidity(){
+    this.setState({ isValidityVisible: false})
+  }
+
   showOrderConfirm() {
     this.setState({ isConfirmVisible: true })
   }
@@ -125,6 +124,8 @@ class PlaceOrder extends React.Component {
   }
 
   render() {
+    const { orderTypeIndex } = buySellStore;
+
     return (
       <View style={[{backgroundColor: this.state.colors['white']}, order.accContainer]}>
         <View style={[{backgroundColor: this.state.colors['white']}, order.accInfoContainer]}>
@@ -135,7 +136,7 @@ class PlaceOrder extends React.Component {
               />
             </TouchableOpacity>
           <Text style={[{color: this.state.colors['darkSlate']}, order.mainCta]}>{this.state.page} APPL</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, order.orderType, fonts.hindGunturRg]}>{validity_props[this.state.orderTypeTitle].label}</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, order.orderType, fonts.hindGunturRg]}>{order_type[orderTypeIndex].label}</Text>
           <Text style={[{color: this.state.colors['lightGray']}, order.rightCta]} onPress={() => this.showOrderValidity()}>Edit type</Text>
           <Tabs selected={this.state.page} style={[{backgroundColor:this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, order.tabBtns]}
                 selectedStyle={{color:this.state.colors['blue']}} onSelect={el=> this.setPageType(el)}>
@@ -154,8 +155,8 @@ class PlaceOrder extends React.Component {
             onModalHide={() => {this.hideOrderValidity()}}>
             <View style={[{backgroundColor: this.state.colors['contentBg']}, ordertypes.tabContent]}>
               <RadioForm
-                radio_props={validity_props}
-                initial={this.state.orderTypeTitle}
+                radio_props={order_type}
+                initial={orderTypeIndex}
                 formHorizontal={false}
                 labelHorizontal={true}
                 borderWidth={1}
@@ -167,7 +168,7 @@ class PlaceOrder extends React.Component {
                 labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
                 radioLabelActive={[{color: this.state.colors['lightGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
                 labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray']}, styles.radioLabelWrap]}
-                onPress={(value) => {this.hideOrderValidity(value)}}
+                onPress={(value) => {this.setOrderValidity(value)}}
                 style={ordertypes.radioField}
               />
             </View>
