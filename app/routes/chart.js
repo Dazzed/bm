@@ -351,25 +351,31 @@ class Chart extends Component {
     }
   }
 
+  renderRelatedListOrNot(list) {
+    if(!list || list.length === 0) {
+      return <View style={chart.profileTxt}>
+        <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>No Results</Text>
+      </View>
+    } else {
+      return list.map((elem, i) => {
+        return <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>TICKER</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Company Name</Text>
+        </View>
+      })
+    }
+  }
+
   renderRelated() {
     // return null;
     
     {/* TODO: get related stocks. not yet in data */}
     
+    let relatedList = [];
+    
     return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
-        <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>MSFT</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Microsoft Corporation</Text>
-        </View>
-        <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>DVMT</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Dell Technologies</Text>
-        </View>
-        <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
-        </View>
+        {this.renderRelatedListOrNot(relatedList)}
     </View>
   }
 
