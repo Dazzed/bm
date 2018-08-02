@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
-  Button,
   ScrollView,
   KeyboardAvoidingView,
   AppRegistry,
@@ -17,19 +15,17 @@ import {
   TouchableOpacity,
   TouchableHighlight
 } from 'react-native';
-
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { isPresent } from '../validation';
-
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import RegistrationHeader from './registrationHeader';
+import Button from '../../../sharedComponents/Button1';
 
 @observer
 export default class NameSelection extends Component {
@@ -123,14 +119,11 @@ export default class NameSelection extends Component {
           </View>
         </ScrollView>
         <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-          <TouchableHighlight
-            disabled={!this.checkFormValidity()}
-            onPress={this.props.onForwardStep}
-            style={[styles_2.fullBtn, { height: 80 }, this.getFormValidityClass()]}
-          >
-            <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
-          </TouchableHighlight>
-          <Text> </Text>
+          
+          <View style={{padding: 20}}>
+            <Button title={'NEXT'} disabled={!this.checkFormValidity()} onPress={this.props.onForwardStep} />
+          </View>
+          
         </View>
       </KeyboardAvoidingView>
     )

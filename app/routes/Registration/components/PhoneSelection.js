@@ -23,6 +23,7 @@ import { observer } from 'mobx-react';
 import { registrationStore, colorStore } from '../../../mobxStores';
 import RegistrationHeader from './registrationHeader';
 import { formatPhoneNumber } from '../../../utility';
+import Button from '../../../sharedComponents/Button1';
 
 
 @observer
@@ -99,10 +100,11 @@ export default class PhoneSelection extends Component {
           </View>
         </ScrollView>
         <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-          <TouchableHighlight disabled={!this.formValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.returnFormValidClass()]}>
-            <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
-          </TouchableHighlight>
-          <Text> </Text>
+          
+          <View style={{padding: 20}}>
+            <Button title={'NEXT'} disabled={!this.formValid()} onPress={this.props.onForwardStep} />
+          </View>
+          
         </View>
       </KeyboardAvoidingView>
     )

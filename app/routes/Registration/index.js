@@ -12,23 +12,17 @@ import {
   Alert,
   TouchableOpacity
 } from 'react-native';
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import PropTypes from 'prop-types';
-
 import { setTheme, getTheme, colors } from '../../store/store';
-
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
-
 import { selectRegistrationPage } from './selectors';
 import {
   selectGlobalData
 } from '../../selectors';
 import * as registerActions from '../../store/actions/registration';
-
 import CountrySelection from './components/CountrySelection';
 import NameSelection from './components/NameSelection';
 import AddressSelection from './components/AddressSelection';
@@ -43,7 +37,6 @@ import AccountSelection from './components/AccountSelection';
 import Declaration from './components/Declaration';
 import Thankyou from './components/Thankyou';
 import { registrationInitialStep } from '../../devControlPanel';
-
 import { registrationStore } from '../../mobxStores';
 
 class RegistrationPage extends React.Component {

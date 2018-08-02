@@ -24,6 +24,7 @@ import { colorStore, registrationStore } from '../../../mobxStores';
 import TermsAndConditions from './documents/TermsAndConditions';
 import PrivacyPolicy from './documents/PrivacyPolicy';
 import RegistrationHeader from './registrationHeader';
+import Button from '../../../sharedComponents/Button1';
 
 let linkList = [
     { title: "Terms & Conditions", value: 'tnc' },
@@ -135,12 +136,11 @@ export default class Declaration extends Component {
               </ScrollView>
               {this.renderPopOver()}
               <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                  <TouchableHighlight onPress={() => this.nextView()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
-                      <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
-                          {this.state.loading ? 'LOADING...' : 'I AGREE'}
-                      </Text>
-                  </TouchableHighlight>
-                  <Text> </Text>
+                  
+                  <View style={{padding: 20}}>
+                    <Button title={this.state.loading ? 'LOADING...' : 'I AGREE'} onPress={() => this.nextView()} />
+                  </View>
+              
               </View>
           </KeyboardAvoidingView>
         )

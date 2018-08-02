@@ -29,6 +29,8 @@ import down from '../../../images/down.png';
 import { Label } from 'native-base';
 import { observer } from 'mobx-react';
 import { registrationStore, deviceSizeStore } from '../../../mobxStores';
+import Button from '../../../sharedComponents/Button1';
+
 let showWhyWeAsk = false;
 
 @observer
@@ -81,10 +83,11 @@ export default class Declaration extends Component {
                     {this.renderIllustration()}
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={() => this.props.onForwardStep()} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>FINISH</Text>
-                    </TouchableHighlight>
-                    <Text> </Text>
+                
+                    <View style={{padding: 20}}>
+                      <Button title={'FINISH'} onPress={() => this.props.onForwardStep()} />
+                    </View>
+                    
                 </View>
             </KeyboardAvoidingView>
         )

@@ -1,2 +1,7 @@
 PRICE/EARNINGS
 ?????? 17.19
+
+<TouchableHighlight onPress={this.onHandleCountrySelection} style={[{ backgroundColor: this.props.colors['green'], borderColor: this.props.colors['green'] }, styles_2.fullBtn, { height: 80 }]}>
+  <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
+</TouchableHighlight>
+<Text> </Text>
