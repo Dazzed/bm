@@ -169,7 +169,7 @@ class SubMenu extends React.Component {
     if(!sectorLoading && sectorDataJS && sectorDataJS.length > 0) {
       label = sector_props[sectorOption].label;
     }
-    
+
     return <View style={{flex: 1}}>
       <TouchableOpacity disabled={disabled} style={[{ borderRightColor: this.state.colors['borderGray'] }, trending.subMenuHalf]} onPress={() => { this.showSector(); }}>
         <Image
@@ -473,7 +473,7 @@ class Trending extends React.Component {
             if (data.inWatchList) {
               watchListIconSrc = require('../../images/watchlist_added.png');
             }
-            
+
             let formattedChangePercent = data['changePercent'].toFixed(3) + '%';
             if(data['changePercent'] > 0) {
               formattedChangePercent = '+' + formattedChangePercent;
@@ -481,28 +481,28 @@ class Trending extends React.Component {
             if(data['changePercent'] === 0) {
               formattedChangePercent = '+0.00%'
             }
-            
+
             return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
-              
+
               <TouchableOpacity style={[trending.symbolsSpacer]} onPress={() => this.navigateToChart(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName']}</Text>
               </TouchableOpacity>
-              
+
               <View style={[trending.symbolsVolume, {width: 80}]}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
-              
+
               <TouchableOpacity style={[trending.symbolsLabel, {width: 70}]} onPress={() => this.toggleDecimalOrPercentage(data)}>
                 <Text style={[{ color: this.state.colors['darkSlate'], alignSelf: 'center' }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPriceFormatted']}</Text>
                 {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedDataChange}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
               </TouchableOpacity>
-              
+
               <View style={[trending.addBtn]}>
                 <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data, data.inWatchList)} >
                   <Image
                     source={watchListIconSrc} style={styles.addImg} />
                 </TouchableOpacity>
               </View>
-              
+
             </View>)
           })}
           {this.renderNewPageLoading()}
