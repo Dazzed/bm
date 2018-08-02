@@ -253,7 +253,8 @@ const industry_consumerdiscretionary = [
 const THEME_KEY = '@Blu:isDarkThemeActive';
 const ACCESS_TOKEN_KEY = '@Blu:accessToken';
 const CURRENT_USER_ID_KEY = '@Blu:currentUserId';
-const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled'
+const TOUCH_ID_ENABLED_KEY = '@Blu:touchIdEnabled';
+const SETTINGS_DATA_KEY = '@Blu:settingsDataKey';
 
 const newsSources = {
   'cnbc': 'CNBC',
@@ -357,5 +358,6 @@ export {
   initialIndicators,
   autoLogOffOptions,
   validity_props,
-  order_type
+  order_type,
+  SETTINGS_DATA_KEY
 }

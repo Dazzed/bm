@@ -1,10 +1,19 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { updateSettings as updateSettingsApiCall } from '../../api';
-import { newsSources as newsSourcesConstant } from '../../constants';
+import { newsSources as newsSourcesConstant, SETTINGS_DATA_KEY } from '../../constants';
+import { AsyncStorage } from 'react-native';
 
 export default class Settings {
 
     constructor() {
+      // // fill with local data
+      // this.getSettingsFromLocal()
+      // .then((res) => {
+      //   let settingsObject = JSON.parse(res);
+      //   this.hydrateSettings(settingsObject)
+      // })
+
+      // fill with remote data
       this.getSettings()
     }
 
@@ -21,6 +30,21 @@ export default class Settings {
     @action hydrateSettings = (data) => {
       this.settingsData = data;
     }
+
+    @action saveSettingsLocally = () => {
+      let dataToSave = JSON.stringify(this.settingsData);
+      AsyncStorage.setItem(SETTINGS_DATA_KEY, dataToSave);
+    }
+
+    // @action getSettingsFromLocal = () => {
+    //   return new Promise((resolve, reject) => {
+    //     AsyncStorage.getItem(ACCESS_TOKEN_KEY)
+    //     .then((res) => {
+    //       console.log('get settings from local')
+    //       resolve(res);
+    //     })
+    //   })
+    // }
 
     @action setNewsSourceValue = (elem) => {
       // copy current data

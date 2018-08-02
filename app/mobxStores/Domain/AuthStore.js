@@ -11,7 +11,7 @@ import {
   THEME_KEY,
   ACCESS_TOKEN_KEY,
   CURRENT_USER_ID_KEY,
-  TOUCH_ID_ENABLED_KEY,
+  TOUCH_ID_ENABLED_KEY
 } from '../../constants';
 
 export default class AuthStore {
@@ -67,9 +67,9 @@ export default class AuthStore {
 
     return new Promise((resolve, reject) => {
       console.log('GO verify auth')
-      
+
       // check if login is expired before anything
-      
+
       this.verifyingAuth = true;
       let accessToken = null;
       let userId = null;
@@ -222,7 +222,7 @@ export default class AuthStore {
         })
     })
   }
-  
+
   @action autoLogOut = () => {
     return new Promise((resolve, reject) => {
       logoutApiCall()

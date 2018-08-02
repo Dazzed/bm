@@ -117,7 +117,7 @@ class Settings extends Component {
         isDarkThemeActive: currentGlobalData.isDarkThemeActive
       });
     }
-    console.log('------ SETTINGS UPDATES')
+    console.log('------ SETTINGS UPDATES');
   }
 
   navToDeposit() {
@@ -194,7 +194,6 @@ class Settings extends Component {
   }
 
   logoutPressed() {
-    // console.log('======= LOGOUT PRESSEDD')
     this.props.logoutAction()
     this.props.navigation.navigate('Login', { color: this.state.activeColor })
   }
@@ -207,7 +206,10 @@ class Settings extends Component {
   renderNewsList() {
     const { newsSourcesJS } = settingsStore;
     if (!newsSourcesJS || newsSourcesJS.length < 1) {
-      return null;
+      return <View>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Loading...</Text>
+      </View>
     } else {
       return <View>
         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>NEWS SOURCE</Text>
@@ -236,7 +238,6 @@ class Settings extends Component {
     if (autoLog !== null && autoLog !== undefined) {
       return (
         <View>
-          {/* Auto Log Off */}
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
           <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
@@ -245,7 +246,10 @@ class Settings extends Component {
         </View>
       );
     } else {
-      return null;
+      return <View>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Loading...</Text>
+      </View>
     }
   }
 
@@ -258,9 +262,6 @@ class Settings extends Component {
     } = this.props;
 
     const { orderValue } = settingsStore;
-
-    // console.log('GLOooooooobal data', globalData)
-    // {this.renderOption('Citizenship', globalData.currentUser.country)}
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
@@ -288,7 +289,6 @@ class Settings extends Component {
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>ACCOUNT INFORMATION</Text>
 
-          {/* TODO: need edit functions. what are we doint here? */}
           {this.renderOption('Email', globalData.currentUser.email, this.toggleModal.bind(this, 'isEmailVisible'))}
           {this.renderOption('Mobile', formatPhoneNumber(globalData.currentUser.phone, 'dot'), this.toggleModal.bind(this, 'isPhoneVisible'))}
           {this.renderOption('Password', '***********', this.toggleModal.bind(this, 'isPasswordModalVisible'))}
@@ -319,7 +319,7 @@ class Settings extends Component {
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.handleTouch(value)}
-              value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
+              value={ globalData.hasUserEnabledBioProtection || globalData.isEnablingBio } />
           </View>
 
           {this.renderAutoLogOption()}
