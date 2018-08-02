@@ -351,22 +351,31 @@ class Chart extends Component {
     }
   }
 
+  renderRelatedListOrNot(list) {
+    if(!list || list.length === 0) {
+      return <View style={chart.profileTxt}>
+        <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>No Results</Text>
+      </View>
+    } else {
+      return list.map((elem, i) => {
+        return <View style={chart.profileTxt}>
+          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>TICKER</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Company Name</Text>
+        </View>
+      })
+    }
+  }
+
   renderRelated() {
+    // return null;
+    
     {/* TODO: get related stocks. not yet in data */}
+    
+    let relatedList = [];
+    
     return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
-        <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>MSFT</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Microsoft Corporation</Text>
-        </View>
-        <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>DVMT</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Dell Technologies</Text>
-        </View>
-        <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>HPE</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Hewlett Packard Enterprise Company</Text>
-        </View>
+        {this.renderRelatedListOrNot(relatedList)}
     </View>
   }
 
@@ -393,6 +402,28 @@ class Chart extends Component {
     </TouchableOpacity>
   }
 
+  renderPortraitMomentum(params) {
+    if(params.momentum == 'na') {
+      return null
+    } else {
+      return <View style={[chart.momentumWrapper, {width: '100%'}]}>
+        <View style={[chart.momentumInfo, {flex: 1}]}>
+
+          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
+
+          <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
+        </View>
+
+        {/* TODO: add value to dial indicator, where does it come from */}
+
+        <View style={{ flex: 1}}>
+          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+        </View>
+      </View>    
+    }
+  }
+  
   renderPortrait(params) {
     let {
         Price,
@@ -421,7 +452,9 @@ class Chart extends Component {
         formattedOpen,
         formattedLow,
         formattedHigh,
-        formattedSharesOutstanding
+        formattedSharesOutstanding,
+        formattedChangePercent,
+        formattedChangeDecimal
     } = params;
 
     return <View>
@@ -498,10 +531,6 @@ class Chart extends Component {
     </View>
 
 
-
-
-
-
     <ScrollView style={chart.wrapper}>
       <View style={chart.header}>
         <View style={chart.titleContainer}>
@@ -517,7 +546,7 @@ class Chart extends Component {
         <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
         <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
           <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{change}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{changePercent}%</Text>}
+          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
         </TouchableOpacity>
       </View>
 
@@ -544,19 +573,22 @@ class Chart extends Component {
 
       <View style={chart.verticalChart}>
         <View style={chart.timeWrap}>
-        <Tabs selected={this.state.page} style={chart.timePeriod}
-              selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]} onSelect={el=> this.setRange(el)}>
-              <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
-              <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
-              <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
-              <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
-              <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
-              <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
-              <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
-              <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
-              <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+        <Tabs
+          selected={this.state.page}
+          style={chart.timePeriod}
+          selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
+          onSelect={el=> this.setRange(el)}
+        >
+          <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
+          <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
+          <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
+          <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
+          <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
+          <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
+          <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
+          <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
+          <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
         </Tabs>
-
 
         </View>
         <View style={chart.chartWrapper}>
@@ -564,23 +596,9 @@ class Chart extends Component {
         </View>
 
       </View>
-      <View style={[chart.momentumWrapper, {width: '100%'}]}>
-        <View style={[chart.momentumInfo, {flex: 1}]}>
-
-          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
-
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
-        </View>
-
-        {/* TODO: add value to dial indicator, where does it come from */}
-
-        <View style={{ flex: 1}}>
-          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
-        </View>
-
-      </View>
-
+      
+      {this.renderPortraitMomentum(params)}
+      
       <View style={chart.profileWrapper}>
         <View style={chart.statsRow}>
             <TouchableOpacity style={styles.sellBtn} onPress={() => {this.showOrder('Sell')}}>
@@ -592,7 +610,7 @@ class Chart extends Component {
         </View>
       </View>
 
-      {this.renderBidAsk()}
+      {this.renderBidAsk(params)}
 
       <View style={chart.statsWrapper}>
         <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
@@ -631,13 +649,15 @@ class Chart extends Component {
           </View>
         </View>
         <View style={chart.statsRow}>
+          
           <View style={chart.statsColumn}>
 
                 {/* TODO: what is this referencing?? */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>PRICE/EARNINGS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????? 17.19</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>??????</Text>
           </View>
+          
           <View style={chart.statsColumn}>
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.divYield}%</Text>
@@ -708,7 +728,7 @@ class Chart extends Component {
                 {/* TODO: get this data, don't have anything for last stock split */}
 
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>7 TO 1 - Jun 2014</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????</Text>
             </View>
           </View>
 
@@ -738,56 +758,43 @@ class Chart extends Component {
   </View>
   }
 
+  renderBidListOrNothing(params) {
+    if(params.bid.length === 0) {
+      return <View style={chartland.bid}>
+      <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>No Bids</Text>
+      </View>
+    }
+    return params.bid.map((elem, i) => {
+      return <View style={chartland.bidaskRow}>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>{elem.size}</Text>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>${elem.price}</Text>
+      </View>
+    })
+  }
+  
+  renderAskListOrNothing(params) {
+    if(params.ask.length === 0) {
+      return <View style={chartland.bid}>
+      <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>No Asks</Text>
+      </View>
+    }
+    return params.ask.map((elem, i) => {
+      return <View style={chartland.bidaskRow}>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>{elem.size}</Text>
+        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>${elem.price}</Text>
+      </View>
+    })
+  }
 
-  renderBidAsk() {
-
-      // {/* TODO: BID LIST not getting this from server yet */}
-     return <View style={chartland.bidAsksWrapper}>
+  renderBidAsk(params) {
+     return <View style={[chartland.bidAsksWrapper, {marginVertical: 10}]}>
        <View style={chartland.bid}>
          <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>10</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.00</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
+         {this.renderBidListOrNothing(params)}
        </View>
        <View style={chartland.bid}>
          <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
-         <View style={chartland.bidaskRow}>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>100</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>$155.80</Text>
-         </View>
+         {this.renderAskListOrNothing(params)}
        </View>
      </View>
   }
@@ -832,7 +839,9 @@ class Chart extends Component {
         formattedOpen,
         formattedLow,
         formattedHigh,
-        formattedSharesOutstanding
+        formattedSharesOutstanding,
+        formattedChangePercent,
+        formattedChangeDecimal
     } = params;
 
     const { longSide, shortSide } = deviceSizeStore;
@@ -861,7 +870,7 @@ class Chart extends Component {
 
            <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
              <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>+1.85</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>9.78%</Text>}
+             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}%</Text>}
            </TouchableOpacity>
          </View>
          <View style={chartland.prices}>
@@ -937,41 +946,33 @@ class Chart extends Component {
          </View>
 
          <View style={chartland.right}>
+          
+          <ScrollView>
+            {this.renderPortraitMomentum(params)}
+            {this.renderBidAsk(params)}
 
-           <View style={chartland.momentumWrapper}>
-
-             <View style={chartland.momentumInfo}>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>MOMENTUM</Text>
-               <Text style={[{color: this.state.colors['lightGray']}, chartland.momentumSubTitle]}>Strong Buying Frenzy</Text>
-             </View>
-
-             <View style={{ flex: 1}}>
-               <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
-             </View>
-
-           </View>
-
-           {this.renderBidAsk()}
-
-           <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
-             <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
-             <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
-             <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
-           </View>
-           <View style={chartland.profileWrapper}>
-             <View style={chartland.statsRow}>
-               <View style={chartland.statsColumn}>
-                 <TouchableOpacity style={styles.sellBtnShort} onPress={() => {this.showOrder('Sell')}}>
-                   <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
-                 </TouchableOpacity>
-               </View>
-               <View style={chartland.statsColumn}>
-                 <TouchableOpacity style={styles.buyBtnShort} onPress={() => {this.showOrder('Buy')}}>
-                   <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
-                 </TouchableOpacity>
-               </View>
-             </View>
-           </View>
+            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
+              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
+            </View>
+            <View style={chartland.profileWrapper}>
+              <View style={chartland.statsRow}>
+                <View style={chartland.statsColumn}>
+                  <TouchableOpacity style={styles.sellBtnShort} onPress={() => {this.showOrder('Sell')}}>
+                    <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={chartland.statsColumn}>
+                  <TouchableOpacity style={styles.buyBtnShort} onPress={() => {this.showOrder('Buy')}}>
+                    <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+           
+           
          </View>
        </View>
          <Modal
@@ -1219,7 +1220,13 @@ class Chart extends Component {
     let formattedOpen = '$' + open.toFixed(2);
     let formattedLow = low.toFixed(2);
     let formattedHigh = high.toFixed(2);
-
+    let formattedChangePercent = changePercent.toFixed(4) + '%';
+    let formattedChangeDecimal = change.toFixed(2);
+    if(change > 0) {
+      formattedChangeDecimal = '+' + change.toFixed(2);
+    } else if( change < 0) {
+      formattedChangeDecimal = '-' + change.toFixed(2);
+    }
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
 
     const params = {
@@ -1230,7 +1237,9 @@ class Chart extends Component {
       formattedOpen,
       formattedLow,
       formattedHigh,
-      formattedSharesOutstanding
+      formattedSharesOutstanding,
+      formattedChangePercent,
+      formattedChangeDecimal
     }
 
     switch (this.state.orientation) {

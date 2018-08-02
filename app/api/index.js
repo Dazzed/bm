@@ -15,7 +15,7 @@ const searchStocks = (params) => get('users/stockSearch', params);
 const getSectorIndustries = (params) => get('tickerLists/sectors-industries', params);
 const updateSettings = (params) => get('/users/updateSettings', params);
 const logout = (params) => post('users/logout', params);
-const buy = (params) => post('users/buy', params);
+const buy = (params) => get('/orders/buy', params);
 const sell = (params) => post('users/buy', params);
 
 export {

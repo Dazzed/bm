@@ -293,15 +293,39 @@ var autoLogOffOptions = [
 ];
 
 let validity_props = [
-  { label: 'Good until canceled', value: 0 },
-  { label: 'Day only', value: 1 },
-  { label: 'Extended hours', value: 2 }
+  {
+    label: 'Good until canceled',
+    value: 0,
+    query: 'GTC'
+  },
+  {
+    label: 'Day only',
+    value: 1,
+    query: 'dayOnly'
+  },
+  {
+    label: 'Extended hours',
+    value: 2,
+    query: 'extended'
+  }
 ];
 
 let order_type = [
-  { label: 'Market order', value: 0 },
-  { label: 'Limit order', value: 1 },
-  { label: 'Stop Loss order', value: 2 }
+  {
+    label: 'Market order',
+    value: 0,
+    query: 'market'
+  },
+  {
+    label: 'Limit order',
+    value: 1,
+    query: 'limit'
+  },
+  {
+    label: 'Stop Loss order',
+    value: 2,
+    query: ''
+  }
 ];
 
 export {
