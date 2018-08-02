@@ -1,0 +1,117 @@
+// const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+// const ds1 = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+// const ds2 = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+// const ds3 = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+// topTech: ds.cloneWithRows([
+//   { ticker: 'APPL', companyName: 'Apple' },
+//   { ticker: 'MSFT', companyName: 'Microsoft' },
+//   { ticker: 'GOOGL', companyName: 'Alphabet' },
+//   { ticker: 'AMZN', companyName: 'Amazon' },
+//   { ticker: 'FB', companyName: 'Facebook' },
+//   { ticker: 'BABA', companyName: 'Alibaba' },
+//   { ticker: 'IBM', companyName: 'IBM' },
+//   { ticker: 'INTC', companyName: 'Intel' },
+//   { ticker: 'ORCL', companyName: 'Oracle' },
+//   { ticker: 'TSLA', companyName: 'Tesla' },
+// ]),
+// bioTech: ds1.cloneWithRows([
+//   { ticker: 'AMGN', companyName: 'Amgen' },
+//   { ticker: 'ABBV', companyName: 'AbbVie' },
+//   { ticker: 'CELG', companyName: 'Celgene' },
+//   { ticker: 'GILD', companyName: 'Gilead Sciences' },
+//   { ticker: 'BIIB', companyName: 'Biogen' },
+//   { ticker: 'REGN', companyName: 'Regeneron Pharmaceuticals' },
+//   { ticker: 'INCY', companyName: 'Incyte' },
+//   { ticker: 'VRTX', companyName: 'Vertex Pharmaceuticals' },
+//   { ticker: 'IONS', companyName: 'Ionis Pharmaceuticals' },
+//   { ticker: 'ACAD', companyName: 'Acadia Pharmaceuticals' },
+// ]),
+// crypto: ds2.cloneWithRows([
+//   { ticker: 'Bitcoin', companyName: 'Bitcoin' },
+//   { ticker: 'Ethereum', companyName: 'Ethereum' },
+//   { ticker: 'Ripple', companyName: 'Ripple' },
+//   { ticker: 'NEM', companyName: 'NEM' },
+//   { ticker: 'Litecoin', companyName: 'Litecoin' },
+//   { ticker: 'Dash', companyName: 'Dash' },
+//   { ticker: 'Stratis', companyName: 'Stratis' },
+//   { ticker: 'Monero', companyName: 'Monero' },
+//   { ticker: 'Steem', companyName: 'Steem' },
+//   { ticker: 'Waves', companyName: 'Waves' },
+// ]),
+// cannabis: ds3.cloneWithRows([
+//   { companyName: 'GW Pharmaceuticals', ticker: 'GWPH' },
+//   { companyName: 'AbbVie', ticker: 'ABBV' },
+//   { companyName: 'Scotts Miracle-Gro', ticker: 'SMG' },
+//   { companyName: 'Corbus Pharmaceuticals', ticker: 'CRBP' },
+//   { companyName: 'Insys Therapeutics', ticker: 'INSY' },
+//   { companyName: 'Cara Therapeutics', ticker: 'CARA' },
+//   { companyName: 'Arna Pharmaceuticals', ticker: 'ARNA' },
+//   { companyName: 'Axim Biotechnologies', ticker: 'AXIM' },
+//   { companyName: 'Canopy Growth', ticker: 'TWMJF' },
+//   { companyName: 'Aphria', ticker: 'APHQF' },
+// ]),
+
+// showSearchPreset(search) {
+  //   if (search == 'toptech') {
+  //     this.setState({ showCancel: 1, page: search, searchTerm: 'Top Tech Companies' }, () => {
+  //     });
+  //   } else if (search == 'biotech') {
+  //     this.setState({ showCancel: 1, page: search, searchTerm: 'Hot Biotech Companies' }, () => {
+  //     });
+  //   } else if (search == 'crypto') {
+  //     this.setState({ showCancel: 1, page: search, searchTerm: 'Best Cryptocurrencies' }, () => {
+  //     });
+  //   } else if (search == 'cannabis') {
+  //     this.setState({ showCancel: 1, page: search, searchTerm: 'Top Cannabis Stocks' }, () => {
+  //     });
+  //   } else {
+  //     this.setState({ showCancel: 0, page: search, searchTerm: '' }, () => {
+  //       this.forwardSearchTermToMobx()
+  //     });
+  //   }
+  // }
+
+  // renderPreCompiledList(dataSource) {
+  //   return <View style={search.results}>
+  //     <ListView
+  //       style={watchstyle.symbolContainer}
+  //       dataSource={dataSource}
+  //       renderRow={(data, i) => {
+  //         return this.renderListElement(data, i)
+  //       }}
+  //     />
+  //   </View>
+  // }
+
+  // renderSearchHelpers = () => {
+  //   switch (this.state.page) {
+  //     case 'presets':
+  //       return <View style={[search.searchPresets, { backgroundColor: this.state.colors['contentBg'] }]}>
+  //         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }]}>
+  //           <View style={[{ backgroundColor: this.state.colors['contentBg'] }, search.presetContainer]}>
+  //             <Text style={search.title}>Search by company or symbol</Text>
+  //             <TouchableOpacity style={styles.bluebtn} onPress={() => { this.showSearchPreset('toptech') }}>
+  //               <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Top Tech Companies</Text>
+  //             </TouchableOpacity>
+  //             <TouchableOpacity style={styles.bluebtn} onPress={() => { this.showSearchPreset('biotech') }}>
+  //               <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Hot Biotech Companies</Text>
+  //             </TouchableOpacity>
+  //             <TouchableOpacity style={styles.bluebtn} onPress={() => { this.showSearchPreset('crypto') }}>
+  //               <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Best Cryptocurrencies</Text>
+  //             </TouchableOpacity>
+  //             <TouchableOpacity style={styles.bluebtn} onPress={() => { this.showSearchPreset('cannabis') }}>
+  //               <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>Top Cannabis Stocks</Text>
+  //             </TouchableOpacity>
+  //           </View>
+  //         </ScrollView>
+  //       </View>
+  //     case 'toptech':
+  //       return this.renderPreCompiledList(this.state.topTech)
+  //     case 'biotech':
+  //       return this.renderPreCompiledList(this.state.bioTech)
+  //     case 'cannabis':
+  //       return this.renderPreCompiledList(this.state.cannabis)
+  //     case 'crypto':
+  //       return this.renderPreCompiledList(this.state.crypto)
+  //   }
+  // }
