@@ -28,7 +28,7 @@ import {
   TabNavigator,
 } from 'react-navigation';
 import Swipeout from '../../components/react-native-swipeout';
-import Search from './../search';
+import Search from '../Search';
 import styles from '../../style/style';
 import fonts from '../../style/fonts';
 import navstyle from '../../style/nav';
@@ -257,12 +257,9 @@ class Watchlists extends React.Component {
       isFetchingWatchlistData,
       isEditingWatchList,
       watchlistDataJS,
-      watchlistOrderJS,
       sortByIndex
     } = watchListStore;
     let dataSource = watchlistDataJS;
-    let order = watchlistOrderJS;
-    console.log('datasource', dataSource);
 
     return (
       <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>

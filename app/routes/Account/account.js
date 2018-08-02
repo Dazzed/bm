@@ -22,7 +22,7 @@ import Tabs from 'react-native-tabs';
 import AccountBal from './accountbalances';
 import AccountHist from './accounthistory';
 import AccountPos from './accountpositions';
-import Search from '../search';
+import Search from '../Search';
 
 import styles from '../../style/style';
 import account from '../../style/account';

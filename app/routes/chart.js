@@ -28,7 +28,7 @@ import { setTheme, getTheme, colors } from '../store/store';
 import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
 import AppNav from './appnav';
-import Search from './search';
+import Search from './Search';
 import styles from '../style/style';
 import navstyle from '../style/nav';
 import chart from '../style/chart';

@@ -63,7 +63,7 @@ import scanner from '../style/scanner';
 import trending from '../style/trending';
 import numbers from '../style/numbers';
 
-import Search from './search';
+import Search from './Search';
 
 
 class NumPad extends Component {
