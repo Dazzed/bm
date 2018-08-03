@@ -233,6 +233,24 @@ class Settings extends Component {
     setOrderValue(value);
   }
 
+
+setBankTransfersValueComponent(value) {
+  const { setBankTransfersValue } = settingsStore;
+  setBankTransfersValue(value)
+  
+}
+setDividendsValueComponent(value) {
+  const { setDividendsValue } = settingsStore;
+  setDividendsValue(value)
+  
+}
+setPriceMovementsValueComponent(value) {
+  const { setPriceMovementsValue } = settingsStore;
+  setPriceMovementsValue(value)
+  
+}
+
+
   renderAutoLogOption() {
     const { autoLog } = settingsStore;
     if (autoLog !== null && autoLog !== undefined) {
@@ -261,7 +279,8 @@ class Settings extends Component {
       globalData
     } = this.props;
 
-    const { orderValue } = settingsStore;
+
+    const { orderValue, bankTransfersValue, dividendsValue, priceMovementsValue } = settingsStore;
 
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
@@ -333,7 +352,31 @@ class Settings extends Component {
               onValueChange={(value) => this.setOrderValue(value)}
               value={orderValue} />
           </View>
-
+          
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Bank Transfers</Text>
+            <Switch style={styles.switch}
+              onTintColor={this.state.colors['blue']}
+              onValueChange={(value) => this.setBankTransfersValueComponent(value)}
+              value={bankTransfersValue} />
+          </View>
+          
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Dividends</Text>
+            <Switch style={styles.switch}
+              onTintColor={this.state.colors['blue']}
+              onValueChange={(value) => this.setDividendsValueComponent(value)}
+              value={dividendsValue} />
+          </View>
+          
+          <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Price Movements</Text>
+            <Switch style={styles.switch}
+              onTintColor={this.state.colors['blue']}
+              onValueChange={(value) => this.setPriceMovementsValueComponent(value)}
+              value={priceMovementsValue} />
+          </View>
+          
           {/* News Source */}
           {this.renderNewsList()}
 
