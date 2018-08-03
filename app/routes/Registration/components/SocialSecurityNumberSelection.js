@@ -26,6 +26,7 @@ import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import NumericalSelector from '../../../sharedComponents/NumericalSelector';
 import RegistrationHeader from './registrationHeader';
+import Button from '../../../sharedComponents/Button1';
 
 @observer
 export default class SocialSecurityNumberSelection extends Component {
@@ -125,10 +126,11 @@ export default class SocialSecurityNumberSelection extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.getValidFormStyle()]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
-                    </TouchableHighlight>
-                    <Text> </Text>
+
+                    <View style={{padding: 20}}>
+                      <Button title={'NEXT'} disabled={!this.isFormValid()} onPress={this.props.onForwardStep} />
+                    </View>
+
                 </View>
             </KeyboardAvoidingView>
         )

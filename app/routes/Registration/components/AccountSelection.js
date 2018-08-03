@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,28 +15,29 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from '../../../components/react-native-simple-radio-button';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import up from '../../../images/up.png';
 import down from '../../../images/down.png';
 import { Label } from 'native-base';
-import { isPresent, validateEmail, validatePassword, isEmailAlreadyInUse } from '../validation';
-
+import {
+  isPresent,
+  validateEmail,
+  validatePassword,
+  isEmailAlreadyInUse
+} from '../validation';
 import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
-
 import PasswordChecklist from '../../../sharedComponents/PasswordChecklist';
 import RegistrationHeader from './registrationHeader';
-
 import {
     eightCharValidator,
     upperAndLowercasLettersValidator,
     atLeastOneNumberValidator
 } from '../../../utility';
+import Button from '../../../sharedComponents/Button1';
 
 let showWhyWeAsk = false;
 
@@ -47,28 +47,12 @@ export default class AccountSelection extends Component {
         onForwardStep: PropTypes.func.isRequired,
         updateRegistrationParams: PropTypes.func.isRequired,
         colors: PropTypes.object.isRequired,
-        // registrationPage: PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
-        // const {
-        //     registrationPage: {
-        //         email,
-        //         password
-        //     }
-        // } = this.props;
-        // const isFormValid = isPresent(email) && isPresent(password);
         this.state = {
             showWhyWeAsk: false,
-            // emailClass: styles_2.registrationFormFieldInActive,
-            // passwordClass: styles_2.registrationFormFieldInActive,
-            // formValid: isFormValid,
-            // email: email || '',
-            // password: password || '',
-            // formValidClass: isFormValid ? styles_2.formValid : styles_2.formInvalid,
-            // isAsyncValidatingEmail: false,
-            // validationErrorMessage: null
         }
     }
 
@@ -117,41 +101,41 @@ export default class AccountSelection extends Component {
         return 'dfsdf'
         // return registrationErrorMessage
     }
-    
+
     renderEmailErrorMessage() {
       const { registrationErrorDataJS } = registrationStore;
-      
+
       console.log('=============== regis', registrationErrorDataJS)
-      
+
       if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'email' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.email.length > 0 ) {
         return <View style={{ marginTop: 10 }}>
             <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.email[0]}</Text>
-        </View>  
+        </View>
       } else {
         return null;
       }
     }
-    
+
     renderPasswordErrorMessage() {
       const { registrationErrorDataJS } = registrationStore;
       if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'password' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.password.length > 0 ) {
         return <View style={{ marginTop: 10 }}>
             <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.password[0]}</Text>
-        </View>  
+        </View>
       } else {
         return null;
-      }  
+      }
     }
-    
+
     renderGeneralErrorMessage() {
       const { registrationErrorDataJS } = registrationStore;
       if(registrationErrorDataJS && 'message' in registrationErrorDataJS ) {
         return <View style={{ marginTop: 10 }}>
             <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.message}</Text>
-        </View>  
+        </View>
       } else {
         return null;
-      }  
+      }
     }
 
     validationErrorMessageExists() {
@@ -184,55 +168,20 @@ export default class AccountSelection extends Component {
     }
 
     handleForwardStep = async () => {
-
-        const { registrationDataJS } = registrationStore;
-
-        console.log('HANDLE FORWARD STEP ASYNC', );
-
-        registrationStore.submitRegistration()
-            .then((res) => {
-              console.log('submit res', res)
-              if(res.ok) {
-                this.props.onForwardStep();  
-              } else {
-                console.log('============== registration error', res)
-              }
-            })
-            .catch((err) => {
-                console.log('subimt err', err)
-            })
-
-
-        // this.setState({
-        //     isAsyncValidatingEmail: true
-        // });
-        // const isEmailFormatValid = validateEmail(this.state.email);
-        // const isPasswordFormatValid = validatePassword(this.state.password);
-        // let errorsPresent = false;
-        // if (!isEmailFormatValid) {
-        //     errorsPresent = true;
-        //     this.setState({
-        //         validationErrorMessage: 'Invalid email format'
-        //     });
-        // } else if (await isEmailAlreadyInUse(this.state.email)) {
-        //     errorsPresent = true;
-        //     this.setState({
-        //         validationErrorMessage: 'That email is already in use'
-        //     });
-        // } else if (!isPasswordFormatValid.valid) {
-        //     errorsPresent = true;
-        //     this.setState({
-        //         validationErrorMessage: isPasswordFormatValid.message
-        //     });
-        // }
-        // this.setState({
-        //     isAsyncValidatingEmail: false
-        // });
-        // if (errorsPresent) {
-        //     return;
-        // } else {
-
-        // }
+      const { registrationDataJS } = registrationStore;
+      console.log('HANDLE FORWARD STEP ASYNC', );
+      registrationStore.submitRegistration()
+      .then((res) => {
+        console.log('submit res', res)
+        if(res.ok) {
+          this.props.onForwardStep();
+        } else {
+          console.log('============== registration error', res)
+        }
+      })
+      .catch((err) => {
+          console.log('subimt err', err)
+      })
     }
 
 
@@ -247,7 +196,7 @@ export default class AccountSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ height: '72%' }}>
-                    
+
                     <RegistrationHeader headerText={'ACCOUNT DETAILS'} generalText={null} whyWeAskText={null} extraContent={this.whyWeAskContent()} />
 
                     <View style={[{ backgroundColor: this.props.colors['white'] }]}>
@@ -262,9 +211,9 @@ export default class AccountSelection extends Component {
                                 onChange={(event) => this.onEmailChange(event, 'email')}
                                 value={registrationDataJS.email}
                             />
-                            
+
                             {this.renderEmailErrorMessage()}
-                            
+
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
                             <TextInput
                                 onBlur={() => this.onBlur('passwordClass')}
@@ -274,25 +223,21 @@ export default class AccountSelection extends Component {
                                 onChange={(event) => this.onPasswordChange(event, 'password')}
                                 value={registrationDataJS.password}
                             />
-                            
+
                             {this.renderPasswordErrorMessage()}
-                        
+
                         </View>
                     </View>
                     <PasswordChecklist password={registrationDataJS.password}/>
                 </ScrollView>
-                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight
-                        disabled={!this.isFormValid()}
-                        onPress={this.handleForwardStep}
-                        style={[styles_2.fullBtn, { height: 80 }, this.getValidFormClass()]}
-                    >
-                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
-                            NEXT
-                        </Text>
-                    </TouchableHighlight>
-                    <Text> </Text>
-                </View>
+
+                  <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
+
+                    <View style={{padding: 20}}>
+                      <Button title={'NEXT'} disabled={!this.isFormValid()} onPress={this.handleForwardStep} />
+                    </View>
+
+                  </View>
             </KeyboardAvoidingView>
         )
     }

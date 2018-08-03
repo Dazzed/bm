@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -16,7 +15,6 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
@@ -27,6 +25,7 @@ import { observer } from 'mobx-react';
 import { registrationStore } from '../../../mobxStores';
 import NumericalSelector from '../../../sharedComponents/NumericalSelector';
 import RegistrationHeader from './registrationHeader';
+import Button from '../../../sharedComponents/Button1';
 
 
 @observer
@@ -138,7 +137,6 @@ export default class DateOfBirthSelection extends Component {
         this.setState(({ showWhyWeAsk }) => ({ showWhyWeAsk: !showWhyWeAsk }));
     }
 
-
     render() {
         const { registrationDataJS } = registrationStore;
         return (
@@ -154,8 +152,13 @@ export default class DateOfBirthSelection extends Component {
                     <View style={[{ backgroundColor: this.props.colors['white'], marginTop: 0, paddingVertical: 40, width: '100%' }]}>
                         <View>
                           <View style={[styles_2.registrationFormView]}>
-                              <TextInput placeholder="MM/DD/YYYY" placeholderTextColor={this.props.colors['lightGray']} value={this.formatDate(registrationDataJS.dateField)}
-                                  style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.getNumFieldClass()]} maxLength={10} editable={false}
+                              <TextInput
+                                placeholder="MM/DD/YYYY"
+                                placeholderTextColor={this.props.colors['lightGray']}
+                                value={this.formatDate(registrationDataJS.dateField)}
+                                style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.getNumFieldClass()]}
+                                maxLength={10}
+                                editable={false}
                               />
                           </View>
                           <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={this.getDisabledList()}/>
@@ -164,10 +167,11 @@ export default class DateOfBirthSelection extends Component {
                 </ScrollView>
 
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight disabled={!this.isFormValid()} onPress={this.props.onForwardStep} style={[styles_2.fullBtn, { height: 80 }, this.getFormValidClass()]}>
-                        <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
-                    </TouchableHighlight>
-                    <Text> </Text>
+
+                    <View style={{padding: 20}}>
+                      <Button title={'NEXT'} onPress={this.props.onForwardStep} />
+                    </View>
+
                 </View>
             </KeyboardAvoidingView>
         )

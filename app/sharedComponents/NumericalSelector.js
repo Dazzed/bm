@@ -82,9 +82,9 @@ export default class NumericalSelector extends React.Component {
         getNumberStyle = (num) => {
             let numberStyle = [
                 {
-                    color: theme.darkSlate,
-                    fontSize: 20,
-                    opacity: this.isDisabled(num) === true ? .4 : 1
+                  color: theme.darkSlate,
+                  fontSize: 32,
+                  opacity: this.isDisabled(num) === true ? .4 : 1
                 },
                 fonts.hindGunturRg
             ];

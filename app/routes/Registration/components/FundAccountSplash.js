@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
     ScrollView,
     KeyboardAvoidingView,
@@ -15,18 +14,14 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
-
 import styles from '../../../style/style';
 import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
-
 let showWhyWeAsk = false;
-
 import { observer } from 'mobx-react';
 import { colorStore } from '../../../mobxStores';
-
 import { generateHeaderStyles } from '../../../utility';
-
+import Button from '../../../sharedComponents/Button1';
 
 @observer
 export default class FundAccountSplash extends Component {
