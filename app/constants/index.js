@@ -343,6 +343,8 @@ const indicatorProps = [
   {label: 'BOL', info: 'Bollinger Bands', value: 10 }
 ];
 
+const initialChartRangeIndicator = '1y';
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -374,5 +376,6 @@ export {
   validity_props,
   order_type,
   SETTINGS_DATA_KEY,
-  indicatorProps
+  indicatorProps,
+  initialChartRangeIndicator
 }

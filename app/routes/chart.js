@@ -51,7 +51,11 @@ import {
 import { observer } from 'mobx-react';
 import moment from 'moment-timezone';
 import { millionBillionFormatter } from '../utility';
-import { initialIndicators, indicatorProps } from '../constants';
+import {
+  initialIndicators,
+  indicatorProps,
+  initialChartRangeIndicator
+} from '../constants';
 // var colors = require('../style/colors')
 var currIndicates = [];
 var indicator_props = indicatorProps;
@@ -78,7 +82,7 @@ class Chart extends Component {
       orientation: 'portrait',
       isSearchVisible: false,
       isIndicatorsVisible: false,
-      page: '1H',
+      page: initialChartRangeIndicator,
       indicators: initialIndicators,
       indicatorCnt: 0,
       isDisabled: false,

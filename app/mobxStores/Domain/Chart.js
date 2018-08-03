@@ -1,6 +1,6 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { getTickerDetails, getStockChartDetail } from '../../api';
-import { initialIndicators } from '../../constants';
+import { initialIndicators, initialChartRangeIndicator } from '../../constants';
 
 export default class AccountStore {
 
@@ -58,7 +58,7 @@ export default class AccountStore {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    @observable range = '1y';
+    @observable range = initialChartRangeIndicator;
 
     @action setRange = (newRange) => {
         this.range = newRange;
