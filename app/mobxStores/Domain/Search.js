@@ -130,12 +130,15 @@ export default class Trending {
 
   @action fetchCustomListTickers = async id => {
     this.setLoading(true);
-    const res = await get(`customLists/${id}/tickers`);
+    const params = {
+      customList: id
+    }
+    const res = await searchStocks(params);
     if (res.ok) {
       this.searchData = {
         current_page: 1,
         total_pages: 1,
-        result: res.json
+        result: res.json.data
       };
     } else {
       console.log('Error in fetchCustomListTickers', res);
