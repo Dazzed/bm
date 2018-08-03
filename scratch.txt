@@ -5,3 +5,6 @@ PRICE/EARNINGS
   <Text style={[{ color: this.props.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>NEXT</Text>
 </TouchableHighlight>
 <Text> </Text>
+
+
+1d, 1m, 3m, 6m, 1y, 2y, 5y

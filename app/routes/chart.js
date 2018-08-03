@@ -573,15 +573,15 @@ class Chart extends Component {
           selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
           onSelect={el=> this.setRange(el)}
         >
-          <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
-          <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
-          <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
-          <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
-          <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
-          <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
-          <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
-          <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
-          <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+          <Text name='1d' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1d</Text>
+          <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
+          <Text name='3m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>3m</Text>
+          <Text name='6m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>6m</Text>
+          <Text name='1y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1y</Text>
+          <Text name='2y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>2y</Text>
+          <Text name='5y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5y</Text>
+          
+          <Text name='all' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
         </Tabs>
 
         </View>
@@ -921,17 +921,18 @@ class Chart extends Component {
                </View>
              </TouchableOpacity>
              <View style={chartland.timePeriod}>
+             
              <Tabs selected={this.state.page} style={[{borderRightColor: this.state.colors['borderGray']}, chartland.timePeriod]}
                    selectedStyle={[{backgroundColor: this.state.colors['grayTwo']}, {borderColor: this.state.colors['grayTwo']}, {color: this.state.colors['realWhite']}, fonts.hindGunturBd, chartland.timeSelected]} onSelect={el=> this.setRange(el)}>
+                 <Text name='1d' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1d</Text>
                  <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
-                 <Text name='5m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5m</Text>
-                 <Text name='30m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>30m</Text>
-                 <Text name='1H' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1H</Text>
-                 <Text name='1D' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1D</Text>
-                 <Text name='1W' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1W</Text>
-                 <Text name='1M' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1M</Text>
-                 <Text name='1Y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1Y</Text>
-                 <Text name='ALL' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+                 <Text name='3m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>3m</Text>
+                 <Text name='6m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>6m</Text>
+                 <Text name='1y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1y</Text>
+                 <Text name='2y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>2y</Text>
+                 <Text name='5y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5y</Text>
+                 
+                 <Text name='all' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
              </Tabs>
              </View>
            </View>
