@@ -329,6 +329,20 @@ let order_type = [
   }
 ];
 
+const indicatorProps = [
+  {label: 'VLM', info: 'Volume', value: 0 },
+  {label: 'TRND', info: 'Trend Lines', value: 1 },
+  {label: 'ICHI', info: 'Ichimoku Cloud', value: 2 },
+  {label: 'OBV', info: 'On Balance Volume', value: 3 },
+  {label: 'SMA', info: 'Simple Moving Average', value: 4 },
+  {label: 'EMA', info: 'Exponential Moving Average', value: 5 },
+  {label: 'MACD', info: 'Moving Average Convergence Divergence', value: 6 },
+  {label: 'RSI', info: 'Relative Strength Index', value: 7 },
+  {label: 'A/D Line', info: 'Accumulation/Distribution Line', value: 8 },
+  {label: 'FIB', info: 'Fibonacci', value: 9 },
+  {label: 'BOL', info: 'Bollinger Bands', value: 10 }
+];
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -359,5 +373,6 @@ export {
   autoLogOffOptions,
   validity_props,
   order_type,
-  SETTINGS_DATA_KEY
+  SETTINGS_DATA_KEY,
+  indicatorProps
 }

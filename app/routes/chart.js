@@ -20,7 +20,11 @@ import {
 import { connect } from 'react-redux';
 import Modal from '../components/react-native-modal'
 import Orientation from 'react-native-orientation';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from '../components/react-native-simple-radio-button';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel
+} from '../components/react-native-simple-radio-button';
 import CheckBox from '../components/react-native-check-box'
 import Tabs from 'react-native-tabs';
 import ResponsiveImage from 'react-native-responsive-image';
@@ -39,32 +43,21 @@ import { selectGlobalData } from '../selectors';
 import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
-import { chartStore, watchListStore, deviceSizeStore } from '../mobxStores';
+import {
+  chartStore,
+  watchListStore,
+  deviceSizeStore
+} from '../mobxStores';
 import { observer } from 'mobx-react';
 import moment from 'moment-timezone';
 import { millionBillionFormatter } from '../utility';
-import { initialIndicators } from '../constants';
-
+import { initialIndicators, indicatorProps } from '../constants';
 // var colors = require('../style/colors')
 var currIndicates = [];
-
-var indicator_props = [
-  {label: 'VLM', info: 'Volume', value: 0 },
-  {label: 'TRND', info: 'Trend Lines', value: 1 },
-  {label: 'ICHI', info: 'Ichimoku Cloud', value: 2 },
-  {label: 'OBV', info: 'On Balance Volume', value: 3 },
-  {label: 'SMA', info: 'Simple Moving Average', value: 4 },
-  {label: 'EMA', info: 'Exponential Moving Average', value: 5 },
-  {label: 'MACD', info: 'Moving Average Convergence Divergence', value: 6 },
-  {label: 'RSI', info: 'Relative Strength Index', value: 7 },
-  {label: 'A/D Line', info: 'Accumulation/Distribution Line', value: 8 },
-  {label: 'FIB', info: 'Fibonacci', value: 9 },
-  {label: 'BOL', info: 'Bollinger Bands', value: 10 }
-];
+var indicator_props = indicatorProps;
 
 @observer
 class Chart extends Component {
-
   static navigationOptions = {
     header: null,
     gesturesEnabled: true,
@@ -454,7 +447,8 @@ class Chart extends Component {
         formattedHigh,
         formattedSharesOutstanding,
         formattedChangePercent,
-        formattedChangeDecimal
+        formattedChangeDecimal,
+        formattedLastStockSplit
     } = params;
 
     return <View>
@@ -694,9 +688,9 @@ class Chart extends Component {
                 {/* TODO: there is no state or country in the data.. */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, STATE?? {address.hq_address_city}</Text>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, STATE?? {address.hq_address_postal_code}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>COUNTRY??</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, {address.hq_address_city}</Text>
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_address_postal_code}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}></Text>
           </View>
       </View>
 
@@ -728,7 +722,7 @@ class Chart extends Component {
                 {/* TODO: get this data, don't have anything for last stock split */}
 
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{formattedLastStockSplit}</Text>
             </View>
           </View>
 
@@ -1213,8 +1207,6 @@ class Chart extends Component {
     {/* TODO: TIME don't have this yet with time zone */}
 
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
-    console.log('======================= FRATTTIME', formattedTime)
-
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);
@@ -1228,7 +1220,15 @@ class Chart extends Component {
       formattedChangeDecimal = '-' + change.toFixed(2);
     }
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
-
+    
+    let formattedLastStockSplit = 'na';
+    
+    if(overview.lastStockSplit) {
+      if('paymentDate' in overview.lastStockSplit && overview.lastStockSplit.paymentDate !== null) {
+        formattedLastStockSplit = overview.lastStockSplit.paymentDate;
+      }
+    }
+    
     const params = {
       ...tickerDataJS,
       formattedTime,
@@ -1239,7 +1239,8 @@ class Chart extends Component {
       formattedHigh,
       formattedSharesOutstanding,
       formattedChangePercent,
-      formattedChangeDecimal
+      formattedChangeDecimal,
+      formattedLastStockSplit
     }
 
     switch (this.state.orientation) {

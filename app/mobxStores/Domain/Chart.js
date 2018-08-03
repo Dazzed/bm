@@ -96,7 +96,7 @@ export default class AccountStore {
 
         this.setStockChartLoading(true);
 
-        console.log('chartData ============================================= ', toJS(this.indicatorsList));
+        // console.log('chartData ============================================= ', toJS(this.indicatorsList));
 
         let params = {
           options: {
