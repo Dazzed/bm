@@ -1,5 +1,5 @@
 import { observable, action, computed, toJS } from 'mobx';
-import { getMyAccountData } from '../../api';
+import { getMyAccountData, positions } from '../../api';
 
 export default class MyAccountData {
 
@@ -13,6 +13,66 @@ export default class MyAccountData {
   }
 
 
+  @observable positions = [];
+  @computed get positionsJS() {
+    // [
+    //   {
+    //     companyName: 'Apple Computer',
+    //     companyAbbreviation: 'APPL',
+    //     quantity: 10,
+    //
+    //     priceChange: '153.53',
+    //     priceChangePercentage: '9.78',
+    //     priceChangeDecimal: '+1.85',
+    //     priceChangeColor: 'green',
+    //
+    //     marketValuation: '1535.30',
+    //     marketChangePercentage: '1535.30',
+    //     marketChangeDecimal: '+1.85',
+    //     marketChangeColor: 'green'
+    //   },
+    //   {
+    //     companyName: 'Tesla Motors',
+    //     companyAbbreviation: 'TSLA',
+    //     quantity: 11,
+    //
+    //     priceChange: '153.53',
+    //     priceChangePercentage: '9.78',
+    //     priceChangeDecimal: '-1.85',
+    //     priceChangeColor: 'red',
+    //
+    //     marketValuation: '1535.30',
+    //     marketChangePercentage: '1535.30',
+    //     marketChangeDecimal: '-1.85',
+    //     marketChangeColor: 'red'
+    //
+    //   }
+    // ]
+    //
+    let results = toJS(this.positions).map((elem, i) => {
+      console.log('===== elem', elem)
+      return {
+        ...elem,
+        test: 'test',
+
+        companyName: elem.ticker,
+        companyAbbreviation: elem.ticker,
+        quantity: elem.shares,
+
+        priceChange: '---',
+        priceChangePercentage: '---',
+        priceChangeDecimal: '----',
+        priceChangeColor: '---',
+
+        marketValuation: '-',
+        marketChangePercentage: '',
+        marketChangeDecimal: '-',
+        marketChangeColor: '-'
+      }
+    })
+    return results;
+  }
+
   @action getMyAccountData = () => {
     let params = {
 
@@ -24,6 +84,8 @@ export default class MyAccountData {
     // .catch((err) => {
     //   console.log('account data err', err)
     // });
+
+    this.getPositions();
   };
 
 @computed get myAccoutDataJS() {
@@ -48,43 +110,6 @@ export default class MyAccountData {
       }
     }
     return balanceData;
-  }
-
-  @computed get positionsJS() {
-    let positionData = [
-      {
-        companyName: 'Apple Computer',
-        companyAbbreviation: 'APPL',
-        quantity: 10,
-
-        priceChange: '153.53',
-        priceChangePercentage: '9.78',
-        priceChangeDecimal: '+1.85',
-        priceChangeColor: 'green',
-
-        marketValuation: '1535.30',
-        marketChangePercentage: '1535.30',
-        marketChangeDecimal: '+1.85',
-        marketChangeColor: 'green'
-      },
-      {
-        companyName: 'Tesla Motors',
-        companyAbbreviation: 'TSLA',
-        quantity: 11,
-
-        priceChange: '153.53',
-        priceChangePercentage: '9.78',
-        priceChangeDecimal: '-1.85',
-        priceChangeColor: 'red',
-
-        marketValuation: '1535.30',
-        marketChangePercentage: '1535.30',
-        marketChangeDecimal: '-1.85',
-        marketChangeColor: 'red'
-
-      }
-    ]
-    return positionData;
   }
 
   @computed get positionTotalsJS() {
@@ -120,6 +145,23 @@ export default class MyAccountData {
       }
     ];
     return historyData;
+  }
+
+
+
+  // get positions
+  @action getPositions = () => {
+    // GET /positions
+    positions()
+    .then((res) => {
+      console.log('positions res', res);
+      if(res.ok) {
+        this.positions = res.json;
+      }
+    })
+    .catch((err) => {
+      console.log('err', err);
+    })
   }
 
 

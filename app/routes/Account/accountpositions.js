@@ -17,16 +17,16 @@ import {
   TabbedArea,
   TabPane
 } from 'react-native';
-
-import {setTheme, getTheme, colors} from '../../store/store';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../../store/store';
 import { connect } from 'react-redux';
-
 import styles from '../../style/style';
 import account from '../../style/account';
 import fonts from '../../style/fonts';
 import { selectGlobalData } from '../../selectors';
-
-
 import { observer } from 'mobx-react';
 import { myAccountStore } from '../../mobxStores';
 

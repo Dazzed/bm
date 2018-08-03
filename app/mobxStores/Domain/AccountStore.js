@@ -12,6 +12,7 @@ export default class AccountStore {
     @observable accountList = [];
 
     @action getAccountList = () => {
+
         this.accountList = [
             {
                 title: 'MOCK BANK CHECKING',
