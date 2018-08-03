@@ -87,7 +87,7 @@ export default class SmallGraph extends React.Component {
                         return xAxisData[value]
                     }}
                     numberOfTicks={ 3 }
-                    contentInset={{ left: 10, right: 10 }}
+                    contentInset={{ left: 30, right: 10 }}
                     svg={{ fontSize: 10, fill: textColor }}
                 />
             </View>
