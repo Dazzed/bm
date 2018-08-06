@@ -191,13 +191,10 @@ export default class LargeGraph extends React.Component {
         // console.log('---- parsed Data', parsedData);
 
         let inlineContainerStyle = {
-            // borderWidth: 3,
-            // borderColor: 'green',
-            // flex: 1,
             height: this.props.height
         }
 
-        let polyGonList = [];
+        let polygonsList = [];
 
         let renderIHCI = false;
         if(indicatorsListJS.indexOf('ICHI') > -1 && parsedData.ichiCloudLines.length === 2) {

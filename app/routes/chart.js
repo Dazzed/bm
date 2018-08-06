@@ -20,7 +20,11 @@ import {
 import { connect } from 'react-redux';
 import Modal from '../components/react-native-modal'
 import Orientation from 'react-native-orientation';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from '../components/react-native-simple-radio-button';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel
+} from '../components/react-native-simple-radio-button';
 import CheckBox from '../components/react-native-check-box'
 import Tabs from 'react-native-tabs';
 import ResponsiveImage from 'react-native-responsive-image';
@@ -39,32 +43,25 @@ import { selectGlobalData } from '../selectors';
 import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
-import { chartStore, watchListStore, deviceSizeStore } from '../mobxStores';
+import {
+  chartStore,
+  watchListStore,
+  deviceSizeStore
+} from '../mobxStores';
 import { observer } from 'mobx-react';
 import moment from 'moment-timezone';
 import { millionBillionFormatter } from '../utility';
-import { initialIndicators } from '../constants';
-
+import {
+  initialIndicators,
+  indicatorProps,
+  initialChartRangeIndicator
+} from '../constants';
 // var colors = require('../style/colors')
 var currIndicates = [];
-
-var indicator_props = [
-  {label: 'VLM', info: 'Volume', value: 0 },
-  {label: 'TRND', info: 'Trend Lines', value: 1 },
-  {label: 'ICHI', info: 'Ichimoku Cloud', value: 2 },
-  {label: 'OBV', info: 'On Balance Volume', value: 3 },
-  {label: 'SMA', info: 'Simple Moving Average', value: 4 },
-  {label: 'EMA', info: 'Exponential Moving Average', value: 5 },
-  {label: 'MACD', info: 'Moving Average Convergence Divergence', value: 6 },
-  {label: 'RSI', info: 'Relative Strength Index', value: 7 },
-  {label: 'A/D Line', info: 'Accumulation/Distribution Line', value: 8 },
-  {label: 'FIB', info: 'Fibonacci', value: 9 },
-  {label: 'BOL', info: 'Bollinger Bands', value: 10 }
-];
+var indicator_props = indicatorProps;
 
 @observer
 class Chart extends Component {
-
   static navigationOptions = {
     header: null,
     gesturesEnabled: true,
@@ -85,7 +82,7 @@ class Chart extends Component {
       orientation: 'portrait',
       isSearchVisible: false,
       isIndicatorsVisible: false,
-      page: '1H',
+      page: initialChartRangeIndicator,
       indicators: initialIndicators,
       indicatorCnt: 0,
       isDisabled: false,
@@ -454,7 +451,8 @@ class Chart extends Component {
         formattedHigh,
         formattedSharesOutstanding,
         formattedChangePercent,
-        formattedChangeDecimal
+        formattedChangeDecimal,
+        formattedLastStockSplit
     } = params;
 
     return <View>
@@ -579,15 +577,15 @@ class Chart extends Component {
           selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
           onSelect={el=> this.setRange(el)}
         >
-          <Text name='1m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1m</Text>
-          <Text name='5m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>5m</Text>
-          <Text name='30m' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>30m</Text>
-          <Text name='1H' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>1H</Text>
-          <Text name='1D' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1D</Text>
-          <Text name='1W' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1W</Text>
-          <Text name='1M' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1M</Text>
-          <Text name='1Y' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]}>1Y</Text>
-          <Text name='ALL' style={[{ color: this.state.colors['lightGray'] }, chart.time, fonts.hindGunturRg]} selectedStyle={[{ color: this.state.colors['realWhite'] }, fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+          <Text name='1d' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1d</Text>
+          <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
+          <Text name='3m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>3m</Text>
+          <Text name='6m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>6m</Text>
+          <Text name='1y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1y</Text>
+          <Text name='2y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>2y</Text>
+          <Text name='5y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5y</Text>
+          
+          <Text name='all' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
         </Tabs>
 
         </View>
@@ -694,9 +692,9 @@ class Chart extends Component {
                 {/* TODO: there is no state or country in the data.. */}
 
             <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, STATE?? {address.hq_address_city}</Text>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, STATE?? {address.hq_address_postal_code}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>COUNTRY??</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, {address.hq_address_city}</Text>
+              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_address_postal_code}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}></Text>
           </View>
       </View>
 
@@ -728,7 +726,7 @@ class Chart extends Component {
                 {/* TODO: get this data, don't have anything for last stock split */}
 
               <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>?????</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{formattedLastStockSplit}</Text>
             </View>
           </View>
 
@@ -927,17 +925,18 @@ class Chart extends Component {
                </View>
              </TouchableOpacity>
              <View style={chartland.timePeriod}>
+             
              <Tabs selected={this.state.page} style={[{borderRightColor: this.state.colors['borderGray']}, chartland.timePeriod]}
                    selectedStyle={[{backgroundColor: this.state.colors['grayTwo']}, {borderColor: this.state.colors['grayTwo']}, {color: this.state.colors['realWhite']}, fonts.hindGunturBd, chartland.timeSelected]} onSelect={el=> this.setRange(el)}>
+                 <Text name='1d' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1d</Text>
                  <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
-                 <Text name='5m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5m</Text>
-                 <Text name='30m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>30m</Text>
-                 <Text name='1H' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1H</Text>
-                 <Text name='1D' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1D</Text>
-                 <Text name='1W' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1W</Text>
-                 <Text name='1M' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1M</Text>
-                 <Text name='1Y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1Y</Text>
-                 <Text name='ALL' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+                 <Text name='3m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>3m</Text>
+                 <Text name='6m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>6m</Text>
+                 <Text name='1y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1y</Text>
+                 <Text name='2y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>2y</Text>
+                 <Text name='5y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5y</Text>
+                 
+                 <Text name='all' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
              </Tabs>
              </View>
            </View>
@@ -1213,8 +1212,6 @@ class Chart extends Component {
     {/* TODO: TIME don't have this yet with time zone */}
 
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
-    console.log('======================= FRATTTIME', formattedTime)
-
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);
@@ -1228,7 +1225,15 @@ class Chart extends Component {
       formattedChangeDecimal = '-' + change.toFixed(2);
     }
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
-
+    
+    let formattedLastStockSplit = 'na';
+    
+    if(overview.lastStockSplit) {
+      if('paymentDate' in overview.lastStockSplit && overview.lastStockSplit.paymentDate !== null) {
+        formattedLastStockSplit = overview.lastStockSplit.paymentDate;
+      }
+    }
+    
     const params = {
       ...tickerDataJS,
       formattedTime,
@@ -1239,7 +1244,8 @@ class Chart extends Component {
       formattedHigh,
       formattedSharesOutstanding,
       formattedChangePercent,
-      formattedChangeDecimal
+      formattedChangeDecimal,
+      formattedLastStockSplit
     }
 
     switch (this.state.orientation) {

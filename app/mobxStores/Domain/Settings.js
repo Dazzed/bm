@@ -87,14 +87,74 @@ export default class Settings {
     }
 
     @computed get orderValue() {
-      if(!this.settingsData || !this.settingsData.newsSource) {
+      if(!this.settingsData || !this.settingsData.notification) {
         return false
       }
       if(this.settingsData.notification.orders) {
         return true;
       }
     }
-
+    
+    @computed get bankTransfersValue() {
+      if(!this.settingsData || !this.settingsData.notification) {
+        return false
+      }
+      if(this.settingsData.notification.bankTransfers) {
+        return true;
+      }
+    }
+    @computed get dividendsValue() {
+      if(!this.settingsData || !this.settingsData.notification) {
+        return false
+      }
+      if(this.settingsData.notification.dividends) {
+        return true;
+      }
+    }
+    @computed get priceMovementsValue() {
+      if(!this.settingsData || !this.settingsData.notification) {
+        return false
+      }
+      if(this.settingsData.notification.priceMovements) {
+        return true;
+      }
+    }
+    
+    
+  
+    @action setBankTransfersValue = (val) => {
+      if(!this.settingsData || !this.settingsData.newsSource) {
+        return
+      } else {
+        let oldSettingsData = this.settingsData;
+        oldSettingsData.notification.bankTransfers = val;
+        this.hydrateSettings(oldSettingsData);
+        this.updateSettings();
+      }
+    }
+    @action setDividendsValue = (val) => {
+      if(!this.settingsData || !this.settingsData.newsSource) {
+        return
+      } else {
+        let oldSettingsData = this.settingsData;
+        oldSettingsData.notification.dividends = val;
+        this.hydrateSettings(oldSettingsData);
+        this.updateSettings();
+      }
+    }
+    @action setPriceMovementsValue = (val) => {
+      if(!this.settingsData || !this.settingsData.newsSource) {
+        return
+      } else {
+        let oldSettingsData = this.settingsData;
+        oldSettingsData.notification.priceMovements = val;
+        this.hydrateSettings(oldSettingsData);
+        this.updateSettings();
+      }
+    }
+    
+    
+    
     @action setLogOutAfterCount = (newValue) => {
       console.log('set log out after count', newValue);
       let newSettingsData = this.settingsData;

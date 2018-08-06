@@ -2,6 +2,40 @@ import { checkIntersection } from "line-intersect";
 import moment from 'moment';
 import { indicatorDataMap } from '../../constants';
 
+
+const shouldDisplayDateStamps = (max, min) => {
+  // time padding makes sure data that is at the 'day' threshold will bounce down to timestamps
+  let timePadding = 60 * 60; // one hour
+
+  let secondsInOneDay = (24 * 60 * 60) - timePadding;
+  if( (max - min) > secondsInOneDay) {
+    // if range of max and min is greater than one day, return true, it's gonna be dates
+    return true;
+  } else {
+    return false;
+  }
+}
+
+const formatDateStamp = (unixInput) => {
+  return moment.unix(unixInput).format('MM-DD-YY');
+}
+
+const formatTimeStamp = (unixInput) => {
+  return moment.unix(unixInput).format('hh:mm a');
+}
+
+const returnFormattedTimeStamp = (elem) => {
+  let dateUnix = '';
+  if(elem.minute) {
+    // handle parsing with minutes
+    dateUnix = parseInt( moment(elem.date + ' ' + elem.minute, "YYYYMMDD HH:mm").format('X') );
+  } else {
+    // handle standard date stamps
+    dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
+  }
+  return dateUnix;
+}
+
 Object.byString = (o, s) => {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
@@ -157,12 +191,23 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
       yRange: 0,
       lineData: [],
       dateData: [],
-      priceLineHeight: 0
+      priceLineHeight: 0,
+      xMax: 0,
+      xMin: 9999999999999999999
     }
 
 
     for(let i = 0; i < data.length; i++) {
-      const thisClosePoint = data[i].close;
+      const thisDataPoint = data[i];
+      // format data
+      data[i].unixTimeStamp = returnFormattedTimeStamp(thisDataPoint);
+    }
+
+
+    for(let i = 0; i < data.length; i++) {
+      const thisDataPoint = data[i];
+      const thisClosePoint = thisDataPoint.close;
+      const thisUnixTimeStamp = thisDataPoint.unixTimeStamp;
       // get y max and min
       if(thisClosePoint > d.yMax) {
         d.yMax = thisClosePoint
@@ -170,11 +215,27 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
       if(thisClosePoint < d.yMin) {
         d.yMin = thisClosePoint
       }
+      if(thisUnixTimeStamp > d.xMax) {
+        d.xMax = thisUnixTimeStamp;
+      }
+      if(thisUnixTimeStamp < d.xMin) {
+        d.xMin = thisUnixTimeStamp;
+      }
     }
+
+    let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin)
+    // console.log('====== SMALL GRAPH', displayDateStamps)
 
     for(let i = 0; i < data.length; i++) {
       d.lineData.push(data[i].close + d.yMin);
-      d.dateData.push(data[i].date);
+      const thisDataPoint = data[i];
+      let dateData = '-';
+      if(displayDateStamps) {
+        dateData = formatDateStamp(thisDataPoint.unixTimeStamp);
+      } else {
+        dateData = formatTimeStamp(thisDataPoint.unixTimeStamp);
+      }
+      d.dateData.push(dateData);
     }
 
     // Set range
@@ -305,14 +366,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         renderObv = indicatorsList.indexOf('OBV') > -1;
       }
 
-      let dateUnix = null;
-      if(elem.minute) {
-        // handle parsing with minutes
-        dateUnix = parseInt( moment(elem.date + ' ' + elem.minute, "YYYYMMDD HH:mm").format('X') );
-      } else {
-        // handle standard date stamps
-        dateUnix = parseInt( moment(elem.date, 'YYYYMMDD').format('X') );
-      }
+      let dateUnix = returnFormattedTimeStamp(elem);
 
       // calculate min and max
       // time / x value
@@ -499,6 +553,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // d.formattedLines.push(generateLineData('rsi', 'green'));
     // d.formattedLines.push(generateLineData('vwap', 'blue'));
 
+
+    const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin);
+
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {
       // for y lines
@@ -525,7 +582,18 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       let exactPixelLocation = lineOffest + xPosition;
       const relativePixelLocation = exactPixelLocation / width;
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
-      const label = moment.unix(unixPoint).format('MM-DD-YY');
+      let label = '';
+      console.log('=== Each x line', unixPoint);
+
+      // if min and max are greater than x distance apart, show dates
+      // otherwise, show times
+
+      if(displayDateStamps) {
+        label = formatDateStamp( unixPoint );
+      } else {
+        label = formatTimeStamp( unixPoint );
+      }
+
       const xObj = {
         pixelValue: label,
         label: label,

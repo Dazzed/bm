@@ -42,7 +42,7 @@ export const millionBillionFormatter = (inputNumber) => {
     let dividedBy1000000000 = inputNumber / 1000000000;
     return dividedBy1000000000.toFixed(1) + stringAppend;
   } else {
-    return '!!!'
+    return inputNumber;
   }
 }
 
