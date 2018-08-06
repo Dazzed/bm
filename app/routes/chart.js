@@ -652,8 +652,8 @@ class Chart extends Component {
 
                 {/* TODO: what is this referencing?? */}
 
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>PRICE/EARNINGS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>??????</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
           </View>
           
           <View style={chart.statsColumn}>
@@ -671,8 +671,8 @@ class Chart extends Component {
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
           </View>
           <View style={chart.statsColumnLong}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>NEXT EARNINGS DATE</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.nextEarningsDate}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}></Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}></Text>
           </View>
           <View style={chart.statsColumnShort}></View>
         </View>
