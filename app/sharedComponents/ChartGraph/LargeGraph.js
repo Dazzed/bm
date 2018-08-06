@@ -103,7 +103,7 @@ export default class LargeGraph extends React.Component {
         }
 
         // edit this one
-        let lineWidth = 4;
+        let lineWidth = 3;
         
         // these are relative calculations
         let thinLineWidth = lineWidth / 2;
