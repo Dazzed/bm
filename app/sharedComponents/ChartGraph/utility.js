@@ -278,7 +278,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       ichiCloudLines: [],
       yPaddingModifier: .8,
       xPaddingModifier: .9,
-      volumeBottomLinesData: null
+      volumeBottomLinesData: null,
+      trndMax: 0,
+      trndMin: 9999999999999999999999
     };
 
     // adds bottom padding
@@ -301,6 +303,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
+    const manipulateTrndMaxMin = (input) => {
+      if( input > d.trndMax ) d.trndMax = input;
+      if( input < d.trndMin ) d.trndMin = input;
+    }
+
     // check if any of the values contain a null value
     // prevent them from rendering if that is the case
     // we don't want to ever reference a null variable
@@ -312,6 +319,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
     let obvHasNullValue = false;
+    let trndHasNullValue = false;
 
     d.dataPoints.forEach((elem, i) => {
       if(elem.bol === null) {
@@ -332,6 +340,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.obv === null) {
         obvHasNullValue = true;
       }
+      if(elem.trnd === null) {
+        trndHasNullValue = true;
+      }
     })
 
     // setup render variables
@@ -341,6 +352,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderVolume = false;
     let renderIchi = false;
     let renderObv = false;
+    let renderTrnd = false;
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
@@ -364,6 +376,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(!obvHasNullValue) {
         renderObv = indicatorsList.indexOf('OBV') > -1;
+      }
+
+      if(!trndHasNullValue) {
+        renderTrnd = indicatorsList.indexOf('TRND') > -1;
       }
 
       let dateUnix = returnFormattedTimeStamp(elem);
@@ -394,6 +410,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderObv) {
         manipulateVolumeMaxMin(elem.obv)
+      }
+      if(renderTrnd) {
+        manipulateYMaxMin(elem.trnd);
       }
 
       return {
@@ -517,18 +536,41 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
     }
 
+
+
+    // ICHI cloud is already correct
+
+    // _000000_checkbox_image
+    // *Volume (VOL)* — #000000 (black) for the light theme
+    // & #FFFFFF (white) for the dark theme
+
+    // _A52A2A_checkbox_image
+    // *Trend (TRND)* — ​#A52A2A (brown)
+
+
+    // _008080_checkbox_image
+    // *Fibonacci (FIB)* — #008080 (teal)
+
+    // _FF8C00_checkbox_image
+    // *Simple Moving Average (SMA)* — #FF8C00 (dark orange)
+
+    // _0000FF_checkbox_image
+    // *Exponential Moving Average (EMA)*: for 50-day and 200-day MA (Moving Average) —
+    // #0000FF (blue) for the 50-day and
+    // #FF0000 (red) for the 200-day
+
     if(renderRsi) {
-      d.formattedLines.push(generateLineData('rsi', theme.blue));
+      d.formattedLines.push(generateLineData('rsi', '#00FF00'));
     }
 
     if(renderBol) {
-      d.formattedLines.push(generateLineData('bol.lower', 'red'));
-      d.formattedLines.push(generateLineData('bol.middle', 'green'));
-      d.formattedLines.push(generateLineData('bol.upper', 'blue'));
+      d.formattedLines.push(generateLineData('bol.lower', '#800080'));
+      d.formattedLines.push(generateLineData('bol.middle', '#800080'));
+      d.formattedLines.push(generateLineData('bol.upper', '#800080'));
     }
 
     if(renderEma) {
-      d.formattedLines.push(generateLineData('ema', theme.blue));
+      d.formattedLines.push(generateLineData('ema', '#0000FF'));
     }
 
     if(renderVolume) {
@@ -541,7 +583,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
 
     if(renderObv) {
-      d.formattedLines.push(generateRelativeLineData('obv', theme.blue, d.volumeMax, d.volumeMin));
+      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.volumeMax, d.volumeMin));
+    }
+
+    if(renderTrnd) {
+      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.volumeMax, d.volumeMin));
     }
 
     // Generate lines here
@@ -583,7 +629,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       const relativePixelLocation = exactPixelLocation / width;
       const unixPoint = (relativePixelLocation * d.xRange) + d.xMin;
       let label = '';
-      console.log('=== Each x line', unixPoint);
+      // console.log('=== Each x line', unixPoint);
 
       // if min and max are greater than x distance apart, show dates
       // otherwise, show times
