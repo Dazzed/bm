@@ -41,3 +41,19 @@ PRICE/EARNINGS
 *On Balance Volume (OBV)* — #FF1493 (deep pink)
 
 *Accumulation/Distribution Line (ADL)* — #4A86E8 (cornflower blue) (e
+
+
+
+
+
+
+
+///////////////////
+TODO
+
+SMA does not show up
+TRND is kinda wack
+MACD does not show up
+MACD color is probably wrong
+A/D Line does not show up
+FIB does not show up
