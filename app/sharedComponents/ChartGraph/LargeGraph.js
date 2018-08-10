@@ -102,8 +102,12 @@ export default class LargeGraph extends React.Component {
           thickLineBottom = params.closeYPositionCoordinates;
         }
 
-        let thinLineWidth = .5;
-        let thickLineWidth = 2;
+        // edit this one
+        let lineWidth = 3;
+        
+        // these are relative calculations
+        let thinLineWidth = lineWidth / 2;
+        let thickLineWidth = lineWidth * 2;
 
         return <G key={key}>
             {/* Thin line -  high / low */}
@@ -113,7 +117,7 @@ export default class LargeGraph extends React.Component {
               y={params.lowYPositionCoordinates}
               width={thinLineWidth}
               height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
-              fill={'red'}
+              fill={color}
               strokeWidth={'1'}
               stroke={color}
               strokeLinejoin={'round'}
@@ -237,27 +241,30 @@ export default class LargeGraph extends React.Component {
             >
 
                 {parsedData.gridYArray.map((elem, i) => {
-                    return this.generateYLineGroup(elem, i)
+                  // grey background lines horizontal
+                  return this.generateYLineGroup(elem, i)
                 })}
 
                 {parsedData.gridXArray.map((elem, i) => {
-                    return this.generateXLineGroup(elem, i)
+                  // grey background lines vertical
+                  return this.generateXLineGroup(elem, i)
                 })}
 
                 {parsedData.dataPoints.map((elem, i) => {
-                    return this.generateCandlestickBars(elem, i)
+                  // candlestick graph
+                  return this.generateCandlestickBars(elem, i)
                 })}
 
                 {parsedData.formattedLines.map((elem, i) => {
-                    return this.generateGraphPolygon(elem, i)
+                  return this.generateGraphPolygon(elem, i)
                 })}
 
                 {parsedData.ichiCloudLines.map((elem, i) => {
-                    return this.generateGraphPolygon(elem, i)
+                  return this.generateGraphPolygon(elem, i)
                 })}
 
                 {polygonsList.map((elem, i) => {
-                    return generateGraphPolygonFill(elem, i)
+                  return generateGraphPolygonFill(elem, i)
                 })}
 
                 {this.renderBottomVolumeLines(parsedData)}

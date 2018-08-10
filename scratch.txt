@@ -8,3 +8,52 @@ PRICE/EARNINGS
 
 
 1d, 1m, 3m, 6m, 1y, 2y, 5y
+
+<Text name='all' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+
+<Text name='all' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]} selectedStyle={[ {color: this.state.colors['realWhite']},fonts.hindGunturBd, chart.timeSelectedBig]}>ALL</Text>
+
+
+
+
+*Ichimoku Cloud (ICHI)* — #008000 (green) when positive & #FF0000 (red) when negative
+
+*Relative Strength Index (RSI)* — #00FF00 (lime)
+
+*Exponential Moving Average (EMA)*: for 50-day and 200-day MA (Moving Average) — #0000FF (blue) for the 50-day and #FF0000 (red) for the 200-day
+
+[NOTE: when the EMA indicator is selected, both the 50-day and 200-day should be showing simultaneously on the graph]
+
+*Simple Moving Average (SMA)* — #FF8C00 (dark orange)
+
+*Moving Average Convergence Divergence (MACD)* — #008000 (green)
+
+*Bollinger Bands (BOL)* — #800080 (purple)
+
+*Chaikin Money Flow (CMF)* — #008000 (green) when positive & #FF0000 (red) when negative
+
+*Fibonacci (FIB)* — #008080 (teal)
+
+*Volume (VOL)* — #000000 (black) for the light theme & #FFFFFF (white) for the dark theme
+
+*Trend (TRND)* — ​#A52A2A (brown)
+
+*On Balance Volume (OBV)* — #FF1493 (deep pink)
+
+*Accumulation/Distribution Line (ADL)* — #4A86E8 (cornflower blue) (e
+
+
+
+
+
+
+
+///////////////////
+TODO
+
+SMA does not show up
+TRND is kinda wack
+MACD does not show up
+MACD color is probably wrong
+A/D Line does not show up
+FIB does not show up

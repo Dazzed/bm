@@ -98,10 +98,27 @@ export default class AccountStore {
 
         // console.log('chartData ============================================= ', toJS(this.indicatorsList));
 
+        // 1.interval
+        // let intervalParams = {
+        //   "ticker":"AAPL",
+        //   "range":"1y",
+        //   "interval":{
+        //     "period":10
+        //   },
+        // }
+
+        // ***************************************************************
+        // 2.data_point
+        // let dataPointParams = {
+        //   "range":"1y",
+        //   "data_point": 30,
+        // }
+
         let params = {
           options: {
             'ticker': this.tickerDataJS.ticker,
             'range': this.range,
+            'data_point': 30,
             'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL' ],
             'parameters':{
               'ICHI': {
