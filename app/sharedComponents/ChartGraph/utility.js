@@ -522,7 +522,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let yCoord = ( height + bottomAdjust )- lineHeightCoords;
         let color = theme.red;
         if(closeValue > openValue) {
-          color = theme.green;
+          color = '#4A86E8';
         }
         lineData.push({
           color: color,

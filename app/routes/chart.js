@@ -72,6 +72,7 @@ let _FF8C00_checkbox_image = require('../images/colored_checkboxes/checkbox_sour
 let _FF1493_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FF1493.png');
 let _FFFFFF_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FFFFFF.png');
 let _original_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_original_blue.png');
+let red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/red_blue.png');
 
 @observer
 class Chart extends Component {
@@ -844,13 +845,7 @@ class Chart extends Component {
 
   renderCheckboxModalAndList() {
     const { themeType } = colorStore;
-    
-    // handle dark vs light theme on VLM check box
-    let vlmImageSrc = _000000_checkbox_image;
-    if(themeType === 'dark') {
-      vlmImageSrc = _FFFFFF_checkbox_image;
-    }
-    
+    let vlmImageSrc = red_blue_checkbox_image;
     return <Modal
       isVisible={this.state.isIndicatorsVisible}
       animationIn={'fadeIn'}
