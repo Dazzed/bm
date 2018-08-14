@@ -342,9 +342,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     d.dataPoints.forEach((elem, i) => {
 
       // normalize MACD values
-
-      elem.macd.MACD = elem.macd.MACD + 1;
-      console.log('== each macd', elem.macd)
+      // elem.macd.MACD = elem.macd.MACD + 1;
 
       if(elem.bol === null) {
         bolHasNullValue = true;
@@ -429,6 +427,13 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.close);
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
+
+      if(renderIchi) {
+        manipulateYMaxMin(elem.ichi.base);
+        manipulateYMaxMin(elem.ichi.conversion);
+        manipulateYMaxMin(elem.ichi.spanA);
+        manipulateYMaxMin(elem.ichi.spanB);
+      }
 
       // conditional rendering based on indicators menu
       if(renderEma50) {

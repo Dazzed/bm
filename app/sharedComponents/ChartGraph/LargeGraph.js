@@ -2,25 +2,29 @@ import React from 'react';
 import { chartStore, colorStore } from "../../mobxStores";
 import { LineChart, Grid } from 'react-native-svg-charts'
 import {
-    Svg,
-    Line,
-    Text as TextSvg,
-    Polygon,
-    G,
-    Defs,
-    Use,
-    TSpan,
-    Rect,
-    Polyline
+  Svg,
+  Line,
+  Text as TextSvg,
+  Polygon,
+  G,
+  Defs,
+  Use,
+  TSpan,
+  Rect,
+  Polyline
 } from 'react-native-svg';
 import {
-    View,
-    Text,
-    Animated,
-    ActivityIndicator
+  View,
+  Text,
+  Animated,
+  ActivityIndicator
 } from 'react-native';
 import { observer } from "mobx-react";
-import { generatePolygonsFromTwoLines, flipYAxisValue, parseLargeGraphData } from './utility';
+import {
+  generatePolygonsFromTwoLines,
+  flipYAxisValue,
+  parseLargeGraphData
+} from './utility';
 import fonts from '../../style/fonts';
 import trending from '../../style/trending';
 
@@ -28,36 +32,36 @@ import trending from '../../style/trending';
 export default class LargeGraph extends React.Component {
 
     constructor(props) {
-        super(props);
+      super(props);
     }
 
     generateXLineGroup(data, key) {
         const { position, label } = data;
         const { theme } = colorStore;
         return <G key={key}>
-            <G>
-              <Line
-                key={ 'zero-axis' }
-                x1={ position }
-                x2={ position }
-                y1={ '0%' }
-                y2={ '100%' }
-                stroke={ theme.borderGray }
-                strokeDasharray={ [ 4, 8 ] }
-                strokeWidth={ 1 }
-              />
-              <TextSvg
-                key={Math.random()}
-                fontSize={12}
-                fill={theme.borderGray}
-                stroke={theme.borderGray}
-                y={'95%'}
-                x={ position }
-                textAnchor="middle"
-              >
-                {label}
-              </TextSvg>
-            </G>
+          <G>
+            <Line
+              key={ 'zero-axis' }
+              x1={ position }
+              x2={ position }
+              y1={ '0%' }
+              y2={ '100%' }
+              stroke={ theme.borderGray }
+              strokeDasharray={ [ 4, 8 ] }
+              strokeWidth={ 1 }
+            />
+            <TextSvg
+              key={Math.random()}
+              fontSize={12}
+              fill={theme.borderGray}
+              stroke={theme.borderGray}
+              y={'95%'}
+              x={ position }
+              textAnchor="middle"
+            >
+              {label}
+            </TextSvg>
+          </G>
         </G>
     }
 
@@ -268,7 +272,6 @@ export default class LargeGraph extends React.Component {
                 })}
 
                 {this.renderBottomVolumeLines(parsedData)}
-
 
             </Svg>
         </View>

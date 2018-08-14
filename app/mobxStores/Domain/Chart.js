@@ -34,6 +34,7 @@ export default class AccountStore {
           this.getStockChartDetails();
 
         } else {
+          // don't do anything
         }
         this.setTickerDataLoading(false);
       })
@@ -96,29 +97,9 @@ export default class AccountStore {
 
         this.setStockChartLoading(true);
 
-        // console.log('chartData ============================================= ', toJS(this.indicatorsList));
-
-        // 1.interval
-        // let intervalParams = {
-        //   "ticker":"AAPL",
-        //   "range":"1y",
-        //   "interval":{
-        //     "period":10
-        //   },
-        // }
-
-        // ***************************************************************
-        // 2.data_point
-        // let dataPointParams = {
-        //   "range":"1y",
-        //   "data_point": 30,
-        // }
-
         let params = {
           options: {
             'ticker': this.tickerDataJS.ticker,
-            'range': this.range,
-            'data_point': 30,
             'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL' ],
             'parameters':{
               'ICHI': {
@@ -146,6 +127,73 @@ export default class AccountStore {
               }
             }
           }
+        }
+
+        let rangeToQuery = this.range;
+        let dataPoints = 30;
+        console.log('============ THIS RANGE', this.range);
+
+        // 'range': this.range,
+        // "interval":{"periodType":"D","period":10}
+        // 'data_point': dataPoints,
+
+        if(this.range == '1h') {
+
+          // one hour
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "m", period: 60}
+          params.options.data_point = 60;
+
+        } else if (this.range == '1d') {
+
+          // five days
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 120;
+
+        } else if (this.range == '5d') {
+
+          // five days
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 120;
+
+        } else if (this.range == '1m') {
+
+          // one month
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 30;
+
+        } else if (this.range == '6m') {
+
+          // six months
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 60;
+
+        } else if (this.range == '1yr') {
+
+          // one year
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 52;
+
+        } else if (this.range == '2yr') {
+
+          // two years
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 52;
+
+        }
+        else if (this.range == '5yr') {
+
+          // five years
+          params.options.range = this.range;
+          // params.options.interval = {periodType: "D", period: 10}
+          params.options.data_point = 52;
+
         }
 
 

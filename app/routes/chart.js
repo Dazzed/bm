@@ -55,7 +55,8 @@ import { millionBillionFormatter } from '../utility';
 import {
   initialIndicators,
   indicatorProps,
-  initialChartRangeIndicator
+  initialChartRangeIndicator,
+  chartRangeOptions
 } from '../constants';
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -315,9 +316,6 @@ class Chart extends Component {
 
   setRange(el) {
     let name = el.props.name;
-    console.log('name', name);
-    // TODO: maybe rewrite the name query here for the range picker
-
     const { setRange } = chartStore;
     this.setState({
         page: el.props.name
@@ -438,19 +436,20 @@ class Chart extends Component {
   }
   
   renderTabs() {
+    let style = {
+      display: 'flex',
+      alignItems: 'center',
+      height: 33
+    }
     return <Tabs
       selected={this.state.page}
-      style={chart.timePeriod}
+      style={style}
       selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
       onSelect={el=> this.setRange(el)}
     >
-      <Text name='1d' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1d</Text>
-      <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
-      <Text name='3m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>3m</Text>
-      <Text name='6m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>6m</Text>
-      <Text name='1y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1y</Text>
-      <Text name='2y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>2y</Text>
-      <Text name='5y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5y</Text>
+      {chartRangeOptions.map((elem, i) => {
+        return <Text name={elem.query} style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>  
+      })}
     </Tabs>
   }
   
@@ -822,26 +821,6 @@ class Chart extends Component {
   //
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-  // DONE
-  
-  
-  
-  
-/////////////////////////////////////////////////////////////////////////
-
-  
-  // _4A86E8_checkbox_image
-  // *Accumulation/Distribution Line (ADL)* — #4A86E8 (cornflower blue) (e
-  // ?????????????????????????
-
-    // *Chaikin Money Flow (CMF)* — #008000 (green) when positive & #FF0000 (red) when negative
-
-  // [NOTE: when the EMA indicator is selected, both the 50-day and 200-day should be showing simultaneously on the graph]
-
-
 
   renderCheckboxModalAndList() {
     const { themeType } = colorStore;
