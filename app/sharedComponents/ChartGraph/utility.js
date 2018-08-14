@@ -658,10 +658,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       d.gridYArray.push(yObj);
     }
-    for( let j = 0; j < d.xLineCount; j++) {
+    for( let j = 0; j < d.xLineCount + 1; j++) {
       // for x lines
       let spaceBetweenEachLine = width / d.xLineCount;
-      let lineOffest = spaceBetweenEachLine / 2;
+      // let lineOffest = spaceBetweenEachLine / 2;
+      let lineOffest = 0;
       let multiplier = j / d.xLineCount;
       let xPosition = ((d.xMax * multiplier) / d.xMax ) * width;
       let exactPixelLocation = lineOffest + xPosition;
@@ -677,6 +678,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         label = formatDateStamp( unixPoint );
       } else {
         label = formatTimeStamp( unixPoint );
+      }
+
+      // never show first label
+      if(j === 0) {
+        label = '';
       }
 
       const xObj = {

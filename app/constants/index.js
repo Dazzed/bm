@@ -343,7 +343,7 @@ const indicatorProps = [
   {label: 'BOL', info: 'Bollinger Bands', value: 10 }
 ];
 
-const initialChartRangeIndicator = '1y';
+const initialChartRangeIndicator = '1yr';
 
 const chartRangeOptions = [
   {
