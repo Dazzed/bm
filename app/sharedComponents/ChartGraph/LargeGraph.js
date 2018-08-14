@@ -195,7 +195,8 @@ export default class LargeGraph extends React.Component {
           </View>
         }
 
-        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS, theme);
+        let range = chartStore.range;
+        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS, theme, range);
         // console.log('---- parsed Data', parsedData);
 
         let inlineContainerStyle = {

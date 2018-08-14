@@ -258,7 +258,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme) => {
+export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme, range) => {
 
     let d = {
       xMax: 0,
@@ -640,6 +640,28 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
 
     const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin);
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////
+    // How many x axis numbers should we have?
+    //
+    // an hour	5
+    // 1 day	5
+    // 5 days	4
+    // a month	5
+    // 6 months	5
+    // a year	5
+    // two years	5
+    // all time	5
+
+    // set to four only if we're in 5 day territory
+    if( range == '5d' ) {
+      // one hour
+      d.xLineCount = 4;
+    }
 
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {

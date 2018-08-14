@@ -58,7 +58,6 @@ export default class AccountStore {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     @observable range = initialChartRangeIndicator;
 
     @action setRange = (newRange) => {
@@ -131,7 +130,8 @@ export default class AccountStore {
 
         let rangeToQuery = this.range;
         let dataPoints = 30;
-        console.log('============ THIS RANGE', this.range);
+
+        console.log('======================== ABOUT TO MAKE FIRST CALL THIS RANGE', this.range);
 
         // 'range': this.range,
         // "interval":{"periodType":"D","period":10}
@@ -172,7 +172,7 @@ export default class AccountStore {
           // params.options.interval = {periodType: "D", period: 10}
           params.options.data_point = 60;
 
-        } else if (this.range == '1yr') {
+        } else if (this.range == '1y') {
 
           // one year
           params.options.range = this.range;
