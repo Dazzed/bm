@@ -182,7 +182,7 @@ class Watchlists extends React.Component {
               </Text>
             </View>
             <View style={watchstyle.symMomentum}>
-              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={kFormatter(row['latestVolume'])} position={zacksRatingFormatter(row['zacksRating'])} />
+              <DialIndicator width={100} height={50} displayText={true} textLine1={'VOL'} textLine2={kFormatter(row['latestVolume'])} position={row['momentum']} />
             </View>
             <TouchableOpacity
               style={watchstyle.symCost}

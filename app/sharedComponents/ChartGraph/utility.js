@@ -641,10 +641,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin);
 
-
-
-
-
     /////////////////////////////////////////////////////////////////////
     // How many x axis numbers should we have?
     //
