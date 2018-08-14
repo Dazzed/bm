@@ -1184,8 +1184,10 @@ class Chart extends Component {
     //  formatting data
 
     {/* TODO: TIME don't have this yet with time zone */}
-
+    
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
+    
+    
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);

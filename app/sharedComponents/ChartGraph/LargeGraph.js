@@ -41,7 +41,7 @@ export default class LargeGraph extends React.Component {
         return <G key={key}>
           <G>
             <Line
-              key={ 'zero-axis' }
+              key={ Math.random() + key + 'zero-axis' }
               x1={ position }
               x2={ position }
               y1={ '0%' }
@@ -51,7 +51,7 @@ export default class LargeGraph extends React.Component {
               strokeWidth={ 1 }
             />
             <TextSvg
-              key={Math.random()}
+              key={Math.random() + key}
               fontSize={12}
               fill={theme.borderGray}
               stroke={theme.borderGray}
@@ -72,7 +72,7 @@ export default class LargeGraph extends React.Component {
         let verticalOffset = 4;
         return <G key={key}>
           <Line
-            key={ 'zero-axis' }
+            key={ Math.random() + key + 'zero-axis' }
             y1={ position }
             y2={ position }
             x1={ '0%' }
@@ -82,7 +82,7 @@ export default class LargeGraph extends React.Component {
             strokeWidth={ 1 }
           />
           <TextSvg
-            key={Math.random()}
+            key={Math.random() + key}
             fontSize={12}
             fill={theme.borderGray}
             stroke={theme.borderGray}
@@ -114,30 +114,31 @@ export default class LargeGraph extends React.Component {
         let thickLineWidth = lineWidth * 2;
 
         return <G key={key}>
-            {/* Thin line -  high / low */}
-            <Rect
-              key={Math.random()}
-              x={params.xPositionCoordinates - (thinLineWidth / 2)}
-              y={params.lowYPositionCoordinates}
-              width={thinLineWidth}
-              height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
-              fill={color}
-              strokeWidth={'1'}
-              stroke={color}
-              strokeLinejoin={'round'}
-            />
+          {/* Thin line -  high / low */}
+          <Rect
+            key={Math.random() + key}
+            x={params.xPositionCoordinates - (thinLineWidth / 2)}
+            y={params.lowYPositionCoordinates}
+            width={thinLineWidth}
+            height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
+            fill={color}
+            strokeWidth={'1'}
+            stroke={color}
+            strokeLinejoin={'round'}
+          />
 
-            {/* Thick line - open / close */}
-            <Rect
-              x={params.xPositionCoordinates - (thickLineWidth / 2)}
-              y={thickLineBottom}
-              width={thickLineWidth}
-              height={thickLineTop - thickLineBottom}
-              fill={color}
-              strokeWidth={'1'}
-              stroke={color}
-              strokeLinejoin={'round'}
-            />
+          {/* Thick line - open / close */}
+          <Rect
+            x={params.xPositionCoordinates - (thickLineWidth / 2)}
+            y={thickLineBottom}
+            key={Math.random() + key}
+            width={thickLineWidth}
+            height={thickLineTop - thickLineBottom}
+            fill={color}
+            strokeWidth={'1'}
+            stroke={color}
+            strokeLinejoin={'round'}
+          />
         </G>
     }
 
@@ -146,7 +147,7 @@ export default class LargeGraph extends React.Component {
       let lineTargetValue = params.lineTargetValue;
       const { theme } = colorStore;
       return <Polyline
-          key={key}
+          key={Math.random() + key}
           points={formattedData}
           fill={'none'}
           stroke={params.color}
@@ -161,6 +162,7 @@ export default class LargeGraph extends React.Component {
         x={params.xCoord - (barWidth / 2)}
         y={params.yCoord}
         width={barWidth}
+        key={Math.random() + key}
         height={params.lineHeight}
         fill={params.color}
         strokeWidth={'1'}
@@ -278,8 +280,3 @@ export default class LargeGraph extends React.Component {
         </View>
     }
 }
-
-//
-
-
-//

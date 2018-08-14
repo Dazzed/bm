@@ -19,7 +19,7 @@ export default class AccountStore {
     }
 
     @action getTickerDetails = (data) => {
-        console.log('===== get ticker data', data)
+      // console.log('===== get ticker data', data)
       let symbol = data.ticker;
       this.setTickerDataLoading(true);
       let params = {
@@ -27,12 +27,10 @@ export default class AccountStore {
       }
       getTickerDetails(params)
       .then((res) => {
-          console.log('GET TICKER DATA', res);
+        // console.log('GET TICKER DATA', res);
         if(res.ok) {
           this.setTickerData(res.json.result);
-
           this.getStockChartDetails();
-
         } else {
           // don't do anything
         }
@@ -51,12 +49,6 @@ export default class AccountStore {
         return toJS(this.chartData);
       }
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @observable range = initialChartRangeIndicator;
 
@@ -91,7 +83,7 @@ export default class AccountStore {
     @action getStockChartDetails = () => {
 
         if(this.chartData === null) {
-            return;
+          return;
         }
 
         this.setStockChartLoading(true);
@@ -128,89 +120,54 @@ export default class AccountStore {
           }
         }
 
-        let rangeToQuery = this.range;
-        let dataPoints = 30;
-
-        console.log('======================== ABOUT TO MAKE FIRST CALL THIS RANGE', this.range);
-
-        // 'range': this.range,
-        // "interval":{"periodType":"D","period":10}
-        // 'data_point': dataPoints,
-
         if(this.range == '1h') {
-
           // one hour
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "m", period: 60}
-          params.options.data_point = 60;
-
+          params.options.range = '1d';
+          params.options.interval = {periodType: "m", period: 60}
         } else if (this.range == '1d') {
-
           // five days
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '1d';
           params.options.data_point = 120;
-
         } else if (this.range == '5d') {
-
           // five days
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '5d';
           params.options.data_point = 120;
-
         } else if (this.range == '1m') {
-
           // one month
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '1m';
           params.options.data_point = 30;
-
         } else if (this.range == '6m') {
-
           // six months
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '6m';
           params.options.data_point = 60;
-
         } else if (this.range == '1y') {
-
           // one year
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '1y';
           params.options.data_point = 52;
-
-        } else if (this.range == '2yr') {
-
+        } else if (this.range == '2y') {
           // two years
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '2y';
           params.options.data_point = 52;
-
         }
-        else if (this.range == '5yr') {
-
+        else if (this.range == '5y') {
           // five years
-          params.options.range = this.range;
-          // params.options.interval = {periodType: "D", period: 10}
+          params.options.range = '5y';
           params.options.data_point = 52;
-
         }
-
 
         getStockChartDetail(params)
         .then((res) => {
-            console.log('GET CHART DATA', res);
-            if(res.ok) {
-                this.setChartDetailData(res.json.result);
-            } else {
-            }
-            this.setStockChartLoading(false);
+          console.log('GET CHART DATA', res);
+          if(res.ok) {
+            this.setChartDetailData(res.json.result);
+          } else {
+            // do nothing
+          }
+          this.setStockChartLoading(false);
         })
         .catch((err) => {
-            console.log('err', err);
-            // this.setTickerDataLoading(false);
-
-            this.setStockChartLoading(false);
+          console.log('err', err);
+          this.setStockChartLoading(false);
         })
     }
 

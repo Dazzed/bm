@@ -52,7 +52,6 @@ class HomeScreen extends Component {
     let loginExpired = autoLogOffStore.isLoginExpired();
     if(loginExpired) {
       // stop verifying, hang here
-      
     } else {
       // do verification
       if(verifyAuthOnHomeView) {
