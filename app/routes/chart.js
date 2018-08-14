@@ -71,6 +71,7 @@ let _A52A2A_checkbox_image = require('../images/colored_checkboxes/checkbox_sour
 let _FF8C00_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FF8C00.png');
 let _FF1493_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FF1493.png');
 let _FFFFFF_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FFFFFF.png');
+let _008000_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_008000.png');
 let _original_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_original_blue.png');
 let red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/red_blue.png');
 let ema_red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/ema_red_blue.png');
@@ -836,9 +837,7 @@ class Chart extends Component {
   // *Accumulation/Distribution Line (ADL)* — #4A86E8 (cornflower blue) (e
   // ?????????????????????????
 
-
     // *Chaikin Money Flow (CMF)* — #008000 (green) when positive & #FF0000 (red) when negative
-    // *Moving Average Convergence Divergence (MACD)* — #008000 (green)
 
   // [NOTE: when the EMA indicator is selected, both the 50-day and 200-day should be showing simultaneously on the graph]
 
@@ -967,7 +966,7 @@ class Chart extends Component {
                 rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
                 rightSubText={'Moving Average Convergence Divergence'}
                 rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                checkedImage={<Image source={_008000_checkbox_image} style={styles.checkBox}/>}
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>

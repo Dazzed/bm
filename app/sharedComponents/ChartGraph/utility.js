@@ -283,6 +283,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       trndMin: 9999999999999999999999,
       obvMax: 0,
       obvMin: 9999999999999999999999,
+      macdMax: 0,
+      macdMin: 9999999999999999999999
     };
 
     // adds bottom padding
@@ -315,6 +317,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.trndMin ) d.trndMin = input;
     }
 
+    const manipulateMACDMaxMin = (input) => {
+      if( input > d.macdMax ) d.macdMax = input;
+      if( input < d.macdMin ) d.trndMin = input;
+    }
+
     // check if any of the values contain a null value
     // prevent them from rendering if that is the case
     // we don't want to ever reference a null variable
@@ -330,8 +337,15 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let ichiHasNullValue = false;
     let obvHasNullValue = false;
     let trndHasNullValue = false;
+    let macdHasNullValue = false;
 
     d.dataPoints.forEach((elem, i) => {
+
+      // normalize MACD values
+
+      elem.macd.MACD = elem.macd.MACD + 1;
+      console.log('== each macd', elem.macd)
+
       if(elem.bol === null) {
         bolHasNullValue = true;
       }
@@ -356,6 +370,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.trnd === null) {
         trndHasNullValue = true;
       }
+      if(elem.macd === null) {
+        macdHasNullValue = true;
+      }
     })
 
     // setup render variables
@@ -368,10 +385,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     let renderEma50 = false;
     let renderEma200 = false;
+    let renderMacd = false;
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
-      // console.log('======= ELEM', elem)
 
       // if data is valid, check for indicator list and set render variables
       if(!rsiHasNullValue) {
@@ -398,6 +415,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         renderTrnd = indicatorsList.indexOf('TRND') > -1;
       }
 
+      if(!macdHasNullValue) {
+        renderMacd = indicatorsList.indexOf('MACD') > -1;
+      }
+
       let dateUnix = returnFormattedTimeStamp(elem);
 
       // calculate min and max
@@ -416,7 +437,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(renderEma200) {
         manipulateYMaxMin(elem.ema200);
       }
-
       if(renderRsi) {
         manipulateYMaxMin(elem.rsi);
       }
@@ -433,6 +453,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderTrnd) {
         manipulateTrndMaxMin(elem.trnd);
+      }
+      if(renderMacd) {
+        manipulateMACDMaxMin(elem.macd.MACD);
       }
 
       return {
@@ -558,17 +581,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
 
 
-    // _A52A2A_checkbox_image
-    // *Trend (TRND)* — ​#A52A2A (brown)
-
-
     // _FF8C00_checkbox_image
     // *Simple Moving Average (SMA)* — #FF8C00 (dark orange)
-
-    // _0000FF_checkbox_image
-    // *Exponential Moving Average (EMA)*: for 50-day and 200-day MA (Moving Average) —
-    // #0000FF (blue) for the 50-day and
-    // #FF0000 (red) for the 200-day
 
     if(renderRsi) {
       d.formattedLines.push(generateLineData('rsi', '#00FF00'));
@@ -604,6 +618,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     if(renderTrnd) {
       d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
+    }
+
+    if(renderMacd) {
+      d.formattedLines.push(generateRelativeLineData('macd.MACD', '#008000', d.macdMax, d.macdMin));
     }
 
     // Generate lines here
