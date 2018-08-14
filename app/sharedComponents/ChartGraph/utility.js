@@ -280,7 +280,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       xPaddingModifier: .9,
       volumeBottomLinesData: null,
       trndMax: 0,
-      trndMin: 9999999999999999999999
+      trndMin: 9999999999999999999999,
+      obvMax: 0,
+      obvMin: 9999999999999999999999,
     };
 
     // adds bottom padding
@@ -303,6 +305,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
+    const manipulateObvMaxMin = (input) => {
+      if( input > d.obvMax ) d.obvMax = input;
+      if( input < d.obvMin ) d.obvMin = input;
+    }
+
     const manipulateTrndMaxMin = (input) => {
       if( input > d.trndMax ) d.trndMax = input;
       if( input < d.trndMin ) d.trndMin = input;
@@ -314,7 +321,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // in the line rendering functions
 
     let bolHasNullValue = false;
-    let emaHasNullValue = false;
+
+    let ema50HasNullValue = false;
+    let ema200HasNullValue = false;
+
     let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
@@ -328,8 +338,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.rsi === null) {
         rsiHasNullValue = true;
       }
-      if(elem.ema === null) {
-        emaHasNullValue = true;
+      if(elem.ema50 === null) {
+        ema50HasNullValue = true;
+      }
+      if(elem.ema200 === null) {
+        ema200HasNullValue = true;
       }
       if(elem.volume === null) {
         volumeHasNullValue = true;
@@ -347,12 +360,14 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     // setup render variables
     let renderBol = false;
-    let renderEma = false;
     let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
     let renderObv = false;
     let renderTrnd = false;
+
+    let renderEma50 = false;
+    let renderEma200 = false;
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
@@ -365,8 +380,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(!bolHasNullValue) {
         renderBol = indicatorsList.indexOf('BOL') > -1;
       }
-      if(!emaHasNullValue) {
-        renderEma = indicatorsList.indexOf('EMA') > -1;
+      if(!ema50HasNullValue || !ema200HasNullValue) {
+        renderEma50 = indicatorsList.indexOf('EMA') > -1;
+        renderEma200 = indicatorsList.indexOf('EMA') > -1;
       }
       if(!volumeHasNullValue) {
         renderVolume = indicatorsList.indexOf('VLM') > -1;
@@ -394,9 +410,13 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.low);
 
       // conditional rendering based on indicators menu
-      if(renderEma) {
-        manipulateYMaxMin(elem.ema);
+      if(renderEma50) {
+        manipulateYMaxMin(elem.ema50);
       }
+      if(renderEma200) {
+        manipulateYMaxMin(elem.ema200);
+      }
+
       if(renderRsi) {
         manipulateYMaxMin(elem.rsi);
       }
@@ -409,10 +429,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         manipulateVolumeMaxMin(elem.volume);
       }
       if(renderObv) {
-        manipulateVolumeMaxMin(elem.obv)
+        manipulateObvMaxMin(elem.obv)
       }
       if(renderTrnd) {
-        manipulateYMaxMin(elem.trnd);
+        manipulateTrndMaxMin(elem.trnd);
       }
 
       return {
@@ -519,7 +539,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let lineHeightRel = volumeValue / d.volumeMax;
         let lineHeightCoords = (maxLineHeightModifier * height) * lineHeightRel;
         let bottomAdjust = height * .1;
-        let yCoord = ( height + bottomAdjust )- lineHeightCoords;
+        let yCoord = ( height + bottomAdjust ) - lineHeightCoords;
         let color = theme.red;
         if(closeValue > openValue) {
           color = '#4A86E8';
@@ -538,18 +558,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
 
 
-    // ICHI cloud is already correct
-
-    // _000000_checkbox_image
-    // *Volume (VOL)* — #000000 (black) for the light theme
-    // & #FFFFFF (white) for the dark theme
-
     // _A52A2A_checkbox_image
     // *Trend (TRND)* — ​#A52A2A (brown)
 
-
-    // _008080_checkbox_image
-    // *Fibonacci (FIB)* — #008080 (teal)
 
     // _FF8C00_checkbox_image
     // *Simple Moving Average (SMA)* — #FF8C00 (dark orange)
@@ -569,9 +580,14 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.formattedLines.push(generateLineData('bol.upper', '#800080'));
     }
 
-    if(renderEma) {
-      d.formattedLines.push(generateLineData('ema', '#0000FF'));
+    if(renderEma50) {
+      d.formattedLines.push(generateLineData('ema50', '#0000FF'));
     }
+
+    if(renderEma200) {
+      d.formattedLines.push(generateLineData('ema200', '#FF0000'));
+    }
+
 
     if(renderVolume) {
       d.volumeBottomLinesData = generateVolumeBottomLinesData('volume')
@@ -583,11 +599,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
 
     if(renderObv) {
-      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.volumeMax, d.volumeMin));
+      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.obvMax, d.obvMin));
     }
 
     if(renderTrnd) {
-      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.volumeMax, d.volumeMin));
+      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
     }
 
     // Generate lines here

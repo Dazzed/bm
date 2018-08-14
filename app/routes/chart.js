@@ -73,6 +73,7 @@ let _FF1493_checkbox_image = require('../images/colored_checkboxes/checkbox_sour
 let _FFFFFF_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FFFFFF.png');
 let _original_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_original_blue.png');
 let red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/red_blue.png');
+let ema_red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/ema_red_blue.png');
 
 @observer
 class Chart extends Component {
@@ -950,7 +951,7 @@ class Chart extends Component {
                 rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
                 rightSubText={'Exponential Moving Average'}
                 rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_0000FF_checkbox_image} style={styles.checkBox}/>}
+                checkedImage={<Image source={ema_red_blue_checkbox_image} style={styles.checkBox}/>}
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
@@ -983,38 +984,6 @@ class Chart extends Component {
                 rightSubText={'Relative Strength Index'}
                 rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
                 checkedImage={<Image source={_00FF00_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('A/D Line')}
-                isChecked={this.checkIndicators('A/D Line')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'A/D Line'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Accumulation/Distribution Line'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('FIB')}
-                isChecked={this.checkIndicators('FIB')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'FIB'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Fibonacci'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_008080_checkbox_image} style={styles.checkBox}/>}
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
