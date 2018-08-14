@@ -91,7 +91,7 @@ export default class AccountStore {
         let params = {
           options: {
             'ticker': this.tickerDataJS.ticker,
-            'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL' ],
+            'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL', 'SMA' ],
             'parameters':{
               'ICHI': {
                 'conversionPeriod': 9,
@@ -125,34 +125,50 @@ export default class AccountStore {
           params.options.range = '1d';
           params.options.interval = {periodType: "m", period: 60}
         } else if (this.range == '1d') {
+
           // five days
           params.options.range = '1d';
-          params.options.data_point = 120;
+          // params.options.data_point = 120;
+          params.options.interval = {periodType: "h", period: 12}
+
+
         } else if (this.range == '5d') {
+
           // five days
           params.options.range = '5d';
-          params.options.data_point = 120;
+          params.options.data_point = 5;
+
         } else if (this.range == '1m') {
+
           // one month
           params.options.range = '1m';
-          params.options.data_point = 30;
+          params.options.data_point = 20;
+
         } else if (this.range == '6m') {
+
           // six months
           params.options.range = '6m';
           params.options.data_point = 60;
+
         } else if (this.range == '1y') {
+
           // one year
           params.options.range = '1y';
           params.options.data_point = 52;
+
         } else if (this.range == '2y') {
+
           // two years
           params.options.range = '2y';
           params.options.data_point = 52;
+
         }
         else if (this.range == '5y') {
+
           // five years
           params.options.range = '5y';
           params.options.data_point = 52;
+
         }
 
         getStockChartDetail(params)

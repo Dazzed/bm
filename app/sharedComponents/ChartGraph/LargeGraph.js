@@ -147,12 +147,13 @@ export default class LargeGraph extends React.Component {
       let lineTargetValue = params.lineTargetValue;
       const { theme } = colorStore;
       return <Polyline
-          key={Math.random() + key}
-          points={formattedData}
-          fill={'none'}
-          stroke={params.color}
-          strokeWidth={2}
-          strokeLinejoin={'round'}
+        key={Math.random() + key}
+        points={formattedData}
+        fill={'none'}
+        stroke={params.color}
+        strokeWidth={2}
+        strokeLinejoin={'round'}
+        opacity={.8}
       />
     }
 
@@ -216,7 +217,7 @@ export default class LargeGraph extends React.Component {
           polygonsList = generatePolygonsFromTwoLines(parsedData.ichiCloudLines[0], parsedData.ichiCloudLines[1], this.props.height);
         }
 
-        console.log('POLYGONGS', polygonsList)
+        // console.log('POLYGONGS', polygonsList)
 
         const generateGraphPolygonFill = (elem, key) => {
 

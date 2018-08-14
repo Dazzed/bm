@@ -3,16 +3,26 @@ import moment from 'moment';
 import { indicatorDataMap } from '../../constants';
 
 
-const shouldDisplayDateStamps = (max, min) => {
-  // time padding makes sure data that is at the 'day' threshold will bounce down to timestamps
-  let timePadding = 60 * 60; // one hour
+const shouldDisplayDateStamps = (max, min, range) => {
 
-  let secondsInOneDay = (24 * 60 * 60) - timePadding;
-  if( (max - min) > secondsInOneDay) {
-    // if range of max and min is greater than one day, return true, it's gonna be dates
-    return true;
-  } else {
+  // Mathy way of doig it, I'm using range now
+  // // time padding makes sure data that is at the 'day' threshold will bounce down to timestamps
+  // let timePadding = 60 * 60; // one hour
+  //
+  // let secondsInOneDay = (24 * 60 * 60) - timePadding;
+  // if( (max - min) > secondsInOneDay) {
+  //   // if range of max and min is greater than one day, return true, it's gonna be dates
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+
+  if(range == '1d') {
     return false;
+  } else if( range == '1h' ) {
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -183,7 +193,7 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
 
 /////////////////////////////////////////////////////////////////////
 
-export const parseSmallGraphData = (data, Price, graphHeight) => {
+export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 
     let d = {
       yMax: 0,
@@ -223,7 +233,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
       }
     }
 
-    let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin)
+    let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range)
     // console.log('====== SMALL GRAPH', displayDateStamps)
 
     for(let i = 0; i < data.length; i++) {
@@ -338,6 +348,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let obvHasNullValue = false;
     let trndHasNullValue = false;
     let macdHasNullValue = false;
+    let sma50HasNullValue = false;
+    let sma200HasNullValue = false;
 
     d.dataPoints.forEach((elem, i) => {
 
@@ -371,6 +383,13 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.macd === null) {
         macdHasNullValue = true;
       }
+
+      if( elem.sma50 === null ) {
+        sma50HasNullValue = true;
+      }
+      if( elem.sma200 === null ) {
+        sma200HasNullValue = true;
+      }
     })
 
     // setup render variables
@@ -384,6 +403,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderEma50 = false;
     let renderEma200 = false;
     let renderMacd = false;
+    let renderSma = false;
 
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
@@ -395,7 +415,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(!bolHasNullValue) {
         renderBol = indicatorsList.indexOf('BOL') > -1;
       }
-      if(!ema50HasNullValue || !ema200HasNullValue) {
+      if(!ema50HasNullValue && !ema200HasNullValue) {
         renderEma50 = indicatorsList.indexOf('EMA') > -1;
         renderEma200 = indicatorsList.indexOf('EMA') > -1;
       }
@@ -415,6 +435,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       if(!macdHasNullValue) {
         renderMacd = indicatorsList.indexOf('MACD') > -1;
+      }
+
+      if(!sma50HasNullValue && !sma200HasNullValue ) {
+        renderSma = indicatorsList.indexOf('SMA') > -1;
       }
 
       let dateUnix = returnFormattedTimeStamp(elem);
@@ -461,6 +485,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderMacd) {
         manipulateMACDMaxMin(elem.macd.MACD);
+      }
+      if(renderSma) {
+        manipulateYMaxMin(elem.sma50);
+        manipulateYMaxMin(elem.sma200);
       }
 
       return {
@@ -629,29 +657,15 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.formattedLines.push(generateRelativeLineData('macd.MACD', '#008000', d.macdMax, d.macdMin));
     }
 
-    // Generate lines here
-    // d.formattedLines.push(generateLineData('high', 'red'));
-    // d.formattedLines.push(generateLineData('low', 'blue'));
-    // d.formattedLines.push(generateLineData('open', 'green'));
-    // d.formattedLines.push(generateLineData('close', 'orange'));
-    // d.formattedLines.push(generateLineData('ema', 'orange'));
-    // d.formattedLines.push(generateLineData('rsi', 'green'));
-    // d.formattedLines.push(generateLineData('vwap', 'blue'));
+    if(renderSma) {
+      d.formattedLines.push(generateLineData('sma50', '#FF8C00'));
+      d.formattedLines.push(generateLineData('sma200', '#FF8C00'));
+    }
 
-
-    const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin);
+    const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range);
 
     /////////////////////////////////////////////////////////////////////
     // How many x axis numbers should we have?
-    //
-    // an hour	5
-    // 1 day	5
-    // 5 days	4
-    // a month	5
-    // 6 months	5
-    // a year	5
-    // two years	5
-    // all time	5
 
     // set to four only if we're in 5 day territory
     if( range == '5d' ) {
