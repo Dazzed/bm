@@ -420,16 +420,13 @@ class Chart extends Component {
       return <View style={[chart.momentumWrapper, {width: '100%'}]}>
         <View style={[chart.momentumInfo, {flex: 1}]}>
 
-          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
+          {/* TODO: what does this mean, momentum, how does it map to my value, 'na'     'Strong Buying Frenzy' */}
 
           <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>{''}</Text>
         </View>
-
-        {/* TODO: add value to dial indicator, where does it come from */}
-
         <View style={{ flex: 1}}>
-          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={params.momentum} />
         </View>
       </View>    
     }
@@ -1182,12 +1179,7 @@ class Chart extends Component {
 
 
     //  formatting data
-
-    {/* TODO: TIME don't have this yet with time zone */}
-    
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
-    
-    
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);
