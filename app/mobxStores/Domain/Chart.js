@@ -124,12 +124,13 @@ export default class AccountStore {
           // one hour
           params.options.range = '1d';
           params.options.interval = {periodType: "m", period: 60}
+          
         } else if (this.range == '1d') {
 
           // five days
           params.options.range = '1d';
           // params.options.data_point = 120;
-          params.options.interval = {periodType: "h", period: 12}
+          params.options.interval = {periodType: "m", period: 100}
 
 
         } else if (this.range == '5d') {
