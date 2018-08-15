@@ -1185,7 +1185,7 @@ class Chart extends Component {
     let formattedOpen = '$' + open.toFixed(2);
     let formattedLow = low.toFixed(2);
     let formattedHigh = high.toFixed(2);
-    let formattedChangePercent = changePercent.toFixed(4) + '%';
+    let formattedChangePercent = changePercent.toFixed(2) + '%';
     let formattedChangeDecimal = change.toFixed(2);
     if(change > 0) {
       formattedChangeDecimal = '+' + change.toFixed(2);
