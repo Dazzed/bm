@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -12,27 +11,24 @@ import {
   TabbedArea,
   TabPane,
   Dimensions,
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import Modal from 'react-native-modal'
 import { setTheme, getTheme, colors } from '../../store/store';
-
 import Tabs from 'react-native-tabs';
 import AccountBal from './accountbalances';
 import AccountHist from './accounthistory';
 import AccountPos from './accountpositions';
 import Search from '../search';
-
 import styles from '../../style/style';
 import account from '../../style/account';
 import fonts from '../../style/fonts';
 import navstyle from '../../style/nav';
 import { selectGlobalData } from '../../selectors';
-
 import { observer } from 'mobx-react';
 import { myAccountStore } from '../../mobxStores';
-
 let SearchImage = '../../images/search.png';
 let TabBarIcon = '../../images/accounts.png';
 
@@ -76,10 +72,15 @@ class Account extends Component {
 
   componentDidMount() {
       myAccountStore.getMyAccountData()
+      
   }
 
 
   getTabView() {
+    const { anythingLoading } = myAccountStore;
+    if(anythingLoading) {
+      return null;
+    }
     switch (this.state.page) {
       case 'balances':
         return <AccountBal />
@@ -97,12 +98,14 @@ class Account extends Component {
   hideSearch() {
     this.setState({ isSearchVisible: false });
   }
-
+  
+  _onRefresh() {
+    const { getMyAccountData } = myAccountStore;
+    getMyAccountData();
+  }
+  
   render() {
-
-    const { myAccoutDataJS } = myAccountStore;
-    const { totalAccountValue, todaysChange, todaysChangePercentage } = myAccoutDataJS;
-
+    const { anythingLoading, todayChangeJS, accountValueJS, changePercentJS } = myAccountStore;
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -122,13 +125,13 @@ class Account extends Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, account.valueContainer]}>
             <View style={account.values}>
               <Text style={[{ color: this.state.colors['lightGray'] }, account.acctVal, fonts.hindGunturRg]}>ACCOUNT VALUE</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>${totalAccountValue}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, account.accValNum, fonts.hindGunturRg]}>{accountValueJS}</Text>
             </View>
             <View style={account.changeContainer}>
               <Text style={[{ color: this.state.colors['lightGray'] }, account.change, fonts.hindGunturRg]}>{"TODAY'S CHANGE"}</Text>
               <View style={account.changeWrap}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>{todaysChange}</Text>
-                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>{todaysChangePercentage}%</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.changeNum, fonts.hindGunturRg]}>{todayChangeJS}</Text>
+                <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['white'] }, styles.smallGrnBtn, account.changePercent, fonts.hindGunturBd]} onPress={() => this.setState({ myButtonOpacity: 0.5 })}>{changePercentJS}</Text>
               </View>
             </View>
           </View>
@@ -139,7 +142,13 @@ class Account extends Component {
             <Text name="history" style={[{ color: this.state.colors['lightGray'] }, account.tabTxt, fonts.hindGunturSb]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>History</Text>
           </Tabs>
         </View>
-        <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, account.tabContainer]}>
+        <ScrollView
+          refreshControl={<RefreshControl
+            refreshing={anythingLoading}
+            onRefresh={this._onRefresh}
+          />}
+          style={[{ backgroundColor: this.state.colors['contentBg'] }, account.tabContainer]}
+        >
           {this.getTabView()}
         </ScrollView>
         <Modal

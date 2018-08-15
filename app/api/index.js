@@ -18,8 +18,7 @@ const logout = (params) => post('users/logout', params);
 const buy = (params) => get('/orders/buy', params);
 const sell = (params) => post('users/buy', params);
 const positions = (params) => get('positions', params);
-
-// /orders/account
+const accountOrders = (params) => get('/orders/account', params);
 
 export {
     login,
@@ -39,5 +38,6 @@ export {
     logout,
     buy,
     sell,
-    positions
+    positions,
+    accountOrders
 }
