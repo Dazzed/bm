@@ -41,8 +41,8 @@ class EditEmail extends React.Component {
 
   startSubmitting = () => {
     Alert.alert(
-      'Are you sure',
-      `Do you want to change your email to ${this.state.email}? You will be logged out and can only login after you verify the new email`,
+      'Are you sure?',
+      `Do you want to change your email to ${this.state.email}? You will be logged out and can only log back in after you verify your new email`,
       [
         { text: 'Cancel', onPress: () => {}, style: 'cancel' },
         { text: 'OK', onPress: this.onSubmit },
@@ -129,7 +129,7 @@ class EditEmail extends React.Component {
                 style={styles.backImg}
               />
             </TouchableOpacity>
-            <Text style={[{ color: theme.darkSlate }, styles.legalPageTitle, fonts.hindGunturBd]}>Edit Email</Text>
+            <Text style={[{ color: theme.darkSlate }, styles.legalPageTitle, fonts.hindGunturBd]}>Edit email</Text>
             <Text style={styles.rightCta}></Text>
           </View>
         </View>
