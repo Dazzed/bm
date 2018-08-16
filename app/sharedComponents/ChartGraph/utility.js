@@ -3,16 +3,26 @@ import moment from 'moment';
 import { indicatorDataMap } from '../../constants';
 
 
-const shouldDisplayDateStamps = (max, min) => {
-  // time padding makes sure data that is at the 'day' threshold will bounce down to timestamps
-  let timePadding = 60 * 60; // one hour
+const shouldDisplayDateStamps = (max, min, range) => {
 
-  let secondsInOneDay = (24 * 60 * 60) - timePadding;
-  if( (max - min) > secondsInOneDay) {
-    // if range of max and min is greater than one day, return true, it's gonna be dates
-    return true;
-  } else {
+  // Mathy way of doig it, I'm using range now
+  // // time padding makes sure data that is at the 'day' threshold will bounce down to timestamps
+  // let timePadding = 60 * 60; // one hour
+  //
+  // let secondsInOneDay = (24 * 60 * 60) - timePadding;
+  // if( (max - min) > secondsInOneDay) {
+  //   // if range of max and min is greater than one day, return true, it's gonna be dates
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+
+  if(range == '1d') {
     return false;
+  } else if( range == '1h' ) {
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -183,7 +193,7 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
 
 /////////////////////////////////////////////////////////////////////
 
-export const parseSmallGraphData = (data, Price, graphHeight) => {
+export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 
     let d = {
       yMax: 0,
@@ -223,7 +233,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
       }
     }
 
-    let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin)
+    let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range)
     // console.log('====== SMALL GRAPH', displayDateStamps)
 
     for(let i = 0; i < data.length; i++) {
@@ -258,7 +268,7 @@ export const parseSmallGraphData = (data, Price, graphHeight) => {
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme) => {
+export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme, range) => {
 
     let d = {
       xMax: 0,
@@ -280,7 +290,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       xPaddingModifier: .9,
       volumeBottomLinesData: null,
       trndMax: 0,
-      trndMin: 9999999999999999999999
+      trndMin: 9999999999999999999999,
+      obvMax: 0,
+      obvMin: 9999999999999999999999,
+      macdMax: 0,
+      macdMin: 9999999999999999999999
     };
 
     // adds bottom padding
@@ -303,9 +317,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
+    const manipulateObvMaxMin = (input) => {
+      if( input > d.obvMax ) d.obvMax = input;
+      if( input < d.obvMin ) d.obvMin = input;
+    }
+
     const manipulateTrndMaxMin = (input) => {
       if( input > d.trndMax ) d.trndMax = input;
       if( input < d.trndMin ) d.trndMin = input;
+    }
+
+    const manipulateMACDMaxMin = (input) => {
+      if( input > d.macdMax ) d.macdMax = input;
+      if( input < d.macdMin ) d.trndMin = input;
     }
 
     // check if any of the values contain a null value
@@ -314,22 +338,35 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // in the line rendering functions
 
     let bolHasNullValue = false;
-    let emaHasNullValue = false;
+
+    let ema50HasNullValue = false;
+    let ema200HasNullValue = false;
+
     let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
     let obvHasNullValue = false;
     let trndHasNullValue = false;
+    let macdHasNullValue = false;
+    let sma50HasNullValue = false;
+    let sma200HasNullValue = false;
 
     d.dataPoints.forEach((elem, i) => {
+
+      // normalize MACD values
+      // elem.macd.MACD = elem.macd.MACD + 1;
+
       if(elem.bol === null) {
         bolHasNullValue = true;
       }
       if(elem.rsi === null) {
         rsiHasNullValue = true;
       }
-      if(elem.ema === null) {
-        emaHasNullValue = true;
+      if(elem.ema50 === null) {
+        ema50HasNullValue = true;
+      }
+      if(elem.ema200 === null) {
+        ema200HasNullValue = true;
       }
       if(elem.volume === null) {
         volumeHasNullValue = true;
@@ -343,20 +380,33 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.trnd === null) {
         trndHasNullValue = true;
       }
+      if(elem.macd === null) {
+        macdHasNullValue = true;
+      }
+
+      if( elem.sma50 === null ) {
+        sma50HasNullValue = true;
+      }
+      if( elem.sma200 === null ) {
+        sma200HasNullValue = true;
+      }
     })
 
     // setup render variables
     let renderBol = false;
-    let renderEma = false;
     let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
     let renderObv = false;
     let renderTrnd = false;
 
+    let renderEma50 = false;
+    let renderEma200 = false;
+    let renderMacd = false;
+    let renderSma = false;
+
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
-      // console.log('======= ELEM', elem)
 
       // if data is valid, check for indicator list and set render variables
       if(!rsiHasNullValue) {
@@ -365,8 +415,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(!bolHasNullValue) {
         renderBol = indicatorsList.indexOf('BOL') > -1;
       }
-      if(!emaHasNullValue) {
-        renderEma = indicatorsList.indexOf('EMA') > -1;
+      if(!ema50HasNullValue && !ema200HasNullValue) {
+        renderEma50 = indicatorsList.indexOf('EMA') > -1;
+        renderEma200 = indicatorsList.indexOf('EMA') > -1;
       }
       if(!volumeHasNullValue) {
         renderVolume = indicatorsList.indexOf('VLM') > -1;
@@ -382,6 +433,14 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         renderTrnd = indicatorsList.indexOf('TRND') > -1;
       }
 
+      if(!macdHasNullValue) {
+        renderMacd = indicatorsList.indexOf('MACD') > -1;
+      }
+
+      if(!sma50HasNullValue && !sma200HasNullValue ) {
+        renderSma = indicatorsList.indexOf('SMA') > -1;
+      }
+
       let dateUnix = returnFormattedTimeStamp(elem);
 
       // calculate min and max
@@ -393,9 +452,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
+      if(renderIchi) {
+        manipulateYMaxMin(elem.ichi.base);
+        manipulateYMaxMin(elem.ichi.conversion);
+        manipulateYMaxMin(elem.ichi.spanA);
+        manipulateYMaxMin(elem.ichi.spanB);
+      }
+
       // conditional rendering based on indicators menu
-      if(renderEma) {
-        manipulateYMaxMin(elem.ema);
+      if(renderEma50) {
+        manipulateYMaxMin(elem.ema50);
+      }
+      if(renderEma200) {
+        manipulateYMaxMin(elem.ema200);
       }
       if(renderRsi) {
         manipulateYMaxMin(elem.rsi);
@@ -409,10 +478,17 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         manipulateVolumeMaxMin(elem.volume);
       }
       if(renderObv) {
-        manipulateVolumeMaxMin(elem.obv)
+        manipulateObvMaxMin(elem.obv)
       }
       if(renderTrnd) {
-        manipulateYMaxMin(elem.trnd);
+        manipulateTrndMaxMin(elem.trnd);
+      }
+      if(renderMacd) {
+        manipulateMACDMaxMin(elem.macd.MACD);
+      }
+      if(renderSma) {
+        manipulateYMaxMin(elem.sma50);
+        manipulateYMaxMin(elem.sma200);
       }
 
       return {
@@ -519,10 +595,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let lineHeightRel = volumeValue / d.volumeMax;
         let lineHeightCoords = (maxLineHeightModifier * height) * lineHeightRel;
         let bottomAdjust = height * .1;
-        let yCoord = ( height + bottomAdjust )- lineHeightCoords;
+        let yCoord = ( height + bottomAdjust ) - lineHeightCoords;
         let color = theme.red;
         if(closeValue > openValue) {
-          color = theme.green;
+          color = '#4A86E8';
         }
         lineData.push({
           color: color,
@@ -538,26 +614,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
 
 
-    // ICHI cloud is already correct
-
-    // _000000_checkbox_image
-    // *Volume (VOL)* — #000000 (black) for the light theme
-    // & #FFFFFF (white) for the dark theme
-
-    // _A52A2A_checkbox_image
-    // *Trend (TRND)* — ​#A52A2A (brown)
-
-
-    // _008080_checkbox_image
-    // *Fibonacci (FIB)* — #008080 (teal)
-
     // _FF8C00_checkbox_image
     // *Simple Moving Average (SMA)* — #FF8C00 (dark orange)
-
-    // _0000FF_checkbox_image
-    // *Exponential Moving Average (EMA)*: for 50-day and 200-day MA (Moving Average) —
-    // #0000FF (blue) for the 50-day and
-    // #FF0000 (red) for the 200-day
 
     if(renderRsi) {
       d.formattedLines.push(generateLineData('rsi', '#00FF00'));
@@ -569,9 +627,14 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.formattedLines.push(generateLineData('bol.upper', '#800080'));
     }
 
-    if(renderEma) {
-      d.formattedLines.push(generateLineData('ema', '#0000FF'));
+    if(renderEma50) {
+      d.formattedLines.push(generateLineData('ema50', '#0000FF'));
     }
+
+    if(renderEma200) {
+      d.formattedLines.push(generateLineData('ema200', '#FF0000'));
+    }
+
 
     if(renderVolume) {
       d.volumeBottomLinesData = generateVolumeBottomLinesData('volume')
@@ -583,24 +646,32 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
 
     if(renderObv) {
-      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.volumeMax, d.volumeMin));
+      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.obvMax, d.obvMin));
     }
 
     if(renderTrnd) {
-      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.volumeMax, d.volumeMin));
+      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
     }
 
-    // Generate lines here
-    // d.formattedLines.push(generateLineData('high', 'red'));
-    // d.formattedLines.push(generateLineData('low', 'blue'));
-    // d.formattedLines.push(generateLineData('open', 'green'));
-    // d.formattedLines.push(generateLineData('close', 'orange'));
-    // d.formattedLines.push(generateLineData('ema', 'orange'));
-    // d.formattedLines.push(generateLineData('rsi', 'green'));
-    // d.formattedLines.push(generateLineData('vwap', 'blue'));
+    if(renderMacd) {
+      d.formattedLines.push(generateRelativeLineData('macd.MACD', '#008000', d.macdMax, d.macdMin));
+    }
 
+    if(renderSma) {
+      d.formattedLines.push(generateLineData('sma50', '#FF8C00'));
+      d.formattedLines.push(generateLineData('sma200', '#FF8C00'));
+    }
 
-    const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin);
+    const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range);
+
+    /////////////////////////////////////////////////////////////////////
+    // How many x axis numbers should we have?
+
+    // set to four only if we're in 5 day territory
+    if( range == '5d' ) {
+      // one hour
+      d.xLineCount = 4;
+    }
 
     // generate grid x and y bars
     for( let i = 0; i < d.yLineCount; i++) {
@@ -619,10 +690,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       d.gridYArray.push(yObj);
     }
-    for( let j = 0; j < d.xLineCount; j++) {
+    for( let j = 0; j < d.xLineCount + 1; j++) {
       // for x lines
       let spaceBetweenEachLine = width / d.xLineCount;
-      let lineOffest = spaceBetweenEachLine / 2;
+      // let lineOffest = spaceBetweenEachLine / 2;
+      let lineOffest = 0;
       let multiplier = j / d.xLineCount;
       let xPosition = ((d.xMax * multiplier) / d.xMax ) * width;
       let exactPixelLocation = lineOffest + xPosition;
@@ -638,6 +710,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         label = formatDateStamp( unixPoint );
       } else {
         label = formatTimeStamp( unixPoint );
+      }
+
+      // never show first label
+      if(j === 0) {
+        label = '';
       }
 
       const xObj = {

@@ -42,12 +42,13 @@ export default class SmallGraph extends React.Component {
             height: this.props.height,
             marginTop: 18
         }
-        const { tickerDataJS } = chartStore;
+        const { tickerDataJS, range } = chartStore;
         const { Price } = tickerDataJS;
         const { height } = this.props.height;
+
         let xAxisHeight = 20;
         let graphHeight = this.props.height - xAxisHeight;
-        const data = parseSmallGraphData(this.props.data, Price, graphHeight);
+        const data = parseSmallGraphData(this.props.data, Price, graphHeight, range);
         let lineYPosition = flipYAxisValue(graphHeight, data.priceLineHeight);
         let inlineGraphContainerStyle = {
             // borderWidth: 1,

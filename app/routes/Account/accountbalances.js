@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -15,17 +9,19 @@ import {
   Image,
   TouchableHighlight,
   TabbedArea,
-  TabPane
+  TabPane,
+  ActivityIndicator
 } from 'react-native';
-
-import {setTheme, getTheme, colors} from '../../store/store';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../../store/store';
 import { connect } from 'react-redux';
-
 import styles from '../../style/style';
 import account from '../../style/account';
 import fonts from '../../style/fonts';
 import { selectGlobalData } from '../../selectors';
-
 import { observer } from 'mobx-react';
 import { myAccountStore } from '../../mobxStores';
 
@@ -57,8 +53,7 @@ class AccountBal extends React.Component {
   }
 
   render() {
-    const { balancesJS } = myAccountStore;
-
+    const { balancesJS, balanceLoading } = myAccountStore;
     return (
       <View style={[{backgroundColor: this.state.colors['contentBg']}, account.tabContent]}>
         <Text style={[{color: this.state.colors['darkSlate']}, account.sectionTitle, fonts.hindGunturBd]}>INVESTMENTS</Text>

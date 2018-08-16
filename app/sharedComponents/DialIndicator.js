@@ -30,7 +30,7 @@ export default class DialIndicator extends React.Component {
     // Where it's going
     this.activeDialPosition = this.props.position;
     // Starting point
-    this.initialDialPosition = .5;
+    this.initialDialPosition = 0;
     this.animationSpeed = 1000;
     // Used to generate all the nibs
     this.list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
@@ -47,14 +47,27 @@ export default class DialIndicator extends React.Component {
   }
 
   animateToValue(newValue) {
-    Animated.timing(
+    
+    let initAnimation = Animated.timing(
+      this.state.dialPosition,
+      {
+        toValue: 1,
+        duration: this.animationSpeed,
+        useNativeDriver: true
+      }
+    );
+    
+    let toValueAnimation = Animated.timing(
       this.state.dialPosition,
       {
         toValue: newValue,
         duration: this.animationSpeed,
         useNativeDriver: true
       },
-    ).start();
+    );
+    
+    let animations = [initAnimation, toValueAnimation];
+    Animated.sequence(animations).start()
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {

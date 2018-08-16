@@ -2,25 +2,29 @@ import React from 'react';
 import { chartStore, colorStore } from "../../mobxStores";
 import { LineChart, Grid } from 'react-native-svg-charts'
 import {
-    Svg,
-    Line,
-    Text as TextSvg,
-    Polygon,
-    G,
-    Defs,
-    Use,
-    TSpan,
-    Rect,
-    Polyline
+  Svg,
+  Line,
+  Text as TextSvg,
+  Polygon,
+  G,
+  Defs,
+  Use,
+  TSpan,
+  Rect,
+  Polyline
 } from 'react-native-svg';
 import {
-    View,
-    Text,
-    Animated,
-    ActivityIndicator
+  View,
+  Text,
+  Animated,
+  ActivityIndicator
 } from 'react-native';
 import { observer } from "mobx-react";
-import { generatePolygonsFromTwoLines, flipYAxisValue, parseLargeGraphData } from './utility';
+import {
+  generatePolygonsFromTwoLines,
+  flipYAxisValue,
+  parseLargeGraphData
+} from './utility';
 import fonts from '../../style/fonts';
 import trending from '../../style/trending';
 
@@ -28,36 +32,36 @@ import trending from '../../style/trending';
 export default class LargeGraph extends React.Component {
 
     constructor(props) {
-        super(props);
+      super(props);
     }
 
     generateXLineGroup(data, key) {
         const { position, label } = data;
         const { theme } = colorStore;
         return <G key={key}>
-            <G>
-              <Line
-                key={ 'zero-axis' }
-                x1={ position }
-                x2={ position }
-                y1={ '0%' }
-                y2={ '100%' }
-                stroke={ theme.borderGray }
-                strokeDasharray={ [ 4, 8 ] }
-                strokeWidth={ 1 }
-              />
-              <TextSvg
-                key={Math.random()}
-                fontSize={12}
-                fill={theme.borderGray}
-                stroke={theme.borderGray}
-                y={'95%'}
-                x={ position }
-                textAnchor="middle"
-              >
-                {label}
-              </TextSvg>
-            </G>
+          <G>
+            <Line
+              key={ Math.random() + key + 'zero-axis' }
+              x1={ position }
+              x2={ position }
+              y1={ '0%' }
+              y2={ '100%' }
+              stroke={ theme.borderGray }
+              strokeDasharray={ [ 4, 8 ] }
+              strokeWidth={ 1 }
+            />
+            <TextSvg
+              key={Math.random() + key}
+              fontSize={12}
+              fill={theme.borderGray}
+              stroke={theme.borderGray}
+              y={'95%'}
+              x={ position }
+              textAnchor="middle"
+            >
+              {label}
+            </TextSvg>
+          </G>
         </G>
     }
 
@@ -68,7 +72,7 @@ export default class LargeGraph extends React.Component {
         let verticalOffset = 4;
         return <G key={key}>
           <Line
-            key={ 'zero-axis' }
+            key={ Math.random() + key + 'zero-axis' }
             y1={ position }
             y2={ position }
             x1={ '0%' }
@@ -78,7 +82,7 @@ export default class LargeGraph extends React.Component {
             strokeWidth={ 1 }
           />
           <TextSvg
-            key={Math.random()}
+            key={Math.random() + key}
             fontSize={12}
             fill={theme.borderGray}
             stroke={theme.borderGray}
@@ -110,30 +114,31 @@ export default class LargeGraph extends React.Component {
         let thickLineWidth = lineWidth * 2;
 
         return <G key={key}>
-            {/* Thin line -  high / low */}
-            <Rect
-              key={Math.random()}
-              x={params.xPositionCoordinates - (thinLineWidth / 2)}
-              y={params.lowYPositionCoordinates}
-              width={thinLineWidth}
-              height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
-              fill={color}
-              strokeWidth={'1'}
-              stroke={color}
-              strokeLinejoin={'round'}
-            />
+          {/* Thin line -  high / low */}
+          <Rect
+            key={Math.random() + key}
+            x={params.xPositionCoordinates - (thinLineWidth / 2)}
+            y={params.lowYPositionCoordinates}
+            width={thinLineWidth}
+            height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
+            fill={color}
+            strokeWidth={'1'}
+            stroke={color}
+            strokeLinejoin={'round'}
+          />
 
-            {/* Thick line - open / close */}
-            <Rect
-              x={params.xPositionCoordinates - (thickLineWidth / 2)}
-              y={thickLineBottom}
-              width={thickLineWidth}
-              height={thickLineTop - thickLineBottom}
-              fill={color}
-              strokeWidth={'1'}
-              stroke={color}
-              strokeLinejoin={'round'}
-            />
+          {/* Thick line - open / close */}
+          <Rect
+            x={params.xPositionCoordinates - (thickLineWidth / 2)}
+            y={thickLineBottom}
+            key={Math.random() + key}
+            width={thickLineWidth}
+            height={thickLineTop - thickLineBottom}
+            fill={color}
+            strokeWidth={'1'}
+            stroke={color}
+            strokeLinejoin={'round'}
+          />
         </G>
     }
 
@@ -142,12 +147,13 @@ export default class LargeGraph extends React.Component {
       let lineTargetValue = params.lineTargetValue;
       const { theme } = colorStore;
       return <Polyline
-          key={key}
-          points={formattedData}
-          fill={'none'}
-          stroke={params.color}
-          strokeWidth={2}
-          strokeLinejoin={'round'}
+        key={Math.random() + key}
+        points={formattedData}
+        fill={'none'}
+        stroke={params.color}
+        strokeWidth={2}
+        strokeLinejoin={'round'}
+        opacity={.8}
       />
     }
 
@@ -157,6 +163,7 @@ export default class LargeGraph extends React.Component {
         x={params.xCoord - (barWidth / 2)}
         y={params.yCoord}
         width={barWidth}
+        key={Math.random() + key}
         height={params.lineHeight}
         fill={params.color}
         strokeWidth={'1'}
@@ -191,7 +198,8 @@ export default class LargeGraph extends React.Component {
           </View>
         }
 
-        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS, theme);
+        let range = chartStore.range;
+        const parsedData = parseLargeGraphData(this.props.data, this.props.height, this.props.width, indicatorsListJS, theme, range);
         // console.log('---- parsed Data', parsedData);
 
         let inlineContainerStyle = {
@@ -209,7 +217,7 @@ export default class LargeGraph extends React.Component {
           polygonsList = generatePolygonsFromTwoLines(parsedData.ichiCloudLines[0], parsedData.ichiCloudLines[1], this.props.height);
         }
 
-        console.log('POLYGONGS', polygonsList)
+        // console.log('POLYGONGS', polygonsList)
 
         const generateGraphPolygonFill = (elem, key) => {
 
@@ -269,13 +277,7 @@ export default class LargeGraph extends React.Component {
 
                 {this.renderBottomVolumeLines(parsedData)}
 
-
             </Svg>
         </View>
     }
 }
-
-//
-
-
-//

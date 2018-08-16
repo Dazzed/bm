@@ -17,14 +17,12 @@ import {
   TabbedArea,
   TabPane
 } from 'react-native';
-
 import { connect } from 'react-redux';
 import styles from '../../style/style';
 import account from '../../style/account';
 import fonts from '../../style/fonts';
 import {setTheme, getTheme, colors} from '../../store/store';
 import { selectGlobalData } from '../../selectors';
-
 import { observer } from 'mobx-react';
 import { myAccountStore } from '../../mobxStores';
 
@@ -66,7 +64,11 @@ class AccountHist extends React.Component {
     }
 
     const { historyJS } = myAccountStore;
-    return <View style={{borderWidth: 1, borderColor: 'red'}}>
+    
+    let containerStyle = {
+    }
+    
+    return <View style={containerStyle}>
       {historyJS.map((eachDate, i) => {
         return <View key={'eachDate' + i} style={{borderWidth: 1, borderColor: 'blue'}}>
           <View style={account.titleWrap}>
@@ -77,21 +79,74 @@ class AccountHist extends React.Component {
           </View>
           <View style={[account.sectionFull,{backgroundColor: this.state.colors['white']}]}>
             {eachDate.values.map((elem, i) => {
-              return <View key={'eachDateEntry' + i} style={account.symbolRowHistory}>
-                <View style={account.symbolWrap}>
-                  <View style={account.historyTransaction}>
+              console.log('=== history list', elem)
+              
+              let symbolRowHistory = {
+                flex: 1,
+                flexDirection: 'row',
+                borderBottomColor: colors.borderGray,
+                borderBottomWidth: 0.5,
+                marginTop: 15,
+                maxHeight: 70,
+                height: 70,
+                paddingLeft: 20,
+                paddingRight: 20,
+                // borderWidth: 1,
+                // borderColor: 'blue',
+              }
+              
+              let symbolWrapStyle = {
+                flex: 3,
+                flexDirection: 'column',
+                // borderWidth: 1,
+                // borderColor: 'blue',
+                // height: 100
+                // maxWidth: 150,
+                // height: 50
+              }
+              
+              let inlineHistoryTransactionStyle = {
+                flex: 1,
+                flexDirection: 'row',
+                // maxWidth: 150,
+                // maxHeight: 45,
+                // borderWidth: 1,
+                // borderColor: 'red',
+                alignItems: 'center'
+              }
+              
+              let symbolLabel = {
+                fontSize: 20,
+                alignItems: 'center'
+                // lineHeight: 30,
+                // paddingTop: 5,
+                // marginBottom: -7
+              }
+              
+              return <View key={'eachDateEntry' + i} style={symbolRowHistory}>
+              
+                <View style={symbolWrapStyle}>
+                  <View style={inlineHistoryTransactionStyle}>
                     {renderBuyOrSell(elem.buyOrSell)}
-                    <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
+                    <Text style={[{color: this.state.colors['darkSlate']}, symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
                   </View>
-                  <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>{elem.companyTitle}</Text>
+                  <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>{elem.companyName}</Text>
                 </View>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>$0.81</Text>
+                
+                
                 <View style={account.priceWrap}>
-                  <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>1000</Text>
+                  <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>$0.81??</Text>
                 </View>
+                
+                
+                <View style={account.priceWrap}>
+                  <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
+                </View>
+                
                 <View style={account.mktWrap}>
-                  <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>$811.03</Text>
+                  <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${elem.totalAmount}</Text>
                 </View>
+                
               </View>
             })}
           </View>
@@ -103,7 +158,6 @@ class AccountHist extends React.Component {
   render() {
     return (
       <View style={account.tabContent}>
-        <Text>This view in progress, being mapped to data stores</Text>
         {this.renderDateList()}
       </View>
     );

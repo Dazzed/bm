@@ -306,7 +306,7 @@ const account = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     maxWidth: 150,
-    maxHeight: 45
+    maxHeight: 45,
   },
   historyAction: {
     flex: 1,

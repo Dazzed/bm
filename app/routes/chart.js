@@ -55,7 +55,8 @@ import { millionBillionFormatter } from '../utility';
 import {
   initialIndicators,
   indicatorProps,
-  initialChartRangeIndicator
+  initialChartRangeIndicator,
+  chartRangeOptions
 } from '../constants';
 // var colors = require('../style/colors')
 var currIndicates = [];
@@ -71,7 +72,10 @@ let _A52A2A_checkbox_image = require('../images/colored_checkboxes/checkbox_sour
 let _FF8C00_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FF8C00.png');
 let _FF1493_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FF1493.png');
 let _FFFFFF_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_FFFFFF.png');
+let _008000_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_008000.png');
 let _original_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/_original_blue.png');
+let red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/red_blue.png');
+let ema_red_blue_checkbox_image = require('../images/colored_checkboxes/checkbox_source-assets/ema_red_blue.png');
 
 @observer
 class Chart extends Component {
@@ -312,9 +316,6 @@ class Chart extends Component {
 
   setRange(el) {
     let name = el.props.name;
-    console.log('name', name);
-    // TODO: maybe rewrite the name query here for the range picker
-
     const { setRange } = chartStore;
     this.setState({
         page: el.props.name
@@ -419,35 +420,33 @@ class Chart extends Component {
       return <View style={[chart.momentumWrapper, {width: '100%'}]}>
         <View style={[chart.momentumInfo, {flex: 1}]}>
 
-          {/* TODO: what does this mean, momentum, how does it map to my value, 'na' */}
+          {/* TODO: what does this mean, momentum, how does it map to my value, 'na'     'Strong Buying Frenzy' */}
 
           <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>Strong Buying Frenzy</Text>
+          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>{''}</Text>
         </View>
-
-        {/* TODO: add value to dial indicator, where does it come from */}
-
         <View style={{ flex: 1}}>
-          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={.4} />
+          <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={params.momentum} />
         </View>
       </View>    
     }
   }
   
   renderTabs() {
+    let style = {
+      display: 'flex',
+      alignItems: 'center',
+      height: 33
+    }
     return <Tabs
       selected={this.state.page}
-      style={chart.timePeriod}
+      style={style}
       selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
       onSelect={el=> this.setRange(el)}
     >
-      <Text name='1d' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1d</Text>
-      <Text name='1m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1m</Text>
-      <Text name='3m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>3m</Text>
-      <Text name='6m' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>6m</Text>
-      <Text name='1y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>1y</Text>
-      <Text name='2y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>2y</Text>
-      <Text name='5y' style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>5y</Text>
+      {chartRangeOptions.map((elem, i) => {
+        return <Text name={elem.query} style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>  
+      })}
     </Tabs>
   }
   
@@ -820,37 +819,9 @@ class Chart extends Component {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-  // DONE
-  
-  
-  
-  
-/////////////////////////////////////////////////////////////////////////
-
-  
-  // _4A86E8_checkbox_image
-  // *Accumulation/Distribution Line (ADL)* — #4A86E8 (cornflower blue) (e
-  // ?????????????????????????
-
-
-    // *Chaikin Money Flow (CMF)* — #008000 (green) when positive & #FF0000 (red) when negative
-    // *Moving Average Convergence Divergence (MACD)* — #008000 (green)
-
-  // [NOTE: when the EMA indicator is selected, both the 50-day and 200-day should be showing simultaneously on the graph]
-
-
-
   renderCheckboxModalAndList() {
     const { themeType } = colorStore;
-    
-    // handle dark vs light theme on VLM check box
-    let vlmImageSrc = _000000_checkbox_image;
-    if(themeType === 'dark') {
-      vlmImageSrc = _FFFFFF_checkbox_image;
-    }
-    
+    let vlmImageSrc = red_blue_checkbox_image;
     return <Modal
       isVisible={this.state.isIndicatorsVisible}
       animationIn={'fadeIn'}
@@ -955,7 +926,7 @@ class Chart extends Component {
                 rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
                 rightSubText={'Exponential Moving Average'}
                 rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_0000FF_checkbox_image} style={styles.checkBox}/>}
+                checkedImage={<Image source={ema_red_blue_checkbox_image} style={styles.checkBox}/>}
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
@@ -971,7 +942,7 @@ class Chart extends Component {
                 rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
                 rightSubText={'Moving Average Convergence Divergence'}
                 rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
+                checkedImage={<Image source={_008000_checkbox_image} style={styles.checkBox}/>}
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
@@ -988,38 +959,6 @@ class Chart extends Component {
                 rightSubText={'Relative Strength Index'}
                 rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
                 checkedImage={<Image source={_00FF00_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('A/D Line')}
-                isChecked={this.checkIndicators('A/D Line')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'A/D Line'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Accumulation/Distribution Line'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={require('../images/checkbox_blue.png')} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('FIB')}
-                isChecked={this.checkIndicators('FIB')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'FIB'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Fibonacci'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_008080_checkbox_image} style={styles.checkBox}/>}
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
@@ -1240,16 +1179,13 @@ class Chart extends Component {
 
 
     //  formatting data
-
-    {/* TODO: TIME don't have this yet with time zone */}
-
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
     let formattedVolume = millionBillionFormatter(Volume);
     let formattedPrice = '$' + Price.toFixed(2);
     let formattedOpen = '$' + open.toFixed(2);
     let formattedLow = low.toFixed(2);
     let formattedHigh = high.toFixed(2);
-    let formattedChangePercent = changePercent.toFixed(4) + '%';
+    let formattedChangePercent = changePercent.toFixed(2) + '%';
     let formattedChangeDecimal = change.toFixed(2);
     if(change > 0) {
       formattedChangeDecimal = '+' + change.toFixed(2);

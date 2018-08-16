@@ -345,6 +345,47 @@ const indicatorProps = [
 
 const initialChartRangeIndicator = '1y';
 
+const chartRangeOptions = [
+  {
+    query: '1h',
+    title: '1hr'
+  },
+  {
+    query: '1d',
+    title: '1d'
+  },
+  // five days
+  {
+    query: '5d',
+    title: '5d'
+  },
+  // one month
+  {
+    query: '1m',
+    title: '1M',
+  },
+  // six months
+  {
+    query: '6m',
+    title: '6M',
+  },
+  // one year
+  {
+    query: '1y',
+    title: '1yr',
+  },
+  // two years
+  {
+    query: '2y',
+    title: '2yr',
+  },
+  // five years
+  {
+    query: '5y',
+    title: '5yr'
+  }
+]
+
 export {
   stateOptionsMap,
   maritalStatusList,
@@ -377,5 +418,6 @@ export {
   order_type,
   SETTINGS_DATA_KEY,
   indicatorProps,
-  initialChartRangeIndicator
+  initialChartRangeIndicator,
+  chartRangeOptions
 }

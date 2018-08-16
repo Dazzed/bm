@@ -133,13 +133,14 @@ const chart = StyleSheet.create({
     flexDirection: 'column'
   },
   timePeriod: {
+    marginTop: 10,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     // borderRightColor: colors.borderGray,
     borderRightWidth: StyleSheet.hairlineWidth,
-    paddingTop: 20
+    // paddingTop: 20
   },
   timeSelected: {
     // backgroundColor: colors.grayTwo,

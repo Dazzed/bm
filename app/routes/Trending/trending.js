@@ -19,7 +19,8 @@ import {
   TabPane,
   Alert,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal'
@@ -193,7 +194,9 @@ class SubMenu extends React.Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, trending.subMenuTitle, fonts.hindGunturBd]}>SECTOR</Text>
         </View>
         <View style={[{ backgroundColor: this.state.colors['white'] }, trending.lastTradeModal]}>
-          <ScrollView style={trending.sectorRadio}>
+          <ScrollView
+            style={trending.sectorRadio}
+          >
             <RadioForm
               radio_props={sectorDataJS}
               initial={selectedSectorOption}
@@ -437,83 +440,94 @@ class Trending extends React.Component {
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
+  
+  _onRefresh() {
+    const { getTrendingData } = trendingStore;
+    getTrendingData();
+  }
 
-  renderTrendingList() {
+  renderNoContentInList() {
     const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
-
-    if (trendingLoading) {
-      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <ActivityIndicator />
-      </View>
-    } else if (trendingDataJS.length === 0) {
+    if (trendingDataJS.length === 0) {
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
-      return <View style={{ flex: 1 }}>
-        <ScrollView
-          onScroll={({nativeEvent}) => {
-            if (isScrollViewCloseToBottom(nativeEvent)) {
-              this.getNewPage();
-            }
-          }}
-          throttleScrollCallbackMS={1000}
-          style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}
-        >
-          {trendingDataJS.map((data, i) => {
-            let formattedDataChange = data.change
-            if(data.change > 0) {
-              formattedDataChange = '+' + data.change
-            }
-            if(data.change === 0) {
-              formattedDataChange = '0.00'
-            }
-
-            let watchListIconSrc = require('../../images/add.png');
-            if (data.inWatchList) {
-              watchListIconSrc = require('../../images/watchlist_added.png');
-            }
-
-            let formattedChangePercent = data['changePercent'].toFixed(3) + '%';
-            if(data['changePercent'] > 0) {
-              formattedChangePercent = '+' + formattedChangePercent;
-            }
-            if(data['changePercent'] === 0) {
-              formattedChangePercent = '+0.00%'
-            }
-
-            return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
-
-              <TouchableOpacity style={[trending.symbolsSpacer]} onPress={() => this.navigateToChart(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName']}</Text>
-              </TouchableOpacity>
-
-              <View style={[trending.symbolsVolume, {width: 80}]}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
-
-              <TouchableOpacity style={[trending.symbolsLabel, {width: 70}]} onPress={() => this.toggleDecimalOrPercentage(data)}>
-                <Text style={[{ color: this.state.colors['darkSlate'], alignSelf: 'center' }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPriceFormatted']}</Text>
-                {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedDataChange}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
-              </TouchableOpacity>
-
-              <View style={[trending.addBtn]}>
-                <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data, data.inWatchList)} >
-                  <Image
-                    source={watchListIconSrc} style={styles.addImg} />
-                </TouchableOpacity>
-              </View>
-
-            </View>)
-          })}
-          {this.renderNewPageLoading()}
-        </ScrollView>
-      </View>
+      return null;
     }
   }
 
+  renderTrendingList() {
+    const { trendingDataJS, trendingLoading, displayDecimal } = trendingStore;
+    return <View style={{ flex: 1 }}>
+      <ScrollView
+        refreshControl={<RefreshControl
+          refreshing={trendingLoading}
+          onRefresh={this._onRefresh}
+        />}
+        onScroll={({nativeEvent}) => {
+          if (isScrollViewCloseToBottom(nativeEvent)) {
+            this.getNewPage();
+          }
+        }}
+        scrollEventThrottle={1000}
+        throttleScrollCallbackMS={1000}
+        style={[trending.symbolsContainer, { flex: 1, padding: 0, margin: 0, width: '100%' }]}
+      >
+        {this.renderNoContentInList()}
+        {trendingDataJS.map((data, i) => {
+          let formattedDataChange = data.change
+          if(data.change > 0) {
+            formattedDataChange = '+' + data.change
+          }
+          if(data.change === 0) {
+            formattedDataChange = '0.00'
+          }
+
+          let watchListIconSrc = require('../../images/add.png');
+          if (data.inWatchList) {
+            watchListIconSrc = require('../../images/watchlist_added.png');
+          }
+
+          let formattedChangePercent = data['changePercent'].toFixed(3) + '%';
+          if(data['changePercent'] > 0) {
+            formattedChangePercent = '+' + formattedChangePercent;
+          }
+          if(data['changePercent'] === 0) {
+            formattedChangePercent = '+0.00%'
+          }
+
+          return (<View key={i} style={[{ borderBottomColor: this.state.colors['borderGray'], height: 30 }, trending.symbolsRow]}>
+
+            <TouchableOpacity style={[trending.symbolsSpacer]} onPress={() => this.navigateToChart(data)}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, trending.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>{data['companyName']}</Text>
+            </TouchableOpacity>
+
+            <View style={[trending.symbolsVolume, {width: 80}]}><Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsLabelTxtSM, fonts.hindGunturRg]}>VOL {data.latestVolumeFormatted}</Text></View>
+
+            <TouchableOpacity style={[trending.symbolsLabel, {width: 70}]} onPress={() => this.toggleDecimalOrPercentage(data)}>
+              <Text style={[{ color: this.state.colors['darkSlate'], alignSelf: 'center' }, trending.symbolsLabelTxt, fonts.hindGunturRg]}>${data['latestPriceFormatted']}</Text>
+              {!displayDecimal ? <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedDataChange}</Text> : <Text style={[{ backgroundColor: data.posNegColor }, { borderColor: data.posNegColor }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
+            </TouchableOpacity>
+
+            <View style={[trending.addBtn]}>
+              <TouchableOpacity style={trending.symbolsAdd} onPress={this.addOrRemoveSymbolFromWatchlist.bind(this, data, data.inWatchList)} >
+                <Image
+                  source={watchListIconSrc} style={styles.addImg} />
+              </TouchableOpacity>
+            </View>
+
+          </View>)
+        })}
+        {this.renderNewPageLoading()}
+      </ScrollView>
+    </View>
+  }
+
   renderNewPageLoading() {
-    const { newPageLoading } = trendingStore;
-    if(newPageLoading) {
+    const { newPageLoading, currentPage } = trendingStore;
+    if(newPageLoading && currentPage > 1) {
       return <View style={{height: 50, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator />
       </View>

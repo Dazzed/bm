@@ -19,7 +19,7 @@ export default class AccountStore {
     }
 
     @action getTickerDetails = (data) => {
-        console.log('===== get ticker data', data)
+      // console.log('===== get ticker data', data)
       let symbol = data.ticker;
       this.setTickerDataLoading(true);
       let params = {
@@ -27,13 +27,12 @@ export default class AccountStore {
       }
       getTickerDetails(params)
       .then((res) => {
-          console.log('GET TICKER DATA', res);
+        // console.log('GET TICKER DATA', res);
         if(res.ok) {
           this.setTickerData(res.json.result);
-
           this.getStockChartDetails();
-
         } else {
+          // don't do anything
         }
         this.setTickerDataLoading(false);
       })
@@ -50,13 +49,6 @@ export default class AccountStore {
         return toJS(this.chartData);
       }
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     @observable range = initialChartRangeIndicator;
 
@@ -91,35 +83,15 @@ export default class AccountStore {
     @action getStockChartDetails = () => {
 
         if(this.chartData === null) {
-            return;
+          return;
         }
 
         this.setStockChartLoading(true);
 
-        // console.log('chartData ============================================= ', toJS(this.indicatorsList));
-
-        // 1.interval
-        // let intervalParams = {
-        //   "ticker":"AAPL",
-        //   "range":"1y",
-        //   "interval":{
-        //     "period":10
-        //   },
-        // }
-
-        // ***************************************************************
-        // 2.data_point
-        // let dataPointParams = {
-        //   "range":"1y",
-        //   "data_point": 30,
-        // }
-
         let params = {
           options: {
             'ticker': this.tickerDataJS.ticker,
-            'range': this.range,
-            'data_point': 30,
-            'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL' ],
+            'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL', 'SMA' ],
             'parameters':{
               'ICHI': {
                 'conversionPeriod': 9,
@@ -148,21 +120,71 @@ export default class AccountStore {
           }
         }
 
+        if(this.range == '1h') {
+          // one hour
+          params.options.range = '1d';
+          params.options.interval = {periodType: "m", period: 60}
+
+        } else if (this.range == '1d') {
+
+          // five days
+          params.options.range = '1d';
+          // params.options.data_point = 120;
+          params.options.interval = {periodType: "m", period: 10}
+
+
+        } else if (this.range == '5d') {
+
+          // five days
+          params.options.range = '5d';
+          params.options.data_point = 5;
+
+        } else if (this.range == '1m') {
+
+          // one month
+          params.options.range = '1m';
+          params.options.data_point = 20;
+
+        } else if (this.range == '6m') {
+
+          // six months
+          params.options.range = '6m';
+          params.options.data_point = 60;
+
+        } else if (this.range == '1y') {
+
+          // one year
+          params.options.range = '1y';
+          params.options.data_point = 52;
+
+        } else if (this.range == '2y') {
+
+          // two years
+          params.options.range = '2y';
+          params.options.data_point = 52;
+
+        }
+        else if (this.range == '5y') {
+
+          // five years
+          params.options.range = '5y';
+          params.options.data_point = 52;
+
+        }
 
         getStockChartDetail(params)
         .then((res) => {
-            console.log('GET CHART DATA', res);
-            if(res.ok) {
-                this.setChartDetailData(res.json.result);
-            } else {
-            }
-            this.setStockChartLoading(false);
+          console.log('GET CHART DATA', res);
+          if(res.ok) {
+            this.setChartDetailData(res.json.result);
+          } else {
+            // do nothing
+          }
+          this.setStockChartLoading(false);
         })
         .catch((err) => {
-            console.log('err', err);
-            // this.setTickerDataLoading(false);
-
-            this.setStockChartLoading(false);
+          console.log('err', err);
+          this.setStockChartLoading(false);
         })
     }
 
