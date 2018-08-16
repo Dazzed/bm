@@ -269,40 +269,29 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 //////////////////////////////////////////////////////////////////////
 
 export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme, range) => {
-
-
+    // init data
     let modifiedInputData = inputData;
-
 
     // limit input data if in one hour mode
     if(range === '1h') {
       let formattedDataPointsHour = [];
-
-      console.log('-========================== LIMIT INPUT DATA', inputData);
-      let currentTime = moment().format('X');
-      let oneHourAgo = moment().subtract(1, 'hours').format('X');
-
-      console.log('current time', currentTime);
-      console.log('one hour ago', oneHourAgo);
-
-
+      // extract newest time from list
+      const newestDataPoint = inputData[inputData.length - 1];
+      let newestTime = returnFormattedTimeStamp(newestDataPoint);
+      let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(1, 'hours').format('X'));
+      // loop through in reverse
       inputData.reverse().every((elem, i) => {
-
-        let dateUnix = returnFormattedTimeStamp(elem);
-        console.log('each data unix', dateUnix)
-        if(dateUnix > oneHourAgo) {
+        let thisDateUnix = returnFormattedTimeStamp(elem);
+        if(thisDateUnix > oneHourFromNewestTime) {
           formattedDataPointsHour.push(elem);
           return true;
         } else {
           return false;
         }
       })
-
-
+      // reverse it back again
       formattedDataPointsHour = formattedDataPointsHour.reverse();
-
-      console.log('=== formattedDataPointsHour', formattedDataPointsHour, formattedDataPointsHour.length)
-
+      // write data
       modifiedInputData = formattedDataPointsHour;
     }
 
