@@ -6,18 +6,6 @@ import { sectorIndustriesStore } from '../';
 
 import {
   scan_props,
-  sector_props,
-  industry_utilities,
-  industry_telecomm,
-  industry_realestate,
-  industry_materials,
-  industry_infotech,
-  industry_industrials,
-  industry_health,
-  industry_financials,
-  industry_energy,
-  industry_consumerstaples,
-  industry_consumerdiscretionary
 } from '../../constants';
 
 export default class Trending {
@@ -57,11 +45,8 @@ export default class Trending {
 
 
   @action setLoading = (newVal) => {
-    if(this.pageNumber > 1) {
-      this.newPageLoading = newVal;
-    } else {
-      this.trendingLoading = newVal;
-    }
+    this.newPageLoading = newVal;
+    this.trendingLoading = newVal;
   }
 
   @action setTrendingData = (data) => {
