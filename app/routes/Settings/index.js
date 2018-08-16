@@ -27,7 +27,7 @@ import RadioForm from '../../components/react-native-simple-radio-button';
 import { colors } from '../../store/store';
 import styles from '../../style/style';
 import settings from '../../style/settings';
-import Search from './../search';
+import Search from '../Search';
 import navstyle from '../../style/nav';
 import Modal from 'react-native-modal'
 import fonts from '../../style/fonts';

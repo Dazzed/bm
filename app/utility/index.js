@@ -171,9 +171,9 @@ export const kFormatter = num => {
 
 export const zacksRatingFormatter = num => {
   if (num === null || num === undefined || num === 0 || num === 'na') {
-    return 0;
+    return 0.5;
   }
-  return num * 0.2;
+  return num;
 }
 
 export const isScrollViewCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {

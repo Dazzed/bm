@@ -46,7 +46,7 @@ import {
   industry_consumerstaples,
   industry_consumerdiscretionary
 } from '../../constants';
-import Search from '../search';
+import Search from '../Search';
 import styles from '../../style/style';
 import trending from '../../style/trending';
 import numbers from '../../style/numbers';
