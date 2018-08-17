@@ -65,7 +65,7 @@ class AccountPos extends React.Component {
   renderList() {
     const { positionsJS } = myAccountStore;
     if(positionsJS.length === 0) {
-      return <View>
+      return <View style={{padding: 10, alignItems: 'center'}}>
         <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>No Positions Found</Text>
       </View>
     } else {
@@ -94,18 +94,22 @@ class AccountPos extends React.Component {
   }
 
   renderTotal() {
-    const { positionTotalsJS } = myAccountStore;
-    return <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
-     <View style={account.section}>
-       <View style={account.sectionWrap}>
-         <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
-         <View style={account.stickyWrap}>
-           <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionTotalsJS.total}</Text>
-           <Text style={[{backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {borderColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text>
+    const { positionTotalsJS, positionsJS, positionsTotal } = myAccountStore;
+    if(positionsJS.length === 0) {
+      return null;
+    } else {
+      return <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
+       <View style={account.section}>
+         <View style={account.sectionWrap}>
+           <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
+           <View style={account.stickyWrap}>
+             <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionsTotal}</Text>
+             <Text style={[{backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {borderColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text>
+           </View>
          </View>
        </View>
-     </View>
-    </View>
+      </View>
+    }
   }
   
 

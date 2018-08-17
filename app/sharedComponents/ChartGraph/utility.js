@@ -401,48 +401,48 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       // elem.macd.MACD = elem.macd.MACD + 1;
 
       if(elem.bol === null) {
-        // console.log('NULLLL!!! bol')
+        console.log('NULLLL!!! bol')
         bolHasNullValue = true;
       }
       if(elem.rsi === null) {
-        // console.log('NULLLL!!! rsi')
+        console.log('NULLLL!!! rsi')
         rsiHasNullValue = true;
       }
       if(elem.ema50 === null) {
-        // console.log('NULLLL!!! ema50')
+        console.log('NULLLL!!! ema50')
         ema50HasNullValue = true;
       }
       if(elem.ema200 === null) {
-        // console.log('NULLLL!!! ema200')
+        console.log('NULLLL!!! ema200')
         ema200HasNullValue = true;
       }
       if(elem.volume === null) {
-        // console.log('NULLLL!!! volume')
+        console.log('NULLLL!!! volume')
         volumeHasNullValue = true;
       }
       if(elem.ichi === null) {
-        // console.log('NULLLL!!! ichi')
+        console.log('NULLLL!!! ichi')
         ichiHasNullValue = true;
       }
       if(elem.obv === null) {
-        // console.log('NULLLL!!! obv')
+        console.log('NULLLL!!! obv')
         obvHasNullValue = true;
       }
       if(elem.trnd === null) {
-        // console.log('NULLLL!!! trnd')
+        console.log('NULLLL!!! trnd')
         trndHasNullValue = true;
       }
       if(elem.macd === null) {
-        // console.log('NULLLL!!! macd')
+        console.log('NULLLL!!! macd')
         macdHasNullValue = true;
       }
 
       if(elem.sma50 === null ) {
-        // console.log('NULLLL!!! sma50')
+        console.log('NULLLL!!! sma50')
         sma50HasNullValue = true;
       }
       if(elem.sma200 === null ) {
-        // console.log('NULLLL!!! sma200')
+        console.log('NULLLL!!! sma200')
         sma200HasNullValue = true;
       }
     })

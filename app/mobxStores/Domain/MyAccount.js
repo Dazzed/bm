@@ -1,10 +1,12 @@
 import { observable, action, computed, toJS } from 'mobx';
-import { positions, accountOrders } from '../../api';
+import { accountOrders } from '../../api';
+import { colorStore } from '../';
 import moment from 'moment';
 
 export default class MyAccountData {
 
   constructor() {
+
   }
 
   // API CALLS
@@ -40,7 +42,8 @@ export default class MyAccountData {
       console.log('POSITIONS res', res);
       if(res.ok) {
         // save the data
-        this.positions = res.json;
+        this.positions = res.json.result.position;
+        this.positionsTotal = res.json.result.total;
       }
       this.positionsLoading = false;
     })
@@ -109,38 +112,59 @@ export default class MyAccountData {
 
   @observable positionsLoading = false;
   @observable positions = [];
-  @computed get positionsJS() {
-    // if(posi)
-    console.log('=== GETTING POSTIONS', toJS(this.positions))
-    return [];
+  @observable positionsTotal = 0;
 
-    // let results = toJS(this.positions).map((elem, i) => {
-    //   console.log('===== POSITION elem', elem)
-    //   return {
-    //     ...elem,
-    //     test: 'test??',
-    //
-    //     companyName: elem.ticker,
-    //     companyAbbreviation: elem.ticker,
-    //     quantity: elem.shares,
-    //
-    //     priceChange: '---???',
-    //     priceChangePercentage: '---???',
-    //     priceChangeDecimal: '----???',
-    //     priceChangeColor: '---???',
-    //
-    //     marketValuation: '-???',
-    //     marketChangePercentage: '???',
-    //     marketChangeDecimal: '-???',
-    //     marketChangeColor: '-???'
-    //   }
-    // })
-    // return results;
+  @computed get positionsJS() {
+    const { theme } = colorStore;
+
+    console.log('=== GETTING POSTIONS', toJS(this.positions))
+
+    let positionsArray = toJS(this.positions);
+    if(positionsArray.length === 0) {
+      return [];
+    } else {
+      let results = toJS(this.positions).map((elem, i) => {
+       console.log('===== POSITION elem', elem, theme)
+
+        // what to do with these?
+        // valuationChange
+
+        let priceChangeColor = 'red';
+        if(elem.changePercent > 0) {
+          priceChangeColor = 'green';
+        }
+
+        let marketValuationChangeColor = 'red';
+        if(elem.valuationChange > 0) {
+          marketValuationChangeColor = 'green';
+        }
+
+       return {
+         ...elem,
+         test: 'test??',
+
+         companyName: elem.companyName,
+         companyAbbreviation: elem.ticker,
+         quantity: elem.quantity,
+
+         priceChange: elem.latestPrice.toFixed(2),
+         priceChangePercentage: elem.changePercent.toFixed(2),
+         priceChangeDecimal: '----???',
+         priceChangeColor: priceChangeColor,
+
+         marketValuation: elem.marketValuation.toFixed(2),
+         marketChangePercentage: '???',
+         marketChangeDecimal: elem.valuationChange.toFixed(2),
+         marketChangeColor: marketValuationChangeColor
+       }
+     })
+     return results;
+    }
   }
   @computed get positionTotalsJS() {
     return {
-      total: '3890.29',
-      decimalChange: '+1.85',
+      total: this.positionsTotal,
+      decimalChange: '+1.85??',
       decimalChangeColor: 'red'
     }
   }
