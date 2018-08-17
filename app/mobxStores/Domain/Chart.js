@@ -123,7 +123,7 @@ export default class AccountStore {
         if(this.range == '1h') {
           // one hour
           params.options.range = '1d';
-          params.options.interval = {periodType: "m", period: 60}
+          params.options.interval = {periodType: "m", period: 1}
 
         } else if (this.range == '1d') {
 

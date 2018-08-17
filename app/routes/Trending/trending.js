@@ -440,7 +440,7 @@ class Trending extends React.Component {
   navigateToChart(data) {
     this.props.navigation.navigate('Chart', { data: data })
   }
-  
+
   _onRefresh() {
     const { getTrendingData } = trendingStore;
     getTrendingData();
@@ -527,7 +527,7 @@ class Trending extends React.Component {
 
   renderNewPageLoading() {
     const { newPageLoading, currentPage } = trendingStore;
-    if(newPageLoading && currentPage > 1) {
+    if(newPageLoading && currentPage >= 1) {
       return <View style={{height: 50, alignItems: 'center', justifyContent: 'center'}}>
         <ActivityIndicator />
       </View>

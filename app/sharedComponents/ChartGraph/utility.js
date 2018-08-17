@@ -269,13 +269,39 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 //////////////////////////////////////////////////////////////////////
 
 export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme, range) => {
+    // init data
+    let modifiedInputData = inputData;
+
+    // limit input data if in one hour mode
+    if(range === '1h') {
+      let formattedDataPointsHour = [];
+      // extract newest time from list
+      const newestDataPoint = inputData[inputData.length - 1];
+      let newestTime = returnFormattedTimeStamp(newestDataPoint);
+      let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(1, 'hours').format('X'));
+      // loop through in reverse
+      inputData.reverse().every((elem, i) => {
+        let thisDateUnix = returnFormattedTimeStamp(elem);
+        if(thisDateUnix > oneHourFromNewestTime) {
+          formattedDataPointsHour.push(elem);
+          return true;
+        } else {
+          return false;
+        }
+      })
+      // reverse it back again
+      formattedDataPointsHour = formattedDataPointsHour.reverse();
+      // write data
+      modifiedInputData = formattedDataPointsHour;
+    }
+
 
     let d = {
       xMax: 0,
       xMin: 99999999999999999999999,
       yMax: 0,
       yMin: 99999999999999999999999,
-      dataPoints: inputData,
+      dataPoints: modifiedInputData,
       gridYArray: [],
       gridXArray: [],
       xLineCount: 5,
@@ -307,7 +333,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.xMin ) d.xMin = input;
     }
 
-    const manipulateYMaxMin = (input) => {
+    const manipulateYMaxMin = (input, ignoreZero) => {
+      if(input === 0 && ignoreZero) {
+        return;
+      }
       if( input > d.yMax ) d.yMax = input;
       if( input < d.yMin ) d.yMin = input;
     }
@@ -455,8 +484,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(renderIchi) {
         manipulateYMaxMin(elem.ichi.base);
         manipulateYMaxMin(elem.ichi.conversion);
-        manipulateYMaxMin(elem.ichi.spanA);
-        manipulateYMaxMin(elem.ichi.spanB);
+        manipulateYMaxMin(elem.ichi.spanA, true);
+        manipulateYMaxMin(elem.ichi.spanB, true);
       }
 
       // conditional rendering based on indicators menu
@@ -546,14 +575,17 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     const generateLineData = (targetValue, color) => {
       let lineData = [];
-      d.dataPoints.forEach((elem, i) => {
+
+
+      for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
         let yCoord = flipYAxisValue(height, yRel * height);
         lineData.push(`${xCoord},${yCoord}`)
-      })
+      }
+
       let formattedLineData = lineData.join(' ')
       return {
         color: color,
@@ -564,7 +596,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     const generateRelativeLineData = (targetValue, color, max, min) => {
       let lineData = [];
-      d.dataPoints.forEach((elem, i) => {
+
+      for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
@@ -572,7 +605,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let graphYPosition = yRelative * height;
         let yCoord = flipYAxisValue(height, graphYPosition);
         lineData.push(`${xCoord},${yCoord}`)
-      })
+      }
 
       let formattedLineData = lineData.join(' ')
       return {
@@ -584,7 +617,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     const generateVolumeBottomLinesData = (targetValue) => {
       let lineData = [];
-      d.dataPoints.forEach((elem, i) => {
+      for ( let elem of d.dataPoints) {
         let volumeValue = Object.byString(elem, targetValue);
         let openValue = Object.byString(elem, 'open');
         let closeValue = Object.byString(elem, 'close');
@@ -606,7 +639,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
           yCoord: yCoord,
           xCoord: xCoord
         })
-      })
+      }
       return {
         dataSet: lineData
       }
