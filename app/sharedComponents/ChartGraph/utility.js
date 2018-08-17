@@ -295,12 +295,15 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       modifiedInputData = formattedDataPointsHour;
     }
 
+    // initialize max value
+    let initMaxVal = 99999999999999999999999;
 
+    // initialze object to do work on
     let d = {
       xMax: 0,
-      xMin: 99999999999999999999999,
+      xMin: initMaxVal,
       yMax: 0,
-      yMin: 99999999999999999999999,
+      yMin: initMaxVal,
       dataPoints: modifiedInputData,
       gridYArray: [],
       gridXArray: [],
@@ -309,18 +312,18 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       xRange: 0,
       yRange: 0,
       formattedLines: [],
-      volumeMin: 9999999999999999999999,
+      volumeMin: initMaxVal,
       volumeMax: 0,
       ichiCloudLines: [],
       yPaddingModifier: .8,
       xPaddingModifier: .9,
       volumeBottomLinesData: null,
       trndMax: 0,
-      trndMin: 9999999999999999999999,
+      trndMin: initMaxVal,
       obvMax: 0,
-      obvMin: 9999999999999999999999,
+      obvMin: initMaxVal,
       macdMax: 0,
-      macdMin: 9999999999999999999999
+      macdMin: initMaxVal
     };
 
     // adds bottom padding
@@ -329,34 +332,45 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     width = width * d.xPaddingModifier;
 
     const manipulateXMaxMin = (input) => {
+      // don't run if value is null
+      if( input === null ) { return }
       if( input > d.xMax ) d.xMax = input;
       if( input < d.xMin ) d.xMin = input;
     }
 
     const manipulateYMaxMin = (input, ignoreZero) => {
-      if(input === 0 && ignoreZero) {
-        return;
-      }
+      // don't run if value is null
+      if( input === null ) { return }
+      // don't run if told to ignore zero values
+      if( input === 0 && ignoreZero ) { return }
       if( input > d.yMax ) d.yMax = input;
       if( input < d.yMin ) d.yMin = input;
     }
 
     const manipulateVolumeMaxMin = (input) => {
+      // don't run if value is null
+      if( input === null ) { return }
       if( input > d.volumeMax ) d.volumeMax = input;
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
     const manipulateObvMaxMin = (input) => {
+      // don't run if value is null
+      if( input === null ) { return }
       if( input > d.obvMax ) d.obvMax = input;
       if( input < d.obvMin ) d.obvMin = input;
     }
 
     const manipulateTrndMaxMin = (input) => {
+      // don't run if value is null
+      if( input === null ) { return }
       if( input > d.trndMax ) d.trndMax = input;
       if( input < d.trndMin ) d.trndMin = input;
     }
 
     const manipulateMACDMaxMin = (input) => {
+      // don't run if value is null
+      if( input === null ) { return }
       if( input > d.macdMax ) d.macdMax = input;
       if( input < d.macdMin ) d.trndMin = input;
     }
@@ -380,43 +394,55 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let sma50HasNullValue = false;
     let sma200HasNullValue = false;
 
+    // loop through and disqualify any null line
     d.dataPoints.forEach((elem, i) => {
 
       // normalize MACD values
       // elem.macd.MACD = elem.macd.MACD + 1;
 
       if(elem.bol === null) {
+        // console.log('NULLLL!!! bol')
         bolHasNullValue = true;
       }
       if(elem.rsi === null) {
+        // console.log('NULLLL!!! rsi')
         rsiHasNullValue = true;
       }
       if(elem.ema50 === null) {
+        // console.log('NULLLL!!! ema50')
         ema50HasNullValue = true;
       }
       if(elem.ema200 === null) {
+        // console.log('NULLLL!!! ema200')
         ema200HasNullValue = true;
       }
       if(elem.volume === null) {
+        // console.log('NULLLL!!! volume')
         volumeHasNullValue = true;
       }
       if(elem.ichi === null) {
+        // console.log('NULLLL!!! ichi')
         ichiHasNullValue = true;
       }
       if(elem.obv === null) {
+        // console.log('NULLLL!!! obv')
         obvHasNullValue = true;
       }
       if(elem.trnd === null) {
+        // console.log('NULLLL!!! trnd')
         trndHasNullValue = true;
       }
       if(elem.macd === null) {
+        // console.log('NULLLL!!! macd')
         macdHasNullValue = true;
       }
 
-      if( elem.sma50 === null ) {
+      if(elem.sma50 === null ) {
+        // console.log('NULLLL!!! sma50')
         sma50HasNullValue = true;
       }
-      if( elem.sma200 === null ) {
+      if(elem.sma200 === null ) {
+        // console.log('NULLLL!!! sma200')
         sma200HasNullValue = true;
       }
     })
@@ -576,9 +602,12 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     const generateLineData = (targetValue, color) => {
       let lineData = [];
 
-
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
+        // console.log('chosen value', chosenValue);
+        // if(chosenValue === null) {
+        //   continue;
+        // }
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
@@ -599,6 +628,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
+        // if(chosenValue === null) {
+        //   continue;
+        // }
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRelative = ( chosenValue - min) / ( max - min);
