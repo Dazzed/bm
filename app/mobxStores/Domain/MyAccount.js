@@ -1,10 +1,12 @@
 import { observable, action, computed, toJS } from 'mobx';
-import { positions, accountOrders } from '../../api';
+import { accountOrders } from '../../api';
+import { colorStore } from '../';
 import moment from 'moment';
 
 export default class MyAccountData {
 
   constructor() {
+
   }
 
   // API CALLS
@@ -40,7 +42,8 @@ export default class MyAccountData {
       console.log('POSITIONS res', res);
       if(res.ok) {
         // save the data
-        this.positions = res.json;
+        this.positions = res.json.result.position;
+        this.positionsTotal = res.json.result.total;
       }
       this.positionsLoading = false;
     })
@@ -78,7 +81,7 @@ export default class MyAccountData {
   // ACCOUNT BALANCE DETAILS
   @observable accountValue = 0;
   @computed get accountValueJS() {
-    return '$' + this.accountValue.toFixed(2);
+    return '$' + this.accountValue;
   }
 
   @observable cash = 0;
@@ -88,7 +91,7 @@ export default class MyAccountData {
     if(this.changePercent > 0) {
       plusString = '+';
     }
-    return plusString + this.changePercent.toFixed(2) + '%';
+    return plusString + this.changePercent + '%';
   }
 
   @observable checkingAccount = 0;
@@ -102,45 +105,66 @@ export default class MyAccountData {
       // minus is already included
       plusOrMinusChar = '';
     }
-    return plusOrMinusChar + this.todayChange.toFixed(2);
+    return plusOrMinusChar + this.todayChange;
   }
 
   @observable total = 0;
 
   @observable positionsLoading = false;
   @observable positions = [];
-  @computed get positionsJS() {
-    // if(posi)
-    console.log('=== GETTING POSTIONS', toJS(this.positions))
-    return [];
+  @observable positionsTotal = 0;
 
-    // let results = toJS(this.positions).map((elem, i) => {
-    //   console.log('===== POSITION elem', elem)
-    //   return {
-    //     ...elem,
-    //     test: 'test??',
-    //
-    //     companyName: elem.ticker,
-    //     companyAbbreviation: elem.ticker,
-    //     quantity: elem.shares,
-    //
-    //     priceChange: '---???',
-    //     priceChangePercentage: '---???',
-    //     priceChangeDecimal: '----???',
-    //     priceChangeColor: '---???',
-    //
-    //     marketValuation: '-???',
-    //     marketChangePercentage: '???',
-    //     marketChangeDecimal: '-???',
-    //     marketChangeColor: '-???'
-    //   }
-    // })
-    // return results;
+  @computed get positionsJS() {
+    const { theme } = colorStore;
+
+    console.log('=== GETTING POSTIONS', toJS(this.positions))
+
+    let positionsArray = toJS(this.positions);
+    if(positionsArray.length === 0) {
+      return [];
+    } else {
+      let results = toJS(this.positions).map((elem, i) => {
+       console.log('===== POSITION elem', elem, theme)
+
+        // what to do with these?
+        // valuationChange
+
+        let priceChangeColor = 'red';
+        if(elem.changePercent > 0) {
+          priceChangeColor = 'green';
+        }
+
+        let marketValuationChangeColor = 'red';
+        if(elem.valuationChange > 0) {
+          marketValuationChangeColor = 'green';
+        }
+
+       return {
+         ...elem,
+         test: 'test??',
+
+         companyName: elem.companyName,
+         companyAbbreviation: elem.ticker,
+         quantity: elem.quantity,
+
+         priceChange: elem.latestPrice,
+         priceChangePercentage: elem.priceChangePercentage,
+         priceChangeDecimal: '----???',
+         priceChangeColor: priceChangeColor,
+
+         marketValuation: elem.marketValuation,
+         marketChangePercentage: '???',
+         marketChangeDecimal: elem.valuationChange,
+         marketChangeColor: marketValuationChangeColor
+       }
+     })
+     return results;
+    }
   }
   @computed get positionTotalsJS() {
     return {
-      total: '3890.29',
-      decimalChange: '+1.85',
+      total: this.positionsTotal,
+      decimalChange: '+1.85??',
       decimalChangeColor: 'red'
     }
   }
@@ -164,9 +188,9 @@ export default class MyAccountData {
 @computed get balancesJS() {
     let balanceData = {
       investments: {
-        total: this.total.toFixed(2),
-        securities: this.securities.toFixed(2),
-        cash: this.cash.toFixed(2),
+        total: this.total,
+        securities: this.securities,
+        cash: this.cash,
         options: '880?????'
       },
       fundsAvailable: {
@@ -216,7 +240,7 @@ export default class MyAccountData {
           companyName: elem.companyName,
           companyAbbreviation: elem.ticker,
           shares: elem.shares,
-          totalAmount: elem.totalAmount.toFixed(2)
+          totalAmount: elem.totalAmount
         }]
       }
     });

@@ -65,26 +65,53 @@ class AccountPos extends React.Component {
   renderList() {
     const { positionsJS } = myAccountStore;
     if(positionsJS.length === 0) {
-      return <View>
+      return <View style={{padding: 10, alignItems: 'center'}}>
         <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>No Positions Found</Text>
       </View>
     } else {
+      
+      if(
+        !elem.priceChangePercentage || 
+        !elem.companyAbbreviation ||
+        !elem.companyName ||
+        !elem.priceChangeColor ||
+        !elem.marketChangeColor ||
+        !elem.quantity ||
+        !elem.priceChange ||
+        !elem.priceChangeDecimal ||
+        !elem.marketChangeDecimal ||
+        !elem.marketChangePercentage
+      ) {
+        return null;
+      }
+      
+      let formattedPriceChangePercentage = elem.priceChangePercentage;
+      let formattedCompanyAbbreviation = elem.companyAbbreviation;
+      let formattedCompanyName = elem.companyName;
+      let formattedPriceChangeColor = elem.priceChangeColor;
+      let formattedMarketChangeColor = elem.marketChangeColor;
+      let formattedQuantity = elem.quantity;
+      let formattedPriceChange = '$' + elem.priceChange;
+      let formattedPriceChangeDecimal = elem.priceChangeDecimal;
+      let formattedMarketChangeDecimal = elem.marketChangeDecimal;
+      let formattedMarketChangePercentage = elem.marketChangePercentage;
+      
       return <View style={account.sectionFull}>
         {positionsJS.map((elem, i) => {
           return <View key={'each-position' + i} style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>
             <View style={account.symbolWrap}>
-              <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
-              <Text style={[{color: this.state.colors['lightGray']},account.symbolDets, fonts.hindGunturRg]}>{elem.companyName}</Text>
+              <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>{formattedCompanyAbbreviation}</Text>
+              <Text style={[{color: this.state.colors['lightGray']},account.symbolDets, fonts.hindGunturRg]}>{formattedCompanyName}</Text>
             </View>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>{elem.quantity}</Text>
+            <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>{formattedQuantity}</Text>
             <TouchableOpacity style={account.priceWrapTouch} onPress={() => this.setState({applChg: !this.state.applChg})}>
               <View style={account.priceWrap}>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>${elem.priceChange}</Text>
-                {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[elem.priceChangeColor]}, {borderColor: this.state.colors[elem.priceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.priceChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[elem.priceChangeColor]}, {borderColor: this.state.colors[elem.priceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.priceChangePercentage}%</Text>}
+                <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>{formattedPriceChange}</Text>
+                {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangePercentage}%</Text>}
               </View>
               <View style={account.mktWrap}>
                 <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>$1,535.30???</Text>
-                {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[elem.marketChangeColor]}, {borderColor: this.state.colors[elem.marketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.marketChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[elem.marketChangeColor]}, {borderColor: this.state.colors[elem.marketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{elem.marketChangePercentage}%</Text>}
+                {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangePercentage}%</Text>}
               </View>
             </TouchableOpacity>
           </View>
@@ -94,18 +121,22 @@ class AccountPos extends React.Component {
   }
 
   renderTotal() {
-    const { positionTotalsJS } = myAccountStore;
-    return <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
-     <View style={account.section}>
-       <View style={account.sectionWrap}>
-         <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
-         <View style={account.stickyWrap}>
-           <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionTotalsJS.total}</Text>
-           <Text style={[{backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {borderColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text>
+    const { positionTotalsJS, positionsJS, positionsTotal } = myAccountStore;
+    if(positionsJS.length === 0) {
+      return null;
+    } else {
+      return <View style={[{backgroundColor: this.state.colors['white']}, {borderTopColor: this.state.colors['borderGray']}, account.bottomSticky]}>
+       <View style={account.section}>
+         <View style={account.sectionWrap}>
+           <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
+           <View style={account.stickyWrap}>
+             <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionsTotal}</Text>
+             <Text style={[{backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {borderColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text>
+           </View>
          </View>
        </View>
-     </View>
-    </View>
+      </View>
+    }
   }
   
 

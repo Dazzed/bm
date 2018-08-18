@@ -3,7 +3,6 @@ import { observable, action, computed, toJS } from 'mobx';
 export default class AccountStore {
 
     constructor() {
-        console.log('====== COLOR STORE STARTS');
         this.getAccountList();
     }
 
