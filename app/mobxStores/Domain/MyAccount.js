@@ -81,7 +81,7 @@ export default class MyAccountData {
   // ACCOUNT BALANCE DETAILS
   @observable accountValue = 0;
   @computed get accountValueJS() {
-    return '$' + this.accountValue.toFixed(2);
+    return '$' + this.accountValue;
   }
 
   @observable cash = 0;
@@ -91,7 +91,7 @@ export default class MyAccountData {
     if(this.changePercent > 0) {
       plusString = '+';
     }
-    return plusString + this.changePercent.toFixed(2) + '%';
+    return plusString + this.changePercent + '%';
   }
 
   @observable checkingAccount = 0;
@@ -105,7 +105,7 @@ export default class MyAccountData {
       // minus is already included
       plusOrMinusChar = '';
     }
-    return plusOrMinusChar + this.todayChange.toFixed(2);
+    return plusOrMinusChar + this.todayChange;
   }
 
   @observable total = 0;
@@ -147,14 +147,14 @@ export default class MyAccountData {
          companyAbbreviation: elem.ticker,
          quantity: elem.quantity,
 
-         priceChange: elem.latestPrice.toFixed(2),
-         priceChangePercentage: elem.changePercent.toFixed(2),
+         priceChange: elem.latestPrice,
+         priceChangePercentage: elem.priceChangePercentage,
          priceChangeDecimal: '----???',
          priceChangeColor: priceChangeColor,
 
-         marketValuation: elem.marketValuation.toFixed(2),
+         marketValuation: elem.marketValuation,
          marketChangePercentage: '???',
-         marketChangeDecimal: elem.valuationChange.toFixed(2),
+         marketChangeDecimal: elem.valuationChange,
          marketChangeColor: marketValuationChangeColor
        }
      })
@@ -188,9 +188,9 @@ export default class MyAccountData {
 @computed get balancesJS() {
     let balanceData = {
       investments: {
-        total: this.total.toFixed(2),
-        securities: this.securities.toFixed(2),
-        cash: this.cash.toFixed(2),
+        total: this.total,
+        securities: this.securities,
+        cash: this.cash,
         options: '880?????'
       },
       fundsAvailable: {
@@ -240,7 +240,7 @@ export default class MyAccountData {
           companyName: elem.companyName,
           companyAbbreviation: elem.ticker,
           shares: elem.shares,
-          totalAmount: elem.totalAmount.toFixed(2)
+          totalAmount: elem.totalAmount
         }]
       }
     });
