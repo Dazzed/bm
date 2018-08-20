@@ -70,7 +70,7 @@ class AccountHist extends React.Component {
     
     return <View style={containerStyle}>
       {historyJS.map((eachDate, i) => {
-        return <View key={'eachDate' + i} style={{borderWidth: 1, borderColor: 'blue'}}>
+        return <View key={'eachDate' + i}>
           <View style={account.titleWrap}>
             <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
             <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>COST BASIS</Text>

@@ -1177,21 +1177,47 @@ class Chart extends Component {
         website,
     } = tickerDataJS;
 
-
     //  formatting data
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
     let formattedVolume = millionBillionFormatter(Volume);
-    let formattedPrice = '$' + Price.toFixed(2);
-    let formattedOpen = '$' + open.toFixed(2);
-    let formattedLow = low.toFixed(2);
-    let formattedHigh = high.toFixed(2);
-    let formattedChangePercent = changePercent.toFixed(2) + '%';
-    let formattedChangeDecimal = change.toFixed(2);
-    if(change > 0) {
+    
+    // add tofixed
+    let formattedPrice = '$' + '---';
+    if(Price) {
+      formattedPrice = Price.toFixed(2)
+    }
+    
+    let formattedOpen = '$' + '---';
+    if(open) {
+      formattedOpen = open.toFixed(2)
+    }
+    
+    let formattedLow = '---';
+    if(low) {
+      formattedLow = low.toFixed(2)
+    }
+    
+    let formattedHigh = '---';
+    if(high) {
+      formattedHigh = high.toFixed(2)
+    }
+    
+    let formattedChangePercent = '---' + '%';
+    if(changePercent) {
+      formattedChangePercent = changePercent.toFixed(2)
+    }
+    
+    
+    let formattedChangeDecimal = '---';
+    if(change) {
+      formattedChangeDecimal = change.toFixed(2)
+    }
+    if(change > 0 && typeof change === 'number') {
       formattedChangeDecimal = '+' + change.toFixed(2);
     } else if( change < 0) {
       formattedChangeDecimal = '-' + change.toFixed(2);
     }
+    
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
     
     let formattedLastStockSplit = 'na';

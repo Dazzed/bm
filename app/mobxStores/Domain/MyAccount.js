@@ -81,17 +81,23 @@ export default class MyAccountData {
   // ACCOUNT BALANCE DETAILS
   @observable accountValue = 0;
   @computed get accountValueJS() {
-    return '$' + this.accountValue;
+    if(!this.accountValue) {
+      return '---'
+    }
+    return '$' + this.accountValue.toFixed(2);
   }
 
   @observable cash = 0;
   @observable changePercent = 0;
   @computed get changePercentJS() {
+    if(!this.changePercent) {
+      return '---'
+    }
     let plusString = '';
     if(this.changePercent > 0) {
       plusString = '+';
     }
-    return plusString + this.changePercent + '%';
+    return plusString + this.changePercent.toFixed(3) + '%';
   }
 
   @observable checkingAccount = 0;
@@ -100,6 +106,9 @@ export default class MyAccountData {
   @observable todayChange = 0;
 
   @computed get todayChangeJS() {
+    if(!this.todayChange) {
+      return '---';
+    }
     let plusOrMinusChar = '+';
     if(this.todayChange < 0) {
       // minus is already included
@@ -109,7 +118,6 @@ export default class MyAccountData {
   }
 
   @observable total = 0;
-
   @observable positionsLoading = false;
   @observable positions = [];
   @observable positionsTotal = 0;
@@ -188,16 +196,27 @@ export default class MyAccountData {
 @computed get balancesJS() {
     let balanceData = {
       investments: {
-        total: this.total,
-        securities: this.securities,
-        cash: this.cash,
-        options: '880?????'
+        total: '---',
+        securities: '---',
+        cash: '---',
+        options: '---?'
       },
       fundsAvailable: {
-        toTrade: '3890.28?????',
-        toWithdraw: '1535.29?????'
+        toTrade: '---?',
+        toWithdraw: '---?'
       }
     }
+
+    if(this.total) {
+      balanceData.investments.total = this.total.toFixed(2);
+    }
+    if(this.securities) {
+      balanceData.investments.securities = this.securities.toFixed(2);
+    }
+    if(this.cash) {
+      balanceData.investments.cash = this.cash.toFixed(2);
+    }
+
     return balanceData;
   }
 
