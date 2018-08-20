@@ -191,6 +191,23 @@ export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
     return polyGonList;
 }
 
+const isDataPointFuturePoint = (dataPoint) => {
+  let missingImportantValue = false;
+  if (
+    'open' in dataPoint === false ||
+    'close' in dataPoint === false ||
+    'high' in dataPoint === false ||
+    'low' in dataPoint === false
+  ) {
+    missingImportantValue = true;
+  }
+  if(missingImportantValue) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 /////////////////////////////////////////////////////////////////////
 
 export const parseSmallGraphData = (data, Price, graphHeight, range) => {
@@ -237,8 +254,18 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
     // console.log('====== SMALL GRAPH', displayDateStamps)
 
     for(let i = 0; i < data.length; i++) {
-      d.lineData.push(data[i].close + d.yMin);
+
       const thisDataPoint = data[i];
+
+      let dataPointIsFuturePoint = isDataPointFuturePoint(thisDataPoint);
+      console.log('this data point', thisDataPoint, dataPointIsFuturePoint);
+
+      if(dataPointIsFuturePoint) {
+        continue;
+      }
+
+      d.lineData.push(data[i].close + d.yMin);
+
       let dateData = '-';
       if(displayDateStamps) {
         dateData = formatDateStamp(thisDataPoint.unixTimeStamp);
@@ -632,7 +659,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
-        // console.log('chosen value', chosenValue);
+        console.log('chosen value', chosenValue);
         // if(chosenValue === null) {
         //   continue;
         // }
@@ -707,8 +734,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         dataSet: lineData
       }
     }
-
-
 
 
     // _FF8C00_checkbox_image
