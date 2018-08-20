@@ -46,22 +46,23 @@ const returnFormattedTimeStamp = (elem) => {
   return dateUnix;
 }
 
+// function for grabbing data from an object using a string instead of standard selectors
 Object.byString = (o, s) => {
-    if(!o || !s) {
-      return null;
+  if(!o || !s) {
+    return null;
+  }
+  s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+  s = s.replace(/^\./, '');           // strip a leading dot
+  var a = s.split('.');
+  for (let i = 0, n = a.length; i < n; ++i) {
+    let k = a[i];
+    if (k in o) {
+      o = o[k];
+    } else {
+      return;
     }
-    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-    s = s.replace(/^\./, '');           // strip a leading dot
-    var a = s.split('.');
-    for (var i = 0, n = a.length; i < n; ++i) {
-        var k = a[i];
-        if (k in o) {
-            o = o[k];
-        } else {
-            return;
-        }
-    }
-    return o;
+  }
+  return o;
 }
 
 export const flipYAxisValue = (height, inverseY) => {
