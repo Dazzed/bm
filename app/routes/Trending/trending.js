@@ -489,7 +489,7 @@ class Trending extends React.Component {
             watchListIconSrc = require('../../images/watchlist_added.png');
           }
 
-          let formattedChangePercent = data['changePercent'].toFixed(3) + '%';
+          let formattedChangePercent = data['changePercent'].toFixed(2) + '%';
           if(data['changePercent'] > 0) {
             formattedChangePercent = '+' + formattedChangePercent;
           }

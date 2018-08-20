@@ -352,7 +352,8 @@ setPriceMovementsValueComponent(value) {
               onValueChange={(value) => this.setOrderValue(value)}
               value={orderValue} />
           </View>
-          
+
+          {/*
           <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Bank Transfers</Text>
             <Switch style={styles.switch}
@@ -375,7 +376,7 @@ setPriceMovementsValueComponent(value) {
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.setPriceMovementsValueComponent(value)}
               value={priceMovementsValue} />
-          </View>
+          </View>*/}
           
           {/* News Source */}
           {this.renderNewsList()}
