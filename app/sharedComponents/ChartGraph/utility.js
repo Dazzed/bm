@@ -660,9 +660,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
         console.log('chosen value', chosenValue);
-        // if(chosenValue === null) {
-        //   continue;
-        // }
+        if(chosenValue === null) {
+          continue;
+        }
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
@@ -685,9 +685,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
-        // if(chosenValue === null) {
-        //   continue;
-        // }
+        if(chosenValue === null) {
+          continue;
+        }
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRelative = ( chosenValue - min) / ( max - min);
@@ -734,10 +734,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         dataSet: lineData
       }
     }
-
-
-    // _FF8C00_checkbox_image
-    // *Simple Moving Average (SMA)* — #FF8C00 (dark orange)
 
 
     //////////////////////////////////////////////////////////////////////////

@@ -114,7 +114,7 @@ export default class MyAccountData {
       // minus is already included
       plusOrMinusChar = '';
     }
-    return plusOrMinusChar + this.todayChange;
+    return plusOrMinusChar + this.todayChange.toFixed(2);
   }
 
   @observable total = 0;
