@@ -323,7 +323,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     inputData.forEach((elem, i) => {
       // console.log('each modifiedInputData', elem);
       let isFuturePoint = isDataPointFuturePoint(elem);
-      console.log('---- each point', isFuturePoint)
+      // console.log('---- each point', isFuturePoint)
       if(isFuturePoint) {
         futureDataPoints.push(elem);
       } else {
@@ -577,8 +577,12 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.low);
 
       if(renderIchi) {
-        manipulateYMaxMin(elem.ichi.base);
-        manipulateYMaxMin(elem.ichi.conversion);
+        if(elem.ichi.base !== null) {
+          manipulateYMaxMin(elem.ichi.base);
+        }
+        if(elem.ichi.conversion !== null) {
+          manipulateYMaxMin(elem.ichi.conversion);
+        }
         manipulateYMaxMin(elem.ichi.spanA, true);
         manipulateYMaxMin(elem.ichi.spanB, true);
       }
@@ -620,6 +624,36 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         dateUnix
       }
     })
+
+    //////////////////////////////////////////////////////////////////////////
+    // Deal with future ichi values
+    // futureDataPoints
+    if(futureDataPoints.length > 0 && renderIchi) {
+      futureDataPoints = futureDataPoints.map((elem, i) => {
+
+        // console.log('each future data point', elem);
+        let dateUnix = returnFormattedTimeStamp(elem);
+
+        // calculate min and max
+        // time / x value
+        manipulateXMaxMin(dateUnix);
+
+        if(elem.ichi.base !== null) {
+          manipulateYMaxMin(elem.ichi.base);
+        }
+        if(elem.ichi.conversion !== null) {
+          manipulateYMaxMin(elem.ichi.conversion);
+        }
+        manipulateYMaxMin(elem.ichi.spanA, true);
+        manipulateYMaxMin(elem.ichi.spanB, true);
+
+        return {
+          ...elem,
+          dateUnix
+        }
+
+      })
+    }
 
     //////////////////////////////////////////////////////////////////////////
     // Save range
@@ -671,19 +705,22 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     //////////////////////////////////////////////////////////////////////////
     // setup line rendering functions
-    const generateLineData = (targetValue, color) => {
+    const generateLineData = (targetValue, color, source) => {
       let lineData = [];
 
-      for (let elem of d.dataPoints) {
+      for (let elem of source) {
         let chosenValue = Object.byString(elem, targetValue);
-        // console.log('chosen value', chosenValue);
+        console.log('chosen value', chosenValue);
         if(chosenValue === null) {
           continue;
         }
+        console.log('--- ', elem, d.xMin, d.xRange)
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
         let yCoord = flipYAxisValue(height, yRel * height);
+
+        console.log('-x y', xCoord, '-', yCoord)
         lineData.push(`${xCoord},${yCoord}`)
       }
 
@@ -781,25 +818,33 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     //////////////////////////////////////////////////////////////////////////
     // conditionally render
     if(renderRsi) {
-      d.formattedLines.push(generateLineData('rsi', '#00FF00'));
+      d.formattedLines.push(generateLineData('rsi', '#00FF00', d.dataPoints));
     }
     if(renderBol) {
-      d.formattedLines.push(generateLineData('bol.lower', '#800080'));
-      d.formattedLines.push(generateLineData('bol.middle', '#800080'));
-      d.formattedLines.push(generateLineData('bol.upper', '#800080'));
+      d.formattedLines.push(generateLineData('bol.lower', '#800080', d.dataPoints));
+      d.formattedLines.push(generateLineData('bol.middle', '#800080', d.dataPoints));
+      d.formattedLines.push(generateLineData('bol.upper', '#800080', d.dataPoints));
     }
     if(renderEma50) {
-      d.formattedLines.push(generateLineData('ema50', '#0000FF'));
+      d.formattedLines.push(generateLineData('ema50', '#0000FF', d.dataPoints));
     }
     if(renderEma200) {
-      d.formattedLines.push(generateLineData('ema200', '#FF0000'));
+      d.formattedLines.push(generateLineData('ema200', '#FF0000', d.dataPoints));
     }
     if(renderVolume) {
       d.volumeBottomLinesData = generateVolumeBottomLinesData('volume')
     }
     if(renderIchi) {
-      d.ichiCloudLines.push(generateLineData('ichi.spanA', theme.green));
-      d.ichiCloudLines.push(generateLineData('ichi.spanB', theme.red));
+      let sourceData = d.dataPoints;
+      if(futureDataPoints.length > 0) {
+        sourceData = d.dataPoints.concat(futureDataPoints);
+      }
+      let lineA = generateLineData('ichi.spanA', theme.green, sourceData);
+      let lineB = generateLineData('ichi.spanB', theme.red, sourceData);
+      console.log('-- line a', lineA);
+      console.log('-- line b', lineB);
+      d.ichiCloudLines.push(lineA);
+      d.ichiCloudLines.push(lineB);
     }
     if(renderObv) {
       d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.obvMax, d.obvMin));
@@ -811,8 +856,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.formattedLines.push(generateRelativeLineData('macd.MACD', '#008000', d.macdMax, d.macdMin));
     }
     if(renderSma) {
-      d.formattedLines.push(generateLineData('sma50', '#FF8C00'));
-      d.formattedLines.push(generateLineData('sma200', '#FF8C00'));
+      d.formattedLines.push(generateLineData('sma50', '#FF8C00', d.dataPoints));
+      d.formattedLines.push(generateLineData('sma200', '#FF8C00', d.dataPoints));
     }
     const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range);
 
