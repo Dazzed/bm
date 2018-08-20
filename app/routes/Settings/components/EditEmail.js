@@ -34,6 +34,7 @@ class EditEmail extends React.Component {
   }
 
   updateEmail = email => {
+    email = email.toLowerCase();
     this.setState({
       email
     });
@@ -141,7 +142,11 @@ class EditEmail extends React.Component {
           <StyledTextInput
             value={email}
             placeholder=""
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            autoCapitalize="none"
             onChangeText={this.updateEmail}
+            preventBlueUnderline={true}
             style={{ marginVertical: 15, fontSize: 25, color: theme.darkSlate }}
           />
           {this.renderErrors()}
