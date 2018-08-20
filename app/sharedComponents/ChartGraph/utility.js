@@ -47,6 +47,9 @@ const returnFormattedTimeStamp = (elem) => {
 }
 
 Object.byString = (o, s) => {
+    if(!o || !s) {
+      return null;
+    }
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
     var a = s.split('.');
@@ -68,9 +71,11 @@ export const flipYAxisValue = (height, inverseY) => {
 export const generatePolygonsFromTwoLines = (lineA, lineB, height) => {
     let polyGonList = [];
 
+    console.log('======= GENERATE polygons from two lines', lineA, lineB)
+
     // Make sure we actually have the right data
-    if(!lineA || !lineB) {
-        return null;
+    if(!lineA || !lineB || lineA.formattedLineData === null || lineB.formattedData === null) {
+      return null;
     }
 
     // Get the line data, formatted like this: '123,432 543,234 etc..'
@@ -308,17 +313,21 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     //////////////////////////////////////////////////////////////////////////
     // init data
-    let modifiedInputData = inputData;
-
+    let modifiedInputData = [];
     let futureDataPoints = [];
-
 
     //////////////////////////////////////////////////////////////////////////
     // seperate future data block from data
 
-    modifiedInputData.map((elem, i) => {
-      console.log('each modifiedInputData', elem);
-
+    inputData.forEach((elem, i) => {
+      // console.log('each modifiedInputData', elem);
+      let isFuturePoint = isDataPointFuturePoint(elem);
+      console.log('---- each point', isFuturePoint)
+      if(isFuturePoint) {
+        futureDataPoints.push(elem);
+      } else {
+        modifiedInputData.push(elem);
+      }
     })
 
     //////////////////////////////////////////////////////////////////////////
@@ -326,11 +335,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     if(range === '1h') {
       let formattedDataPointsHour = [];
       // extract newest time from list
-      const newestDataPoint = inputData[inputData.length - 1];
+      const newestDataPoint = modifiedInputData[modifiedInputData.length - 1];
       let newestTime = returnFormattedTimeStamp(newestDataPoint);
       let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(1, 'hours').format('X'));
       // loop through in reverse
-      inputData.reverse().every((elem, i) => {
+      modifiedInputData.reverse().every((elem, i) => {
         let thisDateUnix = returnFormattedTimeStamp(elem);
         if(thisDateUnix > oneHourFromNewestTime) {
           formattedDataPointsHour.push(elem);
@@ -431,6 +440,12 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.macdMin ) d.trndMin = input;
     }
 
+    const addLeftPaddingToXGraph = () => {
+      return;
+      // console.log('--- LEFT PADDING -- ', d.xMin, d.xMax);
+      d.xMin = d.xMin - ( (d.xMax - d.xMin) * .0005);
+    }
+
     //////////////////////////////////////////////////////////////////////////
     // check if any of the values contain a null value
     // prevent them from rendering if that is the case
@@ -452,9 +467,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     //////////////////////////////////////////////////////////////////////////
     // loop through and disqualify any null line
     d.dataPoints.forEach((elem, i) => {
-
-      // normalize MACD values
-      // elem.macd.MACD = elem.macd.MACD + 1;
 
       if(elem.bol === null) {
         console.log('NULLLL!!! bol')
@@ -552,7 +564,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       // calculate min and max
       // time / x value
-      manipulateXMaxMin(dateUnix)
+      manipulateXMaxMin(dateUnix);
+
+      // add left padding to x variable
+      addLeftPaddingToXGraph();
+
       manipulateYMaxMin(elem.vwap);
       manipulateYMaxMin(elem.open);
       manipulateYMaxMin(elem.close);
@@ -659,7 +675,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
-        console.log('chosen value', chosenValue);
+        // console.log('chosen value', chosenValue);
         if(chosenValue === null) {
           continue;
         }
@@ -671,11 +687,19 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
 
       let formattedLineData = lineData.join(' ')
-      return {
+
+      let result = {
         color: color,
         lineTargetValue: targetValue,
-        formattedLineData: formattedLineData
+        formattedLineData: null
       }
+
+      let lineValid = isLineValid(formattedLineData);
+      if(lineValid) {
+        result.formattedLineData = formattedLineData;
+      }
+
+      return result;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -697,11 +721,20 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
 
       let formattedLineData = lineData.join(' ')
-      return {
+
+      let result = {
         color: color,
         lineTargetValue: targetValue,
-        formattedLineData: formattedLineData
+        formattedLineData: null
       }
+
+      let lineValid = isLineValid(formattedLineData);
+      if(lineValid) {
+        result.formattedLineData = formattedLineData;
+      }
+
+      return result;
+
     }
     //////////////////////////////////////////////////////////////////////////
     // setup volume line rendering functions
@@ -711,6 +744,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let volumeValue = Object.byString(elem, targetValue);
         let openValue = Object.byString(elem, 'open');
         let closeValue = Object.byString(elem, 'close');
+
+        if(!volumeValue || !openValue || !closeValue) {
+          continue;
+        }
+
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         // percentage of total height to allow max
@@ -730,6 +768,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
           xCoord: xCoord
         })
       }
+
+      // let lineValid = isLineValid(lineData);
+
       return {
         dataSet: lineData
       }
@@ -841,4 +882,20 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // final output
     // console.log('====== ALL GRAPH DATA', d)
     return d
+}
+
+const isLineValid = (lineData) => {
+  if(!lineData) {
+    return false;
+  }
+  if(typeof lineData !== 'string') {
+    return false;
+  }
+  console.log('-------- test line data', lineData);
+
+  if(lineData.indexOf('NaN') > -1) {
+    console.log('======= INVALID!!!!')
+    return false;
+  }
+  return true;
 }

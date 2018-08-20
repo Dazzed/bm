@@ -68,7 +68,6 @@ export default class LargeGraph extends React.Component {
     generateYLineGroup(data, key) {
         const { position, label } = data;
         const { theme } = colorStore;
-
         let verticalOffset = 4;
         return <G key={key}>
           <Line
@@ -146,6 +145,9 @@ export default class LargeGraph extends React.Component {
       let formattedData = params.formattedLineData;
       let lineTargetValue = params.lineTargetValue;
       const { theme } = colorStore;
+      if(!formattedData) {
+        return null;
+      }
       return <Polyline
         key={Math.random() + key}
         points={formattedData}
@@ -181,7 +183,7 @@ export default class LargeGraph extends React.Component {
         return null;
       }
     }
-
+    
     render() {
         const { theme } = colorStore;
         const { stockChartLoading, chartDetailDataJS, indicatorsListJS } = chartStore;
@@ -240,6 +242,16 @@ export default class LargeGraph extends React.Component {
                 fillOpacity={.2}
             />
         }
+        
+        const renderPolygonsListOrNull = (polyGonList) => {
+          if(!polyGonList) {
+            return null;
+          } else {
+            return polygonsList.map((elem, i) => {
+              return generateGraphPolygonFill(elem, i)
+            })
+          }
+        }
 
 
         return <View style={inlineContainerStyle}>
@@ -270,10 +282,8 @@ export default class LargeGraph extends React.Component {
                 {parsedData.ichiCloudLines.map((elem, i) => {
                   return this.generateGraphPolygon(elem, i)
                 })}
-
-                {polygonsList.map((elem, i) => {
-                  return generateGraphPolygonFill(elem, i)
-                })}
+                
+                {renderPolygonsListOrNull(polygonsList)}
 
                 {this.renderBottomVolumeLines(parsedData)}
 

@@ -354,11 +354,6 @@ const chartRangeOptions = [
     query: '1d',
     title: '1d'
   },
-  // five days
-  {
-    query: '5d',
-    title: '5d'
-  },
   // one month
   {
     query: '1m',
