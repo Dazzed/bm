@@ -70,34 +70,73 @@ class AccountPos extends React.Component {
       </View>
     } else {
       
-      if(
-        !elem.priceChangePercentage || 
-        !elem.companyAbbreviation ||
-        !elem.companyName ||
-        !elem.priceChangeColor ||
-        !elem.marketChangeColor ||
-        !elem.quantity ||
-        !elem.priceChange ||
-        !elem.priceChangeDecimal ||
-        !elem.marketChangeDecimal ||
-        !elem.marketChangePercentage
-      ) {
-        return null;
-      }
-      
-      let formattedPriceChangePercentage = elem.priceChangePercentage;
-      let formattedCompanyAbbreviation = elem.companyAbbreviation;
-      let formattedCompanyName = elem.companyName;
-      let formattedPriceChangeColor = elem.priceChangeColor;
-      let formattedMarketChangeColor = elem.marketChangeColor;
-      let formattedQuantity = elem.quantity;
-      let formattedPriceChange = '$' + elem.priceChange;
-      let formattedPriceChangeDecimal = elem.priceChangeDecimal;
-      let formattedMarketChangeDecimal = elem.marketChangeDecimal;
-      let formattedMarketChangePercentage = elem.marketChangePercentage;
+
       
       return <View style={account.sectionFull}>
         {positionsJS.map((elem, i) => {
+          
+          if(
+            !elem.priceChangePercentage || 
+            !elem.companyAbbreviation ||
+            !elem.companyName ||
+            !elem.priceChangeColor ||
+            !elem.marketChangeColor ||
+            !elem.quantity ||
+            !elem.priceChange ||
+            !elem.priceChangeDecimal ||
+            !elem.marketChangeDecimal ||
+            !elem.marketChangePercentage
+          ) {
+            return null;
+          }
+          
+          
+          let formattedPriceChangePercentage = elem.priceChangePercentage;
+          if(formattedPriceChangePercentage) {
+            formattedPriceChangePercentage = formattedPriceChangePercentage.toFixed(2);
+          }
+          
+          let formattedCompanyAbbreviation = elem.companyAbbreviation;
+          if(formattedCompanyAbbreviation) {
+            formattedCompanyAbbreviation = formattedCompanyAbbreviation.toFixed(2);
+          }
+          
+          let formattedCompanyName = elem.companyName;
+          if(formattedCompanyName) {
+            formattedCompanyName = formattedCompanyName.toFixed(2);
+          }
+          
+          let formattedPriceChangeColor = elem.priceChangeColor;
+          
+          let formattedMarketChangeColor = elem.marketChangeColor;
+          
+          let formattedQuantity = elem.quantity;
+          if(formattedQuantity) {
+            formattedQuantity = formattedQuantity.toFixed(2);
+          }
+          
+          let formattedPriceChange = '$' + elem.priceChange;
+          if(formattedPriceChange) {
+            formattedPriceChange = formattedPriceChange.toFixed(2);
+          }
+          
+          let formattedPriceChangeDecimal = elem.priceChangeDecimal;
+          if(formattedPriceChangeDecimal) {
+            formattedPriceChangeDecimal = formattedPriceChangeDecimal.toFixed(2);
+          }
+          
+          let formattedMarketChangeDecimal = elem.marketChangeDecimal;
+          if(formattedMarketChangeDecimal) {
+            formattedMarketChangeDecimal = formattedMarketChangeDecimal.toFixed(2);
+          }
+          
+          let formattedMarketChangePercentage = elem.marketChangePercentage;
+          if(formattedMarketChangePercentage) {
+            formattedMarketChangePercentage = formattedMarketChangePercentage.toFixed(2);
+          }
+          
+          
+          
           return <View key={'each-position' + i} style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>
             <View style={account.symbolWrap}>
               <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>{formattedCompanyAbbreviation}</Text>
