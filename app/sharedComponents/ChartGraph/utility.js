@@ -341,6 +341,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(1, 'hours').format('X'));
       // loop through in reverse
       modifiedInputData.reverse().every((elem, i) => {
+        console.log('modified data in one hour world', elem);
         let thisDateUnix = returnFormattedTimeStamp(elem);
         if(thisDateUnix > oneHourFromNewestTime) {
           formattedDataPointsHour.push(elem);
@@ -797,7 +798,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let yCoord = ( height + bottomAdjust ) - lineHeightCoords;
         let color = theme.red;
         if(closeValue > openValue) {
-          color = '#4A86E8';
+          color = theme.green;
         }
         lineData.push({
           color: color,
