@@ -76,6 +76,10 @@ export default class AccountStore {
     }
 
     @observable chartDetailData = null;
+
+    @action resetChartData = () => {
+      this.chartDetailData = null;
+    }
     @action setChartDetailData = (newData) => {
         this.chartDetailData = newData;
     }

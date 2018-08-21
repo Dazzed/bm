@@ -203,8 +203,10 @@ class Chart extends Component {
   }
 
   componentWillUnmount() {
+    const { resetChartData } = chartStore;
     Orientation.lockToPortrait();
     Orientation.removeOrientationListener(this.orientationDidChange);
+    resetChartData();
   }
 
   showOrder(orderType){
