@@ -68,8 +68,11 @@ export default class AccountStore {
       return toJS(this.indicatorsList);
     }
     @action setIndicatorsList = (newList) => {
-        this.indicatorsList = newList;
-        this.getStockChartDetails();
+      this.indicatorsList = newList;
+      this.getStockChartDetails();
+    }
+    @action initIndicatorsList = () => {
+      this.indicatorsList = initialIndicators;
     }
 
     @observable chartDetailData = null;
@@ -91,7 +94,7 @@ export default class AccountStore {
         let params = {
           options: {
             'ticker': this.tickerDataJS.ticker,
-            'indicator': [ 'OBV', 'TRND', 'ICHI', 'EMA', 'MACD', 'RSI', 'BOL', 'SMA' ],
+            'indicator': [],
             'parameters':{
               'ICHI': {
                 'conversionPeriod': 9,
@@ -119,6 +122,12 @@ export default class AccountStore {
             }
           }
         }
+
+        params.options.indicator = ['OBV', 'TRND', 'EMA', 'MACD', 'RSI', 'BOL', 'SMA'];
+        if(this.indicatorsListJS.indexOf('ICHI') > -1) {
+          params.options.indicator.push('ICHI');
+        }
+
 
         if(this.range == '1h') {
           // one hour

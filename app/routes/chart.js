@@ -177,10 +177,11 @@ class Chart extends Component {
     // })
   }
 
-  componentDidMount(){
+  componentDidMount() {
+    const { initIndicatorsList } = chartStore;
     Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
-
+    initIndicatorsList();
     // setTimeout(() => {
     //   this.forceSetToLandscape();
     // }, 1000)
@@ -242,7 +243,6 @@ class Chart extends Component {
   }
   toggleCheck(value) {
     const { setIndicatorsList } = chartStore;
-
     var indicates = this.state.indicators;
     var exists = false;
     var indicatorCnt = this.state.indicatorCnt;
@@ -1204,7 +1204,7 @@ class Chart extends Component {
     
     let formattedChangePercent = '---' + '%';
     if(changePercent) {
-      formattedChangePercent = changePercent.toFixed(2)
+      formattedChangePercent = changePercent.toFixed(2) + '%'
     }
     
     
@@ -1215,7 +1215,7 @@ class Chart extends Component {
     if(change > 0 && typeof change === 'number') {
       formattedChangeDecimal = '+' + change.toFixed(2);
     } else if( change < 0) {
-      formattedChangeDecimal = '-' + change.toFixed(2);
+      formattedChangeDecimal = change.toFixed(2);
     }
     
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
