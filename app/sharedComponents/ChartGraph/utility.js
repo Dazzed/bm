@@ -308,6 +308,46 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+// prevent data beyond time range limit from showing up
+// essentially throwing this data away
+let limitCurrentData = (inputData, count, distance) => {
+  let formattedDataPointsHour = [];
+  // extract newest time from list
+  const newestDataPoint = inputData[inputData.length - 1];
+  let newestTime = returnFormattedTimeStamp(newestDataPoint);
+  let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(count, distance).format('X'));
+  // loop through in reverse
+  inputData.reverse().every((elem, i) => {
+    let thisDateUnix = returnFormattedTimeStamp(elem);
+    if(thisDateUnix > oneHourFromNewestTime) {
+      formattedDataPointsHour.push(elem);
+      return true;
+    } else {
+      return false;
+    }
+  })
+  // reverse it back again
+  formattedDataPointsHour = formattedDataPointsHour.reverse();
+  // write data
+  return formattedDataPointsHour;
+}
+
+
+// if line has string 'NaN', return false
+const isLineValid = (lineData) => {
+  if(!lineData) {
+    return false;
+  }
+  if(typeof lineData !== 'string') {
+    return false;
+  }
+  // console.log('-------- test line data', lineData);
+  if(lineData.indexOf('NaN') > -1) {
+    // console.log('======= INVALID!!!!')
+    return false;
+  }
+  return true;
+}
 
 
 export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme, range) => {
@@ -332,28 +372,27 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     })
 
     //////////////////////////////////////////////////////////////////////////
-    // limit input data if in one hour mode
+    // limit input data in various modes
     if(range === '1h') {
-      let formattedDataPointsHour = [];
-      // extract newest time from list
-      const newestDataPoint = modifiedInputData[modifiedInputData.length - 1];
-      let newestTime = returnFormattedTimeStamp(newestDataPoint);
-      let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(1, 'hours').format('X'));
-      // loop through in reverse
-      modifiedInputData.reverse().every((elem, i) => {
-        console.log('modified data in one hour world', elem);
-        let thisDateUnix = returnFormattedTimeStamp(elem);
-        if(thisDateUnix > oneHourFromNewestTime) {
-          formattedDataPointsHour.push(elem);
-          return true;
-        } else {
-          return false;
-        }
-      })
-      // reverse it back again
-      formattedDataPointsHour = formattedDataPointsHour.reverse();
-      // write data
-      modifiedInputData = formattedDataPointsHour;
+      modifiedInputData = limitCurrentData(modifiedInputData, 1, 'hours');
+    }
+    if(range === '1d') {
+      modifiedInputData = limitCurrentData(modifiedInputData, 1, 'days');
+    }
+    if(range === '1m') {
+      modifiedInputData = limitCurrentData(modifiedInputData, 1, 'months');
+    }
+    if(range === '6m') {
+      modifiedInputData = limitCurrentData(modifiedInputData, 6, 'months');
+    }
+    if(range === '1y') {
+      modifiedInputData = limitCurrentData(modifiedInputData, 1, 'years');
+    }
+    if(range === '2y') {
+      modifiedInputData = limitCurrentData(modifiedInputData, 2, 'years');
+    }
+    if(range === '5y') {
+      modifiedInputData = limitCurrentData(modifiedInputData, 5, 'years');
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -929,20 +968,4 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // final output
     // console.log('====== ALL GRAPH DATA', d)
     return d
-}
-
-const isLineValid = (lineData) => {
-  if(!lineData) {
-    return false;
-  }
-  if(typeof lineData !== 'string') {
-    return false;
-  }
-  console.log('-------- test line data', lineData);
-
-  if(lineData.indexOf('NaN') > -1) {
-    console.log('======= INVALID!!!!')
-    return false;
-  }
-  return true;
 }
