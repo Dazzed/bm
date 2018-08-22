@@ -3,13 +3,11 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectGlobalData } from '../selectors';
 import moment from 'moment';
-
 import {
   AppRegistry,
   StyleSheet,
@@ -23,13 +21,12 @@ import {
   TabbedArea,
   TabPane,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking
 } from 'react-native';
-
 import Modal from 'react-native-modal'
 import Tabs from 'react-native-tabs';
 import {setTheme, getTheme, colors} from '../store/store';
-
 import styles from '../style/style';
 import chartnews from '../style/chartnews';
 import fonts from '../style/fonts';
@@ -66,6 +63,25 @@ class ChartNews extends React.Component {
     getNewsData({ticker})
   }
 
+  newsPressed(elem) {
+    console.log('news pressed', elem)
+    if(elem) {
+      if(elem.url) {
+        
+        Linking.canOpenURL(elem.url).then( supported => {
+          if (!supported) {
+            console.log('Can\'t handle url: ' + elem.url);
+          } else {
+            return Linking.openURL(elem.url);
+          }
+        }).catch((err) => {
+          console.error('An error occurred', err)
+        });
+        
+      }
+    }
+  }
+  
 
   renderList() {
     const { newsDataLoading, newsArticleListJS } = newsStore;
@@ -99,7 +115,7 @@ class ChartNews extends React.Component {
                 }
 
                 return <View key={i} style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
-                    <TouchableOpacity style={chartnews.rowBtn}>
+                    <TouchableOpacity onPress={() => this.newsPressed(elem)} style={chartnews.rowBtn}>
                         <Image
                             source={{ uri: elem.urlToImage }}
                             style={chartnews.image}

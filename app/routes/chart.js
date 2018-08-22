@@ -203,8 +203,10 @@ class Chart extends Component {
   }
 
   componentWillUnmount() {
+    const { resetChartData } = chartStore;
     Orientation.lockToPortrait();
     Orientation.removeOrientationListener(this.orientationDidChange);
+    resetChartData();
   }
 
   showOrder(orderType){
@@ -314,13 +316,12 @@ class Chart extends Component {
 
 
 
-  setRange(el) {
-    let name = el.props.name;
+  setRange(name) {
     const { setRange } = chartStore;
     this.setState({
-        page: el.props.name
+        page: name
     }, () => {
-      setRange(el.props.name)
+      setRange(name)
     })
   }
 
@@ -392,6 +393,7 @@ class Chart extends Component {
 
 
   renderLongBar() {
+    return null;
     {/* TODO: YOU ARE LONG */}
     return <View style={[{borderTopColor: this.state.colors['borderGray'], backgroundColor: this.state.colors['white'],}, chart.symbolPosition]}>
       <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnFirst, fonts.hindGunturRg]}>You are long</Text>
@@ -436,18 +438,54 @@ class Chart extends Component {
     let style = {
       display: 'flex',
       alignItems: 'center',
-      height: 33
+      height: 32,
+      flexDirection: 'row',
+      width: '100%'
     }
-    return <Tabs
-      selected={this.state.page}
-      style={style}
-      selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
-      onSelect={el=> this.setRange(el)}
-    >
+    return <View style={style}>
       {chartRangeOptions.map((elem, i) => {
-        return <Text name={elem.query} style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>  
+        let inlineStyle = {
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          marginHorizontal: 2,
+          marginBottom: 2,
+          marginTop: 0,
+          borderColor: this.state.colors['grayTwo'],
+          color: this.state.colors['white'],
+        }
+        let selected = false;
+        if(this.state.page == elem.query) {
+          selected = true;
+        }
+        if(selected) {
+          inlineStyle.backgroundColor = this.state.colors['grayTwo'];
+        }
+        return <TouchableOpacity name={elem.query} style={[inlineStyle, fonts.hindGunturBd, chart.timeSelected]} onPress={() => this.setRange(elem.query)}>
+          <Text name={elem.query} style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>  
+        </TouchableOpacity>
       })}
-    </Tabs>
+    </View>
+    
+    // return <Tabs
+    //   selected={this.state.page}
+    //   style={style}
+    //   selectedStyle={[{backgroundColor: this.state.colors['grayTwo']},{borderColor: this.state.colors['grayTwo']},{color: this.state.colors['white']}, fonts.hindGunturBd, chart.timeSelected]}
+    //   onSelect={el=> this.setRange(el)}
+    // >
+    //   {chartRangeOptions.map((elem, i) => {
+    //     let inlineStyle = {
+    //       borderWidth: 1,
+    //       borderColor: 'blue',
+    //     }
+    //     return <View name={elem.query}>
+    //       <Text name={elem.query} style={[{color: this.state.colors['lightGray'], ...inlineStyle}, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>  
+    //     </View>
+    //   })}
+    // </Tabs>
+    
+    
   }
   
   renderPortrait(params) {
@@ -599,13 +637,10 @@ class Chart extends Component {
       </View>
 
       <View style={chart.verticalChart}>
-        <View style={chart.timeWrap}>
-          {this.renderTabs()}
-        </View>
+        {this.renderTabs()}
         <View style={chart.chartWrapper}>
           <ChartGraph height={this.smallGraphHeight} viewLargeGraph={false} />
         </View>
-
       </View>
       
       {this.renderPortraitMomentum(params)}
@@ -635,18 +670,12 @@ class Chart extends Component {
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52low}</Text>
           </View>
           <View style={chart.statsColumn}>
-
-              {/* TODO: do we want to format with a B for billions? */}
-
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.avgTotalVolume)}</Text>
           </View>
         </View>
         <View style={chart.statsRow}>
           <View style={chart.statsColumn}>
-
-              {/* TODO: do we want to format with a B for billions? */}
-
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>MKT CAP</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.mktCap)}</Text>
           </View>
@@ -662,9 +691,6 @@ class Chart extends Component {
         <View style={chart.statsRow}>
           
           <View style={chart.statsColumn}>
-
-                {/* TODO: what is this referencing?? */}
-
             <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
           </View>
@@ -715,7 +741,6 @@ class Chart extends Component {
           <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <TouchableOpacity onPress={() => this.navToLink(website)}>
             <View style={chart.profileTxt}>
-                  {/* TODO: make this a link?? */}
               <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
             </View>
           </TouchableOpacity>

@@ -178,11 +178,6 @@ const chart = StyleSheet.create({
     flex: 1,
     flexDirection: 'column'
   },
-  timeWrap: {
-      marginTop: 35,
-      marginBottom: -25,
-      marginLeft: -8
-  },
   timePeriod: {
     flex: 1,
     flexDirection: 'row',
