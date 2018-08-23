@@ -98,9 +98,9 @@ export default class LargeGraph extends React.Component {
         const { theme } = colorStore;
         let thickLineTop = params.closeYPositionCoordinates;
         let thickLineBottom = params.openYPositionCoordinates
-        let color = theme.red;
+        let color = theme.green;
         if(params.close <= params.open) {
-          color = theme.green;
+          color = theme.red;
           thickLineTop = params.openYPositionCoordinates;
           thickLineBottom = params.closeYPositionCoordinates;
         }
@@ -228,9 +228,9 @@ export default class LargeGraph extends React.Component {
             }
 
             let points = elem.points;
-            let color = theme.red;
+            let color = theme.green;
             if(elem.positive) {
-                color = theme.green;
+                color = theme.red;
             }
             return <Polyline
                 key={key}
