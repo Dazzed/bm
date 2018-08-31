@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View,
     Text,
-    TextInput,
     TouchableOpacity,
     Image
 } from 'react-native';
@@ -10,11 +9,9 @@ import {
 import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
 import { numberWithCommas } from '../../utility';
-import { colorStore, accountStore, depositWithdrawStore, myAccountStore } from '../../mobxStores';
+import { colorStore, accountStore, depositWithdrawStore, myAccountStore, authStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 import { generateHeaderStyles } from '../../utility';
-import up from '../../images/up.png';
-import down from '../../images/down.png';
 const SearchCancelLight = require('../../images/searchcancel.png');
 const SearchCancelDark = require('../../images/searchcancel_dark.png');
 import trending from '../../style/trending';
@@ -46,7 +43,7 @@ export default class FundMyAccount extends React.Component {
         }
     }
 
-    getDisabledList() {
+    getDisabledList = () => {
       let list = [];
       let containsDecimal = this.state.fundingString.indexOf('.') !== -1;
       if(containsDecimal) {
@@ -59,10 +56,10 @@ export default class FundMyAccount extends React.Component {
       return list;
     }
 
-    submitPressed() {
+    submitPressed = () => {
         const { makeTransaction } = depositWithdrawStore;
         const { selectedAccount } = accountStore;
-        const { setMyAccountData } = myAccountStore;
+        const { setUserData } = authStore;
 
         if(this.state.fundingString == '') {
             return;
@@ -79,7 +76,7 @@ export default class FundMyAccount extends React.Component {
         makeTransaction(params)
         .then((res) => {
             // save user data back to user store
-            setMyAccountData(res.json.result);
+            setUserData(res.json.result);
             // navigate here...
             this.props.navigation.navigate('Success', {
                 widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode,
@@ -91,7 +88,7 @@ export default class FundMyAccount extends React.Component {
         })
     }
 
-    numberChange(newValue) {
+    numberChange = newValue => {
         if(this.state.fundingString.length >= 8) {
             return
         } else {
@@ -104,7 +101,7 @@ export default class FundMyAccount extends React.Component {
         }
     }
 
-    calculateError() {
+    calculateError = () => {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             let displayError = false;
             const { selectedAccount } = accountStore;
@@ -119,7 +116,7 @@ export default class FundMyAccount extends React.Component {
         }
     }
 
-    deleteNumber() {
+    deleteNumber = () => {
         this.setState({
             fundingString: this.state.fundingString.substring(0, this.state.fundingString.length - 1),
         }, () => {
@@ -127,7 +124,7 @@ export default class FundMyAccount extends React.Component {
         })
     }
 
-    clear() {
+    clear = () => {
         this.setState({
             fundingString: '',
             errorRemainingFunds: false
@@ -136,7 +133,7 @@ export default class FundMyAccount extends React.Component {
         })
     }
 
-    renderAmountInAccount() {
+    renderAmountInAccount = () => {
         const { theme } = colorStore;
         const { selectedAccount } = accountStore;
         let textStyle = {
@@ -171,7 +168,7 @@ export default class FundMyAccount extends React.Component {
 
     }
 
-    renderDroppedDownView() {
+    renderDroppedDownView = () => {
       return null;
       if(this.state.dropdownOpen) {
         return <View>
@@ -182,13 +179,13 @@ export default class FundMyAccount extends React.Component {
       }
     }
     
-    toggleDropdown() {
+    toggleDropdown = () => {
       this.setState({
         dropdownOpen: !this.state.dropdownOpen
       })
     }
 
-    renderAccountDropdown() {
+    renderAccountDropdown = () => {
         const { theme } = colorStore;
         const { selectedAccount } = accountStore;
         let height = 25;
@@ -229,7 +226,7 @@ export default class FundMyAccount extends React.Component {
     // <Image style={{opacity: .5}} source={this.state.dropdownOpen ? up : down} style={{ width: 11, height: 7, marginLeft: 5, marginBottom: 1 }} />
 
 
-    renderErrorOrNull() {
+    renderErrorOrNull = () => {
       const { theme } = colorStore;
       let text = null;;
       if(this.state.errorRemainingFunds) {
@@ -251,7 +248,7 @@ export default class FundMyAccount extends React.Component {
 
     }
 
-    renderInputAmount() {
+    renderInputAmount = () => {
         const { theme, themeType } = colorStore;
 
         let amountHeight = 60;
@@ -305,7 +302,7 @@ export default class FundMyAccount extends React.Component {
         </View>
     }
 
-    renderButton() {
+    renderButton = () => {
         const { transactionLoading } = depositWithdrawStore;
         console.log('===== rendring button');
         let buttonTitle = 'FUND ACCOUNT';
@@ -324,7 +321,7 @@ export default class FundMyAccount extends React.Component {
           disabled = true;
         }
 
-        return <Button disabled={disabled} {...this.props} title={buttonTitle} onPress={() => this.submitPressed()}/>
+        return <Button disabled={disabled} {...this.props} title={buttonTitle} onPress={this.submitPressed}/>
     }
 
     render() {
@@ -336,7 +333,7 @@ export default class FundMyAccount extends React.Component {
             <View style={{flex: 0}}>
                 {this.renderInputAmount()}
                 {this.renderErrorOrNull()}
-                <NumericalSelector disabledList={this.getDisabledList()} onChange={(val) => this.numberChange(val)} onDelete={() => this.deleteNumber()}/>
+                <NumericalSelector disabledList={this.getDisabledList()} onChange={(val) => this.numberChange(val)} onDelete={this.deleteNumber}/>
                 <View style={{paddingVertical: 15, paddingHorizontal: 30, backgroundColor: theme.white}}>
                     {this.renderButton()}
                 </View>

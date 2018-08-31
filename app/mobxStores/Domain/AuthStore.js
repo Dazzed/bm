@@ -27,6 +27,10 @@ export default class AuthStore {
   @observable resetErrorMessage = null;
   @observable resetSuccess = true;
 
+  @computed get userDataToJs() {
+    return toJS(this.userData);
+  }
+
   @computed get isAuthenticated() {
     return true;
   }
@@ -93,6 +97,7 @@ export default class AuthStore {
           console.log('api call check res', res)
           this.verifyingAuth = false;
           autoLogOffStore.startTimer();
+          this.setUserData(res.data);
           resolve({ userData: res })
         })
         .catch((err) => {

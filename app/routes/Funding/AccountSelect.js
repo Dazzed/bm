@@ -29,26 +29,26 @@ export default class AccountSelect extends React.Component {
         this.state = {
             selectedAccountIndex: 0,
             withdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode,
-        }
+        };
+        accountStore.getAccountList();
     }
 
     componentDidMount() {
         let withdrawDepositMode = this.props.navigation.state.params.widthdrawDepositMode
-        console.log('ACCOUNT SELECT', this, colorStore)
     }
 
-    navToFundAccount() {
+    navToFundAccount = () => {
         this.props.navigation.navigate('FundMyAccount', {
             widthdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode
         })
     }
 
-    selectAccount(i, index) {
+    selectAccount = (i, index) => {
         const { selectAccountByIndex } = accountStore;
         selectAccountByIndex(index);
     }
 
-    renderCashAvailable() {
+    renderCashAvailable = () => {
         const { selectedAccount } = accountStore;
         const { theme } = colorStore;
 
@@ -70,7 +70,7 @@ export default class AccountSelect extends React.Component {
     }
 
 
-    renderAccountList() {
+    renderAccountList = () => {
         const { theme } = colorStore;
 
         let listHeight = 300;
@@ -177,7 +177,7 @@ export default class AccountSelect extends React.Component {
         </ScrollView>
     }
 
-    renderBackgroundImage() {
+    renderBackgroundImage = () => {
         const { themeType } = colorStore;
         const { shortSide, longSide } = deviceSizeStore;
         
@@ -208,7 +208,7 @@ export default class AccountSelect extends React.Component {
         }
     }
 
-    renderTopInstruction() {
+    renderTopInstruction = () => {
         const { theme } = colorStore;
         let instruction = null;
         if(this.state.withdrawDepositMode === 'deposit') {
@@ -219,7 +219,7 @@ export default class AccountSelect extends React.Component {
         }
     }
 
-    renderButtonAndContent() {
+    renderButtonAndContent = () => {
         const { theme } = colorStore;
         return <View style={{flexDirection: 'column', position: 'relative', height: '100%', backgroundColor: theme.contentBg}}>
             {this.renderBackgroundImage()}
@@ -231,7 +231,7 @@ export default class AccountSelect extends React.Component {
               {this.renderAccountList()}
             </View>
             <View style={{flex: 0, padding: 30}}>
-              <Button {...this.props} title="NEXT" onPress={() => this.navToFundAccount()}/>
+              <Button {...this.props} title="NEXT" onPress={this.navToFundAccount}/>
             </View>
         </View>
     }

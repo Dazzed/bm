@@ -1,27 +1,26 @@
 import { observable, action, computed, toJS } from 'mobx';
 
+import { authStore } from '../index';
+import { get } from '../../api/apiUtility';
+
 export default class AccountStore {
-
-    constructor() {
-        this.getAccountList();
-    }
-
     @observable selectedAccountIndex = 0;
+    @observable isLoadingData = false;
 
     @observable accountList = [];
 
-    @action getAccountList = () => {
-
+    @action getAccountList = async () => {
+        const userData = authStore.userDataToJs;
         this.accountList = [
             {
                 title: 'MOCK BANK CHECKING',
                 subtitle: 'Checking - 1234',
-                amount: '4283'
+                amount: userData.checkingAccount
             },
             {
                 title: 'MOCK BANK SAVINGS',
                 subtitle: 'Savings - 1234',
-                amount: '52495'
+                amount: userData.savingsAccount
             },
         ]
     }
