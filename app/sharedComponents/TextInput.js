@@ -50,10 +50,14 @@ export default class StyledTextInput extends React.Component {
             styles_2.registrationFormField,
         ]
 
-        if(this.state.active && !this.props.preventBlueUnderline) {
-            inlineStyle.push(styles_2.registrationFormFieldActive)
+        if (!this.props.showBlackBorder) {
+            if (this.state.active && !this.props.preventBlueUnderline) {
+                inlineStyle.push(styles_2.registrationFormFieldActive)
+            } else {
+                inlineStyle.push(styles_2.registrationFormFieldInActive)
+            }
         } else {
-            inlineStyle.push(styles_2.registrationFormFieldInActive)
+            inlineStyle.push({ borderBottomColor: '#000000'})
         }
 
         return <View style={{width: '100%', marginVertical: 5}}>
