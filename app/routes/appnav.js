@@ -52,7 +52,6 @@ const AppNavTabs = TabNavigator({
   },
   navigationOptions: {
     tabBarOnPress: ({ jumpToIndex, scene }) => {
-      autoLogOffStore.activityPing()
       return jumpToIndex(scene.index);
     },
   },

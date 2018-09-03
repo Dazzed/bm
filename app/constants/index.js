@@ -55,34 +55,34 @@ const stateOptionsMap = [
 ];
 
 const maritalStatusList = [
-    { "label": "Single", "value": 0 },
-    { "label": "Married", "value": 1 },
-    { "label": "Divorced", "value": 2 },
-    { "label": "Separated", "value": 3 },
-    { "label": "Widow", "value": 4 },
+  { "label": "Single", "value": 0 },
+  { "label": "Married", "value": 1 },
+  { "label": "Divorced", "value": 2 },
+  { "label": "Separated", "value": 3 },
+  { "label": "Widow", "value": 4 },
 ];
 
 const employmentStatusList = [
-    { "label": "Employed", "value": 0 },
-    { "label": "Student", "value": 1 },
-    { "label": "Retired", "value": 2 },
-    { "label": "Unemployed", "value": 3 },
-    { "label": "Self-employed", "value": 4 },
-    { "label": "Other", "value": 5 }
+  { "label": "Employed", "value": 0 },
+  { "label": "Student", "value": 1 },
+  { "label": "Retired", "value": 2 },
+  { "label": "Unemployed", "value": 3 },
+  { "label": "Self-employed", "value": 4 },
+  { "label": "Other", "value": 5 }
 ];
 
 const investmentStatusList = [
-    { "label": "None", "value": 0 },
-    { "label": "Some", "value": 1 },
-    { "label": "I know what I'm doing", "value": 2 },
-    { "label": "I'm an expert", "value": 3 }
+  { "label": "None", "value": 0 },
+  { "label": "Some", "value": 1 },
+  { "label": "I know what I'm doing", "value": 2 },
+  { "label": "I'm an expert", "value": 3 }
 ];
 
 // Trending sorter
 const scan_props = [
   { label: 'Top volume', value: 0, queryString: 'volume' },
   { label: '% Gainers', value: 1, queryString: 'gainers' },
-  { label: '% Losers', value: 2, queryString: 'losers'},
+  { label: '% Losers', value: 2, queryString: 'losers' },
 ];
 
 var sector_props = [
@@ -270,26 +270,30 @@ const newsSources = {
 const initialIndicators = ['ICHI', 'VLM'];
 
 
-var autoLogOffOptions = [
+const autoLogOffOptions = [
   {
-    label: '10 minutes',
-    minutes: 10,
-    value: 0
+    label: 'Never',
+    minutes: 0,
+    value: 0,
+    apiValue: -1
+  },
+  {
+    label: '20 minutes',
+    minutes: 20,
+    value: 1,
+    apiValue: 20
   },
   {
     label: '5 minutes',
     minutes: 5,
-    value: 1
-  },
-  {
-    label: '2 minutes',
-    minutes: 2,
-    value: 2
+    value: 2,
+    apiValue: 5
   },
   {
     label: '1 minute',
     minutes: 1,
-    value: 3
+    value: 3,
+    apiValue: 1
   }
 ];
 
@@ -330,17 +334,17 @@ let order_type = [
 ];
 
 const indicatorProps = [
-  {label: 'VLM', info: 'Volume', value: 0 },
-  {label: 'TRND', info: 'Trend Lines', value: 1 },
-  {label: 'ICHI', info: 'Ichimoku Cloud', value: 2 },
-  {label: 'OBV', info: 'On Balance Volume', value: 3 },
-  {label: 'SMA', info: 'Simple Moving Average', value: 4 },
-  {label: 'EMA', info: 'Exponential Moving Average', value: 5 },
-  {label: 'MACD', info: 'Moving Average Convergence Divergence', value: 6 },
-  {label: 'RSI', info: 'Relative Strength Index', value: 7 },
-  {label: 'A/D Line', info: 'Accumulation/Distribution Line', value: 8 },
-  {label: 'FIB', info: 'Fibonacci', value: 9 },
-  {label: 'BOL', info: 'Bollinger Bands', value: 10 }
+  { label: 'VLM', info: 'Volume', value: 0 },
+  { label: 'TRND', info: 'Trend Lines', value: 1 },
+  { label: 'ICHI', info: 'Ichimoku Cloud', value: 2 },
+  { label: 'OBV', info: 'On Balance Volume', value: 3 },
+  { label: 'SMA', info: 'Simple Moving Average', value: 4 },
+  { label: 'EMA', info: 'Exponential Moving Average', value: 5 },
+  { label: 'MACD', info: 'Moving Average Convergence Divergence', value: 6 },
+  { label: 'RSI', info: 'Relative Strength Index', value: 7 },
+  { label: 'A/D Line', info: 'Accumulation/Distribution Line', value: 8 },
+  { label: 'FIB', info: 'Fibonacci', value: 9 },
+  { label: 'BOL', info: 'Bollinger Bands', value: 10 }
 ];
 
 const initialChartRangeIndicator = '1y';

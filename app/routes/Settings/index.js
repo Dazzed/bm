@@ -82,18 +82,11 @@ class Settings extends Component {
 
   toggleModal = stateProp => this.setState(({ [stateProp]: statePropVal }) => ({ [stateProp]: !statePropVal }));
 
-  showAutoLog() {
-    this.setState({ isAutoLogVisible: true });
-  }
-
-  setAutoLog = (value) => {
+  setAutoLog = value => {
     const { setLogOutAfterCount } = settingsStore;
-    setLogOutAfterCount(value);
-    this.hideAutoLog();
-  }
-
-  hideAutoLog = () => {
-    this.setState({ isAutoLogVisible: false });
+    const { apiValue } = autoLogOffOptions.find(o => o.value === value);
+    setLogOutAfterCount(apiValue);
+    this.toggleModal('isAutoLogVisible');
   }
 
   handleTouch = (value) => {
@@ -234,41 +227,59 @@ class Settings extends Component {
   }
 
 
-setBankTransfersValueComponent(value) {
-  const { setBankTransfersValue } = settingsStore;
-  setBankTransfersValue(value)
-  
-}
-setDividendsValueComponent(value) {
-  const { setDividendsValue } = settingsStore;
-  setDividendsValue(value)
-  
-}
-setPriceMovementsValueComponent(value) {
-  const { setPriceMovementsValue } = settingsStore;
-  setPriceMovementsValue(value)
-  
-}
+  setBankTransfersValueComponent(value) {
+    const { setBankTransfersValue } = settingsStore;
+    setBankTransfersValue(value)
+
+  }
+  setDividendsValueComponent(value) {
+    const { setDividendsValue } = settingsStore;
+    setDividendsValue(value)
+
+  }
+  setPriceMovementsValueComponent(value) {
+    const { setPriceMovementsValue } = settingsStore;
+    setPriceMovementsValue(value)
+
+  }
 
 
-  renderAutoLogOption() {
+  renderAutoLogOption = () => {
+    // const { autoLog } = settingsStore;
+    // if (autoLog !== null && autoLog !== undefined) {
+    //   return (
+    //     <View>
+    //       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
+    //       <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
+    //         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
+    //         <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
+    //       </TouchableOpacity>
+    //     </View>
+    //   );
+    // } else {
+    //   return <View>
+    //     <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
+    //     <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Loading...</Text>
+    //   </View>
+    // }
     const { autoLog } = settingsStore;
-    if (autoLog !== null && autoLog !== undefined) {
-      return (
-        <View>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-          <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-            <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return <View>
+    const targetIndex = autoLogOffOptions.findIndex(o => o.apiValue === autoLog);
+    return (
+      <View>
         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Loading...</Text>
+        <TouchableOpacity
+          style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}
+          onPress={this.toggleModal.bind(this, 'isAutoLogVisible')}
+        >
+          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>
+            Log out after
+          </Text>
+          <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>
+            {autoLogOffOptions[targetIndex === -1 ? 0 : targetIndex].label}
+            {autoLog !== 0 ? 'inactivity' : null}</Text>
+        </TouchableOpacity>
       </View>
-    }
+    );
   }
 
   render() {
@@ -278,7 +289,6 @@ setPriceMovementsValueComponent(value) {
     const {
       globalData
     } = this.props;
-
 
     const { orderValue, bankTransfersValue, dividendsValue, priceMovementsValue } = settingsStore;
 
@@ -338,7 +348,7 @@ setPriceMovementsValueComponent(value) {
             <Switch style={styles.switch}
               onTintColor={this.state.colors['blue']}
               onValueChange={(value) => this.handleTouch(value)}
-              value={ globalData.hasUserEnabledBioProtection || globalData.isEnablingBio } />
+              value={globalData.hasUserEnabledBioProtection || globalData.isEnablingBio} />
           </View>
 
           {this.renderAutoLogOption()}
@@ -377,7 +387,7 @@ setPriceMovementsValueComponent(value) {
               onValueChange={(value) => this.setPriceMovementsValueComponent(value)}
               value={priceMovementsValue} />
           </View>*/}
-          
+
           {/* News Source */}
           {this.renderNewsList()}
 
@@ -407,32 +417,36 @@ setPriceMovementsValueComponent(value) {
           animationOut={'slideOutDown'} >
           <Search hideSearch={this.toggleModal.bind(this, 'isSearchVisible')} navigation={this.props.navigation} />
         </Modal>
-        <Modal
-          isVisible={this.state.isAutoLogVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}
-          style={styles.bottomModalTall}
-          onModalHide={() => { this.hideAutoLog() }}>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, styles.bottomModalTall]}>
-            <RadioForm
-              radio_props={sort_props}
-              initial={autoLog}
-              formHorizontal={false}
-              labelHorizontal={true}
-              borderWidth={1}
-              buttonColor={colors.blue}
-              buttonOuterColor={this.state.colors['lightGray']}
-              buttonSize={22}
-              buttonOuterSize={20}
-              animation={false}
-              labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
-              radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-              labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => { this.setAutoLog(value) }}
-              style={styles.radioField}
-            />
-          </View>
-        </Modal>
+        {/* AUTO LOG MODAL */}
+        {
+          this.state.isAutoLogVisible &&
+          <Modal
+            isVisible
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}
+            style={styles.bottomModalTall}
+            onModalHide={this.toggleModal.bind(this, 'isAutoLogVisible')}>
+            <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, styles.bottomModalTall]}>
+              <RadioForm
+                radio_props={sort_props}
+                initial={autoLog}
+                formHorizontal={false}
+                labelHorizontal={true}
+                borderWidth={1}
+                buttonColor={colors.blue}
+                buttonOuterColor={this.state.colors['lightGray']}
+                buttonSize={22}
+                buttonOuterSize={20}
+                animation={false}
+                labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+                radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+                labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+                onPress={(value) => { this.setAutoLog(value) }}
+                style={styles.radioField}
+              />
+            </View>
+          </Modal>
+        }
 
         <Modal
           isVisible={this.state.isFaqVisible}

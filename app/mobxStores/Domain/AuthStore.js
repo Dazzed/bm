@@ -1,7 +1,7 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { login, getUserById, resetPassword, logout as logoutApiCall } from '../../api';
 import { saveToken } from '../../api/tokenUtility';
-import { watchListStore, autoLogOffStore } from '../index';
+import { watchListStore, autoLogOffStore, settingsStore } from '../index';
 import axios from 'axios';
 import {
   AsyncStorage
@@ -96,7 +96,6 @@ export default class AuthStore {
         .then((res) => {
           console.log('api call check res', res)
           this.verifyingAuth = false;
-          autoLogOffStore.startTimer();
           this.setUserData(res.data);
           resolve({ userData: res })
         })
@@ -155,6 +154,7 @@ export default class AuthStore {
           if (res.ok) {
             loginData = res.json;
             this.setLoginData(res.json)
+            settingsStore.getSettings();
             userId = res.json.userId;
 
             return saveToken(res.json.id)
@@ -182,7 +182,6 @@ export default class AuthStore {
         })
         .then((res) => {
           console.log('after populate user by id', res)
-          autoLogOffStore.startTimer();
           this.loginLoading = false;
           if (res.ok) {
             this.setUserData(res.json)

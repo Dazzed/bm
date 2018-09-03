@@ -4,60 +4,47 @@ import { autoLogOffOptions } from '../../constants';
 import { autoLogOffEnabled } from '../../devControlPanel';
 
 export default class AutoLogOff {
-    constructor() {
-      this.checkInterval = 5000;
-      this.setIntervalID = null;
-      this.navObject = null;
-    }
+  navObject = null;
+  setIntervalID = null;
 
-    @action saveNavObject = (navObject) => {
-      this.navObject = navObject;
-    }
+  @action saveNavObject = (navObject) => {
+    this.navObject = navObject;
+  }
 
-    @action startTimer = () => {
-      this.activityPing()
-      this.setIntervalID = setInterval(() => {
-        this.checkLogin()
-      }, this.checkInterval)
-    }
+  @action isLoginExpired = () => {
+    return false;
+  }
 
-    @action stopTimer = () => {
+  @action startTimer = () => {
+    console.info(19, 'in starttimer');
+    const { autoLog } = settingsStore;
+    const targetIndex = autoLogOffOptions.findIndex(o => o.apiValue === autoLog);
+    console.info({autoLog, targetIndex});
+    if (targetIndex === -1 || targetIndex === 0) {
+      return;
+    }
+    const millis = Number(autoLog) *60 * 1000;
+    this.setIntervalID = setInterval(this.checkLogin, millis);
+  }
+
+  @action checkLogin = () => {
+    authStore.autoLogOut()
+      .then(() => {
+        this.doLogOut()
+      })
+      .catch((err) => {
+        console.log('====== ERROR checkLogin', err);
+      })
+  }
+
+  @action doLogOut = () => {
+    this.navObject.navigate('Home');
+    this.stopTimer();
+  }
+
+  @action stopTimer = () => {
+    if (this.setIntervalID)
       clearInterval(this.setIntervalID);
-    }
-
-    @action doLogOut = () => {
-      if(autoLogOffEnabled) {
-        this.navObject.navigate('Home');
-        this.stopTimer();
-      }
-    }
-
-    @action checkLogin = () => {
-      const { getSettingsDataJS } = settingsStore;
-      let settingsDataJS = getSettingsDataJS();
-      if( settingsDataJS && 'autoLogOff' in settingsDataJS) {
-        let autoLogOffTimeSeconds = autoLogOffOptions[settingsDataJS.autoLogOff].minutes * 60;
-        let timeNowUnixSeconds = Date.now() / 1000;
-        if(timeNowUnixSeconds > this.lastPingTimeUnixSeconds + autoLogOffTimeSeconds) {
-          authStore.autoLogOut()
-          .then((res) => {
-            this.doLogOut()
-          })
-          .catch((err) => {
-            console.log('====== ERROR', error);
-          })
-        }
-      }
-    }
-
-    @observable lastPingTimeUnixSeconds = Date.now() / 1000;
-
-    @action activityPing = () => {
-      this.lastPingTimeUnixSeconds = Date.now() / 1000;
-    }
-
-    @action isLoginExpired = () => {
-      return false;
-    }
+  }
 
 }

@@ -17,6 +17,7 @@ import {
 } from '../../selectors';
 
 import LockComponent from './LockComponent';
+import { autoLogOffStore } from '../../mobxStores';
 
 export default TargetComponent => {
   class BioWrapperHOC extends Component {
@@ -151,6 +152,14 @@ export default TargetComponent => {
           cb = this.initiateBioAuth;
         }
       }
+      // ### BEGIN AUTO LOG OFF related logic
+      if (this.state.appState === 'inactive' && nextAppState === 'background') {
+        autoLogOffStore.startTimer();
+      }
+      if (this.state.appState === 'background' && nextAppState === 'active') {
+        autoLogOffStore.stopTimer();
+      }
+      // ### END AUTO LOG OFF related logic
       this.setState({ appState: nextAppState, ...statePropsToUpdate }, cb);
     }
 
