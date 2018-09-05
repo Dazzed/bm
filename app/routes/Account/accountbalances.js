@@ -70,10 +70,6 @@ class AccountBal extends React.Component {
             <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>CASH</Text>
             <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.investments.cash}</Text>
           </View>
-          {/*<View style={account.sectionWrap}>
-            <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>OPTIONS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.investments.options}</Text>
-          </View>*/}
         </View>
         <Text style={[{color: this.state.colors['darkSlate']}, account.sectionTitle, fonts.hindGunturBd]}>FUNDS AVAILABLE</Text>
         <View style={[{backgroundColor: this.state.colors['white']}, account.section]}>

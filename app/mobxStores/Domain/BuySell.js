@@ -72,7 +72,6 @@ export default class BuySellStore {
 
   @action makeTransaction = () => {
     console.log('======= TRANSACTION TYPE', this.transactionType)
-
     if(this.transactionType === 'Buy') {
       return this.buy()
     }
