@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -86,7 +81,7 @@ class OrderConf extends React.Component {
       calculatedCost,
       transactionType,
       validityIndex,
-      orderTypeIndex
+      orderTypeName
     } = buySellStore;
 
     let ticker = 'APPL';
@@ -100,7 +95,7 @@ class OrderConf extends React.Component {
     }
 
     let validity = validity_props[validityIndex].label;
-    let type = order_type[orderTypeIndex].label;
+    let type = order_type.find(t => t.name === orderTypeName).label;
 
     return(
       <View>

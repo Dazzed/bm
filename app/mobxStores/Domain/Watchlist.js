@@ -146,7 +146,6 @@ export default class Watchlist {
   }
 
   @action removeTickerFromWatchList = async ticker => {
-    // console.info('removeTickerFromWatchList', ticker);
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
@@ -157,7 +156,6 @@ export default class Watchlist {
       }
     } catch (e) {
       console.info('Error in removeTickerToWatchList', e);
-      // throw e;
     }
   }
 
