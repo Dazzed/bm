@@ -1280,10 +1280,13 @@ class Chart extends Component {
   renderLoadingOrContent() {
     const { chartLoading, tickerDataJS } = chartStore;
 
-      let newsTicker = null;
+    let newsTicker = null;
+    let companyName = null;
       if(tickerDataJS) {
-         newsTicker = tickerDataJS.ticker;
+        newsTicker = tickerDataJS.ticker;
+        companyName = tickerDataJS.companyName;
       }
+      // alert(JSON.stringify(tickerDataJS));
 
     if(chartLoading) {
       return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -1308,6 +1311,7 @@ class Chart extends Component {
           style={order.modal}>
           <ChartNews
             ticker={newsTicker}
+            companyName={companyName}
             hideNews={this.hideNews} />
         </Modal>
         <Modal

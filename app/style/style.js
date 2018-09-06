@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   radioLabel: {
     fontSize: 14, 
     paddingLeft: 25, 
-    paddingTop: 15, 
+    paddingTop: 20, 
     paddingBottom: 10,
     marginBottom: 2,
     // color: colors.lightGray
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   bottomModalTall: {
-    width: 375,
+    width: 414,
     maxHeight: 300,
     left: 0,
     top: '43%',

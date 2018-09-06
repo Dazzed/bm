@@ -16,7 +16,7 @@ if (!showConsole) {
     'groupCollapsed',
     'groupEnd',
     'info',
-    'log',
+    // 'log',
     'profile',
     'profileEnd',
     'table',

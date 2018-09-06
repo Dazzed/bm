@@ -288,12 +288,6 @@ const autoLogOffOptions = [
     minutes: 5,
     value: 2,
     apiValue: 5
-  },
-  {
-    label: '1 minute',
-    minutes: 1,
-    value: 3,
-    apiValue: 1
   }
 ];
 

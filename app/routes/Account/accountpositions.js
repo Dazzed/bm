@@ -64,32 +64,42 @@ class AccountPos extends React.Component {
 
   renderList() {
     const { positionsJS } = myAccountStore;
+    // alert(JSON.stringify(positionsJS));
     if(positionsJS.length === 0) {
       return <View style={{padding: 10, alignItems: 'center'}}>
         <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>No Positions Found</Text>
       </View>
     } else {
-      
-
-      
+      console.log(positionsJS, 73)
       return <View style={account.sectionFull}>
         {positionsJS.map((elem, i) => {
-          
           if(
-            !elem.priceChangePercentage || 
-            !elem.companyAbbreviation ||
-            !elem.companyName ||
-            !elem.priceChangeColor ||
-            !elem.marketChangeColor ||
-            !elem.quantity ||
-            !elem.priceChange ||
-            !elem.priceChangeDecimal ||
-            !elem.marketChangeDecimal ||
-            !elem.marketChangePercentage
+            (elem.priceChangePercentage === null) || 
+            (elem.companyAbbreviation === null) ||
+            (elem.companyName === null) ||
+            (elem.priceChangeColor === null) ||
+            (elem.marketChangeColor === null) ||
+            (elem.quantity === null) ||
+            (elem.priceChange === null) ||
+            (elem.priceChangeDecimal === null) ||
+            (elem.marketChangeDecimal === null) ||
+            (elem.marketChangePercentage === null)
           ) {
+            console.log(
+              elem.priceChangePercentage,
+              elem.companyAbbreviation,
+              elem.companyName,
+              elem.priceChangeColor,
+              elem.marketChangeColor,
+              elem.quantity,
+              elem.priceChange,
+              elem.priceChangeDecimal,
+              elem.marketChangeDecimal,
+              elem.marketChangePercentage
+            )
+            console.log(88, "NULL")
             return null;
           }
-          
           
           let formattedPriceChangePercentage = elem.priceChangePercentage;
           if(formattedPriceChangePercentage) {
@@ -97,14 +107,14 @@ class AccountPos extends React.Component {
           }
           
           let formattedCompanyAbbreviation = elem.companyAbbreviation;
-          if(formattedCompanyAbbreviation) {
-            formattedCompanyAbbreviation = formattedCompanyAbbreviation.toFixed(2);
-          }
+          // if(formattedCompanyAbbreviation) {
+          //   formattedCompanyAbbreviation = formattedCompanyAbbreviation.toFixed(2);
+          // }
           
           let formattedCompanyName = elem.companyName;
-          if(formattedCompanyName) {
-            formattedCompanyName = formattedCompanyName.toFixed(2);
-          }
+          // if(formattedCompanyName) {
+          //   formattedCompanyName = formattedCompanyName.toFixed(2);
+          // }
           
           let formattedPriceChangeColor = elem.priceChangeColor;
           
@@ -112,13 +122,13 @@ class AccountPos extends React.Component {
           
           let formattedQuantity = elem.quantity;
           if(formattedQuantity) {
-            formattedQuantity = formattedQuantity.toFixed(2);
+            formattedQuantity = formattedQuantity.toFixed(0);
           }
           
-          let formattedPriceChange = '$' + elem.priceChange;
-          if(formattedPriceChange) {
-            formattedPriceChange = formattedPriceChange.toFixed(2);
-          }
+          let formattedPriceChange = '$' + elem.priceChange.toFixed(2);
+          // if(formattedPriceChange) {
+          //   formattedPriceChange = formattedPriceChange.toFixed(2);
+          // }
           
           let formattedPriceChangeDecimal = elem.priceChangeDecimal;
           if(formattedPriceChangeDecimal) {
@@ -149,7 +159,7 @@ class AccountPos extends React.Component {
                 {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangePercentage}%</Text>}
               </View>
               <View style={account.mktWrap}>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>$1,535.30???</Text>
+                <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${(elem.quantity * elem.priceChange)}</Text>
                 {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangePercentage}%</Text>}
               </View>
             </TouchableOpacity>

@@ -131,20 +131,16 @@ class AccountHist extends React.Component {
                     <Text style={[{color: this.state.colors['darkSlate']}, symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
                   </View>
                   <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>{elem.companyName}</Text>
+                </View>                
+                <View style={account.mktWrap}>
+                  <Text style={[{ color: this.state.colors['darkSlate'] }, account.mktLabel, fonts.hindGunturRg]}>${elem.price.toFixed(2)}</Text>
                 </View>
-                
-                
-                <View style={account.priceWrap}>
-                  <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>$0.81??</Text>
-                </View>
-                
-                
-                <View style={account.priceWrap}>
+                <View style={account.sharesWrap}>
                   <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
                 </View>
                 
                 <View style={account.mktWrap}>
-                  <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${elem.totalAmount}</Text>
+                  <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${elem.totalAmount.toFixed(2)}</Text>
                 </View>
                 
               </View>

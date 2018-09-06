@@ -220,24 +220,30 @@ const account = StyleSheet.create({
     flex: 1,
   },
   symbolQty: {
-    flex: 1,
+    flex: 0.4,
     fontSize: 16,
-    maxWidth: 40
+    // maxWidth: 40
   },
   priceWrapTouch: {
     flex: 1,
     flexDirection: 'row'
   },
   priceWrap: {
+    flex: 1.2,
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    maxWidth: 150
+  },
+  sharesWrap: {
     flex: 1,
     alignItems: 'flex-end',
     paddingRight: 10,
-    maxWidth: 105
+    maxWidth: 80
   },
   mktWrap: {
-    flex: 1.2,
+    flex: 1.4,
     alignItems: 'flex-end',
-    maxWidth: 105
+    maxWidth: 135
   },
   priceLabel: {
     textAlign: 'right',

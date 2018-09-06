@@ -60,7 +60,8 @@ class ChartNews extends React.Component {
   componentDidMount() {
     const { getNewsData } = newsStore;
     let ticker = this.props.ticker;
-    getNewsData({ticker})
+    let companyName = this.props.companyName;
+    getNewsData({ticker: companyName})
   }
 
   newsPressed(elem) {

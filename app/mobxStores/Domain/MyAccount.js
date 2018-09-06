@@ -17,6 +17,7 @@ export default class MyAccountData {
     .then((res) => {
       console.log('BALANCES res', res);
       if(res.ok) {
+        console.log(20, res.json.result);
         // save the data
         this.accountValue = res.json.result.accountValue;
         this.cash = res.json.result.cash;
@@ -25,6 +26,9 @@ export default class MyAccountData {
         this.savingsAccount = res.json.result.savingsAccount;
         this.securities = res.json.result.securities;
         this.todayChange = res.json.result.todayChange;
+        this.todayChangeChangePercent = res.json.result.todayChangeChangePercent;
+        this.overallChange = res.json.result.overallChange;
+        this.overallChangePercent = res.json.result.overallChangePercent;
         this.total = res.json.result.total;
       }
       this.balanceLoading = false;
@@ -90,15 +94,18 @@ export default class MyAccountData {
 
   @observable cash = 0;
   @observable changePercent = 0;
+  @observable todayChangePercent = 0;
+  @observable overallChange = 0;
+  @observable overallChangePercent = 0;
   @computed get changePercentJS() {
-    if(this.changePercent === null) {
+    if(this.todayChangePercent === null) {
       return '0.00'
     }
     let plusString = '';
-    if(this.changePercent > 0) {
+    if(this.todayChangePercent > 0) {
       plusString = '+';
     }
-    return plusString + this.changePercent.toFixed(2) + '%';
+    return plusString + this.todayChangePercent.toFixed(2) + '%';
   }
 
   @observable checkingAccount = 0;
@@ -157,12 +164,15 @@ export default class MyAccountData {
          quantity: elem.quantity,
 
          priceChange: elem.latestPrice,
-         priceChangePercentage: elem.priceChangePercentage,
-         priceChangeDecimal: '----???',
+        //  priceChangePercentage: elem.priceChangePercentage,
+         priceChangePercentage: 0,
+        //  priceChangeDecimal: '----???',
+         priceChangeDecimal: 0,
          priceChangeColor: priceChangeColor,
 
          marketValuation: elem.marketValuation,
-         marketChangePercentage: '???',
+        //  marketChangePercentage: '???',
+         marketChangePercentage: 0,
          marketChangeDecimal: elem.valuationChange,
          marketChangeColor: marketValuationChangeColor
        }
@@ -173,8 +183,9 @@ export default class MyAccountData {
   @computed get positionTotalsJS() {
     return {
       total: this.positionsTotal,
-      decimalChange: '+1.85??',
-      decimalChangeColor: 'red'
+      decimalChange: this.overallChange.toFixed(2),
+      decimalChangePct: this.overallChangePercent,
+      decimalChangeColor: (this.overallChange < 0 ? 'red' : 'green')
     }
   }
 
@@ -261,6 +272,7 @@ export default class MyAccountData {
           buyOrSell: elem.orderType == 'buy',
           companyName: elem.companyName,
           companyAbbreviation: elem.ticker,
+          price: elem.price,
           shares: elem.shares,
           totalAmount: elem.totalAmount
         }]
