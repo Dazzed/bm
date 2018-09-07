@@ -15,8 +15,10 @@ const searchStocks = (params) => get('users/stockSearch', params);
 const getSectorIndustries = (params) => get('tickerLists/sectors-industries', params);
 const updateSettings = (params) => get('/users/updateSettings', params);
 const logout = (params) => post('users/logout', params);
-const buy = (params) => get('/orders/buy', params);
-const sell = (params) => post('users/buy', params);
+const buy = (params) => get('orders/buy', params);
+const sell = (params) => get('orders/sell', params);
+const short = params => get('orders/shortSell', params);
+const cover = params => get('orders/buyToCover', params);
 const positions = (params) => get('positions', params);
 const accountOrders = (params) => get('/orders/account', params);
 
@@ -38,6 +40,8 @@ export {
     logout,
     buy,
     sell,
+    short,
+    cover,
     positions,
     accountOrders
 }

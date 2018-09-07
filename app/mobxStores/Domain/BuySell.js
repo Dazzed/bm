@@ -1,5 +1,10 @@
 import { observable, action, computed, toJS } from 'mobx';
-import { buy as buyApiCall, sell as sellApiCall } from '../../api';
+import {
+  buy as buyApiCall,
+  sell as sellApiCall,
+  cover as coverApiCall,
+  short as shortApiCall
+} from '../../api';
 import { chartStore } from '../';
 import { validity_props, order_type } from '../../constants';
 
@@ -105,80 +110,61 @@ export default class BuySellStore {
     }
   }
 
-  @action makeTransaction = () => {
-    console.log('======= TRANSACTION TYPE', this.transactionType)
+  @action makeTransaction = (targetStockData) => {
+    console.info('======= TRANSACTION TYPE', this.transactionType);
+    console.info('========= targetStockData', targetStockData);
     if (this.transactionType === 'Buy') {
-      return this.buy()
+      return this.conductTransaction(targetStockData, buyApiCall);
     } else if (this.transactionType === 'Sell') {
-      return this.sell();
+      return this.conductTransaction(targetStockData, sellApiCall);
     } else if (this.transactionType === 'Short') {
-      return this.short();
+      return this.conductTransaction(targetStockData, shortApiCall);
     } else if (this.transactionType === 'Cover') {
-      return this.cover();
+      return this.conductTransaction(targetStockData, coverApiCall);
     }
   }
 
-  @action buy = () => {
+  @action conductTransaction = (targetStockData, functionToCall) => {
     return new Promise((resolve, reject) => {
-
-
-      this.buyInProgress = true;
-
+      this.transactionInProgress = true;
       // orderOption[market, limit]
       // orderValidity[dayOnly, extended, GTC]
       // account[savings, checking]
 
+      // let params = {
+      //   ticker: 'AAPL',
+      //   shares: 10,
+      //   orderOption: 'market',
+      //   account: 'savings',
+      //   commission: 10
+      // }
       let params = {
-        ticker: 'AAPL',
-        shares: 10,
-        orderOption: 'market',
+        ticker: targetStockData.ticker,
+        shares: Number(this.quantity),
+        orderOption: this.orderTypeName,
         account: 'savings',
-        commission: 10
-      }
+        commission: 0
+      };
 
-
-      const orderTypeIndex = order_type.findIndex(t => t.name === this.orderTypeName);
-      console.log('BUY', params, validity_props[this.validityIndex].query, order_type[orderTypeIndex].query)
-
-      buyApiCall(params)
+      functionToCall(params)
         .then((res) => {
-          console.log('buy res', res);
-          this.buyInProgress = false;
-          resolve();
+          console.info('transaction res', res);
+          this.transactionInProgress = false;
+          if (res.ok !== true) {
+            if (res.json.error) {
+              if (res.json.error.message) {
+                return reject(res.json.error.message);
+              }
+            }
+            return reject('There was an error. Please try again later');
+          }
+          return resolve();
         })
         .catch((err) => {
-          console.log('buy err', err);
-          this.buyInProgress = false;
-          reject(err);
+          console.info('transaction err', err);
+          this.transactionInProgress = false;
+          return reject(err);
         });
     });
-  }
-
-  @action sell = () => {
-    return new Promise((resolve, reject) => {
-      console.log('SELL');
-      setInterval(() => {
-        resolve();
-      })
-    })
-  }
-
-  @action short = () => {
-    return new Promise((resolve, reject) => {
-      console.log('SHORT');
-      setInterval(() => {
-        resolve();
-      })
-    })
-  }
-
-  @action cover = () => {
-    return new Promise((resolve, reject) => {
-      console.log('COVER');
-      setInterval(() => {
-        resolve();
-      })
-    })
-  }
-
+  };
 }

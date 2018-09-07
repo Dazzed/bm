@@ -40,7 +40,8 @@ class OrderConf extends React.Component {
     this.state = {
       isOrderPlaced: false,
       animateOut: 'slideOutLeft',
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
+      error: null
     };
     this.hideOrderPlaced = this.hideOrderPlaced.bind(this);
   }
@@ -58,21 +59,26 @@ class OrderConf extends React.Component {
   }
 
   confirmOrder = () => {
+    if (buySellStore.transactionInProgress) {
+      return;
+    }
+    this.setState({ error: null });
     const { makeTransaction } = buySellStore;
     console.info('======== ORDER CONFIRM PRESSED');
-    makeTransaction()
+    makeTransaction(this.props.targetStockData)
       .then((res) => {
         console.info('=== order placed');
         this.setState({ isOrderPlaced: true });
       })
       .catch((err) => {
+        this.setState({ error: err });
         console.info('err', err);
       })
   }
 
-  hideOrderPlaced() {
+  hideOrderPlaced = () => {
     this.setState({ isOrderPlaced: false, animateOut: 'slideOutDown' })
-    setTimeout(this.props.cancelOrderConfirm, 0.1)
+    setTimeout(this.props.cancelOrderConfirm, 100)
   }
 
   render() {
@@ -84,7 +90,8 @@ class OrderConf extends React.Component {
       calculatedCostCustom,
       transactionType,
       validityIndex,
-      orderTypeName
+      orderTypeName,
+      transactionInProgress
     } = buySellStore;
 
     let ticker = targetStockData.ticker;
@@ -153,7 +160,16 @@ class OrderConf extends React.Component {
             </View>
             <Text style={order.confSpacing}></Text>
             <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={this.confirmOrder}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>CONFIRM</Text>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>
+                {transactionInProgress ? 'LOADING...' : 'CONFIRM'}
+              </Text>
+              {
+                this.state.error ? 
+                  <Text style={[{ color: 'red', textAlign: 'center' }, fonts.hindGunturBd]}>
+                    {this.state.error}
+                  </Text> :
+                  null
+              }
             </TouchableOpacity>
           </View>
         </View>
