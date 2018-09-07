@@ -84,10 +84,11 @@ class OrderShort extends React.Component {
   render() {
     const { tickerDataJS } = chartStore;
     const { 
-      quantity, 
-      orderTypeName, 
-      calculatedCost, 
-      validityIndex, 
+      quantity,
+      orderTypeName,
+      calculatedCost,
+      calculatedCostCustom,
+      validityIndex,
       price 
     } = buySellStore;
     const { activeInputName } = this.state;
@@ -107,6 +108,7 @@ class OrderShort extends React.Component {
             </Text>
             <Text 
               style={[{color: this.state.colors['darkSlate']}, order.inputQty, fonts.hindGunturRg]}
+              onPress={this.changeActiveInputName.bind(this, 'quantity')}
             >
               {quantity}
             </Text>
@@ -122,6 +124,7 @@ class OrderShort extends React.Component {
             </Text>
             <Text 
               style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
+              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               { 
                 orderTypeName === 'market' ? 
@@ -137,8 +140,18 @@ class OrderShort extends React.Component {
             <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>$0</Text>
           </View>
           <View style={order.detailsRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>ESTIMATED CREDIT</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${calculatedCost}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>
+              ESTIMATED CREDIT
+            </Text>
+            <Text 
+              style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
+            >
+              {
+                orderTypeName === 'market' ?
+                  `$${calculatedCost}` :
+                    `$${calculatedCostCustom}`
+              }
+            </Text>
           </View>
         </View>
 
@@ -184,12 +197,12 @@ class OrderShort extends React.Component {
           </View>
           <View style={order.btnRow}>
             <View style={[order.btnColumn, order.btnLeft]}>
-              <TouchableOpacity style={styles.cancelBtn} onPress={() => {this.props.hideOrder()}}>
+              <TouchableOpacity style={styles.cancelBtn} onPress={this.props.hideOrder}>
                 <Text style={[{color: this.state.colors['realWhite']}, styles.cancelBtnTxt, fonts.hindGunturBd]}>CANCEL</Text>
               </TouchableOpacity>
             </View>
             <View style={[order.btnColumn, order.btnRight]}>
-              <TouchableOpacity style={styles.buyBtn} onPress={() => {this.props.showOrderConfirm()}}>
+              <TouchableOpacity style={styles.buyBtn} onPress={this.props.showOrderConfirm}>
                 <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>SHORT</Text>
               </TouchableOpacity>
             </View>
@@ -230,6 +243,8 @@ class OrderShort extends React.Component {
 // export default OrderShort;
 OrderShort.propTypes = {
   globalData: PropTypes.object.isRequired,
+  showOrderConfirm: PropTypes.func.isRequired,
+  hideOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

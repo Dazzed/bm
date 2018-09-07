@@ -4,9 +4,6 @@ import { chartStore } from '../';
 import { validity_props, order_type } from '../../constants';
 
 export default class BuySellStore {
-  constructor() {
-  }
-
   @observable transactionInProgress = false;
 
   @observable quantity = '';
@@ -80,9 +77,23 @@ export default class BuySellStore {
     return calculatedCost.toFixed(2);
   }
 
+  // Constructs the total cost when the price is entered manually
+  @computed get calculatedCostCustom() {
+    const { tickerDataJS } = chartStore;
+    if (this.quantity === '' || this.quantity === undefined || !tickerDataJS) {
+      return 0
+    }
+    const { Price } = tickerDataJS;
+    let calculatedCost = parseInt(this.quantity) * Price;
+    if (this.price !== 0 && this.price !== '') {
+      calculatedCost = parseInt(this.quantity) * this.price;
+    }
+    return calculatedCost.toFixed(2);
+  }
+
   @observable transactionType = '';
   @action setTransactionType = (name) => {
-    console.log('set transaction type', name);
+    console.info('set transaction type', name);
     this.transactionType = name;
   }
 
@@ -98,18 +109,13 @@ export default class BuySellStore {
     console.log('======= TRANSACTION TYPE', this.transactionType)
     if (this.transactionType === 'Buy') {
       return this.buy()
+    } else if (this.transactionType === 'Sell') {
+      return this.sell();
+    } else if (this.transactionType === 'Short') {
+      return this.short();
+    } else if (this.transactionType === 'Cover') {
+      return this.cover();
     }
-  }
-
-  @action sell = () => {
-    return new Promise((resolve, reject) => {
-      console.log('SELL');
-      this.sellInProgress = true;
-      setInterval(() => {
-        this.sellInProgress = false;
-        resolve()
-      })
-    })
   }
 
   @action buy = () => {
@@ -146,6 +152,33 @@ export default class BuySellStore {
           reject(err);
         });
     });
+  }
+
+  @action sell = () => {
+    return new Promise((resolve, reject) => {
+      console.log('SELL');
+      setInterval(() => {
+        resolve();
+      })
+    })
+  }
+
+  @action short = () => {
+    return new Promise((resolve, reject) => {
+      console.log('SHORT');
+      setInterval(() => {
+        resolve();
+      })
+    })
+  }
+
+  @action cover = () => {
+    return new Promise((resolve, reject) => {
+      console.log('COVER');
+      setInterval(() => {
+        resolve();
+      })
+    })
   }
 
 }

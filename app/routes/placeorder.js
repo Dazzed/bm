@@ -26,6 +26,7 @@ import Tabs from 'react-native-tabs';
 import OrderBuy from './orderbuy';
 import OrderSell from './ordersell';
 import OrderShort from './ordershort';
+import OrderCover from './ordercover';
 import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
@@ -68,19 +69,19 @@ class PlaceOrder extends React.Component {
   }
 
   getTabView() {
+    const propsToPass = {
+      hideOrder: this.hideOrderChild,
+      showOrderConfirm: this.showOrderConfirm
+    };
     switch (this.state.page) {
       case 'Buy':
-        return <OrderBuy
-          hideOrder={this.hideOrderChild}
-          showOrderConfirm={this.showOrderConfirm} />
+        return <OrderBuy {...propsToPass} />;
       case 'Sell':
-        return <OrderSell
-          hideOrder={this.hideOrderChild}
-          showOrderConfirm={this.showOrderConfirm} />
+        return <OrderSell {...propsToPass} />;
       case 'Short':
-        return <OrderShort
-          hideOrder={this.hideOrderChild}
-          showOrderConfirm={this.showOrderConfirm} />
+        return <OrderShort {...propsToPass} />;
+      case 'Cover':
+        return <OrderCover {...propsToPass} />;
     }
     throw new Error(`placeorder.js getTabView, invalid value '${this.state.page}' in this.state.page`);
   }
@@ -98,9 +99,11 @@ class PlaceOrder extends React.Component {
   showOrderConfirm = () => {
     this.setState({ isConfirmVisible: true })
   }
+
   hideOrderConfirm = () => {
     this.setState({ isConfirmVisible: false, animateOut: 'slideOutRight' })
   }
+
   cancelOrderConfirm = () => {
     this.setState({ isConfirmVisible: false, animateOut: 'slideOutDown' })
     setTimeout(() => { this.props.hideOrder() }, 0.1)
@@ -118,6 +121,7 @@ class PlaceOrder extends React.Component {
     switch (this.state.page) {
       case 'Buy':
       case 'Short':
+      case 'Cover':
         return order_type
           .filter(t => t.query === 'market' || t.query === 'limit')
           .map((t, i) => ({ ...t, value: i }));
@@ -167,6 +171,7 @@ class PlaceOrder extends React.Component {
             <Text name="Buy" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Buy</Text>
             <Text name="Sell" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Sell</Text>
             <Text name="Short" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Short</Text>
+            <Text name="Cover" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Cover</Text>
           </Tabs>
         </View>
         <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContainer]}>
@@ -204,7 +209,9 @@ class PlaceOrder extends React.Component {
             style={order.confirmModal}>
             <OrderConf
               hideOrderConfirm={this.hideOrderConfirm}
-              cancelOrderConfirm={this.cancelOrderConfirm} />
+              cancelOrderConfirm={this.cancelOrderConfirm} 
+              targetStockData={targetStockData}    
+            />
           </Modal>
         </ScrollView>
       </View>
