@@ -1,9 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectGlobalData } from '../selectors';
@@ -42,9 +37,11 @@ class OrderSell extends React.Component {
     this.state = {
       numField: null,
       isTypeVisible: false,
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
+      activeInputName: 'quantity'
     };
   }
+  
   componentDidUpdate(prevProps) {
     const {
       globalData: prevGlobalData
@@ -57,14 +54,21 @@ class OrderSell extends React.Component {
     }
   }
 
+  changeActiveInputName = name => {
+    if (this.state.activeInputName === name) {
+      return;
+    }
+    this.setState({ activeInputName: name });
+  };
+
   addNum(num) {
     const { addNumber } = buySellStore;
-    addNumber(num)
+    addNumber(num, this.state.activeInputName);
   }
 
   removeNum(num) {
     const { removeNumber } = buySellStore;
-    removeNumber(num)
+    removeNumber(num, this.state.activeInputName);
   }
 
   showOrderTypes(){
@@ -81,27 +85,75 @@ class OrderSell extends React.Component {
 
   render() {
     const { tickerDataJS } = chartStore;
-    const { quantity } = buySellStore;
-    const { calculatedCost, validityIndex } = buySellStore;
+    const { 
+      quantity, 
+      orderTypeName, 
+      calculatedCost,
+      calculatedCostCustom,
+      validityIndex, 
+      price 
+    } = buySellStore;
+    const { activeInputName } = this.state;
+    const activeBorderBottomStyle = { borderBottomColor: this.state.colors['darkSlate'] };
 
     return(
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
-          <View style={[{borderBottomColor: this.state.colors['darkSlate']}, order.detailsFirstRow]}>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}>QUANTITY</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.inputQty, fonts.hindGunturRg]}>{quantity}</Text>
+          <View 
+            style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow, {borderBottomWidth: 0}]}
+          >
+            <Text 
+              style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}
+              onPress={this.changeActiveInputName.bind(this, 'quantity')}
+            >
+              QUANTITY
+            </Text>
+            <Text 
+              style={[{color: this.state.colors['darkSlate']}, order.inputQty, fonts.hindGunturRg]}
+              onPress={this.changeActiveInputName.bind(this, 'quantity')}
+            >
+              {quantity}
+            </Text>
           </View>
-          <View style={order.detailsRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>MARKET PRICE</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${tickerDataJS.Price}</Text>
+          <View 
+            style={order.detailsRow}
+          >
+            <Text 
+              style={activeInputName === 'price' ? [order.detailsFirstRow,activeBorderBottomStyle]: order.detailsRow}
+              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
+            >
+              MARKET PRICE
+            </Text>
+            <Text 
+              style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
+              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
+            >
+              { 
+                orderTypeName === 'market' ? 
+                  `$${tickerDataJS.Price}` : 
+                    (activeInputName === 'price' ? 
+                      (price || tickerDataJS.Price) : 
+                      `$${price || tickerDataJS.Price}`) 
+              }
+            </Text>
           </View>
           <View style={order.detailsRow}>
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>COMMISSION</Text>
             <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>$0</Text>
           </View>
           <View style={order.detailsRow}>
-            <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>ESTIMATED CREDIT</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}>${calculatedCost}</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>
+              ESTIMATED CREDIT
+            </Text>
+            <Text 
+              style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
+            >
+              {
+                orderTypeName === 'market' ?
+                  `$${calculatedCost}` :
+                    `$${calculatedCostCustom}`
+              }
+            </Text>
           </View>
         </View>
 
@@ -136,19 +188,23 @@ class OrderSell extends React.Component {
           </View>
           <View style={[{borderTopColor: this.state.colors['borderGray']}, order.purchaseDetails]}>
             <View style={order.purchaseDetailsWrap}>
-              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtLeft, fonts.hindGunturRg]}>Validity</Text>
-              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[validityIndex].label}</Text>
-              <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtBtn, fonts.hindGunturBd]} onPress={() => {this.showOrderTypes(); }}>EDIT</Text>
+              {
+                orderTypeName !== 'market' ? <Fragment>
+                    <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtLeft, fonts.hindGunturRg]}>Validity</Text>
+                    <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[validityIndex].label}</Text>
+                    <Text style={[{color: this.state.colors['darkGray']}, order.purchaseTxtBtn, fonts.hindGunturBd]} onPress={() => {this.showOrderTypes(); }}>EDIT</Text>
+                  </Fragment> : null
+              }
             </View>
           </View>
           <View style={order.btnRow}>
             <View style={[order.btnColumn, order.btnLeft]}>
-              <TouchableOpacity style={styles.cancelBtn} onPress={() => {this.props.hideOrder()}}>
+              <TouchableOpacity style={styles.cancelBtn} onPress={this.props.hideOrder}>
                 <Text style={[{color: this.state.colors['realWhite']}, styles.cancelBtnTxt, fonts.hindGunturBd]}>CANCEL</Text>
               </TouchableOpacity>
             </View>
             <View style={[order.btnColumn, order.btnRight]}>
-              <TouchableOpacity style={styles.buyBtn} onPress={() => {this.props.showOrderConfirm()}}>
+              <TouchableOpacity style={styles.buyBtn} onPress={this.props.showOrderConfirm}>
                 <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>SELL</Text>
               </TouchableOpacity>
             </View>
@@ -188,6 +244,8 @@ class OrderSell extends React.Component {
 // export default OrderSell;
 OrderSell.propTypes = {
   globalData: PropTypes.object.isRequired,
+  showOrderConfirm: PropTypes.func.isRequired,
+  hideOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

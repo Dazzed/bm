@@ -31,6 +31,4 @@ function getCountriesAndStates() {
 
 const list = getCountriesAndStates();
 
-console.info(list)
-
 export default list;

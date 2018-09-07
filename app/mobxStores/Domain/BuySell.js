@@ -4,18 +4,16 @@ import { chartStore } from '../';
 import { validity_props, order_type } from '../../constants';
 
 export default class BuySellStore {
-  constructor() {
-  }
-
   @observable transactionInProgress = false;
 
   @observable quantity = '';
+  @observable price = '';
   @observable validityIndex = 0;
 
-  @observable orderTypeIndex = 0;
-  @action setOrderTypeIndex = (value) => {
-    console.log('====== setOrderTypeIndex')
-    this.orderTypeIndex = value;
+  @observable orderTypeName = 'market';
+
+  @action setOrderTypeName = value => {
+    this.orderTypeName = value;
   }
 
   @action setValidityIndex = (val) => {
@@ -26,28 +24,51 @@ export default class BuySellStore {
     this.quantity = val;
   }
 
-  @action addNumber = (num) => {
-    let curNums;
-    if(this.quantity == null) {
-     curNums = num;
-    } else {
-     curNums = this.quantity + '' + num;
-    }
-    this.setQuantity(curNums);
+  @action setPrice = val => {
+    this.price = val;
   }
-  @action removeNumber = (num) => {
-    if(this.quantity) {
-      var delNums = this.quantity;
-      console.log(delNums);
-      delNums = delNums.substr(0, delNums.length - 1);
-      console.log(delNums);
-      this.setQuantity(delNums);
+
+  @action addNumber = (num, type) => {
+    let curNums;
+    if (type === 'quantity') {
+      if (this.quantity == null) {
+        curNums = num;
+      } else {
+        curNums = this.quantity + '' + num;
+      }
+      this.setQuantity(curNums);
+    } else if (type === 'price') {
+      if (this.price == null) {
+        curNums = num;
+      } else {
+        curNums = this.price + '' + num;
+      }
+      this.setPrice(curNums);
+    } else {
+      throw new Error(`Domain/BuySell.js addNumber(), Expected one of quantity or price. Received '${type}'`)
+    }
+  }
+  @action removeNumber = (num, type) => {
+    if (type === 'quantity') {
+      if (this.quantity) {
+        let delNums = this.quantity;
+        delNums = delNums.substr(0, delNums.length - 1);
+        this.setQuantity(delNums);
+      }
+    } else if (type === 'price') {
+      if (this.price) {
+        let delNums = this.price;
+        delNums = delNums.substr(0, delNums.length - 1);
+        this.setPrice(delNums);
+      }
+    } else {
+      throw new Error(`Domain/BuySell.js removeNumber(), Expected one of quantity or price. Received '${type}'`)
     }
   }
 
   @computed get calculatedCost() {
     const { tickerDataJS } = chartStore;
-    if(this.quantity === '' || this.quantity === undefined || !tickerDataJS) {
+    if (this.quantity === '' || this.quantity === undefined || !tickerDataJS) {
       return 0
     }
     const { Price } = tickerDataJS;
@@ -56,14 +77,28 @@ export default class BuySellStore {
     return calculatedCost.toFixed(2);
   }
 
+  // Constructs the total cost when the price is entered manually
+  @computed get calculatedCostCustom() {
+    const { tickerDataJS } = chartStore;
+    if (this.quantity === '' || this.quantity === undefined || !tickerDataJS) {
+      return 0
+    }
+    const { Price } = tickerDataJS;
+    let calculatedCost = parseInt(this.quantity) * Price;
+    if (this.price !== 0 && this.price !== '') {
+      calculatedCost = parseInt(this.quantity) * this.price;
+    }
+    return calculatedCost.toFixed(2);
+  }
+
   @observable transactionType = '';
   @action setTransactionType = (name) => {
-    console.log('set transaction type', name);
+    console.info('set transaction type', name);
     this.transactionType = name;
   }
 
   @computed get transactionLoading() {
-    if(transactionInProgress) {
+    if (transactionInProgress) {
       return true;
     } else {
       return false;
@@ -72,20 +107,15 @@ export default class BuySellStore {
 
   @action makeTransaction = () => {
     console.log('======= TRANSACTION TYPE', this.transactionType)
-    if(this.transactionType === 'Buy') {
+    if (this.transactionType === 'Buy') {
       return this.buy()
+    } else if (this.transactionType === 'Sell') {
+      return this.sell();
+    } else if (this.transactionType === 'Short') {
+      return this.short();
+    } else if (this.transactionType === 'Cover') {
+      return this.cover();
     }
-  }
-
-  @action sell = () => {
-    return new Promise((resolve, reject) => {
-      console.log('SELL');
-      this.sellInProgress = true;
-      setInterval(() => {
-        this.sellInProgress = false;
-        resolve()
-      })
-    })
   }
 
   @action buy = () => {
@@ -106,20 +136,48 @@ export default class BuySellStore {
         commission: 10
       }
 
-      console.log('BUY', params, validity_props[this.validityIndex].query, order_type[this.orderTypeIndex].query)
+
+      const orderTypeIndex = order_type.findIndex(t => t.name === this.orderTypeName);
+      console.log('BUY', params, validity_props[this.validityIndex].query, order_type[orderTypeIndex].query)
 
       buyApiCall(params)
-      .then((res) => {
-        console.log('buy res', res);
-        this.buyInProgress = false;
+        .then((res) => {
+          console.log('buy res', res);
+          this.buyInProgress = false;
+          resolve();
+        })
+        .catch((err) => {
+          console.log('buy err', err);
+          this.buyInProgress = false;
+          reject(err);
+        });
+    });
+  }
+
+  @action sell = () => {
+    return new Promise((resolve, reject) => {
+      console.log('SELL');
+      setInterval(() => {
         resolve();
       })
-      .catch((err) => {
-        console.log('buy err', err);
-        this.buyInProgress = false;
-        reject(err);
-      })
+    })
+  }
 
+  @action short = () => {
+    return new Promise((resolve, reject) => {
+      console.log('SHORT');
+      setInterval(() => {
+        resolve();
+      })
+    })
+  }
+
+  @action cover = () => {
+    return new Promise((resolve, reject) => {
+      console.log('COVER');
+      setInterval(() => {
+        resolve();
+      })
     })
   }
 

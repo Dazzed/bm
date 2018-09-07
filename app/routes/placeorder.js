@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -32,6 +26,7 @@ import Tabs from 'react-native-tabs';
 import OrderBuy from './orderbuy';
 import OrderSell from './ordersell';
 import OrderShort from './ordershort';
+import OrderCover from './ordercover';
 import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
@@ -43,26 +38,22 @@ import { observer } from 'mobx-react';
 
 @observer
 class PlaceOrder extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       numField: null,
-      isValidityVisible: false,
+      isOrderTypeVisible: false,
       isConfirmVisible: false,
       isOrderPlaced: false,
       animateOut: 'slideOutRight',
-      page:this.props.orderType,
+      page: props.orderType,
       colors: colors(props.globalData.isDarkThemeActive)
     };
-    
+
     // save order type into mobx on page load
     buySellStore.setTransactionType(this.props.orderType);
-    
+
     this.hideOrderChild = this.props.hideOrder.bind(this);
-    this.hideOrderValidity = this.hideOrderValidity.bind(this);
-    this.showOrderConfirm = this.showOrderConfirm.bind(this);
-    this.hideOrderConfirm = this.hideOrderConfirm.bind(this);
-    this.cancelOrderConfirm = this.cancelOrderConfirm.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -78,89 +69,123 @@ class PlaceOrder extends React.Component {
   }
 
   getTabView() {
+    const propsToPass = {
+      hideOrder: this.hideOrderChild,
+      showOrderConfirm: this.showOrderConfirm
+    };
     switch (this.state.page) {
       case 'Buy':
-        return <OrderBuy
-                hideOrder={this.hideOrderChild}
-                showOrderConfirm={this.showOrderConfirm}/>
-        break;
+        return <OrderBuy {...propsToPass} />;
       case 'Sell':
-        return <OrderSell
-                hideOrder={this.hideOrderChild}
-                showOrderConfirm={this.showOrderConfirm}/>
-        break;
+        return <OrderSell {...propsToPass} />;
       case 'Short':
-        return <OrderShort
-                hideOrder={this.hideOrderChild}
-                showOrderConfirm={this.showOrderConfirm}/>
-        break;
+        return <OrderShort {...propsToPass} />;
+      case 'Cover':
+        return <OrderCover {...propsToPass} />;
     }
+    throw new Error(`placeorder.js getTabView, invalid value '${this.state.page}' in this.state.page`);
   }
-  showOrderValidity(){
-    this.setState({ isValidityVisible: true })
-  }
+
   setOrderValidity(value) {
-    const { setOrderTypeIndex } = buySellStore;
-    setOrderTypeIndex(value);
-    this.hideOrderValidity();
+    const { setOrderTypeName } = buySellStore;
+    const { name: thisOrderName } = this.generateOrderTypeOptions().find(o => o.value === value);
+    setOrderTypeName(thisOrderName);
+    this.toggleOrderType();
   }
 
-  hideOrderValidity(){
-    this.setState({ isValidityVisible: false})
-  }
+  toggleOrderType = () =>
+    this.setState(({ isOrderTypeVisible }) => ({ isOrderTypeVisible: !isOrderTypeVisible }));
 
-  showOrderConfirm() {
+  showOrderConfirm = () => {
     this.setState({ isConfirmVisible: true })
   }
-  hideOrderConfirm() {
+
+  hideOrderConfirm = () => {
     this.setState({ isConfirmVisible: false, animateOut: 'slideOutRight' })
   }
-  cancelOrderConfirm() {
+
+  cancelOrderConfirm = () => {
     this.setState({ isConfirmVisible: false, animateOut: 'slideOutDown' })
-    setTimeout(() => {this.props.hideOrder()}, 0.1)
+    setTimeout(() => { this.props.hideOrder() }, 0.1)
   }
 
   setPageType(el) {
     buySellStore.setTransactionType(el.props.name);
     this.setState({
-      page:el.props.name
-    })
+      page: el.props.name
+    });
+
   }
 
-  render() {
-    const { orderTypeIndex } = buySellStore;
+  generateOrderTypeOptions = () => {
+    switch (this.state.page) {
+      case 'Buy':
+      case 'Short':
+      case 'Cover':
+        return order_type
+          .filter(t => t.query === 'market' || t.query === 'limit')
+          .map((t, i) => ({ ...t, value: i }));
+      case 'Sell':
+        return order_type;
+    }
+    throw new Error(`placeorder.js generateOrderTypeOptions, invalid value '${this.state.page}' in this.state.page`);
+  };
 
+  render() {
+    const { orderTypeName } = buySellStore;
+    const orderTypeOptions = this.generateOrderTypeOptions();
+    let initialValueIndex = orderTypeOptions.findIndex(o => o.name === orderTypeName);
+    if (initialValueIndex === -1) {
+      initialValueIndex = 0;
+    }
+    const {
+      targetStockData
+    } = this.props;
     return (
-      <View style={[{backgroundColor: this.state.colors['white']}, order.accContainer]}>
-        <View style={[{backgroundColor: this.state.colors['white']}, order.accInfoContainer]}>
-            <TouchableOpacity style={order.leftCta} onPress={() => this.props.hideOrder()}>
-              <Image
-                source={require('../images/close.png')}
-                style={styles.closeImg}
-              />
-            </TouchableOpacity>
-          <Text style={[{color: this.state.colors['darkSlate']}, order.mainCta]}>{this.state.page} APPL</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, order.orderType, fonts.hindGunturRg]}>{order_type[orderTypeIndex].label}</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, order.rightCta]} onPress={() => this.showOrderValidity()}>Edit type</Text>
-          <Tabs selected={this.state.page} style={[{backgroundColor:this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, order.tabBtns]}
-                selectedStyle={{color:this.state.colors['blue']}} onSelect={el=> this.setPageType(el)}>
-              <Text name="Buy" style={[{color: this.state.colors['lightGray']}, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth:1,borderBottomColor:colors.blue}}>Buy</Text>
-              <Text name="Sell" style={[{color: this.state.colors['lightGray']}, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth:1,borderBottomColor:colors.blue}}>Sell</Text>
-              <Text name="Short" style={[{color: this.state.colors['lightGray']}, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth:1,borderBottomColor:colors.blue}}>Short</Text>
+      <View style={[{ backgroundColor: this.state.colors['white'] }, order.accContainer]}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, order.accInfoContainer]}>
+          <TouchableOpacity style={order.leftCta} onPress={this.props.hideOrder}>
+            <Image
+              source={require('../images/close.png')}
+              style={styles.closeImg}
+            />
+          </TouchableOpacity>
+          <Text
+            style={[{ color: this.state.colors['darkSlate'] }, order.mainCta]}
+          >
+            {this.state.page} {targetStockData.ticker || 'Ticker N/A'}
+          </Text>
+          <Text
+            style={[{ color: this.state.colors['lightGray'] }, order.orderType, fonts.hindGunturRg]}
+          >
+            {orderTypeOptions[initialValueIndex].label}
+          </Text>
+          <Text
+            style={[{ color: this.state.colors['lightGray'] }, order.rightCta]}
+            onPress={this.toggleOrderType}
+          >
+            Edit type
+          </Text>
+          <Tabs selected={this.state.page} style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, order.tabBtns]}
+            selectedStyle={{ color: this.state.colors['blue'] }} onSelect={el => this.setPageType(el)}>
+            <Text name="Buy" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Buy</Text>
+            <Text name="Sell" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Sell</Text>
+            <Text name="Short" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Short</Text>
+            <Text name="Cover" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Cover</Text>
           </Tabs>
         </View>
-        <ScrollView style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContainer]}>
+        <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContainer]}>
           {this.getTabView()}
           <Modal
-            isVisible={this.state.isValidityVisible}
+            isVisible={this.state.isOrderTypeVisible}
             animationIn={'slideInUp'}
             animationOut={'slideOutDown'}
             style={order.modal}
-            onModalHide={() => {this.hideOrderValidity()}}>
-            <View style={[{backgroundColor: this.state.colors['contentBg']}, ordertypes.tabContent]}>
+            onModalHide={() => false}>
+            <View style={[{ backgroundColor: this.state.colors['contentBg'] }, ordertypes.tabContent]}>
               <RadioForm
-                radio_props={order_type}
-                initial={orderTypeIndex}
+                radio_props={orderTypeOptions}
+                initial={initialValueIndex}
                 formHorizontal={false}
                 labelHorizontal={true}
                 borderWidth={1}
@@ -169,10 +194,10 @@ class PlaceOrder extends React.Component {
                 buttonSize={22}
                 buttonOuterSize={20}
                 animation={false}
-                labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
-                radioLabelActive={[{color: this.state.colors['lightGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
-                labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray']}, styles.radioLabelWrap]}
-                onPress={(value) => {this.setOrderValidity(value)}}
+                labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+                radioLabelActive={[{ color: this.state.colors['lightGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+                labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+                onPress={(value) => { this.setOrderValidity(value) }}
                 style={ordertypes.radioField}
               />
             </View>
@@ -184,7 +209,9 @@ class PlaceOrder extends React.Component {
             style={order.confirmModal}>
             <OrderConf
               hideOrderConfirm={this.hideOrderConfirm}
-              cancelOrderConfirm={this.cancelOrderConfirm} />
+              cancelOrderConfirm={this.cancelOrderConfirm} 
+              targetStockData={targetStockData}    
+            />
           </Modal>
         </ScrollView>
       </View>
@@ -195,6 +222,9 @@ class PlaceOrder extends React.Component {
 // export default PlaceOrder;
 PlaceOrder.propTypes = {
   globalData: PropTypes.object.isRequired,
+  targetStockData: PropTypes.object.isRequired,
+  orderType: PropTypes.string.isRequired,
+  hideOrder: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

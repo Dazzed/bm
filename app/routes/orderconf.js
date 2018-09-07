@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -49,6 +44,7 @@ class OrderConf extends React.Component {
     };
     this.hideOrderPlaced = this.hideOrderPlaced.bind(this);
   }
+
   componentDidUpdate(prevProps) {
     const {
       globalData: prevGlobalData
@@ -61,71 +57,73 @@ class OrderConf extends React.Component {
     }
   }
 
-  confirmOrder() {
+  confirmOrder = () => {
     const { makeTransaction } = buySellStore;
-    console.log('======== ORDER CONFIRM PRESSED', this);
+    console.info('======== ORDER CONFIRM PRESSED');
     makeTransaction()
-    .then((res) => {
-      console.log('=== order placed')
-      this.setState({ isOrderPlaced: true });
-    })
-    .catch((err) => {
-      console.log('err', err);
-    })
+      .then((res) => {
+        console.info('=== order placed');
+        this.setState({ isOrderPlaced: true });
+      })
+      .catch((err) => {
+        console.info('err', err);
+      })
   }
+
   hideOrderPlaced() {
     this.setState({ isOrderPlaced: false, animateOut: 'slideOutDown' })
-    setTimeout(() => {this.props.cancelOrderConfirm()}, 0.1)
+    setTimeout(this.props.cancelOrderConfirm, 0.1)
   }
 
   render() {
-
+    const { targetStockData } = this.props;
     const { tickerDataJS } = chartStore;
     const {
       quantity,
-      calculatedCost,
+      price: enteredPrice,
+      calculatedCostCustom,
       transactionType,
       validityIndex,
-      orderTypeIndex
+      orderTypeName
     } = buySellStore;
 
-    let ticker = 'APPL';
-    let pricePerShare = tickerDataJS.Price;
-    let totalPrice = calculatedCost;
+    let ticker = targetStockData.ticker;
+    let pricePerShare = enteredPrice || tickerDataJS.Price;
+    let totalPrice = calculatedCostCustom;
 
     let purchaseAction = transactionType + 'ing';
     let sharesOrShareText = 'shares';
-    if(quantity === 1) {
+    if (quantity === 1) {
       sharesOrShareText = 'share';
     }
 
     let validity = validity_props[validityIndex].label;
-    let type = order_type[orderTypeIndex].label;
+    let type = order_type.find(t => t.name === orderTypeName).label;
 
-    return(
+    return (
       <View>
-        <View style={[{ borderBottomColor: this.state.colors['lightGray'], backgroundColor: this.state.colors['white']}, order.menuBorder]}>
+        <View style={[{ borderBottomColor: this.state.colors['lightGray'], backgroundColor: this.state.colors['white'] }, order.menuBorder]}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideOrderConfirm()}>
+            <TouchableOpacity style={styles.leftCta} onPress={this.props.hideOrderConfirm}>
               <Image
                 source={require('../images/back.png')}
                 style={styles.backImg}
               />
             </TouchableOpacity>
             <Text style={[styles.mainCta, fonts.hindGunturRg]} onPress={() => this.showSearch()}>Search Stocks</Text>
-            <TouchableOpacity style={[styles.rightCta]} onPress={() => {this.props.cancelOrderConfirm()}}>
-              <Text style={[{color: this.state.colors['lightGray']}, styles.rightCtaTxt, fonts.hindGunturRg]}>Cancel</Text>
+            <TouchableOpacity style={[styles.rightCta]} onPress={() => { this.props.cancelOrderConfirm() }}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, styles.rightCtaTxt, fonts.hindGunturRg]}>Cancel</Text>
             </TouchableOpacity>
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.boldTitleConf, fonts.hindGunturBd]}>Confirmation</Text>
           </View>
         </View>
-        <View style={[{backgroundColor: this.state.colors['white']}, order.tabContent]}>
+        <View style={[{ backgroundColor: this.state.colors['white'] }, order.tabContent]}>
           <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.confDetails]}>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>You are {purchaseAction}</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>{numberWithCommas(quantity)} {sharesOrShareText} of {ticker}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>You are {purchaseAction}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>{numberWithCommas(quantity)} {sharesOrShareText} of {ticker}</Text>
             <Text style={order.confSpacing}></Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>Each share is ${numberWithCommas(pricePerShare)}</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, order.confTxt, fonts.hindGunturLt]}>for a total of <Text style={styles.greentTxt}>${numberWithCommas(totalPrice)}</Text></Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>Each share is ${numberWithCommas(pricePerShare)}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>for a total of <Text style={styles.greentTxt}>${numberWithCommas(totalPrice)}</Text></Text>
             <Text style={order.confSpacing}></Text>
           </View>
           <View style={order.confirmContainer}>
@@ -154,8 +152,8 @@ class OrderConf extends React.Component {
               <Text style={[order.confirmColRight, fonts.hindGunturRg]}>{type}</Text>
             </View>
             <Text style={order.confSpacing}></Text>
-            <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, styles.fullBtn]} onPress={() => {this.confirmOrder()}}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturBd]}>CONFIRM</Text>
+            <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={this.confirmOrder}>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>CONFIRM</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -164,7 +162,12 @@ class OrderConf extends React.Component {
           animationIn={'slideInRight'}
           animationOut={this.state.animateOut}
           style={order.confirmModal}>
-          <OrderPlaced hideOrderPlaced={this.hideOrderPlaced}/>
+          <OrderPlaced
+            globalData={this.props.globalData}
+            hideOrderPlaced={this.hideOrderPlaced}
+            quantityPurchased={quantity}
+            targetStockData={targetStockData}
+          />
         </Modal>
       </View>
     )
@@ -174,6 +177,9 @@ class OrderConf extends React.Component {
 // export default OrderConf;
 OrderConf.propTypes = {
   globalData: PropTypes.object.isRequired,
+  targetStockData: PropTypes.object.isRequired,
+  hideOrderConfirm: PropTypes.func.isRequired,
+  cancelOrderConfirm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -14,22 +14,15 @@ import {
   TabPane
 } from 'react-native';
 import Modal from 'react-native-modal'
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel
-} from 'react-native-simple-radio-button';
-import {
-  setTheme,
-  getTheme,
-  colors
-} from '../store/store';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import {setTheme, getTheme, colors} from '../store/store';
 import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
 import numbers from '../style/numbers';
-import fonts from '../style/fonts';
 // import colors from '../style/colors';
+import OrderTypes from './ordertypes';
+import fonts from '../style/fonts';
 import {
   chartStore,
   buySellStore
@@ -38,20 +31,17 @@ import { validity_props } from '../constants';
 import { observer } from 'mobx-react';
 
 @observer
-class OrderBuy extends React.Component {
+class OrderCover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       numField: null,
       isTypeVisible: false,
-      // orderValidity: 0,
-      // marketPrice: 153.53,
-      // estimatedCost: 0,
       colors: colors(props.globalData.isDarkThemeActive),
       activeInputName: 'quantity'
     };
   }
-
+  
   componentDidUpdate(prevProps) {
     const {
       globalData: prevGlobalData
@@ -89,7 +79,7 @@ class OrderBuy extends React.Component {
     setValidityIndex(value);
     this.hideOrderTypes()
   }
-  hideOrderTypes(value){
+  hideOrderTypes(){
     this.setState({ isTypeVisible: false })
   }
 
@@ -105,6 +95,7 @@ class OrderBuy extends React.Component {
     } = buySellStore;
     const { activeInputName } = this.state;
     const activeBorderBottomStyle = { borderBottomColor: this.state.colors['darkSlate'] };
+
     return(
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
@@ -125,10 +116,10 @@ class OrderBuy extends React.Component {
             </Text>
           </View>
           <View 
-            style={activeInputName === 'price' ? [order.detailsFirstRow,activeBorderBottomStyle]: order.detailsRow}
+            style={order.detailsRow}
           >
             <Text 
-              style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}
+              style={activeInputName === 'price' ? [order.detailsFirstRow,activeBorderBottomStyle]: order.detailsRow}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               MARKET PRICE
@@ -152,7 +143,7 @@ class OrderBuy extends React.Component {
           </View>
           <View style={order.detailsRow}>
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>
-              ESTIMATED COST
+              ESTIMATED CREDIT
             </Text>
             <Text 
               style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
@@ -214,7 +205,7 @@ class OrderBuy extends React.Component {
             </View>
             <View style={[order.btnColumn, order.btnRight]}>
               <TouchableOpacity style={styles.buyBtn} onPress={this.props.showOrderConfirm}>
-                <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>PLACE ORDER</Text>
+                <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>COVER</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -224,8 +215,8 @@ class OrderBuy extends React.Component {
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
           style={order.modal}
-          onModalHide={() => {this.hideOrderTypes()}}>
-          <View style={[ordertypes.tabContent, {backgroundColor: this.state.colors['contentBg']}]}>
+          onModalHide={() => {this.hideOrderTypes()}}>>
+          <View style={[ordertypes.tabContent, { backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
               initial={validityIndex}
@@ -237,9 +228,9 @@ class OrderBuy extends React.Component {
               buttonSize={22}
               buttonOuterSize={20}
               animation={false}
-              labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
-              radioLabelActive={[{color: this.state.colors['darkGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
-              labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+              labelStyle={[styles.radioLabel,fonts.hindGunturRg]}
+              radioLabelActive={[styles.activeRadioLabel,fonts.hindGunturBd]}
+              labelWrapStyle={styles.radioLabelWrap}
               onPress={(value) => {this.setOrderTypes(value)}}
               style={ordertypes.radioField}
             />
@@ -250,8 +241,7 @@ class OrderBuy extends React.Component {
   }
 }
 
-// export default OrderBuy;
-OrderBuy.propTypes = {
+OrderCover.propTypes = {
   globalData: PropTypes.object.isRequired,
   showOrderConfirm: PropTypes.func.isRequired,
   hideOrder: PropTypes.func.isRequired,
@@ -261,4 +251,4 @@ const mapStateToProps = state => ({
   globalData: selectGlobalData(state)
 });
 
-export default connect(mapStateToProps, null)(OrderBuy);
+export default connect(mapStateToProps, null)(OrderCover);

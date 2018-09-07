@@ -1,13 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -18,11 +12,15 @@ import {
   TouchableHighlight,
   TabbedArea,
   TabPane,
-  Dimensions
+  Dimensions,
+  Linking
 } from 'react-native';
+import {
+  shareOnFacebook,
+  shareOnTwitter,
+} from 'react-native-social-share';
 
-import Modal from 'react-native-modal'
-
+import { selectGlobalData } from '../selectors';
 import OrderTypes from './ordertypes';
 
 import styles from '../style/style';
@@ -30,7 +28,6 @@ import order from '../style/order';
 import fonts from '../style/fonts';
 
 import {setTheme, getTheme, colors} from '../store/store';
-
 
 class OrderPlaced extends React.Component {
   constructor(props) {
@@ -53,7 +50,27 @@ class OrderPlaced extends React.Component {
     }
   }
 
+  tweet = () => {
+    const {
+      targetStockData,
+      quantityPurchased
+    } = this.props;
+    console.info(58, 'here');
+    shareOnTwitter({
+        'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
+        'link': 'http://blumartini.com/download',
+      },
+      (results) => {
+        console.info(results);
+      }
+    );
+  }
+
   render() {
+    const {
+      targetStockData,
+      quantityPurchased
+    } = this.props;
     return(
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={[{borderBottomColor: this.state.colors['lightGray']}, order.menuBorder]}>
@@ -68,24 +85,24 @@ class OrderPlaced extends React.Component {
               />
             </View>
             <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>You just bought</Text>
-            <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>10 shares of APPL</Text>
+            <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>{quantityPurchased} {quantityPurchased < 2 ? 'share' : 'shares'} of {targetStockData.ticker}</Text>
             <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>Cheers!</Text>
             <Text style={order.confSpacing}></Text>
             <View style={order.btnWrap}>
-              <TouchableHighlight style={[{borderColor: this.state.colors['darkGray']}, order.optionbtn]} onPress={() => {this.props.hideOrderPlaced()}}>
+              <TouchableHighlight style={[{borderColor: this.state.colors['darkGray']}, order.optionbtn]} onPress={this.props.hideOrderPlaced}>
                 <Text style={[{color: this.state.colors['darkGray']}, styles.touchOption, fonts.hindGunturMd]}>DONE</Text>
               </TouchableHighlight>
             </View>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, order.shareContainer]}>
-            <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => {this.props.hideOrderPlaced()}}>
+            <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => Linking.openURL(`https://stocktwits.com/symbol/${targetStockData.ticker}`)}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON STOCKTWITS</Text>
             </TouchableHighlight>            
-            <TouchableHighlight style={styles.fullBtnTwitter} onPress={() => {this.props.hideOrderPlaced()}}>
+            <TouchableHighlight style={styles.fullBtnTwitter} onPress={this.tweet}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON TWITTER</Text>
-            </TouchableHighlight>            
+            </TouchableHighlight>
           </View>   
-        </View>     
+        </View>
       </View>
     )
   }
@@ -94,6 +111,9 @@ class OrderPlaced extends React.Component {
 // export default OrderPlaced;
 OrderPlaced.propTypes = {
   globalData: PropTypes.object.isRequired,
+  quantityPurchased: PropTypes.object.isRequired,
+  targetStockData: PropTypes.object.isRequired,
+  hideOrderPlaced: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -313,17 +313,20 @@ let order_type = [
   {
     label: 'Market order',
     value: 0,
-    query: 'market'
+    query: 'market',
+    name: 'market'
   },
   {
     label: 'Limit order',
     value: 1,
-    query: 'limit'
+    query: 'limit',
+    name: 'limit'
   },
   {
     label: 'Stop Loss order',
     value: 2,
-    query: ''
+    query: '',
+    name: 'stop_loss'
   }
 ];
 
