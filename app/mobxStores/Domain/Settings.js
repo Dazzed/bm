@@ -76,7 +76,7 @@ export default class Settings {
     }
 
     @action setOrderValue = (value) => {
-      if(!this.settingsData || !this.settingsData.newsSource) {
+      if(!this.settingsData) {
         return
       } else {
         let oldSettingsData = this.settingsData;

@@ -154,7 +154,6 @@ export default class AuthStore {
           if (res.ok) {
             loginData = res.json;
             this.setLoginData(res.json)
-            settingsStore.getSettings();
             userId = res.json.userId;
 
             return saveToken(res.json.id)
@@ -184,11 +183,13 @@ export default class AuthStore {
           console.log('after populate user by id', res)
           this.loginLoading = false;
           if (res.ok) {
-            this.setUserData(res.json)
-            resolve({
-              userData: res,
-              loginData: loginData
-            })
+            settingsStore.getSettings().then(() => {
+              this.setUserData(res.json);
+              return resolve({
+                userData: res,
+                loginData: loginData
+              });
+            });
           } else {
             this.loginErrorPresent = true;
           }

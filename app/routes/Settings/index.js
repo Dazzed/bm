@@ -245,23 +245,6 @@ class Settings extends Component {
 
 
   renderAutoLogOption = () => {
-    // const { autoLog } = settingsStore;
-    // if (autoLog !== null && autoLog !== undefined) {
-    //   return (
-    //     <View>
-    //       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-    //       <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
-    //         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-    //         <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   );
-    // } else {
-    //   return <View>
-    //     <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-    //     <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Loading...</Text>
-    //   </View>
-    // }
     const { autoLog } = settingsStore;
     const targetIndex = autoLogOffOptions.findIndex(o => o.apiValue === autoLog);
     return (
