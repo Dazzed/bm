@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -38,6 +39,7 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		36F58FF5A514483AB5E883D5 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7CECB610A8E14BFF87F7A673 /* Octicons.ttf */; };
 		4483DFE55E0E4B9EB37A9DD8 /* GothamSSm-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E607CE30CE784EC3A8E83BAB /* GothamSSm-Bold.otf */; };
+		5A25CBA3EE184B5997D034A3 /* ReactNativeSocialShareTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = CD75F2329CD94FF8BE07B2AC /* ReactNativeSocialShareTests.xctest */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		71D797FD6E49497AA12C26B1 /* GothamSSm-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08B424B2493D4F2582B0895E /* GothamSSm-Medium.ttf */; };
 		745D782D9B1C4015A0579028 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7422BA60BDC24725971E1AF1 /* Roboto_medium.ttf */; };
@@ -61,9 +63,8 @@
 		E9FEBFCE5FA44E2880028087 /* HindGuntur-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 016A82FBF29C45DBB75C3C76 /* HindGuntur-Bold.ttf */; };
 		F6A05652641F44EB91925E6F /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE4B45675CAF408EA92801C7 /* Zocial.ttf */; };
 		F821B3E561CA4678A9DB2F6E /* HindGuntur-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2C0296ED0C04C44B1D917E3 /* HindGuntur-SemiBold.ttf */; };
+		FC2D453C28084E4FAF50078E /* ReactNativeSocialShare.app in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EE032FBAA547D6A74C6A9D /* ReactNativeSocialShare.app */; };
 		FF4A7073391141128F0DB83C /* GothamSSm-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D40BD246F0224FEDB4D51C34 /* GothamSSm-Book.ttf */; };
-		FC2D453C28084E4FAF50078E /* ReactNativeSocialShare.app in Resources */ = {isa = PBXBuildFile; fileRef = 29EE032FBAA547D6A74C6A9D /* ReactNativeSocialShare.app */; };
-		5A25CBA3EE184B5997D034A3 /* ReactNativeSocialShareTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = CD75F2329CD94FF8BE07B2AC /* ReactNativeSocialShareTests.xctest */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,6 +397,7 @@
 		1906795F4AF84A029B91D1E3 /* HindGuntur-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "HindGuntur-Medium.ttf"; path = "../assets/fonts/HindGuntur-Medium.ttf"; sourceTree = "<group>"; };
 		2189963D193C4D01876C8F28 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		22A196295032470E86685DF5 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../assets/fonts/FontAwesome.ttf; sourceTree = "<group>"; };
+		29EE032FBAA547D6A74C6A9D /* ReactNativeSocialShare.app */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReactNativeSocialShare.app; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* LostAvenue-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LostAvenue-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* LostAvenue-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LostAvenue-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,8 +417,10 @@
 		9DE31061F6BD4A6DBC7B1883 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = ../assets/fonts/Foundation.ttf; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B2C0296ED0C04C44B1D917E3 /* HindGuntur-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "HindGuntur-SemiBold.ttf"; path = "../assets/fonts/HindGuntur-SemiBold.ttf"; sourceTree = "<group>"; };
+		BA7862FF265D434CA9AC493E /* ReactNativeSocialShare.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeSocialShare.xcodeproj; path = "../node_modules/react-native-social-share/ReactNativeSocialShare.xcodeproj"; sourceTree = "<group>"; };
 		C2B704D03A314C909E385B4D /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = ../assets/fonts/Entypo.ttf; sourceTree = "<group>"; };
 		C6A2143BC4CC40FC95888CC6 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
+		CD75F2329CD94FF8BE07B2AC /* ReactNativeSocialShareTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReactNativeSocialShareTests.xctest; sourceTree = "<group>"; };
 		CE4B45675CAF408EA92801C7 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = ../assets/fonts/Zocial.ttf; sourceTree = "<group>"; };
 		CEA1A9FDD84E4AF58780BB6F /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = ../assets/fonts/Roboto.ttf; sourceTree = "<group>"; };
 		D1DBF3ED520549CAAA92487D /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
@@ -425,9 +429,6 @@
 		E607CE30CE784EC3A8E83BAB /* GothamSSm-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GothamSSm-Bold.otf"; path = "../assets/fonts/GothamSSm-Bold.otf"; sourceTree = "<group>"; };
 		F365FB6DAEA84D0CBD79F707 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "rubicon-icon-font.ttf"; path = "../assets/fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; };
 		FC770451A36E459D95DD3D51 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = ../assets/fonts/Ionicons.ttf; sourceTree = "<group>"; };
-		BA7862FF265D434CA9AC493E /* ReactNativeSocialShare.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeSocialShare.xcodeproj"; path = "../node_modules/react-native-social-share/ReactNativeSocialShare.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		29EE032FBAA547D6A74C6A9D /* ReactNativeSocialShare.app */ = {isa = PBXFileReference; name = "ReactNativeSocialShare.app"; path = "ReactNativeSocialShare.app"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.application; explicitFileType = undefined; includeInIndex = 0; };
-		CD75F2329CD94FF8BE07B2AC /* ReactNativeSocialShareTests.xctest */ = {isa = PBXFileReference; name = "ReactNativeSocialShareTests.xctest"; path = "ReactNativeSocialShareTests.xctest"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.cfbundle; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -459,8 +460,8 @@
 				112F28157C5443FDB422B121 /* libRCTOrientation.a in Frameworks */,
 				A7870297C86544DD99740E69 /* libTouchID.a in Frameworks */,
 				7D93C9737E0B45B9986FCF4F /* libRNSVG.a in Frameworks */,
-				FC2D453C28084E4FAF50078E /* ReactNativeSocialShare.app in Resources */,
-				5A25CBA3EE184B5997D034A3 /* ReactNativeSocialShareTests.xctest in Resources */,
+				FC2D453C28084E4FAF50078E /* ReactNativeSocialShare.app in Frameworks */,
+				5A25CBA3EE184B5997D034A3 /* ReactNativeSocialShareTests.xctest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,6 +753,8 @@
 				4482E628ECF5440A9613470C /* libRCTOrientation.a */,
 				4EB6171318A64F429B0C3E19 /* libTouchID.a */,
 				2189963D193C4D01876C8F28 /* libRNSVG.a */,
+				29EE032FBAA547D6A74C6A9D /* ReactNativeSocialShare.app */,
+				CD75F2329CD94FF8BE07B2AC /* ReactNativeSocialShareTests.xctest */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";

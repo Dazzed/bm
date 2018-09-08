@@ -60,7 +60,7 @@ const settings = StyleSheet.create({
     // color: colors.darkSlate
   },
   inputSelected: {
-    flex: 1,
+    flex: 1.5,
     fontSize: 14,
     textAlign: 'right',
     marginRight:15,
@@ -82,6 +82,14 @@ const settings = StyleSheet.create({
     // color: colors.darkSlate,
     paddingLeft: 10
   },
+  downArrowOpen: {
+    width: 12,
+    height: 6,
+    position: 'absolute',
+    right: 80,
+    bottom: 138,
+    zIndex: 1
+  }
 
 });
 module.exports = settings;
