@@ -245,23 +245,6 @@ class Settings extends Component {
 
 
   renderAutoLogOption = () => {
-    // const { autoLog } = settingsStore;
-    // if (autoLog !== null && autoLog !== undefined) {
-    //   return (
-    //     <View>
-    //       <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-    //       <TouchableOpacity style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]} onPress={(value) => { this.showAutoLog() }}>
-    //         <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Log out after</Text>
-    //         <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>{sort_props[autoLog].label} inactivity</Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   );
-    // } else {
-    //   return <View>
-    //     <Text style={[{ color: this.state.colors['darkSlate'] }, settings.fieldTitle, fonts.hindGunturBd]}>AUTO LOG OFF</Text>
-    //     <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Loading...</Text>
-    //   </View>
-    // }
     const { autoLog } = settingsStore;
     const targetIndex = autoLogOffOptions.findIndex(o => o.apiValue === autoLog);
     return (
@@ -276,7 +259,7 @@ class Settings extends Component {
           </Text>
           <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>
             {autoLogOffOptions[targetIndex === -1 ? 0 : targetIndex].label}
-            {autoLog !== 0 ? 'inactivity' : null}</Text>
+            {autoLog !== 0 ? '' : null}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -285,6 +268,7 @@ class Settings extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const { autoLog } = settingsStore;
+    const targetIndex = autoLogOffOptions.findIndex(o => o.apiValue === autoLog);
 
     const {
       globalData
@@ -426,10 +410,14 @@ class Settings extends Component {
             animationOut={'slideOutDown'}
             style={styles.bottomModalTall}
             onModalHide={this.toggleModal.bind(this, 'isAutoLogVisible')}>
+            <Image
+              source={require('../../images/arrowblue.png')}
+              style={[settings.downArrowOpen]}
+            />
             <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, styles.bottomModalTall]}>
               <RadioForm
                 radio_props={sort_props}
-                initial={autoLog}
+                initial={targetIndex}
                 formHorizontal={false}
                 labelHorizontal={true}
                 borderWidth={1}

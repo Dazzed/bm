@@ -1295,15 +1295,20 @@ class Chart extends Component {
     } else {
       return <View style={chart.container}>
         {this.showOrientation()}
-        <Modal
-          isVisible={this.state.isOrderVisible}
-          animationIn={'slideInUp'}
-          animationOut={'slideOutDown'}
-          style={order.modal}>
-          <PlaceOrder
-            hideOrder={this.hideOrder}
-            orderType={this.state.orderType} />
-        </Modal>
+        {
+          this.state.isOrderVisible &&
+            <Modal
+              isVisible
+              animationIn={'slideInUp'}
+              animationOut={'slideOutDown'}
+              style={order.modal}>
+              <PlaceOrder
+                hideOrder={this.hideOrder}
+                orderType={this.state.orderType} 
+                targetStockData={this.props.navigation.state.params.data}
+              />
+            </Modal>
+        }
         <Modal
           isVisible={this.state.isNewsVisible}
           animationIn={'slideInUp'}

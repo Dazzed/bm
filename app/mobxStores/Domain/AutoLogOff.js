@@ -16,10 +16,8 @@ export default class AutoLogOff {
   }
 
   @action startTimer = () => {
-    console.info(19, 'in starttimer');
     const { autoLog } = settingsStore;
     const targetIndex = autoLogOffOptions.findIndex(o => o.apiValue === autoLog);
-    console.info({autoLog, targetIndex});
     if (targetIndex === -1 || targetIndex === 0) {
       return;
     }
