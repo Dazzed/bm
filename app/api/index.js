@@ -16,7 +16,8 @@ const getSectorIndustries = (params) => get('tickerLists/sectors-industries', pa
 const updateSettings = (params) => get('/users/updateSettings', params);
 const logout = (params) => post('users/logout', params);
 const buy = (params) => get('/orders/buy', params);
-const sell = (params) => post('users/buy', params);
+const sell = (params) => get('/orders/sell', params);
+const shortSell = (params) => get('/orders/shortSell', params);
 const positions = (params) => get('positions', params);
 const accountOrders = (params) => get('/orders/account', params);
 
@@ -38,6 +39,7 @@ export {
     logout,
     buy,
     sell,
+    shortSell,
     positions,
     accountOrders
 }

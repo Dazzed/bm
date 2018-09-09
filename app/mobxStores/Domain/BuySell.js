@@ -7,6 +7,8 @@ export default class BuySellStore {
   constructor() {
   }
 
+  @observable commission = 0;
+
   @observable transactionInProgress = false;
 
   @observable quantity = '';
@@ -73,18 +75,64 @@ export default class BuySellStore {
   @action makeTransaction = () => {
     console.log('======= TRANSACTION TYPE', this.transactionType)
     if(this.transactionType === 'Buy') {
-      return this.buy()
+      return this.buy();
+    } else if(this.transactionType === 'Sell') {
+      return this.sell();
     }
   }
 
+
+// ticker(required),
+// shares(required),
+// orderOption(required),
+// limitPrice,
+// orderValidity,
+// account(required),
+// commission(required)
+
+// ticker=AAPL&shares=10&orderOption=market&account=savings&commission=10
+
+// orderOption[market, limit, stopLoss], orderValidity[dayOnly, extended, GTC], account[savings, checking]
+
   @action sell = () => {
     return new Promise((resolve, reject) => {
-      console.log('SELL');
+      console.log('SELL', this);
+
+      console.log('quantity', this.quantity)
+      console.log('validityIndex', this.validityIndex)
+      console.log('orderTypeIndex', this.orderTypeIndex)
+
       this.sellInProgress = true;
-      setInterval(() => {
+
+      let params = {
+        ticker: 'AAPL',
+        shares: 10,
+        orderOption: 'market',
+        account: 'savings',
+        commission: this.commission
+
+        // limitPrice,
+        // orderValidity,
+      }
+
+      sellApiCall(params)
+      .then((res) => {
+        console.log('sell res', res);
         this.sellInProgress = false;
-        resolve()
+        resolve(res);
       })
+      .catch((err) => {
+        console.log('sell err', err);
+        this.sellInProgress = false;
+        reject(err);
+      })
+    })
+  }
+
+  @action shortSell = () => {
+    return new Promise((resolve, reject) => {
+
+      resolve();
     })
   }
 
@@ -103,7 +151,7 @@ export default class BuySellStore {
         shares: 10,
         orderOption: 'market',
         account: 'savings',
-        commission: 10
+        commission: this.commission
       }
 
       console.log('BUY', params, validity_props[this.validityIndex].query, order_type[this.orderTypeIndex].query)
