@@ -22,8 +22,10 @@ export default class DepositWithdraw {
             let formattedParams = {};
             if (params.type === 'deposit') {
                 formattedParams = {
-                    options: JSON.stringify(options),
-                    account: params.account.subtitle == 'Checking - 1234' ? 'checking' : 'savings'
+                    options: JSON.stringify({
+                        ...options,
+                        account: params.account.subtitle == 'Checking - 1234' ? 'checking' : 'savings'
+                    })
                 };
             } else {
                 formattedParams = options;

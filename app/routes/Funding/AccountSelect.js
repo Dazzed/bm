@@ -59,8 +59,9 @@ export default class AccountSelect extends React.Component {
                 color: theme.darkSlate
             }
             const brokerageAccountBalance = userDataToJs.brokerageAccount || 0;
+
             return <View>
-                <Text style={textStyle}>${numberWithCommas(brokerageAccountBalance)}</Text>
+                <Text style={textStyle}>${numberWithCommas(brokerageAccountBalance.toFixed(2))}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
             </View>
