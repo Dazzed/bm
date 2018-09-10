@@ -119,7 +119,7 @@ class Settings extends Component {
     })
   }
 
-  navToWithdraw() {
+  navToWithdraw = () => {
     this.props.navigation.navigate('AccountSelect', {
       widthdrawDepositMode: 'withdraw'
     })
@@ -148,7 +148,7 @@ class Settings extends Component {
           />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.navToWithdraw()}>
+      <TouchableOpacity onPress={this.navToWithdraw}>
         <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>Withdraw Funds</Text>
           <Image

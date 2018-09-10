@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Button from '../../sharedComponents/Button1';
 import { numberWithCommas } from '../../utility';
 import { observer } from 'mobx-react';
-import { colorStore, accountStore, deviceSizeStore } from '../../mobxStores';
+import { colorStore, accountStore, deviceSizeStore, authStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
 
 @observer
@@ -51,16 +51,16 @@ export default class AccountSelect extends React.Component {
     renderCashAvailable = () => {
         const { selectedAccount } = accountStore;
         const { theme } = colorStore;
-
+        const { userDataToJs } = authStore;
         if(this.state.withdrawDepositMode === 'withdraw') {
-
             let textStyle = {
                 fontSize: 30,
                 textAlign: 'center',
                 color: theme.darkSlate
             }
+            const brokerageAccountBalance = userDataToJs.brokerageAccount || 0;
             return <View>
-                <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
+                <Text style={textStyle}>${numberWithCommas(brokerageAccountBalance)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 10}}></View>
             </View>
