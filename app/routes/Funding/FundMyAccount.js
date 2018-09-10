@@ -142,9 +142,11 @@ export default class FundMyAccount extends React.Component {
             color: theme.darkSlate
         }
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
+            const { userDataToJs } = authStore;
+            const brokerageAccountBalance = userDataToJs.brokerageAccount || 0;
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
                 <View style={{marginVertical: 10}}></View>
-                <Text style={textStyle}>${numberWithCommas(selectedAccount.amount)}</Text>
+                <Text style={textStyle}>${numberWithCommas(brokerageAccountBalance)}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 0}}></View>
                 {this.renderAccountDropdown()}
