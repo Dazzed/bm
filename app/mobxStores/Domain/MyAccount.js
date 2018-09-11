@@ -94,18 +94,18 @@ export default class MyAccountData {
 
   @observable cash = 0;
   @observable changePercent = 0;
-  @observable todayChangePercent = 0;
+  @observable todayChangeChangePercent = 0;
   @observable overallChange = 0;
   @observable overallChangePercent = 0;
   @computed get changePercentJS() {
-    if(this.todayChangePercent === null) {
+    if (this.todayChangeChangePercent === null) {
       return '0.00'
     }
     let plusString = '';
-    if(this.todayChangePercent > 0) {
+    if (this.todayChangeChangePercent > 0) {
       plusString = '+';
     }
-    return plusString + this.todayChangePercent.toFixed(2) + '%';
+    return plusString + this.todayChangeChangePercent.toFixed(2) + '%';
   }
 
   @observable checkingAccount = 0;
@@ -165,14 +165,14 @@ export default class MyAccountData {
 
          priceChange: elem.latestPrice,
         //  priceChangePercentage: elem.priceChangePercentage,
-         priceChangePercentage: 0,
+         priceChangePercentage: elem.changePercent,
         //  priceChangeDecimal: '----???',
-         priceChangeDecimal: 0,
+         priceChangeDecimal: elem.change,
          priceChangeColor: priceChangeColor,
 
          marketValuation: elem.marketValuation,
         //  marketChangePercentage: '???',
-         marketChangePercentage: 0,
+         marketChangePercentage: elem.valuationChangePercent,
          marketChangeDecimal: elem.valuationChange,
          marketChangeColor: marketValuationChangeColor
        }
