@@ -175,7 +175,7 @@ export default class Settings {
       let params = {
         data: JSON.stringify({})
       };
-      updateSettingsApiCall(params)
+      return updateSettingsApiCall(params)
       .then((res) => {
         console.log('========= GET SETTTINGS', res)
         if(res.ok) {

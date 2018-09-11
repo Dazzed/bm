@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   menuBorder: {
     height: 50,
-    paddingTop: 25
+    paddingTop: 30
   },
   menuBorderptions: {
     borderBottomWidth:0.5,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 112,
     fontSize: 16,
-    top: 15,
+    top: 30,
     textAlign: 'center',
     // color: colors.darkSlate
   },

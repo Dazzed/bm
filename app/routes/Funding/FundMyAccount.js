@@ -320,7 +320,7 @@ export default class FundMyAccount extends React.Component {
             disabled = true;
             buttonTitle = 'LOADING...'
         }
-        if(this.state.fundingString == '') {
+        if (this.state.fundingString == '' || this.state.fundingString == '.' || parseFloat(this.state.fundingString) <= 0) {
           disabled = true;
         }
 

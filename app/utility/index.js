@@ -1,5 +1,10 @@
-export const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export const numberWithCommas = (x, decimalPlaces = 0) => {
+  if (parseFloat(x) < 1) {
+    decimalPlaces = 4
+  }
+  return parseFloat(x).toFixed(decimalPlaces).toString().replace(/(^|[^\w.])(\d{4,})/g, function ($0, $1, $2) {
+    return $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, "$&,");
+  });
 };
 
 export const generateHeaderStyles = (theme) => {

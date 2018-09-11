@@ -257,9 +257,14 @@ class Settings extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>
             Log out after
           </Text>
-          <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg]}>
+          <Text style={[{ borderBottomColor: this.state.colors['borderGray'] }, { color: this.state.colors['lightGray'] }, settings.inputSelected, fonts.hindGunturRg, {flex: 6}]}>
             {autoLogOffOptions[targetIndex === -1 ? 0 : targetIndex].label}
             {autoLog !== 0 ? '' : null}</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, { flex: 1, marginTop: 20, textAlign: 'right' }]} >
+            <Image source={this.state.colors['rightArrow']} style={{ width: 10, height: 18 }} />
+          </Text>
+
+          
         </TouchableOpacity>
       </View>
     );
