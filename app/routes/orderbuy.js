@@ -81,15 +81,17 @@ class OrderBuy extends React.Component {
     removeNumber(num, this.state.activeInputName);
   }
 
-  showOrderTypes(){
+  showOrderTypes = () => {
     this.setState({ isTypeVisible: true })
   }
-  setOrderTypes(value) {
+  
+  setOrderValidity = (value) => {
     const { setValidityIndex } = buySellStore;
     setValidityIndex(value);
-    this.hideOrderTypes()
+    this.hideOrderValidity()
   }
-  hideOrderTypes(value){
+
+  hideOrderValidity = () => {
     this.setState({ isTypeVisible: false })
   }
 
@@ -224,7 +226,7 @@ class OrderBuy extends React.Component {
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
           style={order.modal}
-          onModalHide={() => {this.hideOrderTypes()}}>
+          onModalHide={() => {this.hideOrderValidity()}}>
           <View style={[ordertypes.tabContent, {backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
@@ -240,7 +242,7 @@ class OrderBuy extends React.Component {
               labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
               radioLabelActive={[{color: this.state.colors['darkGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
               labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => {this.setOrderTypes(value)}}
+              onPress={(value) => {this.setOrderValidity(value)}}
               style={ordertypes.radioField}
             />
           </View>

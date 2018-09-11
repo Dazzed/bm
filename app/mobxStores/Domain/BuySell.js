@@ -124,7 +124,7 @@ export default class BuySellStore {
     }
   }
 
-  @action conductTransaction = (targetStockData, functionToCall) => {
+  @action _conductTransaction = (targetStockData, functionToCall) => {
     return new Promise((resolve, reject) => {
       this.transactionInProgress = true;
       // orderOption[market, limit]
@@ -145,6 +145,58 @@ export default class BuySellStore {
         account: 'savings',
         commission: 0
       };
+
+      functionToCall(params)
+        .then((res) => {
+          console.info('transaction res', res);
+          this.transactionInProgress = false;
+          if (res.ok !== true) {
+            if (res.json.error) {
+              if (res.json.error.message) {
+                return reject(res.json.error.message);
+              }
+            }
+            return reject('There was an error. Please try again later');
+          }
+          return resolve();
+        })
+        .catch((err) => {
+          console.info('transaction err', err);
+          this.transactionInProgress = false;
+          return reject(err);
+        });
+    });
+  };
+
+  @action conductTransaction = (targetStockData, functionToCall) => {
+    return new Promise((resolve, reject) => {
+      this.transactionInProgress = true;
+      // orderOption[market, limit]
+      // orderValidity[dayOnly, extended, GTC]
+      // account[savings, checking]
+
+
+      let params = {
+        ticker: targetStockData.ticker,
+        shares: Number(this.quantity),
+        orderOption: this.orderTypeName,
+        account: 'savings',
+        commission: 0
+      };
+
+      console.info('conduct transaction');
+      console.info({...params, thisdotprice: this.price, orderValidity: validity_props[this.validityIndex].query })
+
+      if (this.orderTypeName === 'limit') {
+        if (this.price === 0) {
+          return reject('Please Enter a price');
+        }
+        params['limitPrice'] = this.price;
+      }
+
+      if (this.orderTypeName === 'limit' || this.orderTypeName === 'stop_loss') {
+        params['orderValidity'] = validity_props[this.validityIndex].query;
+      }
 
       functionToCall(params)
         .then((res) => {
