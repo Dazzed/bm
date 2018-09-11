@@ -98,7 +98,7 @@ class OrderShort extends React.Component {
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
           <View 
-            style={activeInputName === 'quantity' ? [order.detailsFirstRow, activeBorderBottomStyle] : [order.detailsFirstRow, {borderBottomWidth: 0}]}
+            style={activeInputName === 'quantity' ? [order.detailsFirstRow, activeBorderBottomStyle] : [order.detailsFirstRow]}
           >
             <Text 
               style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}
@@ -113,18 +113,17 @@ class OrderShort extends React.Component {
               {quantity}
             </Text>
           </View>
-          <View 
-            style={order.detailsRow}
+          <View
+            style={orderTypeName !== 'market' ? [order.detailsFirstRow] : order.detailsRow}
           >
-            <Text 
-              style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}
+            <Text
+              style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               MARKET PRICE
             </Text>
-            <Text 
-              style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
-              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
+            <Text
+              style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]}              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               { 
                 orderTypeName === 'market' ? 

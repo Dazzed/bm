@@ -196,7 +196,8 @@ const order = StyleSheet.create({
   btnRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginBottom: 35,
   },
   btnLeft: {
     paddingLeft: 20,
