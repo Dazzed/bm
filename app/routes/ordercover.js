@@ -215,7 +215,7 @@ class OrderCover extends React.Component {
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
           style={order.modal}
-          onModalHide={() => {this.hideOrderTypes()}}>>
+          onModalHide={() => {this.hideOrderTypes()}}>
           <View style={[ordertypes.tabContent, { backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
@@ -228,9 +228,9 @@ class OrderCover extends React.Component {
               buttonSize={22}
               buttonOuterSize={20}
               animation={false}
-              labelStyle={[styles.radioLabel,fonts.hindGunturRg]}
-              radioLabelActive={[styles.activeRadioLabel,fonts.hindGunturBd]}
-              labelWrapStyle={styles.radioLabelWrap}
+              labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+              radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+              labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
               onPress={(value) => {this.setOrderTypes(value)}}
               style={ordertypes.radioField}
             />

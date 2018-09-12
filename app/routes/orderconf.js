@@ -117,7 +117,6 @@ class OrderConf extends React.Component {
                 style={styles.backImg}
               />
             </TouchableOpacity>
-            <Text style={[styles.mainCta, fonts.hindGunturRg]} onPress={() => this.showSearch()}>Search Stocks</Text>
             <TouchableOpacity style={[styles.rightCta]} onPress={() => { this.props.cancelOrderConfirm() }}>
               <Text style={[{ color: this.state.colors['lightGray'] }, styles.rightCtaTxt, fonts.hindGunturRg]}>Cancel</Text>
             </TouchableOpacity>

@@ -8,7 +8,7 @@ import {
 
 import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
-import { numberWithCommas } from '../../utility';
+import { numberWithCommas, numberWithCommasFunding } from '../../utility';
 import { colorStore, accountStore, depositWithdrawStore, myAccountStore, authStore } from '../../mobxStores';
 import { observer } from 'mobx-react';
 import { generateHeaderStyles } from '../../utility';
@@ -144,10 +144,10 @@ export default class FundMyAccount extends React.Component {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
             const { userDataToJs } = authStore;
             const brokerageAccountBalance = userDataToJs.brokerageAccount || 0;
-            console.info(4567, brokerageAccountBalance)
+
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
                 <View style={{marginVertical: 10}}></View>
-                <Text style={textStyle}>${numberWithCommas(brokerageAccountBalance.toFixed(2))}</Text>
+                <Text style={textStyle}>${numberWithCommasFunding(brokerageAccountBalance.toFixed(2))}</Text>
                 <Text style={textStyle}>AVAILABLE</Text>
                 <View style={{marginVertical: 0}}></View>
                 {this.renderAccountDropdown()}
@@ -291,7 +291,7 @@ export default class FundMyAccount extends React.Component {
                     // borderColor: 'red',
                     marginTop: 10
                 }}>
-                    <Text style={textAmountStyle}>$ {numberWithCommas(this.state.fundingString)}</Text>
+                    <Text style={textAmountStyle}>$ {numberWithCommasFunding(this.state.fundingString)}</Text>
                     <TouchableOpacity style={{flex: 0, justifyContent: 'center', height: '100%', opacity: .5}} onPress={() => this.clear()}>
                         <Image
                             style={{height: 30}}

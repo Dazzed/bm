@@ -163,7 +163,7 @@ class HomeScreen extends Component {
           onPress={() => navigate('Login')}>
           <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER? SIGN IN</Text>
         </TouchableHighlight>
-        <Text>Version: 0.0.1 (65)</Text>
+        <Text>Version: 0.0.1 (66)</Text>
         <Modal
           isVisible={this.state.isTermsVisible}
           animationIn={'slideInUp'}

@@ -7,6 +7,12 @@ export const numberWithCommas = (x, decimalPlaces = 0) => {
   });
 };
 
+export const numberWithCommasFunding = (x) => {
+  return x.toString().replace(/(^|[^\w.])(\d{4,})/g, function ($0, $1, $2) {
+    return $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, "$&,");
+  });
+};
+
 export const generateHeaderStyles = (theme) => {
   return {
     headerStyle: {
@@ -122,15 +128,19 @@ export const atLeastOneNumberValidator = (password) => {
 export const sortStringArrayByParam = (targetArray, param, order = 'ASC') => {
   if (order === 'ASC') {
     return targetArray.sort((obj1, obj2) => {
-      if (obj1[param].toLowerCase() > obj2[param].toLowerCase()) {
-        return 1;
+      if (obj1[param] && obj2[param]) {
+        if (obj1[param].toLowerCase() > obj2[param].toLowerCase()) {
+          return 1;
+        }
       }
       return -1;
     });
   } else {
     return targetArray.sort((obj1, obj2) => {
-      if (obj1[param].toLowerCase() < obj2[param].toLowerCase()) {
-        return 1;
+      if (obj1[param] && obj2[param]) {
+        if (obj1[param].toLowerCase() < obj2[param].toLowerCase()) {
+          return 1;
+        }
       }
       return -1;
     });

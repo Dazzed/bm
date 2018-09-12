@@ -131,7 +131,7 @@ class AccountHist extends React.Component {
                     <Text style={[{color: this.state.colors['darkSlate']}, symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
                   </View>
                   <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>
-                    {elem.companyName.length > 23 ? `${elem.companyName.slice(0, 20)}...` : elem.companyName}
+                    {elem.companyName.length > 20 ? `${elem.companyName.slice(0, 17)}...` : elem.companyName}
                   </Text>
                 </View>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>${elem.price.toFixed(2)}</Text>

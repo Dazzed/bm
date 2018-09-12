@@ -78,7 +78,7 @@ const account = StyleSheet.create({
     // color: colors.lightGray,
     fontSize: 14,
     lineHeight: 20,
-    height: 13,
+    height: 15,
     marginBottom: -20
   },
   tabContainer: {
@@ -97,11 +97,17 @@ const account = StyleSheet.create({
     flexDirection: 'row',
     width: '100%'
   },
-  sectionTitle: {
+  securityTitle: {
     marginLeft: 20,
     fontSize: 16,
     flex: 2.5,
     maxWidth: 145,
+  },
+  sectionTitle: {
+    marginLeft: 20,
+    fontSize: 16,
+    flex: 2.5,
+    maxWidth: 185,
     // color: colors.darkGray
   },
   sectionDate: {
@@ -139,7 +145,7 @@ const account = StyleSheet.create({
   titleLast: {
     flex: 2,
     textAlign: 'right',
-    paddingRight: 20
+    paddingRight: 5
   },
   titleCost: {
     fontSize: 10,
@@ -189,7 +195,7 @@ const account = StyleSheet.create({
     paddingTop: 10,
     maxHeight: 70,
     paddingLeft: 20,
-    paddingRight: 20,    
+    paddingRight: 5,    
   },
   symbolRowHistory: {
     flex: 1,
@@ -230,7 +236,7 @@ const account = StyleSheet.create({
   },
   priceWrap: {
     flex: 1.2,
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     paddingRight: 10,
     maxWidth: 150
   },
@@ -307,7 +313,7 @@ const account = StyleSheet.create({
   stickyWrap: {
     flex: 1,
     alignItems: 'flex-end',
-    maxWidth: 70
+    maxWidth: 150
   },
   historyLabel: {
     fontSize: 20

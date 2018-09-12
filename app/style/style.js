@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 112,
     fontSize: 16,
-    top: 30,
+    top: 15,
     textAlign: 'center',
     // color: colors.darkSlate
   },

@@ -519,8 +519,8 @@ class Scanner extends React.Component {
       >
         {scannerDataJS.map((data, i) => {
 
-          let formattedOpen = '$' + data.open.toFixed(2);
-          let formattedHigh = '$' + data.high.toFixed(2);
+          let formattedOpen = '$' + (Number(data.open) || 0).toFixed(2);
+          let formattedHigh = '$' + (Number(data.high) || 0).toFixed(2);
           let formattedLatestPrice = '$' + (Number(data.latestPrice) || 0).toFixed(2);
 
           return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
