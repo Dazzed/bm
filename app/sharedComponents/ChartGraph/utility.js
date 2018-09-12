@@ -1105,3 +1105,8 @@ export const modifyTestDataIntoTestPattern = (testData) => {
 
   return results;
 }
+
+
+
+// to keep on this graph and test
+// BB, EMA, SMA, and ICHI
