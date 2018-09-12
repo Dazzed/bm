@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -70,6 +70,7 @@ let forceDarkTheme = false;
 
 let autoLogOffEnabled = false;
 
+let showGraphTestPattern = true;
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -82,23 +83,24 @@ let autoLogOffEnabled = false;
 
 // set it even if I forget to set it for production
 if (!__DEV__) {
-    productionMode = true;
+  productionMode = true;
 }
 
 if(productionMode) {
-    displayPreviewButtonOnHome = false;
-    forceDarkTheme = false;
-    firstNavDefaultRoute = 'Home';
-    appNavDefaultTabRoute = 'Account';
-    stackNavDefaultRoute = 'AppNavTabs';
-    autoLogin = false;
-    showConsole = false;
-    registrationInitialStep = 0;
-    fillRegistrationWithFakeData = false;
-    forceLoginToFundingEveryTime = false;
-    verifyAuthOnHomeView = true;
-    chosenServer = 'staging';
-    autoLogOffEnabled = true;
+  displayPreviewButtonOnHome = false;
+  forceDarkTheme = false;
+  firstNavDefaultRoute = 'Home';
+  appNavDefaultTabRoute = 'Account';
+  stackNavDefaultRoute = 'AppNavTabs';
+  autoLogin = false;
+  showConsole = false;
+  registrationInitialStep = 0;
+  fillRegistrationWithFakeData = false;
+  forceLoginToFundingEveryTime = false;
+  verifyAuthOnHomeView = true;
+  chosenServer = 'staging';
+  autoLogOffEnabled = true;
+  showGraphTestPattern = false;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -118,5 +120,6 @@ export {
     forceLoginToFundingEveryTime,
     verifyAuthOnHomeView,
     chosenServer,
-    autoLogOffEnabled
+    autoLogOffEnabled,
+    showGraphTestPattern
 };

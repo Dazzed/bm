@@ -1,5 +1,5 @@
 const formatDate = (date) => {
-    console.log(date);
+    // console.log(date);
     var numbers = date.replace(/\D/g, '');
     var char = { 2: '/', 4: '/' };
     date = '';
