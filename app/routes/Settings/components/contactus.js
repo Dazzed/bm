@@ -19,8 +19,12 @@ import {
   TouchableOpacity,
   TabbedArea,
   TabPane,
-  Dimensions
+  Dimensions,
+  AsyncStorage
 } from 'react-native';
+import {
+  ACCESS_TOKEN_KEY,
+} from '../../../constants';
 
 import Modal from 'react-native-modal';
 
@@ -76,7 +80,8 @@ class ContactUs extends React.Component {
       issueType: this.state.issue_type,
       message: this.state.message
     }
-    const res = await axios.post(`${API_URL}/api/contacts?access_token=${this.props.globalData.currentUser.access_token}`, contact);
+    const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+    const res = await axios.post(`${API_URL}/api/contacts?access_token=${accessToken}`, contact) 
     this.props.hideContact()
   }
 
@@ -116,7 +121,7 @@ class ContactUs extends React.Component {
             <Text> </Text>
           </ScrollView>
           <View style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalAgree]}>
-            <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={this.submitContact}>
+            <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={() => this.submitContact()}>
               <Text style={[{ color: this.state.colors['white'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>SUBMIT</Text>
             </TouchableOpacity>
           </View>

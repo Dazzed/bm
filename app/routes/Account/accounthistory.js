@@ -73,9 +73,9 @@ class AccountHist extends React.Component {
         return <View key={'eachDate' + i}>
           <View style={account.titleWrap}>
             <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>COST BASIS</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>
             <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySmF, fonts.hindGunturRg]}>QTY</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySm, fonts.hindGunturRg]}>TOTAL</Text>
+            <Text style={[{color: this.state.colors['lightGray']}, account.titleHistorySmF, fonts.hindGunturRg]}>TOTAL</Text>
           </View>
           <View style={[account.sectionFull,{backgroundColor: this.state.colors['white']}]}>
             {eachDate.values.map((elem, i) => {
@@ -90,7 +90,7 @@ class AccountHist extends React.Component {
                 maxHeight: 70,
                 height: 70,
                 paddingLeft: 20,
-                paddingRight: 20,
+                paddingRight: 0,
                 // borderWidth: 1,
                 // borderColor: 'blue',
               }
@@ -130,18 +130,13 @@ class AccountHist extends React.Component {
                     {renderBuyOrSell(elem.buyOrSell)}
                     <Text style={[{color: this.state.colors['darkSlate']}, symbolLabel, fonts.hindGunturRg]}>{elem.companyAbbreviation}</Text>
                   </View>
-                  <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>{elem.companyName}</Text>
-                </View>                
-                <View style={account.mktWrap}>
-                  <Text style={[{ color: this.state.colors['darkSlate'] }, account.mktLabel, fonts.hindGunturRg]}>${elem.price.toFixed(2)}</Text>
+                  <Text style={[{color: this.state.colors['lightGray']}, account.symbolDets, fonts.hindGunturRg]}>
+                    {elem.companyName.length > 23 ? `${elem.companyName.slice(0, 20)}...` : elem.companyName}
+                  </Text>
                 </View>
-                <View style={account.sharesWrap}>
-                  <Text style={[{color: this.state.colors['darkSlate']}, account.priceLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
-                </View>
-                
-                <View style={account.mktWrap}>
-                  <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${elem.totalAmount.toFixed(2)}</Text>
-                </View>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>${elem.price.toFixed(2)}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>${elem.totalAmount.toFixed(2)}</Text>
                 
               </View>
             })}

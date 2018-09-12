@@ -81,15 +81,17 @@ class OrderBuy extends React.Component {
     removeNumber(num, this.state.activeInputName);
   }
 
-  showOrderTypes(){
+  showOrderTypes = () => {
     this.setState({ isTypeVisible: true })
   }
-  setOrderTypes(value) {
+  
+  setOrderValidity = (value) => {
     const { setValidityIndex } = buySellStore;
     setValidityIndex(value);
-    this.hideOrderTypes()
+    this.hideOrderValidity()
   }
-  hideOrderTypes(value){
+
+  hideOrderValidity = () => {
     this.setState({ isTypeVisible: false })
   }
 
@@ -109,7 +111,7 @@ class OrderBuy extends React.Component {
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
           <View 
-            style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow, {borderBottomWidth: 0}]}
+            style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow]}
           >
             <Text 
               style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}
@@ -125,16 +127,16 @@ class OrderBuy extends React.Component {
             </Text>
           </View>
           <View 
-            style={activeInputName === 'price' ? [order.detailsFirstRow,activeBorderBottomStyle]: order.detailsRow}
+            style={orderTypeName !== 'market' ? [order.detailsFirstRow]: order.detailsRow}
           >
             <Text 
-              style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}
+              style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               MARKET PRICE
             </Text>
             <Text 
-              style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
+              style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               { 
@@ -224,7 +226,7 @@ class OrderBuy extends React.Component {
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
           style={order.modal}
-          onModalHide={() => {this.hideOrderTypes()}}>
+          onModalHide={() => {this.hideOrderValidity()}}>
           <View style={[ordertypes.tabContent, {backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
@@ -240,7 +242,7 @@ class OrderBuy extends React.Component {
               labelStyle={[{color: this.state.colors['lightGray']}, styles.radioLabel,fonts.hindGunturRg]}
               radioLabelActive={[{color: this.state.colors['darkGray']}, styles.activeRadioLabel,fonts.hindGunturBd]}
               labelWrapStyle={[{borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
-              onPress={(value) => {this.setOrderTypes(value)}}
+              onPress={(value) => {this.setOrderValidity(value)}}
               style={ordertypes.radioField}
             />
           </View>

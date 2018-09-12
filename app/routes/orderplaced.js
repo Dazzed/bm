@@ -15,10 +15,9 @@ import {
   Dimensions,
   Linking
 } from 'react-native';
-// import {
-//   shareOnFacebook,
-//   shareOnTwitter,
-// } from 'react-native-social-share';
+import {
+  shareOnTwitter
+} from 'react-native-social-share';
 
 import { selectGlobalData } from '../selectors';
 import OrderTypes from './ordertypes';
@@ -56,14 +55,14 @@ class OrderPlaced extends React.Component {
       quantityPurchased
     } = this.props;
     console.info(58, 'here');
-    // shareOnTwitter({
-    //     'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
-    //     'link': 'http://blumartini.com/download',
-    //   },
-    //   (results) => {
-    //     console.info(results);
-    //   }
-    // );
+    shareOnTwitter({
+        'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
+        'link': 'http://blumartini.com/download',
+      },
+      (results) => {
+        console.info(results);
+      }
+    );
   }
 
   render() {

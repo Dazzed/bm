@@ -16,15 +16,19 @@ export default class DepositWithdraw {
     @action makeTransaction = (params) => {
         return new Promise((resolve, reject) => {
             let options = {
-                account: 'savings',
                 amount: params.amount,
             }
-            if(params.account.subtitle == 'Checking - 1234') {
-                options.account = 'checking';
-            }
             this.setTransactionLoading(true);
-            let formattedParams = {
-                options: JSON.stringify(options)
+            let formattedParams = {};
+            if (params.type === 'deposit') {
+                formattedParams = {
+                    options: JSON.stringify({
+                        ...options,
+                        account: params.account.subtitle == 'Checking - 1234' ? 'checking' : 'savings'
+                    })
+                };
+            } else {
+                formattedParams = options;
             }
             let transactionFunction = deposit;
             if(params.type === 'withdraw') {

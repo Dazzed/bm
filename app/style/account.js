@@ -55,7 +55,7 @@ const account = StyleSheet.create({
   changeWrap: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
   changeNum: {
     // color: colors.darkSlate,
@@ -128,7 +128,7 @@ const account = StyleSheet.create({
     lineHeight: 24,
     // color: colors.lightGray,
     width: 65,
-    marginLeft: 20
+    marginLeft: 10
   },
   titlePrc: {
     fontSize: 10,
@@ -245,12 +245,16 @@ const account = StyleSheet.create({
     alignItems: 'flex-end',
     maxWidth: 135
   },
+
   priceLabel: {
     textAlign: 'right',
     fontSize: 16
   },
   mktLabel: {
     textAlign: 'right',
+    fontSize: 16
+  },
+  historyDataLabel: {
     fontSize: 16
   },
   mktChange: {
