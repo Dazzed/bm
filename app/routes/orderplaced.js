@@ -78,7 +78,7 @@ class OrderPlaced extends React.Component {
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
           <View style={order.placeDetails}>
             <View style={styles.landingIcon}>
-              <Image 
+              <Image
                 source={this.state.colors['logoImage']}
                 style={styles.appIcon}
               />
@@ -96,11 +96,11 @@ class OrderPlaced extends React.Component {
           <View style={[{ backgroundColor: this.state.colors['white'] }, order.shareContainer]}>
             <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => Linking.openURL(`https://stocktwits.com/symbol/${targetStockData.ticker}`)}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON STOCKTWITS</Text>
-            </TouchableHighlight>            
+            </TouchableHighlight>
             <TouchableHighlight style={styles.fullBtnTwitter} onPress={this.tweet}>
               <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON TWITTER</Text>
             </TouchableHighlight>
-          </View>   
+          </View>
         </View>
       </View>
     )
@@ -110,7 +110,7 @@ class OrderPlaced extends React.Component {
 // export default OrderPlaced;
 OrderPlaced.propTypes = {
   globalData: PropTypes.object.isRequired,
-  quantityPurchased: PropTypes.object.isRequired,
+  // quantityPurchased: PropTypes.object.isRequired,
   targetStockData: PropTypes.object.isRequired,
   hideOrderPlaced: PropTypes.func.isRequired,
 };

@@ -1,8 +1,8 @@
 // Master production override
 // before deploying anything, set this to true
 
-// const productionMode = false;
-const productionMode = true;
+const productionMode = false;
+// const productionMode = true;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -71,6 +71,7 @@ let forceDarkTheme = false;
 let autoLogOffEnabled = false;
 
 let showGraphTestPattern = true;
+// let showGraphTestPattern = false;
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
