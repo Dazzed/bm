@@ -56,8 +56,8 @@ if(autoLogin) {
 }
 
 // when logging in, pretend it's the first time, every time
-const forceLoginToFundingEveryTime = false;
-// const forceLoginToFundingEveryTime = true;
+// const forceLoginToFundingEveryTime = false;
+const forceLoginToFundingEveryTime = true;
 
 const verifyAuthOnHomeView = true;
 
