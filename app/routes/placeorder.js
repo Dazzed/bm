@@ -78,6 +78,11 @@ class PlaceOrder extends React.Component {
   }
 
 
+  componentDidMount() {
+    console.log('====== CPM{POMNE D} MOUNT')
+    console.log(buySellStore)
+    buySellStore.setQuantity('');
+  }
 
   componentWillUnmount() {
     console.log('----- Component will unmount');
