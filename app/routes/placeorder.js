@@ -31,7 +31,11 @@ import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
 import fonts from '../style/fonts';
-import { setTheme, getTheme, colors } from '../store/store';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../store/store';
 import { buySellStore } from '../mobxStores';
 import { order_type } from '../constants';
 import { observer } from 'mobx-react';
@@ -40,6 +44,11 @@ import { observer } from 'mobx-react';
 class PlaceOrder extends React.Component {
   constructor(props) {
     super(props);
+    this.oldSetState = this.setState;
+    this.setState = (data) => {
+      console.log('----- place order set state', data);
+      return this.oldSetState(data);
+    }
     this.state = {
       numField: null,
       isOrderTypeVisible: false,
@@ -66,6 +75,12 @@ class PlaceOrder extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+  }
+
+
+
+  componentWillUnmount() {
+    console.log('----- Component will unmount');
   }
 
   getTabView() {
@@ -105,8 +120,10 @@ class PlaceOrder extends React.Component {
   }
 
   cancelOrderConfirm = () => {
-    this.setState({ isConfirmVisible: false, animateOut: 'slideOutDown' })
-    setTimeout(() => { this.props.hideOrder() }, 0.1)
+    // console.log('-======== CANCEL ORDER CONFIRM', this);
+    this.hideOrderConfirm();
+    // this.setState({ isConfirmVisible: false, animateOut: 'slideOutDown' })
+    // setTimeout(() => { this.props.hideOrder() }, 0.1)
   }
 
   setPageType(el) {
@@ -209,8 +226,8 @@ class PlaceOrder extends React.Component {
             style={order.confirmModal}>
             <OrderConf
               hideOrderConfirm={this.hideOrderConfirm}
-              cancelOrderConfirm={this.cancelOrderConfirm} 
-              targetStockData={targetStockData}    
+              cancelOrderConfirm={this.cancelOrderConfirm}
+              targetStockData={targetStockData}
             />
           </Modal>
         </ScrollView>

@@ -84,7 +84,7 @@ class OrderBuy extends React.Component {
   showOrderTypes = () => {
     this.setState({ isTypeVisible: true })
   }
-  
+
   setOrderValidity = (value) => {
     const { setValidityIndex } = buySellStore;
     setValidityIndex(value);
@@ -92,59 +92,60 @@ class OrderBuy extends React.Component {
   }
 
   hideOrderValidity = () => {
+    console.log('---- hide order validity');
     this.setState({ isTypeVisible: false })
   }
 
   render() {
     const { tickerDataJS } = chartStore;
-    const { 
-      quantity, 
-      orderTypeName, 
+    const {
+      quantity,
+      orderTypeName,
       calculatedCost,
       calculatedCostCustom,
-      validityIndex, 
-      price 
+      validityIndex,
+      price
     } = buySellStore;
     const { activeInputName } = this.state;
     const activeBorderBottomStyle = { borderBottomColor: this.state.colors['darkSlate'] };
     return(
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
-          <View 
+          <View
             style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow]}
           >
-            <Text 
+            <Text
               style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}
               onPress={this.changeActiveInputName.bind(this, 'quantity')}
             >
               QUANTITY
             </Text>
-            <Text 
+            <Text
               style={[{color: this.state.colors['darkSlate']}, order.inputQty, fonts.hindGunturRg]}
               onPress={this.changeActiveInputName.bind(this, 'quantity')}
             >
               {quantity}
             </Text>
           </View>
-          <View 
+          <View
             style={orderTypeName !== 'market' ? [order.detailsFirstRow]: order.detailsRow}
           >
-            <Text 
+            <Text
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               MARKET PRICE
             </Text>
-            <Text 
+            <Text
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
-              { 
-                orderTypeName === 'market' ? 
-                  `$${tickerDataJS.Price}` : 
-                    (activeInputName === 'price' ? 
-                      (price || tickerDataJS.Price) : 
-                      `$${price || tickerDataJS.Price}`) 
+              {
+                orderTypeName === 'market' ?
+                  `$${tickerDataJS.Price}` :
+                    (activeInputName === 'price' ?
+                      (price || tickerDataJS.Price) :
+                      `$${price || tickerDataJS.Price}`)
               }
             </Text>
           </View>
@@ -156,7 +157,7 @@ class OrderBuy extends React.Component {
             <Text style={[{color: this.state.colors['lightGray']}, order.inputLabel, fonts.hindGunturRg]}>
               ESTIMATED COST
             </Text>
-            <Text 
+            <Text
               style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
             >
               {

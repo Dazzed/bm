@@ -77,8 +77,12 @@ class OrderConf extends React.Component {
   }
 
   hideOrderPlaced = () => {
-    this.setState({ isOrderPlaced: false, animateOut: 'slideOutDown' })
-    setTimeout(this.props.cancelOrderConfirm, 100)
+    console.log('======= HIDE ORDER PLACED')
+    this.setState({ isOrderPlaced: false, animateOut: 'slideOutDown' }, () => {
+      this.props.cancelOrderConfirm()
+    })
+
+    // setTimeout(this.props.cancelOrderConfirm, 100);
   }
 
   render() {
@@ -163,7 +167,7 @@ class OrderConf extends React.Component {
                 {transactionInProgress ? 'LOADING...' : 'CONFIRM'}
               </Text>
               {
-                this.state.error ? 
+                this.state.error ?
                   <Text style={[{ color: 'red', textAlign: 'center', marginTop: 5 }, fonts.hindGunturBd]}>
                     {this.state.error}
                   </Text> :

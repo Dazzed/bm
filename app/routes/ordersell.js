@@ -14,8 +14,16 @@ import {
   TabPane
 } from 'react-native';
 import Modal from 'react-native-modal'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-import {setTheme, getTheme, colors} from '../store/store';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel
+} from 'react-native-simple-radio-button';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../store/store';
 import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
