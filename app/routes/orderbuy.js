@@ -92,7 +92,7 @@ class OrderBuy extends React.Component {
   }
 
   hideOrderValidity = () => {
-    console.log('---- hide order validity');
+    // console.log('---- hide order validity');
     this.setState({ isTypeVisible: false })
   }
 
