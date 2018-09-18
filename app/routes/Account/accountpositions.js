@@ -58,7 +58,7 @@ class AccountPos extends React.Component {
       <Text style={[{color: this.state.colors['darkSlate']}, account.securityTitle, fonts.hindGunturBd]}>EQUITY</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>QTY</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>PRICE/CHG</Text>
-      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUATION</Text>
+      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUE</Text>
     </View>
   }
 

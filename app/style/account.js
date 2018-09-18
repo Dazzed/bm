@@ -175,13 +175,13 @@ const account = StyleSheet.create({
     paddingBottom: 12
   },
   sectionLabel: {
-    flex:3,
+    flex:2,
     // color: colors.lightGray,
     lineHeight: 20,
     fontSize: 12
   },
   sectionDetail: {
-    flex: 1,
+    flex: 2,
     textAlign: 'right',
     fontSize: 14,
     lineHeight: 20
