@@ -50,6 +50,17 @@ export default class SmallGraph extends React.Component {
         let graphHeight = this.props.height - xAxisHeight;
         const data = parseSmallGraphData(this.props.data, Price, graphHeight, range);
         let lineYPosition = flipYAxisValue(graphHeight, data.priceLineHeight);
+
+        // prevent y line from hitting top or bottom of graph
+        let yAxisPadding = 20;
+        if(lineYPosition < yAxisPadding) {
+          lineYPosition = yAxisPadding;
+        }
+        if(lineYPosition > graphHeight - yAxisPadding) {
+          lineYPosition = graphHeight - yAxisPadding;
+        }
+
+
         let inlineGraphContainerStyle = {
             // borderWidth: 1,
             // borderColor: 'green',
