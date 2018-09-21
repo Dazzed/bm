@@ -55,10 +55,10 @@ class AccountPos extends React.Component {
 
   renderHeader() {
     return <View style={account.titleWrap}>
-      <Text style={[{color: this.state.colors['darkSlate']}, account.sectionTitle, fonts.hindGunturBd]}>EQUITY</Text>
+      <Text style={[{color: this.state.colors['darkSlate']}, account.securityTitle, fonts.hindGunturBd]}>EQUITY</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>QTY</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>PRICE/CHG</Text>
-      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUATION</Text>
+      <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUE</Text>
     </View>
   }
 
@@ -144,13 +144,13 @@ class AccountPos extends React.Component {
           if(formattedMarketChangePercentage) {
             formattedMarketChangePercentage = formattedMarketChangePercentage.toFixed(2);
           }
-          
-          
-          
+                    
           return <View key={'each-position' + i} style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>
             <View style={account.symbolWrap}>
               <Text style={[{color: this.state.colors['darkSlate']}, account.symbolLabel, fonts.hindGunturRg]}>{formattedCompanyAbbreviation}</Text>
-              <Text style={[{color: this.state.colors['lightGray']},account.symbolDets, fonts.hindGunturRg]}>{formattedCompanyName}</Text>
+              <Text style={[{color: this.state.colors['lightGray']},account.symbolDets, fonts.hindGunturRg]}>
+                {formattedCompanyName.length > 23 ? `${formattedCompanyName.slice(0, 20)}...` : formattedCompanyName}
+              </Text>
             </View>
             <Text style={[{color: this.state.colors['darkSlate']}, account.symbolQty, fonts.hindGunturRg]}>{formattedQuantity}</Text>
             <TouchableOpacity style={account.priceWrapTouch} onPress={() => this.setState({applChg: !this.state.applChg})}>
@@ -159,7 +159,7 @@ class AccountPos extends React.Component {
                 {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangePercentage}%</Text>}
               </View>
               <View style={account.mktWrap}>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${(elem.quantity * elem.priceChange)}</Text>
+                <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${(elem.quantity * elem.priceChange).toFixed(2)}</Text>
                 {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangePercentage}%</Text>}
               </View>
             </TouchableOpacity>
@@ -179,8 +179,11 @@ class AccountPos extends React.Component {
          <View style={account.sectionWrap}>
            <Text style={[{color: this.state.colors['darkSlate']}, account.stickyTitle, fonts.hindGunturBd]}>TOTAL</Text>
            <View style={account.stickyWrap}>
-             <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionsTotal}</Text>
-             <Text style={[{backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {borderColor: this.state.colors[positionTotalsJS.decimalChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text>
+             <Text style={[{color: this.state.colors['darkSlate']}, account.stickyDetail, fonts.hindGunturBd]}>${positionsTotal.toFixed(2)}</Text>
+              <TouchableOpacity style={account.priceWrapTouch} onPress={() => this.setState({ applChg: !this.state.applChg })}>
+              {this.state.applChg ? <Text style={[{ backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor] }, { borderColor: this.state.colors[positionTotalsJS.decimalChangeColor] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChange}</Text> : <Text style={[{ backgroundColor: this.state.colors[positionTotalsJS.decimalChangeColor] }, { borderColor: this.state.colors[positionTotalsJS.decimalChangeColor] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{positionTotalsJS.decimalChangePct.toFixed(2)}%</Text>}
+              </TouchableOpacity>
+             
            </View>
          </View>
        </View>

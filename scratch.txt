@@ -57,3 +57,26 @@ MACD does not show up
 MACD color is probably wrong
 A/D Line does not show up
 FIB does not show up
+
+
+=============
+
+-Accounts BE: Done (Sameep) M4
+-Buy/Sale BE: Done (Sameep) M4
+
+-Viewing Order BE: 1st week (Sameep) M5
+-Notifications BE: 1st week (Sameep) M5
+-Order Notification: 1st week (Sameep) M5
+-Auto Logout BE: 2nd week (Sameep) M5
+-Auto Logout FE: 2nd week (Sameep) M5
+
+
+-Buy FE: Done (Brian) clean up in 2nd week M6
+-Sale/ShortSale FE: 2nd week (Sameep) M6
+-Accounts FE: 2nd week (Sameep) M6
+-Viewing Order FE: 2nd week (Brian) M6
+
+-Graph: 2nd half of 2nd week and 3rd week (Brian) M7
+-Bugs: 3rd week (Sameep & Brian) M7
+-Deploy: 3rd week M7
+-Backend Reporting: after deploy M8

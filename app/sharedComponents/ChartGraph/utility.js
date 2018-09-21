@@ -264,7 +264,7 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
       const thisDataPoint = data[i];
 
       let dataPointIsFuturePoint = isDataPointFuturePoint(thisDataPoint);
-      console.log('this data point', thisDataPoint, dataPointIsFuturePoint);
+      // console.log('this data point', thisDataPoint, dataPointIsFuturePoint);
 
       if(dataPointIsFuturePoint) {
         continue;
@@ -750,17 +750,17 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of source) {
         let chosenValue = Object.byString(elem, targetValue);
-        console.log('chosen value', chosenValue);
+        // console.log('chosen value', chosenValue);
         if(chosenValue === null) {
           continue;
         }
-        console.log('--- ', elem, d.xMin, d.xRange)
+        // console.log('--- ', elem, d.xMin, d.xRange)
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         let yRel = (chosenValue - d.yMin) / d.yRange;
         let yCoord = flipYAxisValue(height, yRel * height);
 
-        console.log('-x y', xCoord, '-', yCoord)
+        // console.log('-x y', xCoord, '-', yCoord)
         lineData.push(`${xCoord},${yCoord}`)
       }
 
@@ -969,3 +969,144 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // console.log('====== ALL GRAPH DATA', d)
     return d
 }
+
+export const modifyTestDataIntoTestPattern = (testData) => {
+  console.log('=========== MODIFY TEST DATA', testData);
+
+  let max = 100;
+  let min = 0;
+
+  let line4 = 87.50;
+  let line3 = 62.50;
+  let line2 = 37.50;
+  let line1 = 12.50;
+
+  let sectionLength = 5;
+
+  let fatBarHeight = 5;
+
+  let results = testData.map((elem, i) => {
+    console.log('-----', elem)
+    if(elem.open) {
+      elem.open = 40;
+    }
+    if(elem.close) {
+      elem.close = 50;
+    }
+    if(elem.high) {
+      elem.high = line1;
+    }
+    if(elem.low) {
+      elem.low = 30;
+    }
+
+    if(elem.ichi) {
+      elem.ichi.base = 10
+      elem.ichi.conversion = 20
+      // align with background lines
+      elem.ichi.spanA = line3
+      elem.ichi.spanB = line2
+    }
+
+    if(elem.volume) {
+      elem.volume = 0;
+    }
+
+    // modify first section
+    if(i <= sectionLength * 1) {
+      if(elem.open) {
+        elem.open = min;
+      }
+      if(elem.close) {
+        elem.close = min + fatBarHeight;
+      }
+      if(elem.high) {
+        elem.high = line1;
+      }
+      if(elem.low) {
+        elem.low = min;
+      }
+    }
+
+    // modify second section
+    if(i > sectionLength * 1) {
+      if(elem.open) {
+        elem.open = line1;
+      }
+      if(elem.close) {
+        elem.close = line1 + fatBarHeight;
+      }
+      if(elem.high) {
+        elem.high = line2;
+      }
+      if(elem.low) {
+        elem.low = line1;
+      }
+    }
+
+    // modify third section
+    if(i >= sectionLength * 2) {
+      if(elem.open) {
+        elem.open = line2;
+      }
+      if(elem.close) {
+        elem.close = line2 + fatBarHeight;
+      }
+      if(elem.high) {
+        elem.high = line3;
+      }
+      if(elem.low) {
+        elem.low = line2;
+      }
+    }
+
+    // modify fourth section
+    if(i >= sectionLength * 3) {
+      if(elem.open) {
+        elem.open = line3;
+      }
+      if(elem.close) {
+        elem.close = line3 + fatBarHeight;
+      }
+      if(elem.high) {
+        elem.high = line4;
+      }
+      if(elem.low) {
+        elem.low = line3;
+      }
+    }
+
+    // modify fifth section
+    if(i >= sectionLength * 4) {
+      if(elem.open) {
+        elem.open = line4;
+      }
+      if(elem.close) {
+        elem.close = line4 + fatBarHeight;
+      }
+      if(elem.high) {
+        elem.high = max;
+      }
+      if(elem.low) {
+        elem.low = line4;
+      }
+    }
+
+    return elem;
+  });
+
+  // modify first element
+  results[0].high = max;
+  results[0].low = min;
+
+  // // modify second result
+  // results[1].high = max;
+  // results[1].low = min;
+
+  return results;
+}
+
+
+
+// to keep on this graph and test
+// BB, EMA, SMA, and ICHI

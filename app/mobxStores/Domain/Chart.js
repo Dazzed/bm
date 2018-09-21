@@ -1,6 +1,9 @@
 import { observable, action, computed, toJS } from 'mobx';
 import { getTickerDetails, getStockChartDetail } from '../../api';
 import { initialIndicators, initialChartRangeIndicator } from '../../constants';
+import largeChartTestData from '../../sharedComponents/ChartGraph/largeChartTestData';
+import { showGraphTestPattern } from '../../devControlPanel';
+import { modifyTestDataIntoTestPattern } from '../../sharedComponents/ChartGraph/utility';
 
 export default class AccountStore {
 
@@ -185,20 +188,35 @@ export default class AccountStore {
 
         }
 
-        getStockChartDetail(params)
-        .then((res) => {
-          console.log('GET CHART DATA', res);
-          if(res.ok) {
-            this.setChartDetailData(res.json.result);
-          } else {
-            // do nothing
-          }
+
+        // conditinally display test data
+        if(showGraphTestPattern) {
+          console.log('========== largeChartTestData', largeChartTestData);
+
+          // modify data into test pattern
+
+          this.setChartDetailData( modifyTestDataIntoTestPattern(largeChartTestData.result) );
           this.setStockChartLoading(false);
-        })
-        .catch((err) => {
-          console.log('err', err);
-          this.setStockChartLoading(false);
-        })
+
+        } else {
+
+          getStockChartDetail(params)
+          .then((res) => {
+            console.log('GET CHART DATA', res);
+            if(res.ok) {
+              this.setChartDetailData(res.json.result);
+            } else {
+              // do nothing
+            }
+            this.setStockChartLoading(false);
+          })
+          .catch((err) => {
+            console.log('err', err);
+            this.setStockChartLoading(false);
+          })
+
+        }
+
     }
 
 }

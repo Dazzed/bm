@@ -57,7 +57,7 @@ class OrderTypes extends React.Component {
     this.setState({ isScanVisible: true })
   }
 
-  hideModal(){ 
+  hideModal(){
     this.setState({ isScanVisible: false })
   }
   addNum(num) {
@@ -72,7 +72,7 @@ class OrderTypes extends React.Component {
   removeNum(num) {
     var delNums = this.state.numField;
     delNums = delNums.substr(0, delNums.length - 1);
-    console.log(delNums)
+    // console.log(delNums);
     this.setState({numField: delNums})
   }
   render() {

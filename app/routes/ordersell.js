@@ -14,8 +14,16 @@ import {
   TabPane
 } from 'react-native';
 import Modal from 'react-native-modal'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-import {setTheme, getTheme, colors} from '../store/store';
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel
+} from 'react-native-simple-radio-button';
+import {
+  setTheme,
+  getTheme,
+  colors
+} from '../store/store';
 import styles from '../style/style';
 import order from '../style/order';
 import ordertypes from '../style/ordertypes';
@@ -100,7 +108,7 @@ class OrderSell extends React.Component {
       <View style={[{backgroundColor: this.state.colors['contentBg']}, order.tabContent]}>
         <View style={order.details}>
           <View 
-            style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow, {borderBottomWidth: 0}]}
+            style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow]}
           >
             <Text 
               style={[{color: this.state.colors['darkSlate']}, order.inputLabelQty, fonts.hindGunturRg]}
@@ -115,18 +123,17 @@ class OrderSell extends React.Component {
               {quantity}
             </Text>
           </View>
-          <View 
-            style={order.detailsRow}
+          <View
+            style={orderTypeName !== 'market' ? [order.detailsFirstRow] : order.detailsRow}
           >
-            <Text 
-              style={activeInputName === 'price' ? [order.detailsFirstRow,activeBorderBottomStyle]: order.detailsRow}
+            <Text
+              style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               MARKET PRICE
             </Text>
-            <Text 
-              style={[{color: this.state.colors['lightGray']}, order.input, fonts.hindGunturRg]}
-              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
+            <Text
+              style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]}              onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               { 
                 orderTypeName === 'market' ? 
@@ -215,7 +222,7 @@ class OrderSell extends React.Component {
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
           style={order.modal}
-          onModalHide={() => {this.hideOrderTypes()}}>>
+          onModalHide={() => {this.hideOrderTypes()}}>
           <View style={[ordertypes.tabContent, { backgroundColor: this.state.colors['contentBg']}]}>
             <RadioForm
               radio_props={validity_props}
@@ -228,9 +235,9 @@ class OrderSell extends React.Component {
               buttonSize={22}
               buttonOuterSize={20}
               animation={false}
-              labelStyle={[styles.radioLabel,fonts.hindGunturRg]}
-              radioLabelActive={[styles.activeRadioLabel,fonts.hindGunturBd]}
-              labelWrapStyle={styles.radioLabelWrap}
+              labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
+              radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
+              labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
               onPress={(value) => {this.setOrderTypes(value)}}
               style={ordertypes.radioField}
             />

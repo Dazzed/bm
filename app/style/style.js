@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   menuBorder: {
     height: 50,
-    paddingTop: 25
+    paddingTop: 30
   },
   menuBorderptions: {
     borderBottomWidth:0.5,

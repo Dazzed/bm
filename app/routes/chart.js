@@ -132,18 +132,19 @@ class Chart extends Component {
   }
 
   navToLink(link) {
-    Linking.canOpenURL(link)
-    .then((res) => {
-      if(res === true) {
-        return Linking.openURL('http://' + link)
-      }
-    })
-    .then((res) => {
-      console.log('success', res)
-    })
-    .catch((err) => {
-      console.log('err', err)
-    })
+    Linking.openURL('http://' + link)
+    // Linking.canOpenURL(link)
+    // .then((res) => {
+    //   if(res === true) {
+    //     return Linking.openURL('http://' + link)
+    //   }
+    // })
+    // .then((res) => {
+    //   console.log('success', res)
+    // })
+    // .catch((err) => {
+    //   console.log('err', err)
+    // })
   }
 
   addSymbol(ticker){

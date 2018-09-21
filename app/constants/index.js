@@ -293,14 +293,14 @@ const autoLogOffOptions = [
 
 let validity_props = [
   {
-    label: 'Good until canceled',
+    label: 'Day only',
     value: 0,
-    query: 'GTC'
+    query: 'dayOnly'
   },
   {
-    label: 'Day only',
+    label: 'Good until canceled',
     value: 1,
-    query: 'dayOnly'
+    query: 'GTC'
   },
   {
     label: 'Extended hours',
