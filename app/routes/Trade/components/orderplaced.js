@@ -19,14 +19,13 @@ import {
   shareOnTwitter
 } from 'react-native-social-share';
 
-import { selectGlobalData } from '../selectors';
-import OrderTypes from './ordertypes';
+import { selectGlobalData } from '../../../selectors';
 
-import styles from '../style/style';
-import order from '../style/order';
-import fonts from '../style/fonts';
+import styles from '../../../style/style';
+import order from '../../../style/order';
+import fonts from '../../../style/fonts';
 
-import {setTheme, getTheme, colors} from '../store/store';
+import { setTheme, getTheme, colors } from '../../../store/store';
 
 class OrderPlaced extends React.Component {
   constructor(props) {
@@ -56,9 +55,9 @@ class OrderPlaced extends React.Component {
     } = this.props;
     console.info(58, 'here');
     shareOnTwitter({
-        'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
-        'link': 'http://blumartini.com/download',
-      },
+      'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
+      'link': 'http://blumartini.com/download',
+    },
       (results) => {
         console.info(results);
       }
@@ -70,9 +69,9 @@ class OrderPlaced extends React.Component {
       targetStockData,
       quantityPurchased
     } = this.props;
-    return(
+    return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
-        <View style={[{borderBottomColor: this.state.colors['lightGray']}, order.menuBorder]}>
+        <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, order.menuBorder]}>
           <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order Placed</Text>
         </View>
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
@@ -83,22 +82,22 @@ class OrderPlaced extends React.Component {
                 style={styles.appIcon}
               />
             </View>
-            <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>You just bought</Text>
-            <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>{quantityPurchased} {quantityPurchased < 2 ? 'share' : 'shares'} of {targetStockData.ticker}</Text>
-            <Text style={[{color: this.state.colors['darkSlate']},order.placeTxt, fonts.hindGunturBd]}>Cheers!</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>You just bought</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>{quantityPurchased} {quantityPurchased < 2 ? 'share' : 'shares'} of {targetStockData.ticker}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>Cheers!</Text>
             <Text style={order.confSpacing}></Text>
             <View style={order.btnWrap}>
-              <TouchableHighlight style={[{borderColor: this.state.colors['darkGray']}, order.optionbtn]} onPress={this.props.hideOrderPlaced}>
-                <Text style={[{color: this.state.colors['darkGray']}, styles.touchOption, fonts.hindGunturMd]}>DONE</Text>
+              <TouchableHighlight style={[{ borderColor: this.state.colors['darkGray'] }, order.optionbtn]} onPress={this.props.hideOrderPlaced}>
+                <Text style={[{ color: this.state.colors['darkGray'] }, styles.touchOption, fonts.hindGunturMd]}>DONE</Text>
               </TouchableHighlight>
             </View>
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, order.shareContainer]}>
             <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => Linking.openURL(`https://stocktwits.com/symbol/${targetStockData.ticker}`)}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON STOCKTWITS</Text>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON STOCKTWITS</Text>
             </TouchableHighlight>
             <TouchableHighlight style={styles.fullBtnTwitter} onPress={this.tweet}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON TWITTER</Text>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON TWITTER</Text>
             </TouchableHighlight>
           </View>
         </View>

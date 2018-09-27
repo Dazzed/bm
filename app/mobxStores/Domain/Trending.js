@@ -77,7 +77,8 @@ export default class Trending {
     const { theme } = colorStore;
     const { watchlistDataJS } = watchListStore;
     const watchListItems = watchlistDataJS;
-    if(!this.trendingData) {
+    
+    if(!this.trendingData || this.trendingData.length === 0) {
       return []
     } else {
       return toJS(this.trendingData)

@@ -21,6 +21,11 @@ const order = StyleSheet.create({
     flex: 1,
     maxHeight: 100
   },
+  orderConfirmContainer: {
+    alignItems: 'center',
+    paddingTop: 5,
+    flex: 1
+  },
   leftCta: {
     width: 500,
     height: 25,

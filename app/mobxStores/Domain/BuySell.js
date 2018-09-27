@@ -43,6 +43,11 @@ export default class BuySellStore {
       }
       this.setQuantity(curNums);
     } else if (type === 'price') {
+      if (num === '.') {
+        if (this.price.includes('.')) {
+          return;
+        }
+      }
       if (this.price == null) {
         curNums = num;
       } else {
