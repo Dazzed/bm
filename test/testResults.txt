@@ -1,0 +1,320 @@
+================================ AAPL - 1h
+status: 200
+ERROR: AAPL: MISSING data: "open" in data point 250
+ERROR: AAPL: MISSING data: "close" in data point 250
+================================ AAPL - 1d
+status: 200
+ERROR: AAPL: MISSING data: "open" in data point 25
+ERROR: AAPL: MISSING data: "close" in data point 25
+================================ AAPL - 5d
+ERROR: NO STATUS: 
+ERROR: Status = undefined
+ERROR: No Data in api call res!!
+================================ AAPL - 1m
+status: 200
+================================ AAPL - 6m
+status: 200
+================================ AAPL - 1y
+status: 200
+================================ AAPL - 2y
+status: 200
+================================ AAPL - 5y
+status: 200
+================================ GOOG - 1h
+status: 200
+ERROR: GOOG: MISSING data: "open" in data point 0
+ERROR: GOOG: MISSING data: "close" in data point 0
+ERROR: GOOG: MISSING data: "open" in data point 4
+ERROR: GOOG: MISSING data: "close" in data point 4
+ERROR: GOOG: MISSING data: "open" in data point 6
+ERROR: GOOG: MISSING data: "close" in data point 6
+ERROR: GOOG: MISSING data: "open" in data point 9
+ERROR: GOOG: MISSING data: "close" in data point 9
+ERROR: GOOG: MISSING data: "open" in data point 10
+ERROR: GOOG: MISSING data: "close" in data point 10
+ERROR: GOOG: MISSING data: "open" in data point 11
+ERROR: GOOG: MISSING data: "close" in data point 11
+ERROR: GOOG: MISSING data: "open" in data point 14
+ERROR: GOOG: MISSING data: "close" in data point 14
+ERROR: GOOG: MISSING data: "open" in data point 15
+ERROR: GOOG: MISSING data: "close" in data point 15
+ERROR: GOOG: MISSING data: "open" in data point 17
+ERROR: GOOG: MISSING data: "close" in data point 17
+ERROR: GOOG: MISSING data: "open" in data point 18
+ERROR: GOOG: MISSING data: "close" in data point 18
+ERROR: GOOG: MISSING data: "open" in data point 19
+ERROR: GOOG: MISSING data: "close" in data point 19
+ERROR: GOOG: MISSING data: "open" in data point 20
+ERROR: GOOG: MISSING data: "close" in data point 20
+ERROR: GOOG: MISSING data: "open" in data point 21
+ERROR: GOOG: MISSING data: "close" in data point 21
+ERROR: GOOG: MISSING data: "open" in data point 25
+ERROR: GOOG: MISSING data: "close" in data point 25
+ERROR: GOOG: MISSING data: "open" in data point 34
+ERROR: GOOG: MISSING data: "close" in data point 34
+ERROR: GOOG: MISSING data: "open" in data point 36
+ERROR: GOOG: MISSING data: "close" in data point 36
+ERROR: GOOG: MISSING data: "open" in data point 40
+ERROR: GOOG: MISSING data: "close" in data point 40
+ERROR: GOOG: MISSING data: "open" in data point 46
+ERROR: GOOG: MISSING data: "close" in data point 46
+ERROR: GOOG: MISSING data: "open" in data point 51
+ERROR: GOOG: MISSING data: "close" in data point 51
+ERROR: GOOG: MISSING data: "open" in data point 67
+ERROR: GOOG: MISSING data: "close" in data point 67
+ERROR: GOOG: MISSING data: "open" in data point 73
+ERROR: GOOG: MISSING data: "close" in data point 73
+ERROR: GOOG: MISSING data: "open" in data point 78
+ERROR: GOOG: MISSING data: "close" in data point 78
+ERROR: GOOG: MISSING data: "open" in data point 83
+ERROR: GOOG: MISSING data: "close" in data point 83
+ERROR: GOOG: MISSING data: "open" in data point 86
+ERROR: GOOG: MISSING data: "close" in data point 86
+ERROR: GOOG: MISSING data: "open" in data point 88
+ERROR: GOOG: MISSING data: "close" in data point 88
+ERROR: GOOG: MISSING data: "open" in data point 94
+ERROR: GOOG: MISSING data: "close" in data point 94
+ERROR: GOOG: MISSING data: "open" in data point 96
+ERROR: GOOG: MISSING data: "close" in data point 96
+ERROR: GOOG: MISSING data: "open" in data point 98
+ERROR: GOOG: MISSING data: "close" in data point 98
+ERROR: GOOG: MISSING data: "open" in data point 101
+ERROR: GOOG: MISSING data: "close" in data point 101
+ERROR: GOOG: MISSING data: "open" in data point 114
+ERROR: GOOG: MISSING data: "close" in data point 114
+ERROR: GOOG: MISSING data: "open" in data point 116
+ERROR: GOOG: MISSING data: "close" in data point 116
+ERROR: GOOG: MISSING data: "open" in data point 120
+ERROR: GOOG: MISSING data: "close" in data point 120
+ERROR: GOOG: MISSING data: "open" in data point 121
+ERROR: GOOG: MISSING data: "close" in data point 121
+ERROR: GOOG: MISSING data: "open" in data point 122
+ERROR: GOOG: MISSING data: "close" in data point 122
+ERROR: GOOG: MISSING data: "open" in data point 125
+ERROR: GOOG: MISSING data: "close" in data point 125
+ERROR: GOOG: MISSING data: "open" in data point 126
+ERROR: GOOG: MISSING data: "close" in data point 126
+ERROR: GOOG: MISSING data: "open" in data point 128
+ERROR: GOOG: MISSING data: "close" in data point 128
+ERROR: GOOG: MISSING data: "open" in data point 129
+ERROR: GOOG: MISSING data: "close" in data point 129
+ERROR: GOOG: MISSING data: "open" in data point 132
+ERROR: GOOG: MISSING data: "close" in data point 132
+ERROR: GOOG: MISSING data: "open" in data point 134
+ERROR: GOOG: MISSING data: "close" in data point 134
+ERROR: GOOG: MISSING data: "open" in data point 136
+ERROR: GOOG: MISSING data: "close" in data point 136
+ERROR: GOOG: MISSING data: "open" in data point 137
+ERROR: GOOG: MISSING data: "close" in data point 137
+ERROR: GOOG: MISSING data: "open" in data point 138
+ERROR: GOOG: MISSING data: "close" in data point 138
+ERROR: GOOG: MISSING data: "open" in data point 139
+ERROR: GOOG: MISSING data: "close" in data point 139
+ERROR: GOOG: MISSING data: "open" in data point 140
+ERROR: GOOG: MISSING data: "close" in data point 140
+ERROR: GOOG: MISSING data: "open" in data point 142
+ERROR: GOOG: MISSING data: "close" in data point 142
+ERROR: GOOG: MISSING data: "open" in data point 147
+ERROR: GOOG: MISSING data: "close" in data point 147
+ERROR: GOOG: MISSING data: "open" in data point 148
+ERROR: GOOG: MISSING data: "close" in data point 148
+ERROR: GOOG: MISSING data: "open" in data point 151
+ERROR: GOOG: MISSING data: "close" in data point 151
+ERROR: GOOG: MISSING data: "open" in data point 152
+ERROR: GOOG: MISSING data: "close" in data point 152
+ERROR: GOOG: MISSING data: "open" in data point 154
+ERROR: GOOG: MISSING data: "close" in data point 154
+ERROR: GOOG: MISSING data: "open" in data point 155
+ERROR: GOOG: MISSING data: "close" in data point 155
+ERROR: GOOG: MISSING data: "open" in data point 156
+ERROR: GOOG: MISSING data: "close" in data point 156
+ERROR: GOOG: MISSING data: "open" in data point 157
+ERROR: GOOG: MISSING data: "close" in data point 157
+ERROR: GOOG: MISSING data: "open" in data point 158
+ERROR: GOOG: MISSING data: "close" in data point 158
+ERROR: GOOG: MISSING data: "open" in data point 159
+ERROR: GOOG: MISSING data: "close" in data point 159
+ERROR: GOOG: MISSING data: "open" in data point 160
+ERROR: GOOG: MISSING data: "close" in data point 160
+ERROR: GOOG: MISSING data: "open" in data point 163
+ERROR: GOOG: MISSING data: "close" in data point 163
+ERROR: GOOG: MISSING data: "open" in data point 165
+ERROR: GOOG: MISSING data: "close" in data point 165
+ERROR: GOOG: MISSING data: "open" in data point 166
+ERROR: GOOG: MISSING data: "close" in data point 166
+ERROR: GOOG: MISSING data: "open" in data point 168
+ERROR: GOOG: MISSING data: "close" in data point 168
+ERROR: GOOG: MISSING data: "open" in data point 177
+ERROR: GOOG: MISSING data: "close" in data point 177
+ERROR: GOOG: MISSING data: "open" in data point 180
+ERROR: GOOG: MISSING data: "close" in data point 180
+ERROR: GOOG: MISSING data: "open" in data point 186
+ERROR: GOOG: MISSING data: "close" in data point 186
+ERROR: GOOG: MISSING data: "open" in data point 188
+ERROR: GOOG: MISSING data: "close" in data point 188
+ERROR: GOOG: MISSING data: "open" in data point 190
+ERROR: GOOG: MISSING data: "close" in data point 190
+ERROR: GOOG: MISSING data: "open" in data point 192
+ERROR: GOOG: MISSING data: "close" in data point 192
+ERROR: GOOG: MISSING data: "open" in data point 193
+ERROR: GOOG: MISSING data: "close" in data point 193
+ERROR: GOOG: MISSING data: "open" in data point 202
+ERROR: GOOG: MISSING data: "close" in data point 202
+ERROR: GOOG: MISSING data: "open" in data point 203
+ERROR: GOOG: MISSING data: "close" in data point 203
+ERROR: GOOG: MISSING data: "open" in data point 205
+ERROR: GOOG: MISSING data: "close" in data point 205
+ERROR: GOOG: MISSING data: "open" in data point 208
+ERROR: GOOG: MISSING data: "close" in data point 208
+ERROR: GOOG: MISSING data: "open" in data point 210
+ERROR: GOOG: MISSING data: "close" in data point 210
+ERROR: GOOG: MISSING data: "open" in data point 218
+ERROR: GOOG: MISSING data: "close" in data point 218
+ERROR: GOOG: MISSING data: "open" in data point 219
+ERROR: GOOG: MISSING data: "close" in data point 219
+ERROR: GOOG: MISSING data: "open" in data point 220
+ERROR: GOOG: MISSING data: "close" in data point 220
+ERROR: GOOG: MISSING data: "open" in data point 223
+ERROR: GOOG: MISSING data: "close" in data point 223
+ERROR: GOOG: MISSING data: "open" in data point 224
+ERROR: GOOG: MISSING data: "close" in data point 224
+ERROR: GOOG: MISSING data: "open" in data point 225
+ERROR: GOOG: MISSING data: "close" in data point 225
+ERROR: GOOG: MISSING data: "open" in data point 228
+ERROR: GOOG: MISSING data: "close" in data point 228
+ERROR: GOOG: MISSING data: "open" in data point 231
+ERROR: GOOG: MISSING data: "close" in data point 231
+ERROR: GOOG: MISSING data: "open" in data point 236
+ERROR: GOOG: MISSING data: "close" in data point 236
+ERROR: GOOG: MISSING data: "open" in data point 238
+ERROR: GOOG: MISSING data: "close" in data point 238
+ERROR: GOOG: MISSING data: "open" in data point 239
+ERROR: GOOG: MISSING data: "close" in data point 239
+ERROR: GOOG: MISSING data: "open" in data point 241
+ERROR: GOOG: MISSING data: "close" in data point 241
+ERROR: GOOG: MISSING data: "open" in data point 242
+ERROR: GOOG: MISSING data: "close" in data point 242
+ERROR: GOOG: MISSING data: "open" in data point 243
+ERROR: GOOG: MISSING data: "close" in data point 243
+ERROR: GOOG: MISSING data: "open" in data point 244
+ERROR: GOOG: MISSING data: "close" in data point 244
+ERROR: GOOG: MISSING data: "open" in data point 245
+ERROR: GOOG: MISSING data: "close" in data point 245
+ERROR: GOOG: MISSING data: "open" in data point 248
+ERROR: GOOG: MISSING data: "close" in data point 248
+ERROR: GOOG: MISSING data: "open" in data point 249
+ERROR: GOOG: MISSING data: "close" in data point 249
+ERROR: GOOG: MISSING data: "open" in data point 250
+ERROR: GOOG: MISSING data: "close" in data point 250
+ERROR: GOOG: MISSING data: "open" in data point 253
+ERROR: GOOG: MISSING data: "close" in data point 253
+ERROR: GOOG: MISSING data: "open" in data point 254
+ERROR: GOOG: MISSING data: "close" in data point 254
+ERROR: GOOG: MISSING data: "open" in data point 255
+ERROR: GOOG: MISSING data: "close" in data point 255
+ERROR: GOOG: MISSING data: "open" in data point 256
+ERROR: GOOG: MISSING data: "close" in data point 256
+ERROR: GOOG: MISSING data: "open" in data point 258
+ERROR: GOOG: MISSING data: "close" in data point 258
+ERROR: GOOG: MISSING data: "open" in data point 260
+ERROR: GOOG: MISSING data: "close" in data point 260
+ERROR: GOOG: MISSING data: "open" in data point 261
+ERROR: GOOG: MISSING data: "close" in data point 261
+ERROR: GOOG: MISSING data: "open" in data point 262
+ERROR: GOOG: MISSING data: "close" in data point 262
+ERROR: GOOG: MISSING data: "open" in data point 265
+ERROR: GOOG: MISSING data: "close" in data point 265
+ERROR: GOOG: MISSING data: "open" in data point 266
+ERROR: GOOG: MISSING data: "close" in data point 266
+ERROR: GOOG: MISSING data: "open" in data point 276
+ERROR: GOOG: MISSING data: "close" in data point 276
+ERROR: GOOG: MISSING data: "open" in data point 281
+ERROR: GOOG: MISSING data: "close" in data point 281
+ERROR: GOOG: MISSING data: "open" in data point 284
+ERROR: GOOG: MISSING data: "close" in data point 284
+ERROR: GOOG: MISSING data: "open" in data point 286
+ERROR: GOOG: MISSING data: "close" in data point 286
+ERROR: GOOG: MISSING data: "open" in data point 287
+ERROR: GOOG: MISSING data: "close" in data point 287
+ERROR: GOOG: MISSING data: "open" in data point 289
+ERROR: GOOG: MISSING data: "close" in data point 289
+ERROR: GOOG: MISSING data: "open" in data point 295
+ERROR: GOOG: MISSING data: "close" in data point 295
+ERROR: GOOG: MISSING data: "open" in data point 298
+ERROR: GOOG: MISSING data: "close" in data point 298
+ERROR: GOOG: MISSING data: "open" in data point 299
+ERROR: GOOG: MISSING data: "close" in data point 299
+ERROR: GOOG: MISSING data: "open" in data point 302
+ERROR: GOOG: MISSING data: "close" in data point 302
+ERROR: GOOG: MISSING data: "open" in data point 303
+ERROR: GOOG: MISSING data: "close" in data point 303
+ERROR: GOOG: MISSING data: "open" in data point 304
+ERROR: GOOG: MISSING data: "close" in data point 304
+ERROR: GOOG: MISSING data: "open" in data point 307
+ERROR: GOOG: MISSING data: "close" in data point 307
+ERROR: GOOG: MISSING data: "open" in data point 308
+ERROR: GOOG: MISSING data: "close" in data point 308
+ERROR: GOOG: MISSING data: "open" in data point 309
+ERROR: GOOG: MISSING data: "close" in data point 309
+ERROR: GOOG: MISSING data: "open" in data point 314
+ERROR: GOOG: MISSING data: "close" in data point 314
+ERROR: GOOG: MISSING data: "open" in data point 319
+ERROR: GOOG: MISSING data: "close" in data point 319
+ERROR: GOOG: MISSING data: "open" in data point 323
+ERROR: GOOG: MISSING data: "close" in data point 323
+ERROR: GOOG: MISSING data: "open" in data point 334
+ERROR: GOOG: MISSING data: "close" in data point 334
+ERROR: GOOG: MISSING data: "open" in data point 341
+ERROR: GOOG: MISSING data: "close" in data point 341
+ERROR: GOOG: MISSING data: "open" in data point 359
+ERROR: GOOG: MISSING data: "close" in data point 359
+================================ GOOG - 1d
+status: 200
+ERROR: GOOG: MISSING data: "open" in data point 0
+ERROR: GOOG: MISSING data: "close" in data point 0
+ERROR: GOOG: MISSING data: "open" in data point 1
+ERROR: GOOG: MISSING data: "close" in data point 1
+ERROR: GOOG: MISSING data: "open" in data point 2
+ERROR: GOOG: MISSING data: "close" in data point 2
+ERROR: GOOG: MISSING data: "open" in data point 3
+ERROR: GOOG: MISSING data: "open" in data point 4
+ERROR: GOOG: MISSING data: "close" in data point 4
+ERROR: GOOG: MISSING data: "open" in data point 6
+ERROR: GOOG: MISSING data: "open" in data point 11
+ERROR: GOOG: MISSING data: "open" in data point 12
+ERROR: GOOG: MISSING data: "close" in data point 12
+ERROR: GOOG: MISSING data: "open" in data point 13
+ERROR: GOOG: MISSING data: "open" in data point 14
+ERROR: GOOG: MISSING data: "close" in data point 14
+ERROR: GOOG: MISSING data: "open" in data point 16
+ERROR: GOOG: MISSING data: "close" in data point 16
+ERROR: GOOG: MISSING data: "open" in data point 18
+ERROR: GOOG: MISSING data: "close" in data point 18
+ERROR: GOOG: MISSING data: "open" in data point 19
+ERROR: GOOG: MISSING data: "close" in data point 19
+ERROR: GOOG: MISSING data: "open" in data point 21
+ERROR: GOOG: MISSING data: "close" in data point 21
+ERROR: GOOG: MISSING data: "open" in data point 22
+ERROR: GOOG: MISSING data: "close" in data point 22
+ERROR: GOOG: MISSING data: "open" in data point 24
+ERROR: GOOG: MISSING data: "open" in data point 25
+ERROR: GOOG: MISSING data: "close" in data point 25
+ERROR: GOOG: MISSING data: "open" in data point 26
+ERROR: GOOG: MISSING data: "close" in data point 26
+ERROR: GOOG: MISSING data: "open" in data point 27
+ERROR: GOOG: MISSING data: "open" in data point 29
+ERROR: GOOG: MISSING data: "open" in data point 35
+================================ GOOG - 5d
+ERROR: NO STATUS: 
+ERROR: Status = undefined
+ERROR: No Data in api call res!!
+================================ GOOG - 1m
+status: 200
+================================ GOOG - 6m
+status: 200
+================================ GOOG - 1y
+status: 200
+================================ GOOG - 2y
+status: 200
+================================ GOOG - 5y
+status: 200

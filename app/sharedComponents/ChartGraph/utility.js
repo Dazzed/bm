@@ -750,7 +750,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of source) {
         let chosenValue = Object.byString(elem, targetValue);
-        // console.log('chosen value', chosenValue);
+        console.log('chosen value', chosenValue);
         if(chosenValue === null) {
           continue;
         }
@@ -879,6 +879,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(futureDataPoints.length > 0) {
         sourceData = d.dataPoints.concat(futureDataPoints);
       }
+      console.log('== render ichi', sourceData)
       let lineA = generateLineData('ichi.spanA', theme.green, sourceData);
       let lineB = generateLineData('ichi.spanB', theme.red, sourceData);
       console.log('-- line a', lineA);
@@ -986,7 +987,7 @@ export const modifyTestDataIntoTestPattern = (testData) => {
   let fatBarHeight = 5;
 
   let results = testData.map((elem, i) => {
-    console.log('-----', elem)
+    // console.log('-----', elem)
     if(elem.open) {
       elem.open = 40;
     }
