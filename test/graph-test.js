@@ -9,7 +9,8 @@ const password = 'Password11!'
 let accessToken = null;
 
 var resultsFile = './testResults.txt';
-var arrayOfTickers = ['AAPL', 'GOOG'];
+// var arrayOfTickers = ['AAPL', 'GOOG'];
+var arrayOfTickers = ['GOOG'];
 var arrayOfRanges = ['1h', '1d', '5d', '1m', '6m', '1y', '2y', '5y'];
 
 
@@ -72,9 +73,9 @@ var makeGraphCall = (ticker, range) => {
 
   params.options.indicator = ['BB', 'EMA', 'SMA']; // ICHI
 
-  // if(includeICHI) {
-  //   params.options.indicator.push('ICHI');
-  // }
+  if(includeICHI) {
+    params.options.indicator.push('ICHI');
+  }
 
   if(range == '1h') {
     // one hour
@@ -173,31 +174,36 @@ var testForPresenceOfFirstLevelValue = (dataPoint, valueToTestFor, i, ticker) =>
 var testEachDataPoint = (dataPoints, ticker) => {
   dataPoints.forEach((dataPoint, i) => {
     // printLine('testing data point..' + i)
-    // printLine(JSON.stringify(dataPoint) )
+    // printLine(JSON.stringify(dataPoint.ichi) )
+    // printLine(typeof dataPoint.ichi);
 
-    testForPresenceOfFirstLevelValue(dataPoint, 'date', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'open', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'high', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'low', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'close', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'volume', i, ticker);
+    if(typeof dataPoint.ichi !== 'object') {
+      printError('ICHI value is not a valid object. Data received at index ' + i + ' is of type (' + typeof dataPoint.ichi + ') --- ' + JSON.stringify(dataPoint.ichi) );
+    }
 
-    // these are throwing errors
-    // testForPresenceOfFirstLevelValue(dataPoint, 'unadjustedVolume', i, ticker);
-    // testForPresenceOfFirstLevelValue(dataPoint, 'change', i, ticker);
-    // testForPresenceOfFirstLevelValue(dataPoint, 'changePercent', i, ticker);
-    // testForPresenceOfFirstLevelValue(dataPoint, 'vwap', i, ticker);
-
-    testForPresenceOfFirstLevelValue(dataPoint, 'label', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'changeOverTime', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'date', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'open', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'high', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'low', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'close', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'volume', i, ticker);
+    //
+    // // these are throwing errors
+    // // testForPresenceOfFirstLevelValue(dataPoint, 'unadjustedVolume', i, ticker);
+    // // testForPresenceOfFirstLevelValue(dataPoint, 'change', i, ticker);
+    // // testForPresenceOfFirstLevelValue(dataPoint, 'changePercent', i, ticker);
+    // // testForPresenceOfFirstLevelValue(dataPoint, 'vwap', i, ticker);
+    //
+    // testForPresenceOfFirstLevelValue(dataPoint, 'label', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'changeOverTime', i, ticker);
 
     // conditionally test this
-    // testForPresenceOfFirstLevelValue(dataPoint, 'ichi', i, ticker);
+    testForPresenceOfFirstLevelValue(dataPoint, 'ichi', i, ticker);
 
-    testForPresenceOfFirstLevelValue(dataPoint, 'ema50', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'ema200', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'sma50', i, ticker);
-    testForPresenceOfFirstLevelValue(dataPoint, 'sma200', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'ema50', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'ema200', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'sma50', i, ticker);
+    // testForPresenceOfFirstLevelValue(dataPoint, 'sma200', i, ticker);
 
     // testForPresenceOfFirstLevelValue(dataPoint, 'blog', i);
   })
