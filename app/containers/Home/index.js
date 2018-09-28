@@ -149,7 +149,7 @@ class HomeScreen extends Component {
           </Text>
         </View>
         <Text style={[{ color: this.state.colors['darkSlate'] }, styles.tagline, fonts.hindGunturLt]}>
-          The premier stock trading platform with zero commisions.
+          The premier stock trading platform with zero commissions.
         </Text>
         {this.renderAppPreviewButton()}
         <Text style={[{ color: this.state.colors['lightGray'] }, styles.legal, fonts.hindGunturRg]}>By using BluMartini you agree to our <Text style={[styles.legalLink, fonts.hindGunturRg]} onPress={() => this.showTerms()}>Terms & Conditions</Text></Text>
@@ -163,7 +163,7 @@ class HomeScreen extends Component {
           onPress={() => navigate('Login')}>
           <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER? SIGN IN</Text>
         </TouchableHighlight>
-        <Text>Version: 0.0.1 (69)</Text>
+        <Text>Version: 0.0.1 (71)</Text>
         <Modal
           isVisible={this.state.isTermsVisible}
           animationIn={'slideInUp'}

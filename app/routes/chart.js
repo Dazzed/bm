@@ -754,7 +754,7 @@ class Chart extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <TouchableOpacity onPress={() => this.navToLink(website)}>
             <View style={chart.profileTxt}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
+              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
             </View>
           </TouchableOpacity>
         </View>
