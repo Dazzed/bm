@@ -25,13 +25,9 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel
 } from '../components/react-native-simple-radio-button';
-import CheckBox from '../components/react-native-check-box'
-import Tabs from 'react-native-tabs';
-import ResponsiveImage from 'react-native-responsive-image';
+import CheckBox from '../components/react-native-check-box';
 import { setTheme, getTheme, colors } from '../store/store';
-import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
-import AppNav from './appnav';
 import Search from './Search';
 import styles from '../style/style';
 import navstyle from '../style/nav';
@@ -217,7 +213,7 @@ class Chart extends Component {
     //   Orientation.lockToPortrait();
     //   this.setState({ isOrderVisible: true, orderType: orderType })
     // }
-    if(this.state.orientation == 'landscape') {
+    if (this.state.orientation == 'landscape') {
       this.setState({ isRotateVisible: true, orderType: orderType })
     }
     this.setState({

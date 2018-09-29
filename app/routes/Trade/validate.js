@@ -1,5 +1,4 @@
 export default ({ quantity, price, orderTypeName }) => {
-  console.info({ quantity, price, orderTypeName });
   // validate quantity
   const parsedQuantity = Number(quantity);
   let errorMessage = '';
@@ -20,7 +19,6 @@ export default ({ quantity, price, orderTypeName }) => {
   // if not market order then validate price
   // validate price
   const parsedPrice = Number(price);
-  console.info({parsedPrice})
   if (isNaN(parsedPrice) || parsedPrice === 0) {
     errorPresent = true;
     errorMessage = 'Enter your own price for the limit order';

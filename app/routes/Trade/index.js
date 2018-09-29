@@ -58,7 +58,6 @@ class Trade extends React.Component {
       return this.oldSetState(data);
     }
     const { orderType } = props.navigation.state.params;
-    console.info(53, props);
     this.state = {
       numField: null,
       isOrderTypeVisible: false,

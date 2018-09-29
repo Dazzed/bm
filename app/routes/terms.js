@@ -29,9 +29,6 @@ import {
 
 import Modal from 'react-native-modal'
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
-
 import styles from '../style/style';
 import fonts from '../style/fonts';
 

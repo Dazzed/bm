@@ -110,6 +110,11 @@ const account = StyleSheet.create({
     maxWidth: 185,
     // color: colors.darkGray
   },
+  noOrdersText: {
+    textAlign: 'center',
+    fontSize: 24,
+    marginBottom: 60
+  },
   sectionDate: {
     marginLeft: 20,
     paddingBottom: 5,
@@ -315,9 +320,6 @@ const account = StyleSheet.create({
     alignItems: 'flex-end',
     maxWidth: 150
   },
-  historyLabel: {
-    fontSize: 20
-  },
   historyTransaction: {
     flex: 1,
     flexDirection: 'row',
@@ -348,8 +350,5 @@ const account = StyleSheet.create({
     flex: 1,
     marginLeft: 2
   }
-
-
-
 });
 module.exports = account;

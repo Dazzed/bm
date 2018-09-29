@@ -82,6 +82,7 @@ export default class Trending {
       return []
     } else {
       return toJS(this.trendingData)
+      .filter(data => data)
       .map(data => {
         let parseData = {
           ...data,
