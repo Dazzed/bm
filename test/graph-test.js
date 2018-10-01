@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
-var util = require('util')
-
+var util = require('util');
+var generateChartOptions = require('../app/utility/generateChartOptions');
 
 const username = 'fogg4444@gmail.com';
 const password = 'Password11!'
@@ -44,90 +44,8 @@ var makeGraphCall = (ticker, range) => {
 
   let includeICHI = true;
 
-  let params = {
-    options: {
-      'ticker': ticker,
-      'indicator': [],
-      'parameters':{
-        'ICHI': {
-          'conversionPeriod': 9,
-          'basePeriod': 26,
-          'spanPeriod': 52,
-          'displacement': 26
-        },
-        'EMA': {
-          'period':50
-        },
-      }
-    }
-  }
-
-
-  // old list of attributes
-  // params.options.indicator = ['OBV', 'TRND', 'EMA', 'MACD', 'RSI', 'BOL', 'SMA'];
-
-  params.options.indicator = ['BB', 'EMA', 'SMA']; // ICHI
-
-  // to remove from graph view
-  // params.options.indicator = ['OBV', 'TRND', 'MACD', 'RSI', 'BOL'];
-
-  params.options.indicator = ['BB', 'EMA', 'SMA']; // ICHI
-
-  if(includeICHI) {
-    params.options.indicator.push('ICHI');
-  }
-
-  if(range == '1h') {
-    // one hour
-    params.options.range = '1d';
-    params.options.interval = {periodType: "m", period: 1}
-
-  } else if (range == '1d') {
-
-    // five days
-    params.options.range = '1d';
-    // params.options.data_point = 120;
-    params.options.interval = {periodType: "m", period: 10}
-
-
-  } else if (range == '5d') {
-
-    // five days
-    params.options.range = '5d';
-    params.options.data_point = 5;
-
-  } else if (range == '1m') {
-
-    // one month
-    params.options.range = '1m';
-    params.options.data_point = 20;
-
-  } else if (range == '6m') {
-
-    // six months
-    params.options.range = '6m';
-    params.options.data_point = 60;
-
-  } else if (range == '1y') {
-
-    // one year
-    params.options.range = '1y';
-    params.options.data_point = 52;
-
-  } else if (range == '2y') {
-
-    // two years
-    params.options.range = '2y';
-    params.options.data_point = 52;
-
-  }
-  else if (range == '5y') {
-
-    // five years
-    params.options.range = '5y';
-    params.options.data_point = 52;
-
-  }
+  let params = {}
+  params.options = generateChartOptions(ticker, range, includeICHI)
 
   let baseURL = 'https://blu-api-staging.aws.gigsternetwork.com/api/';
   let route = 'tickerLists/stockCharts';

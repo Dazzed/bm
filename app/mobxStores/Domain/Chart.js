@@ -4,6 +4,7 @@ import { initialIndicators, initialChartRangeIndicator } from '../../constants';
 import largeChartTestData from '../../sharedComponents/ChartGraph/largeChartTestData';
 import { showGraphTestPattern } from '../../devControlPanel';
 import { modifyTestDataIntoTestPattern } from '../../sharedComponents/ChartGraph/utility';
+import { generateChartOptionsQuery } from '../../utility';
 
 export default class AccountStore {
 
@@ -98,96 +99,14 @@ export default class AccountStore {
 
         this.setStockChartLoading(true);
 
-        let params = {
-          options: {
-            'ticker': this.tickerDataJS.ticker,
-            'indicator': [],
-            'parameters':{
-              'ICHI': {
-                'conversionPeriod': 9,
-                'basePeriod': 26,
-                'spanPeriod': 52,
-                'displacement': 26
-              },
-              'EMA': {
-                'period':50
-              },
-              'MACD': {
-                'fastPeriod': 5,
-                'slowPeriod': 8,
-                'signalPeriod': 3,
-                'SimpleMAOscillator': false,
-                'SimpleMASignal': false
-              },
-              'RSI': {
-                'period':14
-              },
-              'BOL': {
-                'period':14,
-                'stdDev':2
-              }
-            }
-          }
-        }
+        let params = {}
 
-        params.options.indicator = ['OBV', 'TRND', 'EMA', 'MACD', 'RSI', 'BOL', 'SMA'];
+        let includeICHI = false;
         if(this.indicatorsListJS.indexOf('ICHI') > -1) {
-          params.options.indicator.push('ICHI');
+          includeICHI = true;
         }
 
-
-        if(this.range == '1h') {
-          // one hour
-          params.options.range = '1d';
-          params.options.interval = {periodType: "m", period: 1}
-
-        } else if (this.range == '1d') {
-
-          // five days
-          params.options.range = '1d';
-          // params.options.data_point = 120;
-          params.options.interval = {periodType: "m", period: 10}
-
-
-        } else if (this.range == '5d') {
-
-          // five days
-          params.options.range = '5d';
-          params.options.data_point = 5;
-
-        } else if (this.range == '1m') {
-
-          // one month
-          params.options.range = '1m';
-          params.options.data_point = 20;
-
-        } else if (this.range == '6m') {
-
-          // six months
-          params.options.range = '6m';
-          params.options.data_point = 60;
-
-        } else if (this.range == '1y') {
-
-          // one year
-          params.options.range = '1y';
-          params.options.data_point = 52;
-
-        } else if (this.range == '2y') {
-
-          // two years
-          params.options.range = '2y';
-          params.options.data_point = 52;
-
-        }
-        else if (this.range == '5y') {
-
-          // five years
-          params.options.range = '5y';
-          params.options.data_point = 52;
-
-        }
-
+        params.options = generateChartOptionsQuery(this.tickerDataJS.ticker, this.range, includeICHI)
 
         // conditinally display test data
         if(showGraphTestPattern) {
