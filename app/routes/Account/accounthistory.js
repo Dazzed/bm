@@ -9,7 +9,8 @@ import {
   Image,
   TouchableHighlight,
   TabbedArea,
-  TabPane
+  TabPane,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import styles from '../../style/style';
@@ -74,6 +75,18 @@ class AccountHist extends Component {
       // borderColor: 'blue',
     }
 
+    const symbolRowHistoryPending = {
+      flex: 1,
+      flexDirection: 'row',
+      marginTop: 15,
+      maxHeight: 70,
+      height: 70,
+      paddingLeft: 20,
+      paddingRight: 0,
+      // borderWidth: 1,
+      // borderColor: 'blue',
+    }
+
     const symbolWrapStyle = {
       flex: 3,
       flexDirection: 'column',
@@ -119,7 +132,7 @@ class AccountHist extends Component {
               </View>
               <View style={[account.sectionFull, { backgroundColor: this.state.colors['white'] }]}>
                 {eachDate.values.map((elem, i) => {
-                  return <View key={'eachDateEntry' + i} style={symbolRowHistory}>
+                  return <View key={'eachDateEntry' + i} style={symbolRowHistoryPending}>
                     <View style={symbolWrapStyle}>
                       <View style={inlineHistoryTransactionStyle}>
                         {renderBuyOrSell(elem.buyOrSell)}
@@ -139,11 +152,22 @@ class AccountHist extends Component {
                     </Text>
                   </View>
                 })}
+                <View style={[account.pendingActionWrap, symbolRowHistory]}>
+                  <View style={account.pendingActionItem}>
+                    <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturBd]}>VALIDITY</Text>
+                    <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturBd]}>Day Only</Text>
+                  </View>
+                  <View style={account.pendingActionItem}>
+                    <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>TYPE</Text>
+                    <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>Market Order</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={[{ borderColor: '#DB868E' }, account.cancelOptionBtn]}
+                    onPress={this.handleTouch}>
+                    <Text style={[styles.touchOption, fonts.hindGunturMd, { color: '#DB868E' }]}>CANCEL</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              {/* <View style={account.titleWrap}>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturBd]}>VALIDITY</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>TYPE</Text>
-              </View> */}
             </View>
           }) : <Text style={[account.noOrdersText, fonts.hindGunturBd]}>You have no pending trades.</Text>}
         <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>
