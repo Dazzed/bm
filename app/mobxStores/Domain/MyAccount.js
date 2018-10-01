@@ -245,21 +245,7 @@ export default class MyAccountData {
     .filter(elem => elem.canceled === false)
     .forEach(elem => {
       // console.info('====== EACH HISTORY', elem);
-      const data = {
-        datestamp: moment(elem.createdAt).format('MMMM DD, YYYY'),
-        id: elem.id,
-        values: [{
-          buyOrSell: elem.orderType == 'buy',
-          companyName: elem.companyName,
-          companyAbbreviation: elem.ticker,
-          orderOption: elem.orderOption,
-          orderValidity: elem.orderValidity,
-          processed: elem.processed,
-          price: elem.price || elem.limitPrice,
-          shares: elem.shares,
-          totalAmount: elem.totalAmount,
-        }]
-      };
+      const data = this.constructOrderObj(elem);
       if (elem.processed) {
         filledOrders.push(data);
       } else {
@@ -269,6 +255,34 @@ export default class MyAccountData {
     this.hasCalculatedPendingAndFilledOrders = true;
     return { pendingOrders, filledOrders };
   }
+
+  constructOrderObj = thisOrder => {
+    const data = {
+      datestamp: moment(thisOrder.createdAt).format('MMMM DD, YYYY'),
+      id: thisOrder.id,
+      orderValidity: thisOrder.orderValidity,
+      orderOption: thisOrder.orderOption,
+      values: [{
+        buyOrSell: thisOrder.orderType == 'buy',
+        companyName: thisOrder.companyName,
+        companyAbbreviation: thisOrder.ticker,
+        processed: thisOrder.processed,
+        price: thisOrder.price || thisOrder.limitPrice,
+        shares: thisOrder.shares,
+        totalAmount: thisOrder.totalAmount,
+      }]
+    };
+    return data;
+  };
+
+  @action addNewOrder = newOrder => {
+    const data = this.constructOrderObj(newOrder);
+    if (newOrder.processed) {
+      this.filledOrders.push(data);
+    } else {
+      this.pendingOrders.push(data);
+    }
+  };
 
   // BEGIN Logic for cancellation
   @observable cancellingOrderId = null;

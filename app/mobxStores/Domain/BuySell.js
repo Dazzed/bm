@@ -5,7 +5,7 @@ import {
   cover as coverApiCall,
   short as shortApiCall
 } from '../../api';
-import { chartStore } from '../';
+import { chartStore, myAccountStore } from '../';
 import { validity_props, order_type } from '../../constants';
 
 export default class BuySellStore {
@@ -215,6 +215,7 @@ export default class BuySellStore {
             }
             return reject('There was an error. Please try again later');
           }
+          myAccountStore.addNewOrder(res.json.result.order);
           return resolve();
         })
         .catch((err) => {
