@@ -72,7 +72,9 @@ status: 200
 ================================ GOOG - 1y
 status: 200
 ================================ GOOG - 2y
-status: 200
+ERROR: NO STATUS: 
+ERROR: Status = undefined
+ERROR: No Data in api call res!!
 ================================ GOOG - 5y
 status: 200
 ERROR: ICHI value is not a valid object. Data received at index 0 is of type (number) --- 0

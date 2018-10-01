@@ -960,22 +960,6 @@ class Chart extends Component {
           <View style={styles.checkBoxWrap}>
             <CheckBox
                 style={styles.checkField}
-                onClick={()=>this.toggleCheck('MACD')}
-                isChecked={this.checkIndicators('MACD')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'MACD'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Moving Average Convergence Divergence'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_008000_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
                 onClick={()=>this.toggleCheck('RSI')}
                 isChecked={this.checkIndicators('RSI')}
                 isDisabled={this.state.isDisabled}

@@ -423,9 +423,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       trndMax: 0,
       trndMin: initMaxVal,
       obvMax: 0,
-      obvMin: initMaxVal,
-      macdMax: 0,
-      macdMin: initMaxVal
+      obvMin: initMaxVal
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -433,6 +431,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     height = height * d.yPaddingModifier;
     // adds right padding
     width = width * d.xPaddingModifier;
+
+
+
+    // params.options.indicator = ['OBV', 'TRND', 'MACD', 'RSI', 'BOL'];
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -474,13 +476,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.trndMin ) d.trndMin = input;
     }
 
-    const manipulateMACDMaxMin = (input) => {
-      // don't run if value is null
-      if( input === null ) { return }
-      if( input > d.macdMax ) d.macdMax = input;
-      if( input < d.macdMin ) d.trndMin = input;
-    }
-
     const addLeftPaddingToXGraph = () => {
       return;
       // console.log('--- LEFT PADDING -- ', d.xMin, d.xMax);
@@ -501,7 +496,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let ichiHasNullValue = false;
     let obvHasNullValue = false;
     let trndHasNullValue = false;
-    let macdHasNullValue = false;
     let sma50HasNullValue = false;
     let sma200HasNullValue = false;
 
@@ -541,10 +535,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         console.log('NULLLL!!! trnd')
         trndHasNullValue = true;
       }
-      if(elem.macd === null) {
-        console.log('NULLLL!!! macd')
-        macdHasNullValue = true;
-      }
 
       if(elem.sma50 === null ) {
         console.log('NULLLL!!! sma50')
@@ -566,7 +556,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderTrnd = false;
     let renderEma50 = false;
     let renderEma200 = false;
-    let renderMacd = false;
     let renderSma = false;
 
     //////////////////////////////////////////////////////////////////////////
@@ -594,9 +583,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(!trndHasNullValue) {
         renderTrnd = indicatorsList.indexOf('TRND') > -1;
-      }
-      if(!macdHasNullValue) {
-        renderMacd = indicatorsList.indexOf('MACD') > -1;
       }
       if(!sma50HasNullValue && !sma200HasNullValue ) {
         renderSma = indicatorsList.indexOf('SMA') > -1;
@@ -650,9 +636,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderTrnd) {
         manipulateTrndMaxMin(elem.trnd);
-      }
-      if(renderMacd) {
-        manipulateMACDMaxMin(elem.macd.MACD);
       }
       if(renderSma) {
         manipulateYMaxMin(elem.sma50);
@@ -892,9 +875,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     }
     if(renderTrnd) {
       d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
-    }
-    if(renderMacd) {
-      d.formattedLines.push(generateRelativeLineData('macd.MACD', '#008000', d.macdMax, d.macdMin));
     }
     if(renderSma) {
       d.formattedLines.push(generateLineData('sma50', '#FF8C00', d.dataPoints));
