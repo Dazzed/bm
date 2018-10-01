@@ -22,6 +22,7 @@ const cover = params => get('orders/buyToCover', params);
 const positions = (params) => get('positions', params);
 const accountOrders = (params) => get('/orders/account', params);
 const accountOrdersForHistory = params => get('/orders/listOrders', params);
+const cancelOrderCall = params => get('/orders/cancelOrder', params);
 
 export {
     login,
@@ -45,5 +46,6 @@ export {
     cover,
     positions,
     accountOrders,
-    accountOrdersForHistory
-}
+    accountOrdersForHistory,
+    cancelOrderCall
+};

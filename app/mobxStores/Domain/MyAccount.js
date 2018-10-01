@@ -1,15 +1,9 @@
 import { observable, action, computed, toJS } from 'mobx';
-import { accountOrders, accountOrdersForHistory } from '../../api';
+import { accountOrders, accountOrdersForHistory, cancelOrderCall } from '../../api';
 import { colorStore } from '../';
 import moment from 'moment';
 
 export default class MyAccountData {
-
-  constructor() {
-
-  }
-
-  // API CALLS
   @action getBalances = () => {
     this.balanceLoading = true;
     let params = { show: 'balances' }
@@ -38,6 +32,7 @@ export default class MyAccountData {
         this.balanceLoading = false;
       })
   }
+
   @action getPositions = () => {
     this.positionsLoading = true;
     let params = { show: 'positions' }
@@ -56,6 +51,7 @@ export default class MyAccountData {
         this.positionsLoading = false;
       })
   }
+
   @action getHistory = () => {
     this.historyLoading = true;
     let params = { show: 'history' }
@@ -80,8 +76,6 @@ export default class MyAccountData {
     this.getPositions();
     this.getHistory();
   };
-
-
 
   // ACCOUNT BALANCE DETAILS
   @observable accountValue = 0;
@@ -181,6 +175,7 @@ export default class MyAccountData {
       return results;
     }
   }
+
   @computed get positionTotalsJS() {
     return {
       total: this.positionsTotal,
@@ -189,8 +184,6 @@ export default class MyAccountData {
       decimalChangeColor: (this.overallChange < 0 ? 'red' : 'green')
     }
   }
-
-
 
   @computed get anythingLoading() {
     return this.balanceLoading || this.positionsLoading || this.historyLoading;
@@ -235,42 +228,26 @@ export default class MyAccountData {
     return balanceData;
   }
 
-  ////// HISTORY
-  // commission
-  // :
-  // 10
-  // companyName
-  // :
-  // "Apple Inc."
-  // createdAt
-  // :
-  // "2018-08-15T18:31:53.000Z"
-  // orderType
-  // :
-  // "buy"
-  // price
-  // :
-  // 209.23
-  // shares
-  // :
-  // 10
-  // ticker
-  // :
-  // "AAPL"
-  // totalAmount
-  // :
-  // 2102.3
-
-
   @observable historyLoading = false;
   @observable history = [];
+  @observable pendingOrders = [];
+  @observable filledOrders = [];
+  hasCalculatedPendingAndFilledOrders = false;
+
   @computed get historyJS() {
-    const pendingOrders = [];
-    const filledOrders = [];
-    toJS(this.history).forEach(elem => {
-      // console.log('====== EACH HISTORY', elem);
+    const pendingOrders = this.pendingOrders;
+    const filledOrders = this.filledOrders;
+    if (this.hasCalculatedPendingAndFilledOrders) {
+      return { pendingOrders, filledOrders };
+    }
+    const historyToJS = toJS(this.history);
+    historyToJS
+    .filter(elem => elem.canceled === false)
+    .forEach(elem => {
+      // console.info('====== EACH HISTORY', elem);
       const data = {
         datestamp: moment(elem.createdAt).format('MMMM DD, YYYY'),
+        id: elem.id,
         values: [{
           buyOrSell: elem.orderType == 'buy',
           companyName: elem.companyName,
@@ -280,7 +257,7 @@ export default class MyAccountData {
           processed: elem.processed,
           price: elem.price || elem.limitPrice,
           shares: elem.shares,
-          totalAmount: elem.totalAmount
+          totalAmount: elem.totalAmount,
         }]
       };
       if (elem.processed) {
@@ -289,8 +266,28 @@ export default class MyAccountData {
         pendingOrders.push(data);
       }
     });
+    this.hasCalculatedPendingAndFilledOrders = true;
     return { pendingOrders, filledOrders };
   }
 
+  // BEGIN Logic for cancellation
+  @observable cancellingOrderId = null;
+  @observable isCancellingOrder = false;
+  @action setCancellingOrderId = id => {
+    this.cancellingOrderId = id;
+  }
 
+  @action performCancellingOrder = async () => {
+    try {
+      this.isCancellingOrder = true;
+      const cancellingOrderId = this.cancellingOrderId;
+      const result = await cancelOrderCall({ orderId: cancellingOrderId });
+      // console.info(result);
+      this.pendingOrders = this.pendingOrders.filter(o => o.id !== cancellingOrderId);
+      this.isCancellingOrder = false;
+    } catch (e) {
+      console.info(e);
+    }
+  }
+  // END Logic for cancellation
 }

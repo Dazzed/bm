@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Alert,
   AppRegistry,
   StyleSheet,
   Animated,
@@ -19,7 +20,7 @@ import fonts from '../../style/fonts';
 import { setTheme, getTheme, colors } from '../../store/store';
 import { selectGlobalData } from '../../selectors';
 import { observer } from 'mobx-react';
-import { myAccountStore } from '../../mobxStores';
+import { myAccountStore, accountStore } from '../../mobxStores';
 
 @observer
 class AccountHist extends Component {
@@ -48,7 +49,23 @@ class AccountHist extends Component {
     }
   }
 
-  renderDateList() {
+  initiateCancelling = id => {
+    if (myAccountStore.isCancellingOrder) {
+      return;
+    }
+    myAccountStore.setCancellingOrderId(id);
+    Alert.alert(
+      '',
+      'Do you want to cancel this order?',
+      [
+        { text: 'Cancel', onPress: () => myAccountStore.setCancellingOrderId(null), style: 'cancel' },
+        { text: 'OK', onPress: () => myAccountStore.performCancellingOrder() },
+      ],
+      { cancelable: true }
+    )
+  }
+
+  renderDateList = () => {
 
     let renderBuyOrSell = (buyBoolean) => {
       if (buyBoolean) {
@@ -115,7 +132,7 @@ class AccountHist extends Component {
       // marginBottom: -7
     }
 
-    console.info(64, historyJS)
+    const { isCancellingOrder, cancellingOrderId } = myAccountStore;
     return (
       <View>
         <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>
@@ -163,8 +180,11 @@ class AccountHist extends Component {
                   </View>
                   <TouchableOpacity
                     style={[{ borderColor: '#DB868E' }, account.cancelOptionBtn]}
-                    onPress={this.handleTouch}>
-                    <Text style={[styles.touchOption, fonts.hindGunturMd, { color: '#DB868E' }]}>CANCEL</Text>
+                    onPress={this.initiateCancelling.bind(this, eachDate.id)}
+                  >
+                    <Text style={[styles.touchOption, fonts.hindGunturMd, { color: '#DB868E' }]}>
+                      {isCancellingOrder && cancellingOrderId === eachDate.id ? 'LOADING...' : 'CANCEL'}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
