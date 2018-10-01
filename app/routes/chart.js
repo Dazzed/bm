@@ -880,22 +880,6 @@ class Chart extends Component {
           <View style={styles.checkBoxWrap}>
             <CheckBox
                 style={styles.checkField}
-                onClick={()=>this.toggleCheck('TRND')}
-                isChecked={this.checkIndicators('TRND')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'TRND'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Trend Lines'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_A52A2A_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
                 onClick={()=>this.toggleCheck('ICHI')}
                 isChecked={this.checkIndicators('ICHI')}
                 isDisabled={this.state.isDisabled}

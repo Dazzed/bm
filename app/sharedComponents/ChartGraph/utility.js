@@ -460,17 +460,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
-    const manipulateTrndMaxMin = (input) => {
-      // don't run if value is null
-      if( input === null ) { return }
-      if( input > d.trndMax ) d.trndMax = input;
-      if( input < d.trndMin ) d.trndMin = input;
-    }
-
     const addLeftPaddingToXGraph = () => {
       return;
       // console.log('--- LEFT PADDING -- ', d.xMin, d.xMax);
-      d.xMin = d.xMin - ( (d.xMax - d.xMin) * .0005);
+      // d.xMin = d.xMin - ( (d.xMax - d.xMin) * .0005);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -485,7 +478,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
-    let trndHasNullValue = false;
     let sma50HasNullValue = false;
     let sma200HasNullValue = false;
 
@@ -517,10 +509,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         console.log('NULLLL!!! ichi')
         ichiHasNullValue = true;
       }
-      if(elem.trnd === null) {
-        console.log('NULLLL!!! trnd')
-        trndHasNullValue = true;
-      }
 
       if(elem.sma50 === null ) {
         console.log('NULLLL!!! sma50')
@@ -538,7 +526,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
-    let renderTrnd = false;
     let renderEma50 = false;
     let renderEma200 = false;
     let renderSma = false;
@@ -562,9 +549,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(!ichiHasNullValue) {
         renderIchi = indicatorsList.indexOf('ICHI') > -1;
-      }
-      if(!trndHasNullValue) {
-        renderTrnd = indicatorsList.indexOf('TRND') > -1;
       }
       if(!sma50HasNullValue && !sma200HasNullValue ) {
         renderSma = indicatorsList.indexOf('SMA') > -1;
@@ -612,9 +596,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderVolume) {
         manipulateVolumeMaxMin(elem.volume);
-      }
-      if(renderTrnd) {
-        manipulateTrndMaxMin(elem.trnd);
       }
       if(renderSma) {
         manipulateYMaxMin(elem.sma50);
@@ -849,9 +830,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.ichiCloudLines.push(lineA);
       d.ichiCloudLines.push(lineB);
     }
-    if(renderTrnd) {
-      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
-    }
+    // if(renderTrnd) {
+    //   d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
+    // }
     if(renderSma) {
       d.formattedLines.push(generateLineData('sma50', '#FF8C00', d.dataPoints));
       d.formattedLines.push(generateLineData('sma200', '#FF8C00', d.dataPoints));
