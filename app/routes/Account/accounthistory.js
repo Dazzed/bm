@@ -172,11 +172,11 @@ class AccountHist extends Component {
                 <View style={[account.pendingActionWrap, symbolRowHistory]}>
                   <View style={account.pendingActionItem}>
                     <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturBd]}>VALIDITY</Text>
-                    <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturBd]}>{eachDate.orderValidity}</Text>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, symbolLabel, fonts.hindGunturRg]}>{eachDate.orderValidity}</Text>
                   </View>
                   <View style={account.pendingActionItem}>
                     <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>TYPE</Text>
-                    <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>{eachDate.orderOption}</Text>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, symbolLabel, fonts.hindGunturRg]}>{eachDate.orderOption}</Text>
                   </View>
                   <TouchableOpacity
                     style={[{ borderColor: '#DB868E' }, account.cancelOptionBtn]}
