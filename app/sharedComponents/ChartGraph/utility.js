@@ -422,8 +422,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       volumeBottomLinesData: null,
       trndMax: 0,
       trndMin: initMaxVal,
-      obvMax: 0,
-      obvMin: initMaxVal
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -462,13 +460,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
-    const manipulateObvMaxMin = (input) => {
-      // don't run if value is null
-      if( input === null ) { return }
-      if( input > d.obvMax ) d.obvMax = input;
-      if( input < d.obvMin ) d.obvMin = input;
-    }
-
     const manipulateTrndMaxMin = (input) => {
       // don't run if value is null
       if( input === null ) { return }
@@ -494,7 +485,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
-    let obvHasNullValue = false;
     let trndHasNullValue = false;
     let sma50HasNullValue = false;
     let sma200HasNullValue = false;
@@ -527,10 +517,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         console.log('NULLLL!!! ichi')
         ichiHasNullValue = true;
       }
-      if(elem.obv === null) {
-        console.log('NULLLL!!! obv')
-        obvHasNullValue = true;
-      }
       if(elem.trnd === null) {
         console.log('NULLLL!!! trnd')
         trndHasNullValue = true;
@@ -552,7 +538,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
-    let renderObv = false;
     let renderTrnd = false;
     let renderEma50 = false;
     let renderEma200 = false;
@@ -577,9 +562,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(!ichiHasNullValue) {
         renderIchi = indicatorsList.indexOf('ICHI') > -1;
-      }
-      if(!obvHasNullValue) {
-        renderObv = indicatorsList.indexOf('OBV') > -1;
       }
       if(!trndHasNullValue) {
         renderTrnd = indicatorsList.indexOf('TRND') > -1;
@@ -630,9 +612,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderVolume) {
         manipulateVolumeMaxMin(elem.volume);
-      }
-      if(renderObv) {
-        manipulateObvMaxMin(elem.obv)
       }
       if(renderTrnd) {
         manipulateTrndMaxMin(elem.trnd);
@@ -869,9 +848,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       console.log('-- line b', lineB);
       d.ichiCloudLines.push(lineA);
       d.ichiCloudLines.push(lineB);
-    }
-    if(renderObv) {
-      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.obvMax, d.obvMin));
     }
     if(renderTrnd) {
       d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));

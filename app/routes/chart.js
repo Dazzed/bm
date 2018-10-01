@@ -912,22 +912,6 @@ class Chart extends Component {
           <View style={styles.checkBoxWrap}>
             <CheckBox
                 style={styles.checkField}
-                onClick={()=>this.toggleCheck('OBV')}
-                isChecked={this.checkIndicators('OBV')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'OBV'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'On Balance Volume'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_FF1493_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
                 onClick={()=>this.toggleCheck('SMA')}
                 isChecked={this.checkIndicators('SMA')}
                 isDisabled={this.state.isDisabled}
