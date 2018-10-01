@@ -925,38 +925,6 @@ class Chart extends Component {
             />
           </View>
       
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('RSI')}
-                isChecked={this.checkIndicators('RSI')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'RSI'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Relative Strength Index'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_00FF00_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('BOL')}
-                isChecked={this.checkIndicators('BOL')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'BOL'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Bollinger Bands'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_800080_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
-            />
-          </View>
-      
         </ScrollView>
       </View>
     </Modal>

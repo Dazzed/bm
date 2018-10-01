@@ -430,10 +430,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // adds right padding
     width = width * d.xPaddingModifier;
 
-
-
+    // to remove
     // params.options.indicator = ['OBV', 'TRND', 'MACD', 'RSI', 'BOL'];
-
 
     //////////////////////////////////////////////////////////////////////////
     // define x max / min functions
@@ -472,10 +470,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // we don't want to ever reference a null variable
     // in the line rendering functions
 
-    let bolHasNullValue = false;
     let ema50HasNullValue = false;
     let ema200HasNullValue = false;
-    let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
     let sma50HasNullValue = false;
@@ -485,14 +481,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // loop through and disqualify any null line
     d.dataPoints.forEach((elem, i) => {
 
-      if(elem.bol === null) {
-        console.log('NULLLL!!! bol')
-        bolHasNullValue = true;
-      }
-      if(elem.rsi === null) {
-        console.log('NULLLL!!! rsi')
-        rsiHasNullValue = true;
-      }
       if(elem.ema50 === null) {
         console.log('NULLLL!!! ema50')
         ema50HasNullValue = true;
@@ -522,8 +510,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     //////////////////////////////////////////////////////////////////////////
     // setup render variables
-    let renderBol = false;
-    let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
     let renderEma50 = false;
@@ -534,12 +520,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
       // if data is valid, check for indicator list and set render variables
-      if(!rsiHasNullValue) {
-        renderRsi = indicatorsList.indexOf('RSI') > -1;
-      }
-      if(!bolHasNullValue) {
-        renderBol = indicatorsList.indexOf('BOL') > -1;
-      }
       if(!ema50HasNullValue && !ema200HasNullValue) {
         renderEma50 = indicatorsList.indexOf('EMA') > -1;
         renderEma200 = indicatorsList.indexOf('EMA') > -1;
@@ -585,14 +565,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(renderEma200) {
         manipulateYMaxMin(elem.ema200);
-      }
-      if(renderRsi) {
-        manipulateYMaxMin(elem.rsi);
-      }
-      if(renderBol) {
-        manipulateYMaxMin(elem.bol.lower);
-        manipulateYMaxMin(elem.bol.middle);
-        manipulateYMaxMin(elem.bol.upper);
       }
       if(renderVolume) {
         manipulateVolumeMaxMin(elem.volume);
@@ -800,14 +772,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     //////////////////////////////////////////////////////////////////////////
     // conditionally render
-    if(renderRsi) {
-      d.formattedLines.push(generateLineData('rsi', '#00FF00', d.dataPoints));
-    }
-    if(renderBol) {
-      d.formattedLines.push(generateLineData('bol.lower', '#800080', d.dataPoints));
-      d.formattedLines.push(generateLineData('bol.middle', '#800080', d.dataPoints));
-      d.formattedLines.push(generateLineData('bol.upper', '#800080', d.dataPoints));
-    }
     if(renderEma50) {
       d.formattedLines.push(generateLineData('ema50', '#0000FF', d.dataPoints));
     }
