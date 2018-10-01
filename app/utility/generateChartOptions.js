@@ -2,7 +2,7 @@ const generateChartOptionsQuery = (ticker, range, includeICHI) => {
 
   let options = {
       'ticker': ticker,
-      'indicator': ['TRND', 'EMA', 'RSI', 'SMA'],
+      'indicator': ['EMA', 'RSI', 'SMA'],
       'parameters':{
         'ICHI': {
           'conversionPeriod': 9,
@@ -26,7 +26,7 @@ const generateChartOptionsQuery = (ticker, range, includeICHI) => {
     if(range == '1h') {
       // one hour
       options.range = '1d';
-      options.interval = {periodType: "m", period: 1}
+      options.interval = { periodType: "m", period: 1 }
     } else if (range == '1d') {
       // five days
       options.range = '1d';

@@ -10,9 +10,9 @@ let accessToken = null;
 
 var resultsFile = './testResults.txt';
 // var arrayOfTickers = ['AAPL', 'GOOG'];
-var arrayOfTickers = ['GOOG'];
-var arrayOfRanges = ['1h', '1d', '5d', '1m', '6m', '1y', '2y', '5y'];
-
+// var arrayOfTickers = ['GOOG'];
+var arrayOfTickers = ['A'];
+var arrayOfRanges = ['1h', '1d', '1m', '6m', '1y', '2y', '5y'];
 
 // final list of attributes to render
 // BB, EMA, SMA, and ICHI
@@ -34,6 +34,7 @@ var getToken = () => {
     })
     .catch((err) => {
       // handle err
+      printError('Could not login!!')
       console.log('err', err)
       reject(err)
     });
@@ -149,6 +150,8 @@ var readStock = (ticker, range) => {
         printLine('status: ' + res.status);
       } else {
         printError('NO STATUS: ');
+        printLine('Res that was received:');
+        printLine(util.inspect(res))
         resolve();
       }
 

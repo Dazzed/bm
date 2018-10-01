@@ -310,12 +310,12 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 
 // prevent data beyond time range limit from showing up
 // essentially throwing this data away
-let limitCurrentData = (inputData, count, distance) => {
+let limitCurrentData = (inputData, countOfHowManyLengthsOfTime, lengthOfTimeAsString) => {
   let formattedDataPointsHour = [];
   // extract newest time from list
   const newestDataPoint = inputData[inputData.length - 1];
   let newestTime = returnFormattedTimeStamp(newestDataPoint);
-  let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(count, distance).format('X'));
+  let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(countOfHowManyLengthsOfTime, lengthOfTimeAsString).format('X'));
   // loop through in reverse
   inputData.reverse().every((elem, i) => {
     let thisDateUnix = returnFormattedTimeStamp(elem);
@@ -358,7 +358,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let futureDataPoints = [];
 
     //////////////////////////////////////////////////////////////////////////
-    // seperate future data block from data
+    // seperate future data block from past data
 
     inputData.forEach((elem, i) => {
       // console.log('each modifiedInputData', elem);
@@ -477,33 +477,27 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     //////////////////////////////////////////////////////////////////////////
     // loop through and disqualify any null line
     d.dataPoints.forEach((elem, i) => {
-
+      console.log('=-------------- disqualify', elem.ichi)
       if(elem.ema50 === null) {
-        console.log('NULLLL!!! ema50')
         ema50HasNullValue = true;
       }
       if(elem.ema200 === null) {
-        console.log('NULLLL!!! ema200')
         ema200HasNullValue = true;
       }
       if(elem.volume === null) {
-        console.log('NULLLL!!! volume')
         volumeHasNullValue = true;
       }
-      if(elem.ichi === null) {
-        console.log('NULLLL!!! ichi')
+      // handle this stupid bug where the backend sends a zero instead of an object
+      if(elem.ichi === null || elem.ichi === 0) {
         ichiHasNullValue = true;
       }
-
       if(elem.sma50 === null ) {
-        console.log('NULLLL!!! sma50')
         sma50HasNullValue = true;
       }
       if(elem.sma200 === null ) {
-        console.log('NULLLL!!! sma200')
         sma200HasNullValue = true;
       }
-    })
+    });
 
     //////////////////////////////////////////////////////////////////////////
     // setup render variables
