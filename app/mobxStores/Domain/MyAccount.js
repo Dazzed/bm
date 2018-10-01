@@ -283,7 +283,7 @@ export default class MyAccountData {
           totalAmount: elem.totalAmount
         }]
       };
-      if (data.processed) {
+      if (elem.processed) {
         filledOrders.push(data);
       } else {
         pendingOrders.push(data);
