@@ -430,9 +430,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // adds right padding
     width = width * d.xPaddingModifier;
 
-    // to remove
-    // params.options.indicator = ['OBV', 'TRND', 'MACD', 'RSI', 'BOL'];
-
     //////////////////////////////////////////////////////////////////////////
     // define x max / min functions
     const manipulateXMaxMin = (input) => {
