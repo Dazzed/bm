@@ -431,7 +431,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     width = width * d.xPaddingModifier;
 
     //////////////////////////////////////////////////////////////////////////
-    // define x max / min functions
+    // define x and y  max & min functions
     const manipulateXMaxMin = (input) => {
       // don't run if value is null
       if( input === null ) { return }
@@ -477,7 +477,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     //////////////////////////////////////////////////////////////////////////
     // loop through and disqualify any null line
     d.dataPoints.forEach((elem, i) => {
-      console.log('=-------------- disqualify', elem.ichi)
+
       if(elem.ema50 === null) {
         ema50HasNullValue = true;
       }

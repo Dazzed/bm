@@ -13,6 +13,7 @@ var resultsFile = './testResults.txt';
 // var arrayOfTickers = ['GOOG'];
 var arrayOfTickers = ['A'];
 var arrayOfRanges = ['1h', '1d', '1m', '6m', '1y', '2y', '5y'];
+// var arrayOfRanges = ['1d'];
 
 // final list of attributes to render
 // BB, EMA, SMA, and ICHI
@@ -92,13 +93,22 @@ var testForPresenceOfFirstLevelValue = (dataPoint, valueToTestFor, i, ticker) =>
 
 var testEachDataPoint = (dataPoints, ticker) => {
   dataPoints.forEach((dataPoint, i) => {
-    // printLine('testing data point..' + i)
-    // printLine(JSON.stringify(dataPoint.ichi) )
+    printLine('- - - - - - - testing data point..' + i)
+    // printLine(JSON.stringify(dataPoint) )
     // printLine(typeof dataPoint.ichi);
 
     if(typeof dataPoint.ichi !== 'object') {
       printError('ICHI value is not a valid object. Data received at index ' + i + ' is of type (' + typeof dataPoint.ichi + ') --- ' + JSON.stringify(dataPoint.ichi) );
     }
+
+    printLine('open: ' + dataPoint.open)
+    printLine('close: ' + dataPoint.close)
+    printLine('high: ' + dataPoint.high)
+    printLine('low: ' + dataPoint.low)
+
+    // if(dataPoint.open === -1) {
+    //   printError('OPEN value at position' + i + 'is -1');
+    // }
 
     // testForPresenceOfFirstLevelValue(dataPoint, 'date', i, ticker);
     // testForPresenceOfFirstLevelValue(dataPoint, 'open', i, ticker);

@@ -96,6 +96,24 @@ export default class LargeGraph extends React.Component {
 
     generateCandlestickBars(params, key) {
         const { theme } = colorStore;
+        
+        // disqualify before rendering errors
+        let disqualified = false;
+        if(params.open === -1 ||
+          params.close === -1 ||
+          params.high === -1 ||
+          params.low === -1 ||
+          params.open === undefined ||
+          params.close === undefined ||
+          params.high === undefined ||
+          params.low === undefined
+        ) {
+          disqualified = true;
+        }
+        if(disqualified) {
+          return null;
+        }
+        
         let thickLineTop = params.closeYPositionCoordinates;
         let thickLineBottom = params.openYPositionCoordinates
         let color = theme.green;
