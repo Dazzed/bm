@@ -156,14 +156,13 @@ class HomeScreen extends Component {
         <TouchableHighlight
           style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
           onPress={() => navigate('Registration')}>
-          <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>JOIN 1,347,254 TRADERS</Text>
+          <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>JOIN THE ACTION</Text>
         </TouchableHighlight>
         <TouchableHighlight
           style={[{ backgroundColor: this.state.colors['darkGray'] }, { borderColor: this.state.colors['darkGray'] }, styles.fullBtnGray]}
           onPress={() => navigate('Login')}>
           <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER? SIGN IN</Text>
         </TouchableHighlight>
-        <Text>Version: 0.0.1 (71)</Text>
         <Modal
           isVisible={this.state.isTermsVisible}
           animationIn={'slideInUp'}

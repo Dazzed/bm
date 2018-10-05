@@ -158,7 +158,9 @@ const trending = StyleSheet.create({
   },
   symbolsVolume: {
     // flex: 2,
-    alignItems: 'center'
+    alignItems: 'flex-end',
+    paddingRight: 15,
+
   },
   addBtn: {
     width: 25,

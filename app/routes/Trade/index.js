@@ -131,7 +131,7 @@ class Trade extends React.Component {
         </View>
       );
     } else if (activeComponent === 'orderPlaced') {
-      const { quantity } = buySellStore;
+      const { quantity, transactionType } = buySellStore;
       return (
         <View
           style={[
@@ -143,6 +143,7 @@ class Trade extends React.Component {
             globalData={this.props.globalData}
             hideOrderPlaced={this.goBack}
             quantityPurchased={quantity}
+            transactionType={transactionType}
             targetStockData={targetStockData}
           />
         </View>

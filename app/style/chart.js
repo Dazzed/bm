@@ -90,6 +90,9 @@ const chart = StyleSheet.create({
   },
   name: {
     fontSize: 24,
+    lineHeight: 26,
+    marginTop: 0,
+    paddingTop: 10,
     marginBottom: -10,
     // color: colors.darkSlate
   },
@@ -347,7 +350,7 @@ const chart = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     paddingBottom: 25,
-    marginBottom: 25,
+    marginBottom: 0,
     // borderBottomColor: colors.borderGray,
     borderBottomWidth: 0.5
   },

@@ -17,6 +17,7 @@ import TouchID from 'react-native-touch-id';
 import {
   StackNavigator,
 } from 'react-navigation';
+import Orientation from 'react-native-orientation';
 
 import { setTheme, colors } from '../../store/store';
 
@@ -54,6 +55,7 @@ class SignIn extends Component {
   }
 
   componentDidMount() {
+    Orientation.lockToPortrait();
     if(autoLogin) {
       this.setState({
         email: 'fogg4444@gmail.com',
@@ -168,6 +170,18 @@ class SignIn extends Component {
         <KeyboardAvoidingView
           behavior={this.state.behavior}
           style={styles.formcontainer}>
+          <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
+            <View style={styles.landingIconLogin}>
+              <Image
+                source={this.state.colors['logoImage']}
+                style={styles.appIcon}
+              />
+            </View>
+            <View style={styles.landingTTLogin}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, styles.title, fonts.gothamBld]}>
+                BLUMARTINI
+              </Text>
+            </View>
           <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
             <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
@@ -190,7 +204,7 @@ class SignIn extends Component {
           </View>
           <View style={{ marginTop: 10, flexDirection: 'row', display: loginErrorPresent ? 'flex' : 'none' }}>
             <Text style={{ color: 'red', fontWeight: 'bold' }}>Error: </Text>
-            <Text style={{ color: 'red' }}>{authStore.loginErrorMessage}</Text>
+            <Text style={{ color: 'red' }}>{(authStore.loginErrorMessage !== '') ? authStore.loginErrorMessage : 'Error logging you in' }</Text>
           </View>
           <TouchableOpacity
             style={[{ borderColor: this.state.colors['darkGray'] }, styles.optionbtn]}
@@ -214,6 +228,7 @@ class SignIn extends Component {
               {(this.props.globalData.isAuthenticating || loginLoading || isVerifyingAuth) ? 'LOADING...' : 'SIGN IN'}
             </Text>
           </TouchableOpacity>
+          </View>
         </KeyboardAvoidingView>
       </View>
     );

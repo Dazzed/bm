@@ -11,7 +11,7 @@ const order = StyleSheet.create({
     // backgroundColor: colors.white,
     flex: 1,
     justifyContent: 'flex-start',
-    paddingTop: 10
+    paddingTop: 15
 
   },
   accInfoContainer: {
@@ -309,9 +309,18 @@ const order = StyleSheet.create({
   btnWrap: {
     flex: 1,
     alignItems: 'center'
-  }
-
-
-
+  },
+  searchingImg: {
+    maxWidth: 18,
+    maxHeight: 18,
+    paddingRight: 15,
+    paddingTop: 15,
+  },
+  twitterImg: {
+    maxWidth: 22,
+    maxHeight: 18,
+    paddingRight: 15,
+    paddingTop: 15,
+  },
 });
 module.exports = order;

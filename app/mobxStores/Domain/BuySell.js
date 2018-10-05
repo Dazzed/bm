@@ -1,4 +1,5 @@
 import { observable, action, computed, toJS } from 'mobx';
+import { numberWithCommas } from '../../utility';
 import {
   buy as buyApiCall,
   sell as sellApiCall,
@@ -84,7 +85,8 @@ export default class BuySellStore {
     const { Price } = tickerDataJS;
     console.log('---- calculate cost', this.quantity, parseInt(this.quantity), Price)
     let calculatedCost = parseInt(this.quantity) * Price;
-    return calculatedCost.toFixed(2);
+    return numberWithCommas(calculatedCost);
+    // return calculatedCost.toFixed(2);
   }
 
   // Constructs the total cost when the price is entered manually
@@ -98,7 +100,7 @@ export default class BuySellStore {
     if (this.price !== 0 && this.price !== '') {
       calculatedCost = parseInt(this.quantity) * this.price;
     }
-    return calculatedCost.toFixed(2);
+    return numberWithCommas(calculatedCost);
   }
 
   @observable transactionType = '';

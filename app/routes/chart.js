@@ -617,7 +617,7 @@ class Chart extends Component {
         </View>
 
         <View style={chart.prices}>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.stockPrice, fonts.hindGunturRg]}>${formattedPrice}</Text>
           <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({ stockChange: !this.state.stockChange })}>
             <Text style={[{ color: this.state.colors['darkGray'] }, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
             {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
@@ -628,15 +628,15 @@ class Chart extends Component {
           <View style={chart.pricePoints}>
             <View style={chart.priceOpen}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedOpen}</Text>
             </View>
             <View style={chart.priceHigh}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedHigh}</Text>
             </View>
             <View style={chart.priceLow}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedLow}</Text>
             </View>
             <View style={chart.priceVol}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
@@ -1081,35 +1081,32 @@ class Chart extends Component {
             {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
           </TouchableOpacity>
         </View>
-        <View style={chartland.prices}>
-          <View style={chartland.pricePoints}>
-
-            <View style={chartland.priceOpen}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
-            </View>
-            <View style={chartland.priceHigh}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
-            </View>
-            <View style={chartland.priceLow}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
-            </View>
-            <View style={chartland.priceVol}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
-            </View>
+        {this.renderWatchListButton(ticker)}
+      </View>
+      <View style={chartland.header_second}>
+      <View style={chartland.prices}>
+        <View style={chartland.pricePoints}>
+          <View style={chartland.priceOpen}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>OPEN: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
+          </View>
+          <View style={chartland.priceHigh}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>HIGH: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
+          </View>
+          <View style={chartland.priceLow}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>LOW: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
+          </View>
+          <View style={chartland.priceVol}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
           </View>
         </View>
-        {this.renderWatchListButton(ticker)}
-
       </View>
-
+      </View>
       <View style={chartland.chartWrapper}>
-
         <View style={[chartland.leftSide]}>
-
           <View style={[chartland.chartFPO, { height: chartHeight }]}>
             <ChartGraph height={chartHeight} width={chartWidth} viewLargeGraph={true} />
           </View>

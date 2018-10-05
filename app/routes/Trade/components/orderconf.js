@@ -116,7 +116,7 @@ class OrderConf extends React.Component {
         </View>
         <View style={[{ backgroundColor: this.state.colors['white'] }, order.tabContent]}>
           <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.confDetails]}>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>You are {purchaseAction}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>You are {purchaseAction.toLowerCase()}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>{numberWithCommas(quantity)} {sharesOrShareText} of {ticker}</Text>
             <Text style={order.confSpacing}></Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>Each share is ${numberWithCommas(pricePerShare, 2)}</Text>

@@ -43,6 +43,7 @@ class OrderPlaced extends React.Component {
     const {
       globalData: currentGlobalData
     } = this.props;
+
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
@@ -51,10 +52,27 @@ class OrderPlaced extends React.Component {
   tweet = () => {
     const {
       targetStockData,
-      quantityPurchased
+      quantityPurchased,
+      transactionType
     } = this.props;
+    let purchaseAction = '';
+    switch (transactionType) {
+      case "Buy":
+          purchaseAction = "bought";
+          break;
+      case "Sell":
+          purchaseAction = "sold";
+          break;
+      case "Short":
+          purchaseAction = "short";
+          break;
+      case "Cover":
+          purchaseAction = "covered";
+          break;
+    }
+
     shareOnTwitter({
-      'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
+      'text': `I just ${purchaseAction} ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
       'link': 'http://blumartini.com/download',
     },
       (results) => {
@@ -66,12 +84,31 @@ class OrderPlaced extends React.Component {
   render() {
     const {
       targetStockData,
-      quantityPurchased
+      quantityPurchased,
+      transactionType
     } = this.props;
+
+
+    let purchaseAction = '';
+    switch (transactionType) {
+      case "Buy":
+          purchaseAction = "bought";
+          break;
+      case "Sell":
+          purchaseAction = "sold";
+          break;
+      case "Short":
+          purchaseAction = "short";
+          break;
+      case "Cover":
+          purchaseAction = "covered";
+          break;
+    }
+
     return (
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, order.menuBorder]}>
-          <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order Placed</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order placed</Text>
         </View>
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
           <View style={order.placeDetails}>
@@ -81,7 +118,9 @@ class OrderPlaced extends React.Component {
                 style={styles.appIcon}
               />
             </View>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>You just bought</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>
+            You just {purchaseAction}
+            </Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>{quantityPurchased} {quantityPurchased < 2 ? 'share' : 'shares'} of {targetStockData.ticker}</Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, order.placeTxt, fonts.hindGunturBd]}>Cheers!</Text>
             <Text style={order.confSpacing}></Text>
@@ -93,10 +132,19 @@ class OrderPlaced extends React.Component {
           </View>
           <View style={[{ backgroundColor: this.state.colors['white'] }, order.shareContainer]}>
             <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => Linking.openURL(`https://stocktwits.com/symbol/${targetStockData.ticker}`)}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON STOCKTWITS</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Image source={require('../../../images/search_white.png')} style={order.searchingImg} />
+                <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxtOrder, fonts.hindGunturSb]}>
+                  SHARE ON STOCKTWITS
+                </Text>
+              </View>
             </TouchableHighlight>
             <TouchableHighlight style={styles.fullBtnTwitter} onPress={this.tweet}>
-              <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturSb]}>SHARE ON TWITTER</Text>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Image source={require('../../../images/twitter.png')} style={order.twitterImg} />
+                <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxtOrder, fonts.hindGunturSb]}>SHARE ON TWITTER</Text>
+              </View>
+
             </TouchableHighlight>
           </View>
         </View>
@@ -110,6 +158,7 @@ OrderPlaced.propTypes = {
   quantityPurchased: PropTypes.number.isRequired,
   targetStockData: PropTypes.object.isRequired,
   hideOrderPlaced: PropTypes.func.isRequired,
+  transactionType: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({

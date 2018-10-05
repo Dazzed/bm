@@ -72,7 +72,7 @@ class OrderPlaced extends React.Component {
     return(
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={[{borderBottomColor: this.state.colors['lightGray']}, order.menuBorder]}>
-          <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order Placed</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order placed</Text>
         </View>
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
           <View style={order.placeDetails}>

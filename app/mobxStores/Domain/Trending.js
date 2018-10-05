@@ -40,6 +40,9 @@ export default class Trending {
 
   @action setTrendingOption = (newOption) => {
     this.trendingOption = newOption;
+    if (newOption == 1 || newOption == 2) {
+      this.displayDecimal = true;
+    }
     this.getTrendingData()
   }
 
