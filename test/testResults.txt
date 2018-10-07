@@ -6,330 +6,330 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..1
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 72.08
+close: 72.08
+high: 72.08
+low: 72.08
 - - - - - - - testing data point..2
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..3
-open: 71.98
-close: 71.98
-high: 71.99
-low: 71.98
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..4
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..5
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.99
+close: 71.98
+high: 71.99
+low: 71.98
 - - - - - - - testing data point..6
+open: 71.97
+close: 71.97
+high: 71.97
+low: 71.97
+- - - - - - - testing data point..7
 open: undefined
 close: undefined
 high: -1
 low: -1
-- - - - - - - testing data point..7
-open: 71.67
-close: 71.67
-high: 71.67
-low: 71.67
 - - - - - - - testing data point..8
-open: 71.65
-close: 71.65
-high: 71.65
-low: 71.65
+open: 71.8
+close: 71.8
+high: 71.8
+low: 71.8
 - - - - - - - testing data point..9
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..10
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.78
+close: 71.77
+high: 71.78
+low: 71.77
 - - - - - - - testing data point..11
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.795
+close: 71.75
+high: 71.795
+low: 71.75
 - - - - - - - testing data point..12
-open: 71.65
-close: 71.65
-high: 71.65
-low: 71.65
+open: 71.81
+close: 71.81
+high: 71.81
+low: 71.81
 - - - - - - - testing data point..13
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.82
+close: 71.83
+high: 71.85
+low: 71.82
 - - - - - - - testing data point..14
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.83
+close: 71.82
+high: 71.83
+low: 71.82
 - - - - - - - testing data point..15
-open: 71.68
-close: 71.66
-high: 71.68
-low: 71.66
+open: 71.805
+close: 71.79
+high: 71.805
+low: 71.79
 - - - - - - - testing data point..16
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.76
+close: 71.76
+high: 71.76
+low: 71.76
 - - - - - - - testing data point..17
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.74
+close: 71.71
+high: 71.74
+low: 71.71
 - - - - - - - testing data point..18
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.675
+close: 71.675
+high: 71.675
+low: 71.675
 - - - - - - - testing data point..19
-open: 71.68
-close: 71.68
-high: 71.68
-low: 71.68
+open: 71.67
+close: 71.71
+high: 71.71
+low: 71.67
 - - - - - - - testing data point..20
-open: 71.64
-close: 71.6
-high: 71.64
-low: 71.6
+open: 71.7
+close: 71.66
+high: 71.7
+low: 71.66
 - - - - - - - testing data point..21
-open: 71.65
-close: 71.65
-high: 71.65
-low: 71.65
+open: 71.76
+close: 71.76
+high: 71.76
+low: 71.76
 - - - - - - - testing data point..22
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.71
+close: 71.71
+high: 71.71
+low: 71.71
 - - - - - - - testing data point..23
-open: 71.695
+open: 71.71
 close: 71.705
-high: 71.705
-low: 71.695
+high: 71.71
+low: 71.705
 - - - - - - - testing data point..24
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.695
+close: 71.695
+high: 71.695
+low: 71.695
 - - - - - - - testing data point..25
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..26
-open: 71.675
-close: 71.675
-high: 71.675
-low: 71.675
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..27
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.785
+close: 71.785
+high: 71.785
+low: 71.785
 - - - - - - - testing data point..28
-open: 71.695
-close: 71.695
-high: 71.695
-low: 71.695
+open: 71.76
+close: 71.76
+high: 71.76
+low: 71.76
 - - - - - - - testing data point..29
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.77
+close: 71.78
+high: 71.78
+low: 71.77
 - - - - - - - testing data point..30
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.765
+close: 71.765
+high: 71.765
+low: 71.765
 - - - - - - - testing data point..31
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.735
+close: 71.73
+high: 71.735
+low: 71.73
 - - - - - - - testing data point..32
-open: 71.815
-close: 71.83
-high: 71.83
-low: 71.815
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..33
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.65
+close: 71.65
+high: 71.65
+low: 71.65
 - - - - - - - testing data point..34
-open: 71.84
-close: 71.83
-high: 71.84
-low: 71.83
-- - - - - - - testing data point..35
-open: 71.84
-close: 71.84
-high: 71.84
-low: 71.84
-- - - - - - - testing data point..36
 open: undefined
 close: undefined
 high: -1
 low: -1
+- - - - - - - testing data point..35
+open: 71.63
+close: 71.63
+high: 71.63
+low: 71.63
+- - - - - - - testing data point..36
+open: 71.625
+close: 71.615
+high: 71.625
+low: 71.615
 - - - - - - - testing data point..37
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..38
-open: 71.96
-close: 71.96
-high: 71.96
-low: 71.96
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..39
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.575
+close: 71.575
+high: 71.575
+low: 71.575
 - - - - - - - testing data point..40
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.49
+close: 71.46
+high: 71.49
+low: 71.46
 - - - - - - - testing data point..41
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..42
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.47
+close: 71.47
+high: 71.47
+low: 71.47
 - - - - - - - testing data point..43
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..44
-open: 71.94
-close: 71.94
-high: 71.94
-low: 71.94
+open: 71.53
+close: 71.53
+high: 71.53
+low: 71.53
 - - - - - - - testing data point..45
+open: 71.48
+close: 71.48
+high: 71.48
+low: 71.48
+- - - - - - - testing data point..46
 open: undefined
 close: undefined
 high: -1
 low: -1
-- - - - - - - testing data point..46
-open: 71.895
-close: 71.895
-high: 71.895
-low: 71.895
 - - - - - - - testing data point..47
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..48
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.53
+close: 71.5
+high: 71.53
+low: 71.5
 - - - - - - - testing data point..49
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.54
+close: 71.54
+high: 71.54
+low: 71.54
 - - - - - - - testing data point..50
-open: 71.99
-close: 71.99
-high: 71.99
-low: 71.99
+open: 71.545
+close: 71.545
+high: 71.545
+low: 71.545
 - - - - - - - testing data point..51
-open: 72
-close: 72.005
-high: 72.005
-low: 72
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..52
-open: 72.01
-close: 72.01
-high: 72.01
-low: 72.01
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..53
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.54
+close: 71.54
+high: 71.54
+low: 71.54
 - - - - - - - testing data point..54
-open: 72.06
-close: 72.06
-high: 72.06
-low: 72.06
+open: 71.55
+close: 71.545
+high: 71.55
+low: 71.54
 - - - - - - - testing data point..55
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.545
+close: 71.545
+high: 71.545
+low: 71.545
 - - - - - - - testing data point..56
-open: 72.05
-close: 72.05
-high: 72.05
-low: 72.05
+open: 71.53
+close: 71.59
+high: 71.59
+low: 71.53
 - - - - - - - testing data point..57
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.56
+close: 71.55
+high: 71.57
+low: 71.55
 - - - - - - - testing data point..58
-open: 72.05
-close: 72.05
-high: 72.05
-low: 72.05
+open: 71.55
+close: 71.535
+high: 71.55
+low: 71.535
 - - - - - - - testing data point..59
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.515
+close: 71.46
+high: 71.515
+low: 71.46
 - - - - - - - testing data point..60
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..61
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.32
+close: 71.32
+high: 71.32
+low: 71.32
 - - - - - - - testing data point..62
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..63
-open: 72.105
-close: 72.105
-high: 72.105
-low: 72.105
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..64
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..65
-open: 72
-close: 72
-high: 72
-low: 72
+open: 71.03
+close: 71.03
+high: 71.03
+low: 71.03
 - - - - - - - testing data point..66
 open: undefined
 close: undefined
@@ -341,25 +341,25 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..68
-open: 72.06
-close: 72.06
-high: 72.06
-low: 72.06
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..69
-open: 72.03
-close: 72.025
-high: 72.03
-low: 72.025
+open: 70.995
+close: 70.995
+high: 70.995
+low: 70.995
 - - - - - - - testing data point..70
-open: 72.03
-close: 72.03
-high: 72.03
-low: 72.02
+open: 70.96
+close: 70.96
+high: 70.96
+low: 70.96
 - - - - - - - testing data point..71
-open: 72.03
-close: 72.035
-high: 72.035
-low: 72.03
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..72
 open: undefined
 close: undefined
@@ -371,55 +371,55 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..74
-open: 72.13
-close: 72.15
-high: 72.15
-low: 72.13
-- - - - - - - testing data point..75
 open: undefined
 close: undefined
 high: -1
 low: -1
+- - - - - - - testing data point..75
+open: 71.06
+close: 71.06
+high: 71.06
+low: 71.06
 - - - - - - - testing data point..76
-open: 72.165
-close: 72.235
-high: 72.235
-low: 72.14
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..77
-open: 72.23
-close: 72.23
-high: 72.23
-low: 72.23
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..78
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..79
-open: 72.335
-close: 72.335
-high: 72.335
-low: 72.335
+open: 71.01
+close: 71.07
+high: 71.07
+low: 71.01
 - - - - - - - testing data point..80
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.05
+close: 71.05
+high: 71.05
+low: 71.05
 - - - - - - - testing data point..81
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: 71.02
+close: 71.02
+high: 71.02
+low: 71.02
 - - - - - - - testing data point..82
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.99
+close: 71.02
+high: 71.02
+low: 70.99
 - - - - - - - testing data point..83
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71
+close: 71.04
+high: 71.04
+low: 71
 - - - - - - - testing data point..84
 open: undefined
 close: undefined
@@ -436,30 +436,30 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..87
-open: 72.24
-close: 72.24
-high: 72.24
-low: 72.24
-- - - - - - - testing data point..88
 open: undefined
 close: undefined
 high: -1
 low: -1
+- - - - - - - testing data point..88
+open: 70.945
+close: 70.945
+high: 70.945
+low: 70.945
 - - - - - - - testing data point..89
-open: 72.21
-close: 72.21
-high: 72.21
-low: 72.21
+open: 70.97
+close: 70.97
+high: 70.97
+low: 70.97
 - - - - - - - testing data point..90
-open: 72.19
-close: 72.19
-high: 72.19
-low: 72.19
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..91
-open: 72.14
-close: 72.14
-high: 72.14
-low: 72.14
+open: 71
+close: 70.99
+high: 71
+low: 70.99
 - - - - - - - testing data point..92
 open: undefined
 close: undefined
@@ -471,215 +471,215 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..94
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.03
+close: 71.035
+high: 71.035
+low: 71.03
 - - - - - - - testing data point..95
-open: 72.125
-close: 72.1
-high: 72.125
-low: 72.1
+open: 71.05
+close: 71.05
+high: 71.05
+low: 71.05
 - - - - - - - testing data point..96
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..97
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 71.02
+close: 71.03
+high: 71.07
+low: 71.02
 - - - - - - - testing data point..98
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.99
+close: 70.86
+high: 70.99
+low: 70.86
 - - - - - - - testing data point..99
+open: 70.83
+close: 70.82
+high: 70.83
+low: 70.82
+- - - - - - - testing data point..100
+open: 70.835
+close: 70.86
+high: 70.9
+low: 70.835
+- - - - - - - testing data point..101
 open: undefined
 close: undefined
 high: -1
 low: -1
-- - - - - - - testing data point..100
-open: 72.105
-close: 72.105
-high: 72.105
-low: 72.105
-- - - - - - - testing data point..101
-open: 72.115
-close: 72.115
-high: 72.115
-low: 72.115
 - - - - - - - testing data point..102
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..103
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.92
+close: 70.92
+high: 70.92
+low: 70.91
 - - - - - - - testing data point..104
-open: 72.105
-close: 72.105
-high: 72.105
-low: 72.105
+open: 70.9
+close: 70.875
+high: 70.9
+low: 70.875
 - - - - - - - testing data point..105
-open: 72.13
-close: 72.13
-high: 72.13
-low: 72.13
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..106
-open: 72.155
-close: 72.155
-high: 72.155
-low: 72.155
+open: 70.87
+close: 70.82
+high: 70.87
+low: 70.82
 - - - - - - - testing data point..107
-open: 72.135
-close: 72.135
-high: 72.135
-low: 72.135
+open: 70.815
+close: 70.82
+high: 70.82
+low: 70.815
 - - - - - - - testing data point..108
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.86
+close: 70.85
+high: 70.86
+low: 70.85
 - - - - - - - testing data point..109
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.82
+close: 70.82
+high: 70.82
+low: 70.82
 - - - - - - - testing data point..110
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.86
+close: 70.865
+high: 70.865
+low: 70.86
 - - - - - - - testing data point..111
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.86
+close: 70.86
+high: 70.86
+low: 70.86
 - - - - - - - testing data point..112
-open: 72.18
-close: 72.165
-high: 72.18
-low: 72.165
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..113
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.88
+close: 70.92
+high: 70.92
+low: 70.88
 - - - - - - - testing data point..114
-open: 72.185
-close: 72.185
-high: 72.185
-low: 72.185
+open: 70.92
+close: 70.925
+high: 70.925
+low: 70.92
 - - - - - - - testing data point..115
-open: 72.19
-close: 72.19
-high: 72.19
-low: 72.19
+open: 70.93
+close: 70.94
+high: 70.94
+low: 70.93
 - - - - - - - testing data point..116
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.895
+close: 70.895
+high: 70.895
+low: 70.895
 - - - - - - - testing data point..117
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.88
+close: 70.88
+high: 70.88
+low: 70.88
 - - - - - - - testing data point..118
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..119
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.92
+close: 70.92
+high: 70.92
+low: 70.92
 - - - - - - - testing data point..120
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.96
+close: 70.96
+high: 70.96
+low: 70.96
 - - - - - - - testing data point..121
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..122
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.97
+close: 70.96
+high: 70.97
+low: 70.96
 - - - - - - - testing data point..123
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.96
+close: 70.945
+high: 70.96
+low: 70.945
 - - - - - - - testing data point..124
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.95
+close: 70.95
+high: 70.95
+low: 70.95
 - - - - - - - testing data point..125
-open: 72.08
-close: 72.08
-high: 72.08
-low: 72.08
-- - - - - - - testing data point..126
 open: undefined
 close: undefined
 high: -1
 low: -1
+- - - - - - - testing data point..126
+open: 70.98
+close: 70.98
+high: 70.98
+low: 70.98
 - - - - - - - testing data point..127
-open: 72.03
-close: 72.03
-high: 72.03
-low: 72.03
+open: 70.99
+close: 71
+high: 71
+low: 70.99
 - - - - - - - testing data point..128
-open: 72.07
-close: 72.08
-high: 72.08
-low: 72.07
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..129
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..130
+open: 70.915
+close: 70.915
+high: 70.915
+low: 70.915
+- - - - - - - testing data point..131
 open: undefined
 close: undefined
 high: -1
 low: -1
-- - - - - - - testing data point..131
-open: 72.04
-close: 72.04
-high: 72.04
-low: 72.04
 - - - - - - - testing data point..132
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..133
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.9
+close: 70.9
+high: 70.9
+low: 70.9
 - - - - - - - testing data point..134
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..135
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.89
+close: 70.89
+high: 70.89
+low: 70.89
 - - - - - - - testing data point..136
 open: undefined
 close: undefined
@@ -691,10 +691,10 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..138
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.89
+close: 70.89
+high: 70.89
+low: 70.89
 - - - - - - - testing data point..139
 open: undefined
 close: undefined
@@ -706,95 +706,95 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..141
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.91
+close: 70.91
+high: 70.91
+low: 70.91
 - - - - - - - testing data point..142
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..143
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.95
+close: 70.95
+high: 70.95
+low: 70.95
 - - - - - - - testing data point..144
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.93
+close: 70.93
+high: 70.93
+low: 70.93
 - - - - - - - testing data point..145
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..146
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.935
+close: 70.935
+high: 70.935
+low: 70.935
 - - - - - - - testing data point..147
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..148
-open: 72.11
-close: 72.11
-high: 72.11
-low: 72.11
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..149
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.885
+close: 70.885
+high: 70.885
+low: 70.885
 - - - - - - - testing data point..150
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.84
+close: 70.84
+high: 70.84
+low: 70.84
 - - - - - - - testing data point..151
-open: 72.05
-close: 72.05
-high: 72.05
-low: 72.05
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..152
-open: 72.05
-close: 72.05
-high: 72.05
-low: 72.05
+open: 70.81
+close: 70.81
+high: 70.81
+low: 70.81
 - - - - - - - testing data point..153
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.815
+close: 70.815
+high: 70.815
+low: 70.815
 - - - - - - - testing data point..154
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.815
+close: 70.815
+high: 70.815
+low: 70.815
 - - - - - - - testing data point..155
-open: 72.07
-close: 72.07
-high: 72.07
-low: 72.07
+open: 70.795
+close: 70.795
+high: 70.795
+low: 70.795
 - - - - - - - testing data point..156
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.855
+close: 70.885
+high: 70.885
+low: 70.855
 - - - - - - - testing data point..157
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.855
+close: 70.855
+high: 70.855
+low: 70.855
 - - - - - - - testing data point..158
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.855
+close: 70.86
+high: 70.86
+low: 70.845
 - - - - - - - testing data point..159
 open: undefined
 close: undefined
@@ -806,1001 +806,586 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..161
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.905
+close: 70.9
+high: 70.905
+low: 70.9
 - - - - - - - testing data point..162
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.91
+close: 70.91
+high: 70.91
+low: 70.91
 - - - - - - - testing data point..163
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.925
+close: 70.92
+high: 70.925
+low: 70.92
 - - - - - - - testing data point..164
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.905
+close: 70.91
+high: 70.91
+low: 70.905
 - - - - - - - testing data point..165
-open: 72.15
-close: 72.15
-high: 72.15
-low: 72.15
+open: 70.92
+close: 70.92
+high: 70.92
+low: 70.92
 - - - - - - - testing data point..166
-open: 72.19
-close: 72.21
-high: 72.21
-low: 72.19
+open: 70.915
+close: 70.91
+high: 70.915
+low: 70.91
 - - - - - - - testing data point..167
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: 70.905
+close: 70.905
+high: 70.905
+low: 70.905
 - - - - - - - testing data point..168
-open: 72.19
-close: 72.215
-high: 72.215
-low: 72.19
+open: 70.88
+close: 70.84
+high: 70.88
+low: 70.84
 - - - - - - - testing data point..169
-open: 72.25
-close: 72.245
-high: 72.25
-low: 72.245
+open: 70.84
+close: 70.81
+high: 70.855
+low: 70.81
 - - - - - - - testing data point..170
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.81
+close: 70.81
+high: 70.81
+low: 70.81
 - - - - - - - testing data point..171
-open: 72.275
-close: 72.27
-high: 72.275
-low: 72.27
+open: 70.815
+close: 70.785
+high: 70.815
+low: 70.785
 - - - - - - - testing data point..172
-open: 72.27
-close: 72.27
-high: 72.27
-low: 72.27
+open: 70.765
+close: 70.765
+high: 70.765
+low: 70.765
 - - - - - - - testing data point..173
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.78
+close: 70.785
+high: 70.785
+low: 70.78
 - - - - - - - testing data point..174
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.77
+close: 70.76
+high: 70.77
+low: 70.76
 - - - - - - - testing data point..175
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.76
+close: 70.73
+high: 70.76
+low: 70.73
 - - - - - - - testing data point..176
-open: 72.265
-close: 72.265
-high: 72.265
-low: 72.265
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..177
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.74
+close: 70.74
+high: 70.74
+low: 70.74
 - - - - - - - testing data point..178
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.75
+close: 70.75
+high: 70.75
+low: 70.75
 - - - - - - - testing data point..179
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.8
+close: 70.77
+high: 70.8
+low: 70.77
 - - - - - - - testing data point..180
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.79
+close: 70.79
+high: 70.79
+low: 70.79
 - - - - - - - testing data point..181
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.8
+close: 70.8
+high: 70.81
+low: 70.795
 - - - - - - - testing data point..182
-open: 72.315
-close: 72.33
-high: 72.33
-low: 72.315
+open: 70.79
+close: 70.79
+high: 70.79
+low: 70.79
 - - - - - - - testing data point..183
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.805
+close: 70.78
+high: 70.805
+low: 70.78
 - - - - - - - testing data point..184
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..185
-open: 72.35
-close: 72.345
-high: 72.35
-low: 72.345
+open: 70.9
+close: 70.9
+high: 70.9
+low: 70.9
 - - - - - - - testing data point..186
-open: 72.315
-close: 72.305
-high: 72.315
-low: 72.295
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..187
-open: 72.31
-close: 72.31
-high: 72.31
-low: 72.31
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..188
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.87
+close: 70.9
+high: 70.91
+low: 70.87
 - - - - - - - testing data point..189
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.9
+close: 70.915
+high: 70.915
+low: 70.9
 - - - - - - - testing data point..190
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.915
+close: 70.89
+high: 70.915
+low: 70.89
 - - - - - - - testing data point..191
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: 70.905
+close: 70.91
+high: 70.925
+low: 70.9
 - - - - - - - testing data point..192
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.885
+close: 70.885
+high: 70.885
+low: 70.885
 - - - - - - - testing data point..193
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.83
+close: 70.83
+high: 70.83
+low: 70.83
 - - - - - - - testing data point..194
-open: 72.235
-close: 72.235
-high: 72.235
-low: 72.235
+open: 70.835
+close: 70.84
+high: 70.855
+low: 70.835
 - - - - - - - testing data point..195
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.84
+close: 70.84
+high: 70.84
+low: 70.84
 - - - - - - - testing data point..196
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.835
+close: 70.82
+high: 70.835
+low: 70.82
 - - - - - - - testing data point..197
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.815
+close: 70.815
+high: 70.815
+low: 70.815
 - - - - - - - testing data point..198
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.785
+close: 70.775
+high: 70.785
+low: 70.775
 - - - - - - - testing data point..199
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.755
+close: 70.755
+high: 70.755
+low: 70.755
 - - - - - - - testing data point..200
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.73
+close: 70.73
+high: 70.73
+low: 70.73
 - - - - - - - testing data point..201
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.73
+close: 70.73
+high: 70.73
+low: 70.73
 - - - - - - - testing data point..202
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.735
+close: 70.75
+high: 70.75
+low: 70.735
 - - - - - - - testing data point..203
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.71
+close: 70.71
+high: 70.71
+low: 70.71
 - - - - - - - testing data point..204
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.735
+close: 70.735
+high: 70.735
+low: 70.735
 - - - - - - - testing data point..205
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.685
+close: 70.685
+high: 70.685
+low: 70.685
 - - - - - - - testing data point..206
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.685
+close: 70.685
+high: 70.685
+low: 70.685
 - - - - - - - testing data point..207
-open: 72.15
-close: 72.15
-high: 72.15
-low: 72.15
+open: undefined
+close: undefined
+high: -1
+low: -1
 - - - - - - - testing data point..208
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.695
+close: 70.705
+high: 70.705
+low: 70.695
 - - - - - - - testing data point..209
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.71
+close: 70.71
+high: 70.71
+low: 70.71
 - - - - - - - testing data point..210
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.735
+close: 70.69
+high: 70.735
+low: 70.69
 - - - - - - - testing data point..211
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.695
+close: 70.695
+high: 70.695
+low: 70.695
 - - - - - - - testing data point..212
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.695
+close: 70.695
+high: 70.695
+low: 70.695
 - - - - - - - testing data point..213
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.655
+close: 70.655
+high: 70.655
+low: 70.655
 - - - - - - - testing data point..214
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.645
+close: 70.655
+high: 70.655
+low: 70.645
 - - - - - - - testing data point..215
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.71
+close: 70.71
+high: 70.71
+low: 70.71
 - - - - - - - testing data point..216
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.705
+close: 70.705
+high: 70.705
+low: 70.705
 - - - - - - - testing data point..217
-open: 72.18
-close: 72.18
-high: 72.18
-low: 72.18
+open: 70.645
+close: 70.645
+high: 70.645
+low: 70.645
 - - - - - - - testing data point..218
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.665
+close: 70.63
+high: 70.665
+low: 70.63
 - - - - - - - testing data point..219
-open: 72.21
-close: 72.205
-high: 72.21
-low: 72.205
+open: 70.615
+close: 70.615
+high: 70.615
+low: 70.615
 - - - - - - - testing data point..220
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.655
+close: 70.655
+high: 70.655
+low: 70.655
 - - - - - - - testing data point..221
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.64
+close: 70.625
+high: 70.65
+low: 70.625
 - - - - - - - testing data point..222
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..223
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.655
+close: 70.625
+high: 70.655
+low: 70.625
 - - - - - - - testing data point..224
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.61
+close: 70.605
+high: 70.61
+low: 70.605
 - - - - - - - testing data point..225
-open: 72.28
-close: 72.28
-high: 72.28
-low: 72.28
+open: 70.585
+close: 70.585
+high: 70.585
+low: 70.58
 - - - - - - - testing data point..226
-open: 72.29
-close: 72.29
-high: 72.29
-low: 72.29
+open: 70.575
+close: 70.575
+high: 70.575
+low: 70.575
 - - - - - - - testing data point..227
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.615
+close: 70.615
+high: 70.615
+low: 70.615
 - - - - - - - testing data point..228
-open: 72.29
-close: 72.29
-high: 72.29
-low: 72.29
+open: 70.615
+close: 70.615
+high: 70.615
+low: 70.59
 - - - - - - - testing data point..229
-open: 72.33
-close: 72.33
-high: 72.33
-low: 72.33
+open: 70.61
+close: 70.615
+high: 70.615
+low: 70.61
 - - - - - - - testing data point..230
-open: 72.295
-close: 72.295
-high: 72.295
-low: 72.295
+open: 70.595
+close: 70.595
+high: 70.62
+low: 70.595
 - - - - - - - testing data point..231
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.585
+close: 70.585
+high: 70.585
+low: 70.585
 - - - - - - - testing data point..232
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.565
+close: 70.57
+high: 70.59
+low: 70.565
 - - - - - - - testing data point..233
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..234
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.63
+close: 70.63
+high: 70.63
+low: 70.63
 - - - - - - - testing data point..235
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.655
+close: 70.655
+high: 70.655
+low: 70.655
 - - - - - - - testing data point..236
 open: undefined
 close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..237
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.655
+close: 70.655
+high: 70.655
+low: 70.655
 - - - - - - - testing data point..238
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.7
+close: 70.7
+high: 70.7
+low: 70.7
 - - - - - - - testing data point..239
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.685
+close: 70.685
+high: 70.685
+low: 70.685
 - - - - - - - testing data point..240
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.68
+close: 70.665
+high: 70.68
+low: 70.665
 - - - - - - - testing data point..241
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.645
+close: 70.635
+high: 70.645
+low: 70.635
 - - - - - - - testing data point..242
-open: 72.3
-close: 72.3
-high: 72.3
-low: 72.3
+open: 70.605
+close: 70.565
+high: 70.605
+low: 70.56
 - - - - - - - testing data point..243
-open: 72.27
-close: 72.275
-high: 72.275
-low: 72.27
+open: 70.56
+close: 70.56
+high: 70.56
+low: 70.56
 - - - - - - - testing data point..244
-open: 72.255
-close: 72.255
-high: 72.255
-low: 72.255
+open: 70.54
+close: 70.55
+high: 70.55
+low: 70.54
 - - - - - - - testing data point..245
-open: 72.255
-close: 72.255
-high: 72.255
-low: 72.255
+open: 70.6
+close: 70.595
+high: 70.6
+low: 70.595
 - - - - - - - testing data point..246
-open: 72.255
-close: 72.255
-high: 72.255
-low: 72.255
+open: 70.555
+close: 70.555
+high: 70.555
+low: 70.555
 - - - - - - - testing data point..247
-open: 72.275
-close: 72.275
-high: 72.275
-low: 72.275
+open: 70.555
+close: 70.555
+high: 70.555
+low: 70.555
 - - - - - - - testing data point..248
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.54
+close: 70.54
+high: 70.54
+low: 70.54
 - - - - - - - testing data point..249
+open: 70.58
+close: 70.58
+high: 70.58
+low: 70.58
+- - - - - - - testing data point..250
 open: undefined
 close: undefined
 high: -1
 low: -1
-- - - - - - - testing data point..250
-open: 72.215
-close: 72.215
-high: 72.215
-low: 72.215
 - - - - - - - testing data point..251
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: 70.635
+close: 70.69
+high: 70.69
+low: 70.635
 - - - - - - - testing data point..252
-open: 72.205
-close: 72.205
-high: 72.205
-low: 72.205
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..253
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..254
-open: 72.205
-close: 72.2
-high: 72.205
-low: 72.2
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..255
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..256
-open: 72.175
-close: 72.175
-high: 72.175
-low: 72.175
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..257
-open: 72.19
-close: 72.19
-high: 72.19
-low: 72.19
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..258
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..259
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..260
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..261
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..262
-open: 72.205
-close: 72.205
-high: 72.205
-low: 72.205
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..263
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..264
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..265
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..266
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..267
-open: 72.195
-close: 72.195
-high: 72.195
-low: 72.195
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..268
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..269
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..270
-open: 72.19
-close: 72.19
-high: 72.19
-low: 72.19
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..271
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..272
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..273
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..274
-open: 72.17
-close: 72.17
-high: 72.17
-low: 72.17
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 - - - - - - - testing data point..275
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..276
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..277
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..278
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..279
-open: 72.205
-close: 72.24
-high: 72.24
-low: 72.205
-- - - - - - - testing data point..280
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..281
-open: 72.26
-close: 72.26
-high: 72.26
-low: 72.26
-- - - - - - - testing data point..282
-open: 72.31
-close: 72.31
-high: 72.31
-low: 72.31
-- - - - - - - testing data point..283
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..284
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..285
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..286
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..287
-open: 72.32
-close: 72.32
-high: 72.32
-low: 72.32
-- - - - - - - testing data point..288
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..289
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..290
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..291
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..292
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..293
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..294
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..295
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..296
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..297
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..298
-open: 72.305
-close: 72.305
-high: 72.305
-low: 72.305
-- - - - - - - testing data point..299
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..300
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..301
-open: 72.305
-close: 72.305
-high: 72.305
-low: 72.305
-- - - - - - - testing data point..302
-open: 72.295
-close: 72.295
-high: 72.295
-low: 72.295
-- - - - - - - testing data point..303
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..304
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..305
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..306
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..307
-open: 72.19
-close: 72.19
-high: 72.19
-low: 72.19
-- - - - - - - testing data point..308
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..309
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..310
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..311
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..312
-open: 72.1
-close: 72.1
-high: 72.1
-low: 72.1
-- - - - - - - testing data point..313
-open: 72.12
-close: 72.13
-high: 72.13
-low: 72.12
-- - - - - - - testing data point..314
-open: 72.15
-close: 72.15
-high: 72.15
-low: 72.15
-- - - - - - - testing data point..315
-open: 72.115
-close: 72.115
-high: 72.115
-low: 72.115
-- - - - - - - testing data point..316
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..317
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..318
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..319
-open: 72.065
-close: 72.065
-high: 72.065
-low: 72.065
-- - - - - - - testing data point..320
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..321
-open: 72.095
-close: 72.08
-high: 72.095
-low: 72.08
-- - - - - - - testing data point..322
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..323
-open: 72.065
-close: 72.05
-high: 72.065
-low: 72.05
-- - - - - - - testing data point..324
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..325
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..326
-open: 72.04
-close: 72.05
-high: 72.05
-low: 72.04
-- - - - - - - testing data point..327
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..328
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..329
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..330
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..331
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..332
-open: 72.07
-close: 72.07
-high: 72.07
-low: 72.07
-- - - - - - - testing data point..333
-open: 72.07
-close: 72.08
-high: 72.08
-low: 72.07
-- - - - - - - testing data point..334
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..335
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..336
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..337
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..338
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..339
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..340
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..341
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..342
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..343
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..344
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..345
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..346
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..347
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..348
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..349
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..350
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..351
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..352
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..353
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..354
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..355
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..356
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..357
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..358
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..359
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..360
 open: undefined
 close: undefined
 high: undefined
@@ -1813,29 +1398,29 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..1
-open: undefined
-close: undefined
-high: -1
+open: 72.08
+close: 71.77
+high: 72.08
 low: -1
 - - - - - - - testing data point..2
-open: undefined
-close: 71.6
-high: 71.68
-low: -1
+open: 71.795
+close: 71.66
+high: 71.85
+low: 71.66
 - - - - - - - testing data point..3
-open: undefined
-close: undefined
-high: -1
+open: 71.76
+close: 71.765
+high: 71.785
 low: -1
 - - - - - - - testing data point..4
-open: undefined
-close: undefined
-high: -1
+open: 71.735
+close: 71.46
+high: 71.735
 low: -1
 - - - - - - - testing data point..5
 open: undefined
-close: 71.99
-high: 71.99
+close: 71.545
+high: 71.545
 low: -1
 - - - - - - - testing data point..6
 open: undefined
@@ -1843,39 +1428,39 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..7
-open: undefined
-close: 72.03
-high: 72.105
+open: 71.32
+close: 70.96
+high: 71.32
 low: -1
 - - - - - - - testing data point..8
 open: undefined
+close: 71.05
+high: 71.07
+low: -1
+- - - - - - - testing data point..9
+open: undefined
 close: undefined
 high: -1
 low: -1
-- - - - - - - testing data point..9
-open: 72.195
-close: 72.19
-high: 72.24
-low: -1
 - - - - - - - testing data point..10
-open: 72.14
-close: 72.105
-high: 72.14
+open: 71
+close: 70.86
+high: 71.07
 low: -1
 - - - - - - - testing data point..11
 open: undefined
-close: undefined
-high: -1
+close: 70.865
+high: 70.92
 low: -1
 - - - - - - - testing data point..12
-open: undefined
-close: undefined
-high: -1
+open: 70.86
+close: 70.96
+high: 70.96
 low: -1
 - - - - - - - testing data point..13
 open: undefined
-close: undefined
-high: -1
+close: 70.915
+high: 71
 low: -1
 - - - - - - - testing data point..14
 open: undefined
@@ -1883,9 +1468,9 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..15
-open: undefined
-close: undefined
-high: -1
+open: 70.91
+close: 70.84
+high: 70.95
 low: -1
 - - - - - - - testing data point..16
 open: undefined
@@ -1893,101 +1478,56 @@ close: undefined
 high: -1
 low: -1
 - - - - - - - testing data point..17
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.905
+close: 70.81
+high: 70.925
+low: 70.81
 - - - - - - - testing data point..18
-open: undefined
-close: undefined
-high: -1
+open: 70.815
+close: 70.79
+high: 70.815
 low: -1
 - - - - - - - testing data point..19
-open: undefined
-close: undefined
-high: -1
+open: 70.8
+close: 70.89
+high: 70.915
 low: -1
 - - - - - - - testing data point..20
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.905
+close: 70.73
+high: 70.925
+low: 70.73
 - - - - - - - testing data point..21
-open: undefined
-close: undefined
-high: -1
+open: 70.73
+close: 70.69
+high: 70.75
 low: -1
 - - - - - - - testing data point..22
-open: undefined
-close: undefined
-high: -1
-low: -1
+open: 70.695
+close: 70.655
+high: 70.71
+low: 70.615
 - - - - - - - testing data point..23
-open: undefined
-close: 72.295
-high: 72.33
+open: 70.64
+close: 70.595
+high: 70.655
 low: -1
 - - - - - - - testing data point..24
-open: undefined
-close: undefined
-high: -1
+open: 70.585
+close: 70.665
+high: 70.7
 low: -1
 - - - - - - - testing data point..25
 open: undefined
-close: 72.215
-high: 72.3
+close: undefined
+high: -1
 low: -1
 - - - - - - - testing data point..26
 open: undefined
 close: undefined
-high: -1
-low: -1
+high: undefined
+low: undefined
 - - - - - - - testing data point..27
-open: undefined
-close: 72.19
-high: 72.205
-low: -1
-- - - - - - - testing data point..28
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..29
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..30
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..31
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..32
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..33
-open: undefined
-close: undefined
-high: -1
-low: -1
-- - - - - - - testing data point..34
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..35
-open: undefined
-close: undefined
-high: undefined
-low: undefined
-- - - - - - - testing data point..36
 open: undefined
 close: undefined
 high: undefined
@@ -2332,10 +1872,10 @@ close: 70.391
 high: 70.8451
 low: 69.9021
 - - - - - - - testing data point..43
-open: undefined
-close: undefined
-high: undefined
-low: undefined
+open: 70.68
+close: 72.12
+high: 72.37
+low: 70.645
 - - - - - - - testing data point..44
 open: undefined
 close: undefined
@@ -2925,262 +2465,267 @@ open: undefined
 close: undefined
 high: undefined
 low: undefined
+- - - - - - - testing data point..53
+open: undefined
+close: undefined
+high: undefined
+low: undefined
 ================================ A - 5y
 status: 200
 - - - - - - - testing data point..0
-open: 35.1073
-close: 34.7669
-high: 35.1141
-low: 34.6647
-- - - - - - - testing data point..1
 open: 34.8418
-close: 34.0792
+close: 35.2571
+high: 35.3116
+low: 34.7737
+- - - - - - - testing data point..1
+open: 34.9575
+close: 34.5762
 high: 36.2512
 low: 33.6298
 - - - - - - - testing data point..2
-open: 34.1404
-close: 37.5586
+open: 34.4741
+close: 37.613
 high: 38.0624
-low: 34.0519
+low: 34.2902
 - - - - - - - testing data point..3
-open: 37.6198
-close: 41.5829
+open: 38.1033
+close: 40.5865
 high: 41.7808
-low: 37.4973
+low: 38.0012
 - - - - - - - testing data point..4
-open: 41.2758
-close: 38.464
-high: 41.2963
+open: 40.4159
+close: 38.853
+high: 41.2621
 low: 37.4471
 - - - - - - - testing data point..5
-open: 38.5254
-close: 38.6278
+open: 38.3002
+close: 37.9248
 high: 40.4841
 low: 37.0035
 - - - - - - - testing data point..6
-open: 38.969
-close: 37.8933
-high: 39.0646
+open: 37.918
+close: 38.5911
+high: 38.7348
 low: 35.5468
 - - - - - - - testing data point..7
-open: 38.0233
-close: 39.8978
+open: 38.7416
+close: 40.274
 high: 40.7597
 low: 36.7713
 - - - - - - - testing data point..8
-open: 39.8635
-close: 39.5776
+open: 40.2672
+close: 39.4062
 high: 40.7324
 low: 37.8051
 - - - - - - - testing data point..9
-open: 39.8451
-close: 39.6668
+open: 39.4954
+close: 39.3445
 high: 40.4965
 low: 37.1565
 - - - - - - - testing data point..10
-open: 39.7696
-close: 38.625
+open: 39.1799
+close: 38.3707
 high: 40.7296
-low: 38.4326
+low: 37.9996
 - - - - - - - testing data point..11
-open: 38.5769
-close: 38.5694
-high: 39.6362
+open: 38.6456
+close: 39.7612
+high: 39.7948
 low: 34.2264
 - - - - - - - testing data point..12
-open: 38.8193
-close: 39.0403
+open: 39.7804
+close: 38.1753
 high: 41.3133
-low: 38.4925
+low: 38.1657
 - - - - - - - testing data point..13
-open: 38.6367
-close: 36.5442
+open: 38.5117
+close: 36.7658
 high: 40.3763
-low: 36.3804
-- - - - - - - testing data point..14
-open: 36.3708
-close: 40.6582
-high: 40.9376
 low: 36.3033
+- - - - - - - testing data point..14
+open: 37.103
+close: 40.8124
+high: 40.9376
+low: 36.313
 - - - - - - - testing data point..15
-open: 40.6871
-close: 39.976
+open: 40.7545
+close: 40.6135
 high: 41.1785
 low: 38.8953
 - - - - - - - testing data point..16
-open: 40.0533
-close: 40.372
+open: 40.2561
+close: 41.0481
 high: 42.1009
 low: 39.7056
 - - - - - - - testing data point..17
-open: 40.7873
-close: 38.479
+open: 40.9419
+close: 38.1699
 high: 41.4634
-low: 38.3776
+low: 37.9091
 - - - - - - - testing data point..18
-open: 38.2761
-close: 38.7883
+open: 38.2375
+close: 38.3139
 high: 39.3693
 low: 37.2585
 - - - - - - - testing data point..19
-open: 38.7012
-close: 33.5791
+open: 38.0427
+close: 33.2692
 high: 40.0374
 low: 32.5043
 - - - - - - - testing data point..20
-open: 34.5473
-close: 32.7638
+open: 34.2375
+close: 33.3367
 high: 35.8158
 low: 32.2831
 - - - - - - - testing data point..21
-open: 33.0939
-close: 37.1627
+open: 33.327
+close: 37.2307
 high: 37.5026
 low: 32.1568
 - - - - - - - testing data point..22
-open: 37.2209
-close: 39.7943
+open: 37.1627
+close: 40.0565
 high: 41.0858
 low: 35.4439
 - - - - - - - testing data point..23
-open: 39.7748
-close: 36.1348
+open: 39.5709
+close: 36.2224
 high: 41.2509
 low: 35.5895
 - - - - - - - testing data point..24
-open: 36.6509
-close: 36.1932
+open: 35.7161
+close: 36.4951
 high: 37.1864
 low: 33.2526
 - - - - - - - testing data point..25
-open: 35.6869
-close: 39.0657
+open: 36.6314
+close: 38.8031
 high: 39.5136
-low: 35.5116
+low: 35.9887
 - - - - - - - testing data point..26
-open: 38.9586
-close: 39.5697
+open: 38.6322
+close: 39.9994
 high: 41.0101
 low: 38.2513
 - - - - - - - testing data point..27
-open: 39.6869
-close: 45.009
+open: 39.9017
+close: 44.2962
 high: 45.0969
-low: 39.5599
+low: 39.765
 - - - - - - - testing data point..28
-open: 44.6575
-close: 45.6955
+open: 44.2571
+close: 45.8228
 high: 45.9991
 low: 40.9954
 - - - - - - - testing data point..29
-open: 45.627
-close: 46.6257
+open: 45.6955
+close: 46.5865
 high: 47.6146
 low: 44.8339
 - - - - - - - testing data point..30
-open: 46.6355
-close: 45.5976
+open: 46.7334
+close: 45.7249
 high: 47.081
 low: 43.5415
 - - - - - - - testing data point..31
-open: 45.5585
-close: 42.7662
+open: 45.9207
+close: 42.6877
 high: 47.2617
 low: 42.3147
 - - - - - - - testing data point..32
-open: 42.9233
-close: 44.0128
+open: 42.6681
+close: 44.16
 high: 46.9182
 low: 42.1282
 - - - - - - - testing data point..33
-open: 43.738
-close: 47.7628
+open: 44.16
+close: 47.9302
 high: 48.7078
-low: 43.2963
+low: 43.9441
 - - - - - - - testing data point..34
-open: 47.8416
-close: 50.8243
+open: 47.6152
+close: 50.5486
 high: 51.031
 low: 46.3158
 - - - - - - - testing data point..35
-open: 50.8538
-close: 52.4092
+open: 50.5093
+close: 52.606
 high: 53.9645
 low: 50.0663
 - - - - - - - testing data point..36
-open: 52.4584
-close: 55.1938
-high: 55.253
+open: 52.4288
+close: 55.4208
+high: 55.517
 low: 51.5721
 - - - - - - - testing data point..37
-open: 54.9471
-close: 59.832
+open: 55.4603
+close: 59.3583
 high: 60.3451
 low: 54.8682
 - - - - - - - testing data point..38
-open: 59.8221
-close: 60.5191
-high: 60.6378
+open: 59.5162
+close: 60.8455
+high: 60.979
 low: 57.1576
 - - - - - - - testing data point..39
-open: 60.6081
-close: 60.1927
+open: 60.9246
+close: 60.5784
 high: 61.7356
 low: 57.5816
 - - - - - - - testing data point..40
-open: 60.0938
-close: 65.0587
+open: 60.4202
+close: 64.0203
 high: 65.7214
-low: 59.6191
+low: 60.2916
 - - - - - - - testing data point..41
-open: 65.0785
-close: 67.3632
+open: 63.9411
+close: 66.8875
 high: 67.9083
 low: 63.0213
 - - - - - - - testing data point..42
-open: 67.1948
-close: 65.6487
+open: 67.1353
+close: 65.2423
 high: 70.2968
-low: 65.5892
+low: 65.1432
 - - - - - - - testing data point..43
-open: 65.609
-close: 70.3134
+open: 65.2919
+close: 70.3233
 high: 71.843
 low: 65.0154
 - - - - - - - testing data point..44
-open: 70.4425
-close: 71.5351
+open: 70.2538
+close: 71.4854
 high: 74.495
 low: 64.5922
 - - - - - - - testing data point..45
-open: 71.4854
-close: 65.6152
+open: 71.0186
+close: 67.7408
 high: 72.2105
 low: 65.496
 - - - - - - - testing data point..46
-open: 66.7476
-close: 65.4431
+open: 68.0189
+close: 65.9409
 high: 69.9726
 low: 63.0938
 - - - - - - - testing data point..47
-open: 65.3336
-close: 63.2331
+open: 65.7019
+close: 64.8956
 high: 70.1319
 low: 60.4259
 - - - - - - - testing data point..48
-open: 63.4621
-close: 62.7272
+open: 65.1146
+close: 63.316
 high: 66.4486
 low: 60.1471
 - - - - - - - testing data point..49
-open: 63.1962
-close: 64.5933
+open: 63.3858
+close: 65.3617
 high: 68.0061
 low: 62.0187
 - - - - - - - testing data point..50
-open: 64.9026
-close: 70.9798
-high: 71.0097
+open: 65.3417
+close: 70.5706
+high: 71.3091
 low: 64.1442
 - - - - - - - testing data point..51
 open: undefined

@@ -319,6 +319,7 @@ let limitCurrentData = (inputData, countOfHowManyLengthsOfTime, lengthOfTimeAsSt
   // loop through in reverse
   inputData.reverse().every((elem, i) => {
     let thisDateUnix = returnFormattedTimeStamp(elem);
+    // console.log('every elem', elem, thisDateUnix)
     if(thisDateUnix > oneHourFromNewestTime) {
       formattedDataPointsHour.push(elem);
       return true;
@@ -433,17 +434,17 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     //////////////////////////////////////////////////////////////////////////
     // define x and y  max & min functions
     const manipulateXMaxMin = (input) => {
+      // console.log('input', input)
       // don't run if value is null
       if( input === null ) { return }
       if( input > d.xMax ) d.xMax = input;
       if( input < d.xMin ) d.xMin = input;
     }
 
-    const manipulateYMaxMin = (input, ignoreZero) => {
+    const manipulateYMaxMin = (input) => {
       // don't run if value is null
-      if( input === null ) { return }
+      if( input === null || input === 0) { return }
       // don't run if told to ignore zero values
-      if( input === 0 && ignoreZero ) { return }
       if( input > d.yMax ) d.yMax = input;
       if( input < d.yMin ) d.yMin = input;
     }
@@ -546,8 +547,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         if(elem.ichi.conversion !== null) {
           manipulateYMaxMin(elem.ichi.conversion);
         }
-        manipulateYMaxMin(elem.ichi.spanA, true);
-        manipulateYMaxMin(elem.ichi.spanB, true);
+        manipulateYMaxMin(elem.ichi.spanA);
+        manipulateYMaxMin(elem.ichi.spanB);
       }
 
       // conditional rendering based on indicators menu
@@ -590,8 +591,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         if(elem.ichi.conversion !== null) {
           manipulateYMaxMin(elem.ichi.conversion);
         }
-        manipulateYMaxMin(elem.ichi.spanA, true);
-        manipulateYMaxMin(elem.ichi.spanB, true);
+        manipulateYMaxMin(elem.ichi.spanA);
+        manipulateYMaxMin(elem.ichi.spanB);
 
         return {
           ...elem,
@@ -656,8 +657,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of source) {
         let chosenValue = Object.byString(elem, targetValue);
-        console.log('chosen value', chosenValue);
-        if(chosenValue === null) {
+        // console.log('chosen value', chosenValue);
+        if(chosenValue === null || chosenValue === 0) {
           continue;
         }
         // console.log('--- ', elem, d.xMin, d.xRange)
