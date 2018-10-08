@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
@@ -16,30 +17,47 @@ const SearchCancelLight = require('../../images/searchcancel.png');
 const SearchCancelDark = require('../../images/searchcancel_dark.png');
 import trending from '../../style/trending';
 import fonts from '../../style/fonts';
+import {
+    selectGlobalData
+} from '../../selectors';
+import { colors } from '../../store/store';
 
 @observer
-export default class FundMyAccount extends React.Component {
+class FundMyAccount extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        let title = 'Withdraw funds';
-        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund my account'
-        }
-        const { theme } = colorStore;
-        let headerStyleToExtend = generateHeaderStyles(theme);
+    // static navigationOptions = ({ navigation }) => {
+    //     let title = 'Withdraw funds';
+    //     if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+    //         title = 'Fund my account'
+    //     }
+    //     const { theme } = colorStore;
+    //     let headerStyleToExtend = generateHeaderStyles(theme);
 
-        return {
-            title: title,
-            ...headerStyleToExtend
-        };
-    };
+    //     return {
+    //         title: title,
+    //         ...headerStyleToExtend
+    //     };
+    // };
 
     constructor(props) {
         super(props)
         this.state = {
             fundingString: '',
             errorRemainingFunds: false,
-            dropdownOpen: false
+            dropdownOpen: false,
+            colors: colors(props.globalData.isDarkThemeActive)
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        const {
+          globalData: prevGlobalData
+        } = prevProps;
+        const {
+          globalData: currentGlobalData
+        } = this.props;
+        if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+          this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
         }
     }
 
@@ -348,3 +366,9 @@ export default class FundMyAccount extends React.Component {
         </View>
     }
 }
+
+const mapStateToProps = state => ({
+    globalData: selectGlobalData(state)
+  });
+
+export default connect(mapStateToProps)(FundMyAccount);
