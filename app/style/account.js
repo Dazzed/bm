@@ -141,6 +141,20 @@ const account = StyleSheet.create({
     width: 65,
     marginLeft: 10
   },
+  titleHistorySmFQ: {
+    fontSize: 10,
+    lineHeight: 24,
+    // color: colors.lightGray,
+    width: 50,
+    marginLeft: 10
+  },
+  titleHistorySmFA: {
+    fontSize: 10,
+    lineHeight: 24,
+    // color: colors.lightGray,
+    width: 80,
+    marginLeft: 10
+  },
   titlePrc: {
     fontSize: 10,
     lineHeight: 24,

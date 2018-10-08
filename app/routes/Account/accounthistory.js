@@ -144,8 +144,8 @@ class AccountHist extends Component {
               <View style={account.titleWrap}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
                 <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>QTY</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>TOTAL</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFQ, fonts.hindGunturRg]}>QTY</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFA, fonts.hindGunturRg]}>TOTAL</Text>
               </View>
               <View style={[account.sectionFull, { backgroundColor: this.state.colors['white'] }]}>
                 {eachDate.values.map((elem, i) => {
@@ -163,8 +163,8 @@ class AccountHist extends Component {
                     <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>
                       {elem.price ? `$${elem.price.toFixed(2)}` : 'N/A'}
                     </Text>
-                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
-                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmFQ, account.historyDataLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmFA, account.historyDataLabel, fonts.hindGunturRg]}>
                       ${elem.totalAmount ? elem.totalAmount.toFixed(2) : (elem.price || 0 * elem.shares || 0).toFixed(2)}
                     </Text>
                   </View>
@@ -199,8 +199,8 @@ class AccountHist extends Component {
               <View style={account.titleWrap}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
                 <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>QTY</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>TOTAL</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFQ, fonts.hindGunturRg]}>QTY</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFA, fonts.hindGunturRg]}>TOTAL</Text>
               </View>
               <View style={[account.sectionFull, { backgroundColor: this.state.colors['white'] }]}>
                 {eachDate.values.map((elem, i) => {
@@ -218,8 +218,8 @@ class AccountHist extends Component {
                     <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>
                       {elem.price ? `$${elem.price.toFixed(2)}` : 'N/A'}
                     </Text>
-                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
-                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmF, account.historyDataLabel, fonts.hindGunturRg]}>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmFQ, account.historyDataLabel, fonts.hindGunturRg]}>{elem.shares}</Text>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, account.titleHistorySmFA, account.historyDataLabel, fonts.hindGunturRg]}>
                       ${elem.totalAmount ? elem.totalAmount.toFixed(2) : (elem.price || 0 * elem.shares || 0).toFixed(2)}
                     </Text>
 

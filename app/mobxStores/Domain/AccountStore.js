@@ -13,13 +13,13 @@ export default class AccountStore {
         const userData = authStore.userDataToJs;
         this.accountList = [
             {
-                title: 'MOCK BANK CHECKING',
-                subtitle: 'Checking - 1234',
+                title: 'MOCK CHECKING',
+                subtitle: 'Mock Bank Checking-1234',
                 amount: userData.checkingAccount
             },
             {
-                title: 'MOCK BANK SAVINGS',
-                subtitle: 'Savings - 1234',
+                title: 'MOCK SAVINGS',
+                subtitle: 'Mock Bank Savings-1234',
                 amount: userData.savingsAccount
             },
         ]

@@ -24,6 +24,7 @@ import fonts from '../../style/fonts';
 import { selectGlobalData } from '../../selectors';
 import { observer } from 'mobx-react';
 import { myAccountStore } from '../../mobxStores';
+import { numberWithCommas } from '../../utility';
 
 @observer
 class AccountPos extends React.Component {
@@ -85,19 +86,6 @@ class AccountPos extends React.Component {
             (elem.marketChangeDecimal === null) ||
             (elem.marketChangePercentage === null)
           ) {
-            console.log(
-              elem.priceChangePercentage,
-              elem.companyAbbreviation,
-              elem.companyName,
-              elem.priceChangeColor,
-              elem.marketChangeColor,
-              elem.quantity,
-              elem.priceChange,
-              elem.priceChangeDecimal,
-              elem.marketChangeDecimal,
-              elem.marketChangePercentage
-            )
-            console.log(88, "NULL")
             return null;
           }
           
@@ -159,7 +147,7 @@ class AccountPos extends React.Component {
                 {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedPriceChangeColor]}, {borderColor: this.state.colors[formattedPriceChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedPriceChangePercentage}%</Text>}
               </View>
               <View style={account.mktWrap}>
-                <Text style={[{color: this.state.colors['darkSlate']}, account.mktLabel, fonts.hindGunturRg]}>${(elem.quantity * elem.priceChange).toFixed(2)}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, account.mktLabel, fonts.hindGunturRg]}>${numberWithCommas((elem.quantity * elem.priceChange),2)}</Text>
                 {this.state.applChg ? <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors[formattedMarketChangeColor]}, {borderColor: this.state.colors[formattedMarketChangeColor]}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedMarketChangePercentage}%</Text>}
               </View>
             </TouchableOpacity>

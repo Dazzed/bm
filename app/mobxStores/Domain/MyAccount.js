@@ -2,6 +2,7 @@ import { observable, action, computed, toJS } from 'mobx';
 import { accountOrders, accountOrdersForHistory, cancelOrderCall } from '../../api';
 import { colorStore } from '../';
 import moment from 'moment';
+import { numberWithCommas } from '../../utility';
 
 export default class MyAccountData {
   @action getBalances = () => {
@@ -81,10 +82,10 @@ export default class MyAccountData {
   @observable accountValue = 0;
   @computed get accountValueJS() {
     if (this.total === null) {
-      return '0.00'
+      return '$0.00'
     }
 
-    return '$' + this.total.toFixed(2);
+    return '$' + numberWithCommas(this.total, 2);
   }
 
   @observable cash = 0;
@@ -110,7 +111,7 @@ export default class MyAccountData {
 
   @computed get todayChangeJS() {
     if (this.todayChange === null) {
-      return '0.00';
+      return '$0.00';
     }
     let plusOrMinusChar = '+';
     if (this.todayChange < 0) {

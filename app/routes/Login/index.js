@@ -156,7 +156,7 @@ class SignIn extends Component {
       <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
+            <TouchableOpacity style={styles.leftCta} onPress={() => { authStore.setLoginErrorPresent(false);authStore.setLoginErrorMessage(null); this.props.navigation.goBack() }}>
               <Image
                 source={require('../../images/close.png')}
                 style={styles.closeImg}

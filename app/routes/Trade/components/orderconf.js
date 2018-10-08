@@ -158,9 +158,7 @@ class OrderConf extends React.Component {
               </Text>
               {
                 this.state.error ?
-                  <Text style={[{ color: 'red', textAlign: 'center', marginTop: 5 }, fonts.hindGunturBd]}>
-                    {this.state.error}
-                  </Text> :
+                  <Text style={[fonts.hindGunturRg,{ color: 'red', marginTop: 5 }]}><Text style={fonts.hindGunturBd}>Error: </Text>{this.state.error}</Text> :
                   null
               }
             </TouchableOpacity>

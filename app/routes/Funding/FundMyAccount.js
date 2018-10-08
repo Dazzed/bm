@@ -84,6 +84,10 @@ export default class FundMyAccount extends React.Component {
             });
         })
         .catch((err) => {
+            this.setState({
+                errorRemainingFunds: true
+            })
+
             console.log('err', err);
         })
     }
@@ -194,7 +198,7 @@ export default class FundMyAccount extends React.Component {
         let height = 25;
         let style = {
             borderWidth: 1,
-            borderColor: theme.inactiveDarkSlate,
+            borderColor: "#999CA5",
             backgroundColor: theme.contentBg,
             height: height,
             flex: 0,
@@ -205,13 +209,13 @@ export default class FundMyAccount extends React.Component {
             marginHorizontal: 30
         };
         let textStyle = {
-            color: theme.inactiveDarkSlate,
+            color: "#999CA5",
             flex: 0
         };
 
         let string = ''
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-            string = 'TO'
+            string = 'To'
         }
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
           return null;
@@ -231,7 +235,7 @@ export default class FundMyAccount extends React.Component {
 
     renderErrorOrNull = () => {
       const { theme } = colorStore;
-      let text = null;;
+      let text = null;
       if(this.state.errorRemainingFunds) {
         text = 'Withdraw amount exceeds funds available'
       }
