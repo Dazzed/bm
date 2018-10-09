@@ -194,7 +194,6 @@ class Chart extends Component {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       Orientation.unlockAllOrientations();
       Orientation.addOrientationListener(this.orientationDidChange);
-      console.log('App has come to the foreground!')
     }    
     this.setState({ appState: nextAppState });
   }
