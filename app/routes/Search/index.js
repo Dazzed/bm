@@ -162,13 +162,13 @@ class Search extends React.Component {
         />
       );
     }
-    if (!searchDataJS || searchDataJS.result.result.length === 0) {
+    if (!searchDataJS || searchDataJS.result.length === 0) {
       return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: 200 }}>
         <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
       if (isFetchingMoreData) {
-        return searchDataJS.result.result.map((elem, i) => {
+        return searchDataJS.result.map((elem, i) => {
           return this.renderListElement(elem, i)
         })
           .concat(
@@ -182,7 +182,7 @@ class Search extends React.Component {
             </TouchableOpacity>
           )
       }
-      return searchDataJS.result.result.map((elem, i) => {
+      return searchDataJS.result.map((elem, i) => {
         return this.renderListElement(elem, i)
       })
     }

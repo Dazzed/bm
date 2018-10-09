@@ -26,16 +26,21 @@ import Button from '../../../sharedComponents/Button1';
 @observer
 export default class FundAccountSplash extends Component {
 
-    static navigationOptions = ({ navigation }) => {
-        let title = 'Fund My Account';
+    // static navigationOptions = ({ navigation }) => {
+    //     let title = 'Fund My Account';
 
-        const { theme } = colorStore;
-        let headerStyleToExtend = generateHeaderStyles(theme);
+    //     const { theme } = colorStore;
+    //     let headerStyleToExtend = generateHeaderStyles(theme);
 
-        return {
-            title: title,
-            ...headerStyleToExtend
-        };
+    //     return {
+    //         title: title,
+    //         ...headerStyleToExtend
+    //     };
+    // };
+    static navigationOptions = {
+        title: 'Fund My Account',
+        header: null,
+        gesturesEnabled: false
     };
 
     navToFunding() {

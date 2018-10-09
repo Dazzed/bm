@@ -8,6 +8,8 @@ import { colorStore, accountStore } from '../../mobxStores';
 import { generateHeaderStyles, numberWithCommas } from '../../utility';import {
     selectGlobalData
   } from '../../selectors';
+import styles from '../../style/style';
+import fonts from '../../style/fonts';
 
 class Success extends React.Component {
 
@@ -25,6 +27,11 @@ class Success extends React.Component {
     //         ...headerStyleToExtend
     //     };
     // };
+    static navigationOptions = {
+        title: 'AccountBal',
+        header: null,
+        gesturesEnabled: false
+    };
 
     constructor(props) {
         super(props);
@@ -78,7 +85,23 @@ class Success extends React.Component {
     render() {
       const { theme } = colorStore
       let circleSize = 150;
-        return <View style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 30}}>
+      let title = 'Funds withdrawn';
+      if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
+          title = 'Account funded'
+      }
+        return <View style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 15}}>
+          <View style={styles.menuBorder}>
+            <View style={styles.menuContainer}>
+              <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
+                <Image
+                  source={require('../../images/back.png')}
+                  style={styles.backImg}
+                />
+              </TouchableOpacity>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>{title}</Text>
+              <Text style={styles.rightCta}></Text>
+            </View>
+          </View>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <View style={{borderWidth: 3, borderColor: theme.green, height: circleSize, width: circleSize, borderRadius: circleSize * .5, alignItems: 'center', justifyContent: 'center'}}>
               <Image

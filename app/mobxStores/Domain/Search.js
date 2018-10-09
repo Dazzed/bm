@@ -138,7 +138,7 @@ export default class Trending {
       this.searchData = {
         current_page: 1,
         total_pages: 1,
-        result: res.json.data
+        result: res.json.data.result
       };
     } else {
       console.log('Error in fetchCustomListTickers', res);

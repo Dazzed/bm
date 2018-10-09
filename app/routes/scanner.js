@@ -509,7 +509,6 @@ class Scanner extends React.Component {
       </View>
     } else {
       if (Object.keys(scannerDataJS).length > 0) {
-        alert(Object.keys(scannerDataJS).length)
         return <ScrollView
           onScroll={({nativeEvent}) => {
             if (isScrollViewCloseToBottom(nativeEvent)) {

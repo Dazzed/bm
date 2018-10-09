@@ -12,6 +12,8 @@ import {
 } from '../../selectors';
 
 import { colors } from '../../store/store';
+import styles from '../../style/style';
+import fonts from '../../style/fonts';
 
 @observer
 class AccountSelect extends React.Component {
@@ -31,6 +33,11 @@ class AccountSelect extends React.Component {
     //     };
     // };
 
+    static navigationOptions = {
+        title: 'AccountBal',
+        header: null,
+        gesturesEnabled: false
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -241,8 +248,25 @@ class AccountSelect extends React.Component {
     }
 
     renderButtonAndContent = () => {
+        let title = 'Withdraw funds';
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
+            title = 'Fund my account'
+        }
+
         const { theme } = colorStore;
         return <View style={{flexDirection: 'column', position: 'relative', height: '100%', backgroundColor: theme.contentBg}}>
+            <View style={styles.menuBorder}>
+                <View style={styles.menuContainer}>
+                    <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
+                        <Image
+                            source={require('../../images/back.png')}
+                            style={styles.backImg}
+                        />
+                    </TouchableOpacity>
+                    <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>{title}</Text>
+                    <Text style={styles.rightCta}></Text>
+                </View>
+            </View>
             {this.renderBackgroundImage()}
             <View style={{flex: 1, padding: 5}}>
               <View style={{marginVertical: 10}}></View>

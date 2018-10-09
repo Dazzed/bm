@@ -21,6 +21,7 @@ import {
     selectGlobalData
 } from '../../selectors';
 import { colors } from '../../store/store';
+import styles from '../../style/style';
 
 @observer
 class FundMyAccount extends React.Component {
@@ -38,6 +39,11 @@ class FundMyAccount extends React.Component {
     //         ...headerStyleToExtend
     //     };
     // };
+    static navigationOptions = {
+        title: 'AccountBal',
+        header: null,
+        gesturesEnabled: false
+    };
 
     constructor(props) {
         super(props)
@@ -351,8 +357,24 @@ class FundMyAccount extends React.Component {
 
     render() {
       const { theme } = colorStore;
+        let title = 'Funds withdrawn';
+        if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
+            title = 'Account funded'
+        }
         return <View style={{height: '100%', padding: 0}}>
             <View style={{flex: 1, backgroundColor: theme.contentBg}}>
+                <View style={styles.menuBorder}>
+                    <View style={styles.menuContainer}>
+                        <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
+                            <Image
+                                source={require('../../images/back.png')}
+                                style={styles.backImg}
+                            />
+                        </TouchableOpacity>
+                        <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>{title}</Text>
+                        <Text style={styles.rightCta}></Text>
+                    </View>
+                </View>
                 {this.renderAmountInAccount()}
             </View>
             <View style={{flex: 0}}>

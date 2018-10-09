@@ -15,7 +15,8 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   Alert,
-  Linking
+  Linking,
+  AppState
 } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from '../components/react-native-modal'
@@ -101,6 +102,7 @@ class Chart extends Component {
       isDisabled: false,
       stockChange: false,
       colors: colors(props.globalData.isDarkThemeActive),
+      appState: AppState.currentState
     };
     this.orientationDidChange = this._orientationDidChange.bind(this);
     this.hideNews = this.hideNews.bind(this);
@@ -178,6 +180,7 @@ class Chart extends Component {
     const { initIndicatorsList } = chartStore;
     Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
+    AppState.addEventListener('change', this._handleAppStateChange);
     initIndicatorsList();
     // setTimeout(() => {
     //   this.forceSetToLandscape();
@@ -185,6 +188,15 @@ class Chart extends Component {
 
     getTheme()
     chartStore.getTickerDetails(this.props.navigation.state.params.data)
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      Orientation.unlockAllOrientations();
+      Orientation.addOrientationListener(this.orientationDidChange);
+      console.log('App has come to the foreground!')
+    }    
+    this.setState({ appState: nextAppState });
   }
 
   componentDidUpdate(prevProps) {
@@ -203,6 +215,7 @@ class Chart extends Component {
     const { resetChartData } = chartStore;
     Orientation.lockToPortrait();
     Orientation.removeOrientationListener(this.orientationDidChange);
+    AppState.removeEventListener('change', this._handleAppStateChange);
     resetChartData();
   }
 
@@ -388,7 +401,7 @@ class Chart extends Component {
   }
 
   renderRelated() {
-    // return null;
+    return null;
 
     {/* TODO: get related stocks. not yet in data */ }
 
@@ -754,13 +767,6 @@ class Chart extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
-          {this.renderExecutives(executives)}
-        </View>
-
-        {this.renderRelated()}
-
         <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
           <View style={chart.statsRow}>
