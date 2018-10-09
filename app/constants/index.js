@@ -92,34 +92,34 @@ var sector_props = [
     queryString: 'null'
   },
   {
-    label: 'Healthcare',
+    label: 'Utilities',
     value: 1,
+    queryString: 'Utilities',
+  },
+  {
+    label: 'Financial',
+    value: 2,
+    queryString: 'Financial',
+  },
+  {
+    label: 'Healthcare',
+    value: 3,
     queryString: 'Healthcare',
   },
   {
     label: 'Services',
-    value: 2,
+    value: 4,
     queryString: 'Services',
   },
   {
     label: 'Basic Materials',
-    value: 3,
+    value: 5,
     queryString: 'Basic Materials',
   },
   {
     label: 'Industrial Goods',
-    value: 4,
-    queryString: 'Industrial Goods',
-  },
-  {
-    label: 'Financial',
-    value: 5,
-    queryString: 'Financial',
-  },
-  {
-    label: 'Technology',
     value: 6,
-    queryString: 'Technology',
+    queryString: 'Industrial Goods',
   },
   {
     label: 'Conglomerates',
@@ -132,9 +132,9 @@ var sector_props = [
     queryString: 'Consumer Goods',
   },
   {
-    label: 'Utilities',
+    label: 'Technology',
     value: 9,
-    queryString: 'Utilities',
+    queryString: 'Technology',
   }
 ]
 
@@ -311,19 +311,19 @@ let validity_props = [
 
 let order_type = [
   {
-    label: 'Market order',
+    label: 'Market',
     value: 0,
     query: 'market',
     name: 'market'
   },
   {
-    label: 'Limit order',
+    label: 'Limit',
     value: 1,
     query: 'limit',
     name: 'limit'
   },
   {
-    label: 'Stop Loss order',
+    label: 'Stop Loss',
     value: 2,
     query: '',
     name: 'stop_loss'

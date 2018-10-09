@@ -73,6 +73,12 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontSize: 20
   },
+  whyWeAskTextSSN: {
+    marginTop: 30,
+    marginBottom: 0,
+    lineHeight: 30,
+    fontSize: 20
+  },
   registrationFormView: {
     // height: 50,
     flexDirection: 'column',

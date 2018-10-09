@@ -6,6 +6,7 @@ import {
   Platform,
   Dimensions
 } from 'react-native';
+import Orientation from 'react-native-orientation';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TouchID from 'react-native-touch-id';
@@ -46,15 +47,18 @@ export default TargetComponent => {
     }
 
     componentDidMount() {
+      Orientation.lockToPortrait();
       this.props.initiateProbingForBio();
       AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillUnmount() {
+      Orientation.lockToPortrait();
       AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     componentDidUpdate(prevProps) {
+      Orientation.lockToPortrait();
       const {
         globalData: prevGlobalData
       } = prevProps;

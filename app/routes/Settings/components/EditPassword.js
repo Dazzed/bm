@@ -99,11 +99,11 @@ class EditPassword extends Component {
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={hidePassword}>
               <Image
-                source={require('../../../images/close.png')}
-                style={styles.closeImg}
+                source={require('../../../images/back.png')}
+                style={styles.backImg}
               />
             </TouchableOpacity>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.mainCta, fonts.gothamBld]}>Edit password</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>Edit password</Text>
             <Text style={styles.rightCta}></Text>
           </View>
         </View>

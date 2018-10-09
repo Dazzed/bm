@@ -149,21 +149,20 @@ class HomeScreen extends Component {
           </Text>
         </View>
         <Text style={[{ color: this.state.colors['darkSlate'] }, styles.tagline, fonts.hindGunturLt]}>
-          The premier stock trading platform with zero commisions.
+          The premier stock trading platform with zero commissions.
         </Text>
         {this.renderAppPreviewButton()}
         <Text style={[{ color: this.state.colors['lightGray'] }, styles.legal, fonts.hindGunturRg]}>By using BluMartini you agree to our <Text style={[styles.legalLink, fonts.hindGunturRg]} onPress={() => this.showTerms()}>Terms & Conditions</Text></Text>
         <TouchableHighlight
           style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]}
           onPress={() => navigate('Registration')}>
-          <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>JOIN 1,347,254 TRADERS</Text>
+          <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>JOIN THE ACTION</Text>
         </TouchableHighlight>
         <TouchableHighlight
           style={[{ backgroundColor: this.state.colors['darkGray'] }, { borderColor: this.state.colors['darkGray'] }, styles.fullBtnGray]}
           onPress={() => navigate('Login')}>
           <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>ALREADY A MEMBER? SIGN IN</Text>
         </TouchableHighlight>
-        <Text>Version: 0.0.1 (69)</Text>
         <Modal
           isVisible={this.state.isTermsVisible}
           animationIn={'slideInUp'}

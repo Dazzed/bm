@@ -45,7 +45,7 @@ export default class Declaration extends Component {
       const { shortSide } = deviceSizeStore;
       
       let paddingExists = 5;
-      let rightSpacing = 15;
+      let rightSpacing = 20;
       
       let imageStyle = {
         position: 'relative',

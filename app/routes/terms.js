@@ -29,9 +29,6 @@ import {
 
 import Modal from 'react-native-modal'
 
-import OrderTypes from './ordertypes';
-import OrderPlaced from './orderplaced';
-
 import styles from '../style/style';
 import fonts from '../style/fonts';
 
@@ -80,6 +77,7 @@ class Terms extends React.Component {
   }
 
   render() {
+    const {height, width} = Dimensions.get('window');
     return(
       <View style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
         <View style={styles.menuBorder}>
@@ -94,8 +92,8 @@ class Terms extends React.Component {
             <Text style={styles.rightCta}></Text>
           </View>
         </View>
-        <ScrollView style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalContainer]}>
-         <WebView style={{width: 300, height: 450}} source={{html: this.state.commonHtml}} />
+        <ScrollView style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalContainer, {paddingTop: 10}]}>
+         <WebView style={{width: (width - 20), height: (height - 160)}} source={{html: this.state.commonHtml}} />
         </ScrollView>
         <View style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalAgree]}>
         <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']},  styles.fullBtn]} onPress={() => this.props.hideTerms()}>

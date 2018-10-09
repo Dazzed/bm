@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
     borderColor: '#7E98B4',
     flex: 1,
     maxHeight: 45,
-    width: 320
+    width: 320,
+    justifyContent: 'center'
   },
   fullBtnTwitter: {
     marginTop: 10,
@@ -182,6 +183,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     letterSpacing: 1,
+    // color: colors.white,
+  },
+  fullBtnTxtOrder: {
+    textAlign: 'center',
+    fontSize: 16,
+    letterSpacing: 1,
+    marginLeft: 10
     // color: colors.white,
   },
   smallGrnBtn: {
@@ -230,6 +238,15 @@ const styles = StyleSheet.create({
   landingIcon: {
     paddingTop: 100,
     flex: 2
+  },
+  landingIconLogin: {
+    paddingTop: 50,
+    paddingBottom: 50,
+    alignItems: 'center',
+  },
+  landingTTLogin: {
+    paddingTop: 10,
+    alignItems: 'center',
   },
   appIcon: {
     width: 100,
@@ -625,6 +642,16 @@ const styles = StyleSheet.create({
   },
   contact_us_subject_label: {
     margin: 4, marginTop: 15, lineHeight: 18, fontSize: 12
-  }
+  },
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  searchIcon: {
+    padding: 10,
+  },
 });
 module.exports = styles;

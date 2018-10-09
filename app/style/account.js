@@ -110,6 +110,11 @@ const account = StyleSheet.create({
     maxWidth: 185,
     // color: colors.darkGray
   },
+  noOrdersText: {
+    textAlign: 'center',
+    fontSize: 24,
+    marginBottom: 60
+  },
   sectionDate: {
     marginLeft: 20,
     paddingBottom: 5,
@@ -134,6 +139,20 @@ const account = StyleSheet.create({
     lineHeight: 24,
     // color: colors.lightGray,
     width: 65,
+    marginLeft: 10
+  },
+  titleHistorySmFQ: {
+    fontSize: 10,
+    lineHeight: 24,
+    // color: colors.lightGray,
+    width: 50,
+    marginLeft: 10
+  },
+  titleHistorySmFA: {
+    fontSize: 10,
+    lineHeight: 24,
+    // color: colors.lightGray,
+    width: 80,
     marginLeft: 10
   },
   titlePrc: {
@@ -315,9 +334,6 @@ const account = StyleSheet.create({
     alignItems: 'flex-end',
     maxWidth: 150
   },
-  historyLabel: {
-    fontSize: 20
-  },
   historyTransaction: {
     flex: 1,
     flexDirection: 'row',
@@ -347,9 +363,33 @@ const account = StyleSheet.create({
   historyLabel: {
     flex: 1,
     marginLeft: 2
-  }
-
-
+  },
+  pendingActionWrap: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  pendingActionItem: {
+    width: '33%',
+    flex: 1,
+    flexDirection: 'column'
+  },
+  cancelButton: {
+    borderWidth: 0.5,
+    borderColor: '#DB868E',
+    color: '#DB868E',
+    fontWeight: 'bold',
+    fontSize: 14
+  },
+  cancelOptionBtn: {
+    flex: 1,
+    maxHeight: 40,
+    marginTop: 5,
+    marginRight: 10,
+    paddingTop: 10,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    opacity: 0.9
+  },
 
 });
 module.exports = account;

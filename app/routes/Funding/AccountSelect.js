@@ -1,40 +1,60 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { connect } from 'react-redux';
+
 import Button from '../../sharedComponents/Button1';
 import { numberWithCommas } from '../../utility';
 import { observer } from 'mobx-react';
 import { colorStore, accountStore, deviceSizeStore, authStore } from '../../mobxStores';
 import { generateHeaderStyles } from '../../utility';
+import {
+    selectGlobalData
+} from '../../selectors';
+
+import { colors } from '../../store/store';
 
 @observer
-export default class AccountSelect extends React.Component {
+class AccountSelect extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
+    // static navigationOptions = ({ navigation }) => {
 
-        const { theme } = colorStore;
-        let headerStyleToExtend = generateHeaderStyles(theme);
+    //     const { theme } = colorStore;
+    //     let headerStyleToExtend = generateHeaderStyles(theme);
 
-        let title = 'Withdraw funds';
-        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund my account'
-        }
-        return {
-            title: title,
-            ...headerStyleToExtend
-        };
-    };
+    //     let title = 'Withdraw funds';
+    //     if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+    //         title = 'Fund my account'
+    //     }
+    //     return {
+    //         title: title,
+    //         ...headerStyleToExtend
+    //     };
+    // };
 
     constructor(props) {
         super(props);
         this.state = {
             selectedAccountIndex: 0,
             withdrawDepositMode: this.props.navigation.state.params.widthdrawDepositMode,
+            colors: colors(props.globalData.isDarkThemeActive)
         };
         accountStore.getAccountList();
     }
 
     componentDidMount() {
         let withdrawDepositMode = this.props.navigation.state.params.widthdrawDepositMode
+    }
+
+    componentDidUpdate(prevProps) {
+        const {
+          globalData: prevGlobalData
+        } = prevProps;
+        const {
+          globalData: currentGlobalData
+        } = this.props;
+        if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+          this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+        }
     }
 
     navToFundAccount = () => {
@@ -243,3 +263,9 @@ export default class AccountSelect extends React.Component {
         </View>
     }
 }
+
+const mapStateToProps = state => ({
+    globalData: selectGlobalData(state)
+  });
+
+export default connect(mapStateToProps)(AccountSelect);

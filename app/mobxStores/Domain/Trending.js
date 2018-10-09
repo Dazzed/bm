@@ -40,6 +40,9 @@ export default class Trending {
 
   @action setTrendingOption = (newOption) => {
     this.trendingOption = newOption;
+    if (newOption == 1 || newOption == 2) {
+      this.displayDecimal = true;
+    }
     this.getTrendingData()
   }
 
@@ -77,10 +80,12 @@ export default class Trending {
     const { theme } = colorStore;
     const { watchlistDataJS } = watchListStore;
     const watchListItems = watchlistDataJS;
-    if(!this.trendingData) {
+    
+    if(!this.trendingData || this.trendingData.length === 0) {
       return []
     } else {
       return toJS(this.trendingData)
+      .filter(data => data)
       .map(data => {
         let parseData = {
           ...data,

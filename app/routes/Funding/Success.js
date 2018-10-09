@@ -1,37 +1,49 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { connect } from 'react-redux';
+
 import Button from '../../sharedComponents/Button1';
 import { setTheme, getTheme, colors } from '../../store/store';
 import { colorStore, accountStore } from '../../mobxStores';
-import { generateHeaderStyles, numberWithCommas } from '../../utility';
+import { generateHeaderStyles, numberWithCommas } from '../../utility';import {
+    selectGlobalData
+  } from '../../selectors';
 
-export default class Success extends React.Component {
+class Success extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        let title = 'Funds withdrawn';
-        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Account funded'
-        }
+    // static navigationOptions = ({ navigation }) => {
+    //     let title = 'Funds withdrawn';
+    //     if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+    //         title = 'Account funded'
+    //     }
 
-        const { theme } = colorStore;
-        let headerStyleToExtend = generateHeaderStyles(theme);
+    //     const { theme } = colorStore;
+    //     let headerStyleToExtend = generateHeaderStyles(theme);
 
-        return {
-            title: title,
-            ...headerStyleToExtend
-        };
-    };
+    //     return {
+    //         title: title,
+    //         ...headerStyleToExtend
+    //     };
+    // };
 
     constructor(props) {
         super(props);
         this.state = {
-            colors: colors(),
-            selectedAccountIndex: 0
+            selectedAccountIndex: 0,
+            colors: colors(props.globalData.isDarkThemeActive)
         }
     }
 
-    componentDidMount() {
-        console.log('this', this)
+    componentDidUpdate(prevProps) {
+        const {
+          globalData: prevGlobalData
+        } = prevProps;
+        const {
+          globalData: currentGlobalData
+        } = this.props;
+        if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+          this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+        }
     }
 
     navToTradingView() {
@@ -84,3 +96,9 @@ export default class Success extends React.Component {
         </View>
     }
 }
+
+const mapStateToProps = state => ({
+    globalData: selectGlobalData(state)
+  });
+
+export default connect(mapStateToProps)(Success);

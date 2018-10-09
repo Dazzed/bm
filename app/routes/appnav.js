@@ -12,11 +12,12 @@ import Chart from './chart';
 import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
+import Trade from './Trade';
 import FundAccountSplash from './Registration/components/FundAccountSplash';
 import { colors } from '../store/store';
 import {
-    appNavDefaultTabRoute,
-    stackNavDefaultRoute
+  appNavDefaultTabRoute,
+  stackNavDefaultRoute
 } from '../devControlPanel';
 import { autoLogOffStore } from '../mobxStores';
 var color = colors();
@@ -38,25 +39,25 @@ const AppNavTabs = TabNavigator({
     screen: Settings,
   }
 }, {
-  initialRouteName: appNavDefaultTabRoute,
-  lazy: false,
-  animationEnabled: true,
-  tabBarOptions: {
-    activeTintColor: color['darkSlate'],
-    inactiveTintColor: color['lightGray'],
-    style: {
-      backgroundColor: color['white'],
-      paddingBottom: 5,
-      paddingTop: 5
-    }
-  },
-  navigationOptions: {
-    tabBarOnPress: ({ jumpToIndex, scene }) => {
-      return jumpToIndex(scene.index);
+    initialRouteName: appNavDefaultTabRoute,
+    lazy: false,
+    animationEnabled: true,
+    tabBarOptions: {
+      activeTintColor: color['darkSlate'],
+      inactiveTintColor: color['lightGray'],
+      style: {
+        backgroundColor: color['white'],
+        paddingBottom: 5,
+        paddingTop: 5
+      }
     },
-  },
-  tabBarComponent: CustomTabBar,
-});
+    navigationOptions: {
+      tabBarOnPress: ({ jumpToIndex, scene }) => {
+        return jumpToIndex(scene.index);
+      },
+    },
+    tabBarComponent: CustomTabBar,
+  });
 
 const StackNav = StackNavigator({
   AppNavTabs: {
@@ -76,15 +77,18 @@ const StackNav = StackNavigator({
   },
   FundAccountSplash: {
     screen: FundAccountSplash
+  },
+  Trade: {
+    screen: Trade
   }
 }, {
-  initialRouteName: stackNavDefaultRoute,
-  lazy: false,
-  animationEnabled: true,
-  mode: 'modal',
-  headerMode: 'float',
-  headerTransitionPreset: 'uikit'
-});
+    initialRouteName: stackNavDefaultRoute,
+    lazy: false,
+    animationEnabled: true,
+    mode: 'modal',
+    headerMode: 'float',
+    headerTransitionPreset: 'uikit'
+  });
 
 
 

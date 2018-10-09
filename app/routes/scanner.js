@@ -508,32 +508,34 @@ class Scanner extends React.Component {
         <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
-      return <ScrollView
-        onScroll={({nativeEvent}) => {
-          if (isScrollViewCloseToBottom(nativeEvent)) {
-            this.getNewPage();
-          }
-        }}
-        throttleScrollCallbackMS={1000}
-        style={scanner.symbolsContainer}
-      >
-        {scannerDataJS.map((data, i) => {
+      if (Object.keys(scannerDataJS).length > 0) {
+        alert(Object.keys(scannerDataJS).length)
+        return <ScrollView
+          onScroll={({nativeEvent}) => {
+            if (isScrollViewCloseToBottom(nativeEvent)) {
+              this.getNewPage();
+            }
+          }}
+          throttleScrollCallbackMS={1000}
+          style={scanner.symbolsContainer}
+        >
+          {scannerDataJS.map((data, i) => {
+            let formattedOpen = '$' + (Number(data.open) || 0).toFixed(2);
+            let formattedHigh = '$' + (Number(data.high) || 0).toFixed(2);
+            let formattedLatestPrice = '$' + (Number(data.latestPrice) || 0).toFixed(2);
 
-          let formattedOpen = '$' + (Number(data.open) || 0).toFixed(2);
-          let formattedHigh = '$' + (Number(data.high) || 0).toFixed(2);
-          let formattedLatestPrice = '$' + (Number(data.latestPrice) || 0).toFixed(2);
-
-          return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
-            <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
-              <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
-            </TouchableOpacity>
-            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedOpen}</Text></View>
-            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedHigh}</Text></View>
-            <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedLatestPrice}</Text></View>
-          </View>
-        })}
-        {this.renderNewPageLaoding()}
-      </ScrollView>
+            return <View key={'each-scan-item' + i} style={[{ borderBottomColor: this.state.colors['borderGray'] }, scanner.symbolsRow]}>
+              <TouchableOpacity style={scanner.symbolsSpacer} onPress={() => this.props.navigation.navigate('Chart', { data: data })}>
+                <Text style={[{ color: this.state.colors['blue'] }, scanner.symbolsTxt, fonts.hindGunturRg]}>{data['ticker']}</Text>
+              </TouchableOpacity>
+              <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedOpen}</Text></View>
+              <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedHigh}</Text></View>
+              <View style={scanner.symbolsLabel}><Text style={[{ color: this.state.colors['darkSlate'] }, scanner.symbolsLabelTxt, fonts.hindGunturRg]}>{formattedLatestPrice}</Text></View>
+            </View>
+          })}
+          {this.renderNewPageLaoding()}
+        </ScrollView>
+      }
     }
   }
 

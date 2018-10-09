@@ -27,11 +27,19 @@ export default class RegistrationHeader extends React.Component {
   renderWhyWeAskText() {
     const { theme } = colorStore;
     if(this.state.showWhyWeAsk) {
-      return <View style={[styles_2.whyWeAskView]}>
-        <Text style={[{ color: theme.darkSlate }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
-          {this.props.whyWeAskText}
-        </Text>
-      </View>
+      if (this.props.isSSN) {
+        return <View style={[styles_2.whyWeAskView]}>
+          <Text style={[{ color: theme.darkSlate }, fonts.hindGunturRg, styles_2.whyWeAskTextSSN]}>
+            {this.props.whyWeAskText}
+          </Text>
+        </View>
+      } else {
+        return <View style={[styles_2.whyWeAskView]}>
+          <Text style={[{ color: theme.darkSlate }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+            {this.props.whyWeAskText}
+          </Text>
+        </View>
+      }
     } else {
       return null;
     }

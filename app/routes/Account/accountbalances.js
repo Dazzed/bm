@@ -24,6 +24,7 @@ import fonts from '../../style/fonts';
 import { selectGlobalData } from '../../selectors';
 import { observer } from 'mobx-react';
 import { myAccountStore } from '../../mobxStores';
+import { numberWithCommas } from '../../utility';
 
 @observer
 class AccountBal extends React.Component {
@@ -60,26 +61,26 @@ class AccountBal extends React.Component {
         <View style={[{backgroundColor: this.state.colors['white']}, account.section]}>
           <View style={account.sectionWrap}>
             <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>TOTAL</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.investments.total}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDetail, fonts.hindGunturRg]}>${numberWithCommas(balancesJS.investments.total,2)}</Text>
           </View>
           <View style={account.sectionWrap}>
             <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>SECURITIES</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.investments.securities}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDetail, fonts.hindGunturRg]}>${numberWithCommas(balancesJS.investments.securities,2)}</Text>
           </View>
           <View style={account.sectionWrap}>
             <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>CASH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.investments.cash}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDetail, fonts.hindGunturRg]}>${numberWithCommas(balancesJS.investments.cash,2)}</Text>
           </View>
         </View>
         <Text style={[{color: this.state.colors['darkSlate']}, account.sectionTitle, fonts.hindGunturBd]}>FUNDS AVAILABLE</Text>
         <View style={[{backgroundColor: this.state.colors['white']}, account.section]}>
           <View style={account.sectionWrap}>
             <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>TO TRADE</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.fundsAvailable.toTrade}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDetail, fonts.hindGunturRg]}>${numberWithCommas(balancesJS.fundsAvailable.toTrade,2)}</Text>
           </View>
           <View style={account.sectionWrap}>
             <Text style={[{color: this.state.colors['lightGray']}, account.sectionLabel, fonts.hindGunturRg]}>TO WITHDRAW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, account.sectionDetail, fonts.hindGunturRg]}>${balancesJS.fundsAvailable.toWithdraw}</Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDetail, fonts.hindGunturRg]}>${numberWithCommas(balancesJS.fundsAvailable.toWithdraw,2)}</Text>
           </View>
         </View>
       </View>

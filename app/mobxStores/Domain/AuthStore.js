@@ -51,6 +51,10 @@ export default class AuthStore {
     this.loginErrorMessage = msg;
   }
 
+  @action setLoginErrorPresent = (bool) => {
+    this.loginErrorPresent = bool;
+  }
+
   @action setLoginData = (loginData) => {
     this.loginData = loginData;
   }

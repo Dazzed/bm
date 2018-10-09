@@ -7,6 +7,8 @@ export default class DepositWithdraw {
     }
 
     @observable transactionLoading = false;
+    @observable transactionError = '';
+    @observable transactionErrorPresent = false;
 
     @action setTransactionLoading = (loadingBool) => {
         this.transactionLoading = loadingBool;
@@ -24,7 +26,7 @@ export default class DepositWithdraw {
                 formattedParams = {
                     options: JSON.stringify({
                         ...options,
-                        account: params.account.subtitle == 'Checking - 1234' ? 'checking' : 'savings'
+                        account: params.account.subtitle == 'Mock Bank Checking-1234' ? 'checking' : 'savings'
                     })
                 };
             } else {
@@ -40,12 +42,16 @@ export default class DepositWithdraw {
                 if(res.ok) {
                     resolve(res)
                 } else {
+                    this.transactionErrorPresent = true;
+                    this.transactionError = res.json.error.message;
                     reject(res)
                 }
                 this.setTransactionLoading(false);
             })
             .catch((err) => {
                 console.log('err', err);
+                this.transactionErrorPresent = true;
+                this.transactionError = err.message;
                 this.setTransactionLoading(false);
             })
         })

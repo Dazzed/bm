@@ -49,17 +49,28 @@ const chart = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: 'row',
-    padding: 5,
+    padding: 3,
+    paddingBottom:  0,
     alignItems: 'flex-start',
     borderBottomColor: colors.lightGray,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    maxHeight: 58
+    maxHeight: 45
+  },
+  header_second: {
+    flex: 1,
+    flexDirection: 'row',
+    padding: 1,
+    paddingTop: 0,
+    alignItems: 'flex-start',
+    borderBottomColor: colors.lightGray,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    maxHeight: 17
   },
   wrapper: {
     padding: 20
   },
   titleContainer: {
-    flex:1,
+    flex:2.5,
     marginRight: 15
   },
   name: {
@@ -75,7 +86,7 @@ const chart = StyleSheet.create({
     // color: colors.lightGray,
   },
   currentPrice: {
-    flex: 3,
+    flex: 1.75,
     flexDirection: 'row',
     maxWidth: 175
   },
@@ -107,24 +118,27 @@ const chart = StyleSheet.create({
     alignItems: 'center',
   },
   priceOpen: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'row',
   },
   priceLabel: {
     // color: colors.lightGray,
     fontSize: 11,
-    height: 15,
   },
   priceNum: {
-    fontSize:15,
+    fontSize:11,
     // color: colors.darkSlate,
   },
   priceHigh: {
+    flexDirection: 'row',
     flex: 1
   },
   priceLow: {
+    flexDirection: 'row',
     flex: 1
   },
   priceVol: {
+    flexDirection: 'row',
     flex: 1
   },
   verticalChart: {
@@ -133,7 +147,7 @@ const chart = StyleSheet.create({
     flexDirection: 'column'
   },
   timePeriod: {
-    marginTop: 10,
+    marginTop: 5,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -209,7 +223,7 @@ const chart = StyleSheet.create({
     // alignItems: 'flex-start'
   },
   landscapeChart: {
-    marginTop: 10
+    marginTop: 5
   },
   options: {
     flex: 1,

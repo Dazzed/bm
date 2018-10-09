@@ -97,7 +97,7 @@ export default class ForgotPassword extends React.Component {
                 <Button
                   disabled={this.state.email.length === 0 || resetLoading === true}
                   onPress={() => this.submitForgotRequest()}
-                  title={resetLoading ? "LOADING..." : "RESET PASSWORD"}
+                  title={resetLoading ? "LOADING..." : "RESET"}
                 />
             </KeyboardAvoidingView>
         </View>

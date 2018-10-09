@@ -89,7 +89,7 @@ export default class SocialSecurityNumberSelection extends Component {
         if (this.state.showWhyWeAsk) {
             return (
                 <View style={[styles_2.whyWeAskView, {borderWidth: 1, borderColor: 'red', }]}>
-                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskText]}>
+                    <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.whyWeAskTextSSN]}>
                         All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here:
                     </Text>
                     <Text style={[styles_2.whyWeAskText, fonts.hindGunturRg, {color: "#18c3ff"}]} onPress={() => Linking.openURL('https://www.sec.gov/fast-answers/answersbd-persinfohtm.html')}>https://www.sec.gov/fast-answers/answersbd-persinfohtm.html</Text>
@@ -115,7 +115,7 @@ export default class SocialSecurityNumberSelection extends Component {
                     <View style={[styles_2.progressActual, { position: 'absolute', height: 3, width: this.props.progress, borderRadius: 1.5 }]}></View>
                 </View>
                 <ScrollView style={{ flex: 1 }}>
-                    <RegistrationHeader headerText={'SOCIAL SECURITY NUMBER'} generalText={null} whyWeAskText={'All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here:'} extraContent={this.getSocialSecurityLink()}/>
+                    <RegistrationHeader isSSN={"Yes"} headerText={'SOCIAL SECURITY NUMBER'} generalText={null} whyWeAskText={'All broker dealers are required by federal law (U.S. Patriot Act of 2001) to collect Social Security numbers to prevent money launderers and terrorists from accessing the stock market, as explained in detail here:'} extraContent={this.getSocialSecurityLink()}/>
                     <View style={[{ backgroundColor: this.props.colors['white'], paddingVertical: 40 }]}>
                       <View style={[styles_2.registrationFormView]}>
                         <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatSSN(registrationDataJS.ssnField)}

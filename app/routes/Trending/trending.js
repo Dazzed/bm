@@ -168,7 +168,7 @@ class SubMenu extends React.Component {
     }
 
     if(!sectorLoading && sectorDataJS && sectorDataJS.length > 0) {
-      label = sector_props[sectorOption].label;
+      label = sectorDataJS[sectorOption].label;
     }
 
     return <View style={{flex: 1}}>

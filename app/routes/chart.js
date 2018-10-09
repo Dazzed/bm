@@ -25,13 +25,9 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel
 } from '../components/react-native-simple-radio-button';
-import CheckBox from '../components/react-native-check-box'
-import Tabs from 'react-native-tabs';
-import ResponsiveImage from 'react-native-responsive-image';
+import CheckBox from '../components/react-native-check-box';
 import { setTheme, getTheme, colors } from '../store/store';
-import PlaceOrder from './placeorder';
 import ChartNews from './chartnews';
-import AppNav from './appnav';
 import Search from './Search';
 import styles from '../style/style';
 import navstyle from '../style/nav';
@@ -58,7 +54,7 @@ import {
   initialChartRangeIndicator,
   chartRangeOptions
 } from '../constants';
-// var colors = require('../style/colors')
+
 var currIndicates = [];
 var indicator_props = indicatorProps;
 
@@ -85,11 +81,11 @@ class Chart extends Component {
     tabBarIcon: ({ tintColor }) => (
       <Image
         source={require('../images/watchlist.png')}
-        style={[navstyle.iconBig, {tintColor: tintColor}]}
+        style={[navstyle.iconBig, { tintColor: tintColor }]}
       />
     ),
   };
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       isOrderVisible: false,
@@ -120,13 +116,13 @@ class Chart extends Component {
     if (orientation == 'LANDSCAPE') {
       this.setState({ orientation: 'landscape' })
 
-    } else if(orientation == 'PORTRAIT') {
+    } else if (orientation == 'PORTRAIT') {
       this.setState({ orientation: 'portrait' })
 
-      if(this.state.isRotateVisible) {
-        this.setState({isRotateVisible: false})
+      if (this.state.isRotateVisible) {
+        this.setState({ isRotateVisible: false })
         var that = this;
-        setTimeout(function(){that.showOrder(that.state.orderType)}, 500);
+        setTimeout(function () { that.showOrder(that.state.orderType) }, 500);
       }
     }
   }
@@ -147,25 +143,25 @@ class Chart extends Component {
     // })
   }
 
-  addSymbol(ticker){
+  addSymbol(ticker) {
     Alert.alert(
       '',
-      'Add '+ticker+' to your watchlist?',
+      'Add ' + ticker + ' to your watchlist?',
       [
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker)},
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker) },
       ],
       { cancelable: true }
     )
   }
 
-  removeSymbol(ticker){
+  removeSymbol(ticker) {
     Alert.alert(
       '',
-      'Remove '+ticker+' from your watchlist?',
+      'Remove ' + ticker + ' from your watchlist?',
       [
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => watchListStore.removeTickerFromWatchList(ticker)},
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'OK', onPress: () => watchListStore.removeTickerFromWatchList(ticker) },
       ],
       { cancelable: true }
     )
@@ -210,39 +206,51 @@ class Chart extends Component {
     resetChartData();
   }
 
-  showOrder(orderType){
-    if(this.state.orientation == 'landscape') {
+  showOrder = orderType => {
+    // if(this.state.orientation == 'landscape') {
+    //   this.setState({ isRotateVisible: true, orderType: orderType })
+    // } else {
+    //   Orientation.lockToPortrait();
+    //   this.setState({ isOrderVisible: true, orderType: orderType })
+    // }
+    if (this.state.orientation == 'landscape') {
       this.setState({ isRotateVisible: true, orderType: orderType })
-    } else {
-      Orientation.lockToPortrait();
-      this.setState({ isOrderVisible: true, orderType: orderType })
     }
+    this.setState({
+      orderType
+    }, () => {
+      this.props.navigation.navigate('Trade', {
+        orderType,
+        targetStockData: this.props.navigation.state.params.data
+      });
+    });
   }
-  hideOrder(){
+
+  hideOrder() {
     Orientation.unlockAllOrientations();
     this.setState({ isOrderVisible: false })
   }
-  showNews(){
+  showNews() {
     this.setState({ isNewsVisible: true })
     Orientation.lockToPortrait();
   }
-  hideNews(){
+  hideNews() {
     this.setState({ isNewsVisible: false })
     Orientation.unlockAllOrientations();
   }
   showSearch() {
-    this.setState({isSearchVisible:true});
+    this.setState({ isSearchVisible: true });
     Orientation.lockToPortrait();
   }
   hideSearch() {
-    this.setState({isSearchVisible:false});
+    this.setState({ isSearchVisible: false });
     Orientation.unlockAllOrientations();
   }
   showIndicators() {
-    this.setState({isIndicatorsVisible:true});
+    this.setState({ isIndicatorsVisible: true });
   }
   hideIndicators() {
-      this.setState({isIndicatorsVisible:false});
+    this.setState({ isIndicatorsVisible: false });
   }
   toggleCheck(value) {
     const { setIndicatorsList } = chartStore;
@@ -253,15 +261,15 @@ class Chart extends Component {
     for (var i = 0; i < indicates.length; i++) {
       console.log('checking', indicates[i] == value);
       //if exists in indicators array remove it
-      if(indicates[i] == value) {
+      if (indicates[i] == value) {
         console.log('exists');
         indicatorCnt--;
         indicates.splice(i, 1);
         exists = true;
         this.setState({ isDisabled: false }, () => {
           this.setState({ indicators: indicates, isDisabled: false, indicatorCnt: indicatorCnt }, () => {
-              // forward data to mobx
-              setIndicatorsList(indicates);
+            // forward data to mobx
+            setIndicatorsList(indicates);
           })
         })
         return;
@@ -270,30 +278,30 @@ class Chart extends Component {
 
     console.log("movin on");
     //if it doesn't exists and we aren't at 5 indicators add it
-    if(!exists && indicates.length < 5) {
+    if (!exists && indicates.length < 5) {
       console.log('doesnt exist');
       indicatorCnt++;
 
-      if(indicatorCnt < 5) {
-        console.log('indicatorCnt',indicatorCnt);
-        if(indicatorCnt == 4) {
-          console.log('indicatorCnt',indicatorCnt);
+      if (indicatorCnt < 5) {
+        console.log('indicatorCnt', indicatorCnt);
+        if (indicatorCnt == 4) {
+          console.log('indicatorCnt', indicatorCnt);
           var arrayvar = indicates.slice()
           arrayvar.push(value)
-          this.setState({  indicators: arrayvar, isDisabled: true, indicatorCnt: indicatorCnt }, () => {
-              // forward data to mobx
-              setIndicatorsList(arrayvar);
+          this.setState({ indicators: arrayvar, isDisabled: true, indicatorCnt: indicatorCnt }, () => {
+            // forward data to mobx
+            setIndicatorsList(arrayvar);
           })
         } else {
           var arrayvar = indicates.slice()
           arrayvar.push(value)
           this.setState({ indicators: arrayvar, isDisabled: false, indicatorCnt: indicatorCnt }, () => {
-              // forward data to mobx
-              setIndicatorsList(arrayvar);
+            // forward data to mobx
+            setIndicatorsList(arrayvar);
           })
         }
       }
-    } else if(indicates.length >= 4) {
+    } else if (indicates.length >= 4) {
       console.log('too many exist');
       this.setState({ isDisabled: true }, () => {
       })
@@ -302,17 +310,17 @@ class Chart extends Component {
   checkIndicators(value) {
     var indicates = this.state.indicators;
     var exister = false;
-      for (var i = 0; i < indicates.length; i++) {
-        if(indicates[i] == value) {
-          exister = true;
-        }
+    for (var i = 0; i < indicates.length; i++) {
+      if (indicates[i] == value) {
+        exister = true;
       }
+    }
     return exister;
   }
   goBack(tab) {
     this.props.navigation.goBack();
     var that = this;
-    setTimeout(function(){that.props.navigation.navigate(tab)}, 15);
+    setTimeout(function () { that.props.navigation.navigate(tab) }, 15);
   }
 
 
@@ -320,7 +328,7 @@ class Chart extends Component {
   setRange(name) {
     const { setRange } = chartStore;
     this.setState({
-        page: name
+      page: name
     }, () => {
       setRange(name)
     })
@@ -350,30 +358,30 @@ class Chart extends Component {
     //   }
     // ]
 
-    if(!executives || executives.length === 0) {
+    if (!executives || executives.length === 0) {
       return <Text style={[{ color: this.state.colors['lightGray'] }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
     } else {
       return <View>
         {executives.map((elem, i) => {
-            return <View key={i} style={chart.profileTxt}>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTxtDrk, fonts.hindGunturRg]}>{elem.title}</Text>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>{elem.role}</Text>
-            </View>
+          return <View key={i} style={chart.profileTxt}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTxtDrk, fonts.hindGunturRg]}>{elem.title}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxtSm, fonts.hindGunturRg]}>{elem.role}</Text>
+          </View>
         })}
       </View>
     }
   }
 
   renderRelatedListOrNot(list) {
-    if(!list || list.length === 0) {
+    if (!list || list.length === 0) {
       return <View style={chart.profileTxt}>
-        <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>No Results</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxtSm, fonts.hindGunturRg]}>No Results</Text>
       </View>
     } else {
       return list.map((elem, i) => {
         return <View style={chart.profileTxt}>
-          <Text style={[{color: this.state.colors['blue']}, chart.sectionTxtSymbol, fonts.hindGunturRg]}>TICKER</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxtSm, fonts.hindGunturRg]}>Company Name</Text>
+          <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxtSymbol, fonts.hindGunturRg]}>TICKER</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxtSm, fonts.hindGunturRg]}>Company Name</Text>
         </View>
       })
     }
@@ -381,25 +389,25 @@ class Chart extends Component {
 
   renderRelated() {
     // return null;
-    
-    {/* TODO: get related stocks. not yet in data */}
-    
+
+    {/* TODO: get related stocks. not yet in data */ }
+
     let relatedList = [];
-    
-    return <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-        <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
-        {this.renderRelatedListOrNot(relatedList)}
+
+    return <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+      <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>PEOPLE ALSO LOOKED AT</Text>
+      {this.renderRelatedListOrNot(relatedList)}
     </View>
   }
 
 
   renderLongBar() {
     return null;
-    {/* TODO: YOU ARE LONG */}
-    return <View style={[{borderTopColor: this.state.colors['borderGray'], backgroundColor: this.state.colors['white'],}, chart.symbolPosition]}>
-      <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnFirst, fonts.hindGunturRg]}>You are long</Text>
-      <Text style={[{color: this.state.colors['darkSlate']}, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
-      <Text style={[{color: this.state.colors['green']}, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
+    {/* TODO: YOU ARE LONG */ }
+    return <View style={[{ borderTopColor: this.state.colors['borderGray'], backgroundColor: this.state.colors['white'], }, chart.symbolPosition]}>
+      <Text style={[{ color: this.state.colors['darkSlate'] }, chart.symbolColumn, chart.symbolColumnFirst, fonts.hindGunturRg]}>You are long</Text>
+      <Text style={[{ color: this.state.colors['darkSlate'] }, chart.symbolColumn, chart.symbolColumnMiddle, fonts.hindGunturRg]}>2000 x $152.67</Text>
+      <Text style={[{ color: this.state.colors['green'] }, chart.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
     </View>
   }
 
@@ -407,34 +415,34 @@ class Chart extends Component {
     const { isTickerInWatchlist, watchlistDataJS } = watchListStore;
     let image = this.state.colors['addImage'];
     let functionToFire = this.addSymbol;
-    if(isTickerInWatchlist(ticker)) {
+    if (isTickerInWatchlist(ticker)) {
       image = this.state.colors['watchlistAdded'];
       functionToFire = this.removeSymbol
     }
     return <TouchableOpacity style={styles.rightCta} onPress={() => functionToFire(ticker)}>
-        <Image source={image} style={{ width: 23, height: 23 }} />
+      <Image source={image} style={{ width: 23, height: 23 }} />
     </TouchableOpacity>
   }
 
   renderPortraitMomentum(params) {
-    if(params.momentum == 'na') {
+    if (params.momentum == 'na') {
       return null
     } else {
-      return <View style={[chart.momentumWrapper, {width: '100%'}]}>
-        <View style={[chart.momentumInfo, {flex: 1}]}>
+      return <View style={[chart.momentumWrapper, { width: '100%' }]}>
+        <View style={[chart.momentumInfo, { flex: 1 }]}>
 
           {/* TODO: what does this mean, momentum, how does it map to my value, 'na'     'Strong Buying Frenzy' */}
 
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.momentumSubTitle, fonts.hindGunturRg]}>{''}</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.momentumSubTitle, fonts.hindGunturRg]}>{''}</Text>
         </View>
-        <View style={{ flex: 1}}>
+        <View style={{ flex: 1 }}>
           <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={params.momentum} />
         </View>
-      </View>    
+      </View>
     }
   }
-  
+
   renderTabs() {
     let style = {
       display: 'flex',
@@ -457,18 +465,18 @@ class Chart extends Component {
           color: this.state.colors['white'],
         }
         let selected = false;
-        if(this.state.page == elem.query) {
+        if (this.state.page == elem.query) {
           selected = true;
         }
-        if(selected) {
+        if (selected) {
           inlineStyle.backgroundColor = this.state.colors['grayTwo'];
         }
         return <TouchableOpacity name={elem.query} style={[inlineStyle, fonts.hindGunturBd, chart.timeSelected]} onPress={() => this.setRange(elem.query)}>
-          <Text name={elem.query} style={[{color: this.state.colors['lightGray']}, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>  
+          <Text name={elem.query} style={[{ color: this.state.colors['lightGray'] }, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>
         </TouchableOpacity>
       })}
     </View>
-    
+
     // return <Tabs
     //   selected={this.state.page}
     //   style={style}
@@ -485,355 +493,355 @@ class Chart extends Component {
     //     </View>
     //   })}
     // </Tabs>
-    
-    
+
+
   }
-  
+
   renderPortrait(params) {
     let {
-        Price,
-        Volume,
-        address,
-        ask,
-        bid,
-        change,
-        changePercent,
-        companyName,
-        exchange,
-        executives,
-        high,
-        keyStats,
-        latestUpdate,
-        low,
-        momentum,
-        open,
-        overview,
-        profile,
-        ticker,
-        website,
-        formattedTime,
-        formattedVolume,
-        formattedPrice,
-        formattedOpen,
-        formattedLow,
-        formattedHigh,
-        formattedSharesOutstanding,
-        formattedChangePercent,
-        formattedChangeDecimal,
-        formattedLastStockSplit
+      Price,
+      Volume,
+      address,
+      ask,
+      bid,
+      change,
+      changePercent,
+      companyName,
+      exchange,
+      executives,
+      high,
+      keyStats,
+      latestUpdate,
+      low,
+      momentum,
+      open,
+      overview,
+      profile,
+      ticker,
+      website,
+      formattedTime,
+      formattedVolume,
+      formattedPrice,
+      formattedOpen,
+      formattedLow,
+      formattedHigh,
+      formattedSharesOutstanding,
+      formattedChangePercent,
+      formattedChangeDecimal,
+      formattedLastStockSplit
     } = params;
 
     return <View>
-    <View style={styles.menuBorder}>
-      <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
-          <Image
-            source={require('../images/back.png')}
-            style={styles.backImg}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
-          <Text style={[{color: this.state.colors['lightGray']}, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
+      <View style={styles.menuBorder}>
+        <View style={styles.menuContainer}>
+          <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
+            <Image
+              source={require('../images/back.png')}
+              style={styles.backImg}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.searchCta} onPress={() => this.showSearch()}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, styles.searchCtaTxt, fonts.hindGunturRg]}>Search Stocks</Text>
             <Image
               source={require('../images/search.png')}
               style={styles.searchImg}
             />
-        </TouchableOpacity>
-        {this.renderWatchListButton(ticker)}
-      </View>
-    </View>
-
-    {this.renderLongBar()}
-
-
-    {/* Bottom Menu nav bar */}
-
-    <View style={[{borderTopColor: this.state.colors['borderGray']}, {backgroundColor: this.state.colors['white']}, chart.fakeTabNav]}>
-      <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Account')}>
-          <View style={chart.fakeIcon}>
-          <Image
-            source={require('../images/accounts.png')}
-            style={[navstyle.icon, {tintColor: this.state.colors['lightGray']}]}
-          />
-          </View>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Account</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Watchlists')}>
-          <View style={chart.fakeIcon}>
-          <Image
-            source={require('../images/watchlist.png')}
-            style={[navstyle.iconBig, {tintColor: this.state.colors['lightGray']}]}
-          />
-          </View>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Watchlist</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Trending')}>
-          <View style={chart.fakeIcon}>
-          <Image
-            source={require('../images/trending.png')}
-            style={[navstyle.iconBig, {tintColor: this.state.colors['lightGray']}]}
-          />
-          </View>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Trending</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Scanner')}>
-          <View style={chart.fakeIcon}>
-          <Image
-            source={require('../images/scanner.png')}
-            style={[navstyle.iconBig, {tintColor: this.state.colors['lightGray']}]}
-          />
-          </View>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Scanner</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Settings')}>
-          <View style={chart.fakeIcon}>
-          <Image
-            source={require('../images/settings.png')}
-            style={[navstyle.icon, {tintColor: this.state.colors['lightGray']}]}
-          />
-          </View>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.fakeTabLabel]}>Settings</Text>
-      </TouchableOpacity>
-    </View>
-
-
-    <ScrollView style={chart.wrapper}>
-      <View style={chart.header}>
-        <View style={chart.titleContainer}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
-        </View>
-        <TouchableOpacity style={[{borderColor: this.state.colors['lightGray']}, chart.newsBtn]} onPress={() => this.showNews()}>
-          <Text style={[{color: this.state.colors['lightGray']}, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={chart.prices}>
-        <Text style={[{color: this.state.colors['darkSlate']}, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
-        <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-          <Text style={[{color: this.state.colors['darkGray']}, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-          {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
-        </TouchableOpacity>
-      </View>
-
-      <View style={chart.prices}>
-        <View style={chart.pricePoints}>
-          <View style={chart.priceOpen}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
-          </View>
-          <View style={chart.priceHigh}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
-          </View>
-          <View style={chart.priceLow}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
-          </View>
-          <View style={chart.priceVol}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
-          </View>
+          </TouchableOpacity>
+          {this.renderWatchListButton(ticker)}
         </View>
       </View>
 
-      <View style={chart.verticalChart}>
-        {this.renderTabs()}
-        <View style={chart.chartWrapper}>
-          <ChartGraph height={this.smallGraphHeight} viewLargeGraph={false} />
-        </View>
+      {this.renderLongBar()}
+
+
+      {/* Bottom Menu nav bar */}
+
+      <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { backgroundColor: this.state.colors['white'] }, chart.fakeTabNav]}>
+        <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Account')}>
+          <View style={chart.fakeIcon}>
+            <Image
+              source={require('../images/accounts.png')}
+              style={[navstyle.icon, { tintColor: this.state.colors['lightGray'] }]}
+            />
+          </View>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.fakeTabLabel]}>Account</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Watchlists')}>
+          <View style={chart.fakeIcon}>
+            <Image
+              source={require('../images/watchlist.png')}
+              style={[navstyle.iconBig, { tintColor: this.state.colors['lightGray'] }]}
+            />
+          </View>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.fakeTabLabel]}>Watchlist</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Trending')}>
+          <View style={chart.fakeIcon}>
+            <Image
+              source={require('../images/trending.png')}
+              style={[navstyle.iconBig, { tintColor: this.state.colors['lightGray'] }]}
+            />
+          </View>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.fakeTabLabel]}>Trending</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Scanner')}>
+          <View style={chart.fakeIcon}>
+            <Image
+              source={require('../images/scanner.png')}
+              style={[navstyle.iconBig, { tintColor: this.state.colors['lightGray'] }]}
+            />
+          </View>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.fakeTabLabel]}>Scanner</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Settings')}>
+          <View style={chart.fakeIcon}>
+            <Image
+              source={require('../images/settings.png')}
+              style={[navstyle.icon, { tintColor: this.state.colors['lightGray'] }]}
+            />
+          </View>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.fakeTabLabel]}>Settings</Text>
+        </TouchableOpacity>
       </View>
-      
-      {this.renderPortraitMomentum(params)}
-      
-      <View style={chart.profileWrapper}>
-        <View style={chart.statsRow}>
-            <TouchableOpacity style={styles.sellBtn} onPress={() => {this.showOrder('Sell')}}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
+
+
+      <ScrollView style={chart.wrapper}>
+        <View style={chart.header}>
+          <View style={chart.titleContainer}>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
+          </View>
+          <TouchableOpacity style={[{ borderColor: this.state.colors['lightGray'] }, chart.newsBtn]} onPress={() => this.showNews()}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={chart.prices}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.stockPrice, fonts.hindGunturRg]}>${formattedPrice}</Text>
+          <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({ stockChange: !this.state.stockChange })}>
+            <Text style={[{ color: this.state.colors['darkGray'] }, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
+            {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
+          </TouchableOpacity>
+        </View>
+
+        <View style={chart.prices}>
+          <View style={chart.pricePoints}>
+            <View style={chart.priceOpen}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedOpen}</Text>
+            </View>
+            <View style={chart.priceHigh}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedHigh}</Text>
+            </View>
+            <View style={chart.priceLow}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedLow}</Text>
+            </View>
+            <View style={chart.priceVol}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={chart.verticalChart}>
+          {this.renderTabs()}
+          <View style={chart.chartWrapper}>
+            <ChartGraph height={this.smallGraphHeight} viewLargeGraph={false} />
+          </View>
+        </View>
+
+        {this.renderPortraitMomentum(params)}
+
+        <View style={chart.profileWrapper}>
+          <View style={chart.statsRow}>
+            <TouchableOpacity style={styles.sellBtn} onPress={() => { this.showOrder('Sell') }}>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buyBtn} onPress={() => {this.showOrder('Buy')}}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
+            <TouchableOpacity style={styles.buyBtn} onPress={() => { this.showOrder('Buy') }}>
+              <Text style={[{ color: this.state.colors['realWhite'] }, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
             </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      {this.renderBidAsk(params)}
+        {this.renderBidAsk(params)}
 
-      <View style={chart.statsWrapper}>
-        <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
-        <View style={chart.statsRow}>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>52WK HIGH</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52high}</Text>
+        <View style={chart.statsWrapper}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
+          <View style={chart.statsRow}>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52WK HIGH</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52high}</Text>
+            </View>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52WK LOW</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52low}</Text>
+            </View>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.avgTotalVolume)}</Text>
+            </View>
           </View>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>52WK LOW</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52low}</Text>
+          <View style={chart.statsRow}>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>MKT CAP</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.mktCap)}</Text>
+            </View>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.peRatio}</Text>
+            </View>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>EPS</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.eps}</Text>
+            </View>
           </View>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.avgTotalVolume)}</Text>
-          </View>
-        </View>
-        <View style={chart.statsRow}>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>MKT CAP</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.mktCap)}</Text>
-          </View>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.peRatio}</Text>
-          </View>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>EPS</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.eps}</Text>
-          </View>
-        </View>
-        <View style={chart.statsRow}>
-          
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
-          </View>
-          
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.divYield}%</Text>
-          </View>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>BETA</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{keyStats.beta}</Text>
-          </View>
-        </View>
-        <View style={chart.statsRow}>
-          <View style={chart.statsColumn}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
-          </View>
-          <View style={chart.statsColumnLong}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}></Text>
-            <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}></Text>
-          </View>
-          <View style={chart.statsColumnShort}></View>
-        </View>
-      </View>
+          <View style={chart.statsRow}>
 
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>PROFILE</Text>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
+            </View>
+
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.divYield}%</Text>
+            </View>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>BETA</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.beta}</Text>
+            </View>
+          </View>
+          <View style={chart.statsRow}>
+            <View style={chart.statsColumn}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
+            </View>
+            <View style={chart.statsColumnLong}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}></Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}></Text>
+            </View>
+            <View style={chart.statsColumnShort}></View>
+          </View>
+        </View>
+
+        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>PROFILE</Text>
           <View style={chart.profileTxt}>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{profile}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{profile}</Text>
           </View>
-      </View>
+        </View>
 
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>ADDRESS</Text>
+        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>ADDRESS</Text>
           <View style={chart.profileTxt}>
 
-                {/* TODO: there is no state or country in the data.. */}
+            {/* TODO: there is no state or country in the data.. */}
 
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, {address.hq_address_city}</Text>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_address_postal_code}</Text>
-            <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}></Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, {address.hq_address_city}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_address_postal_code}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}></Text>
           </View>
-      </View>
+        </View>
 
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
+        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <TouchableOpacity onPress={() => this.navToLink(website)}>
             <View style={chart.profileTxt}>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
+              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
             </View>
           </TouchableOpacity>
-      </View>
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
+        </View>
+        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>EXECUTIVES</Text>
           {this.renderExecutives(executives)}
-      </View>
+        </View>
 
-      {this.renderRelated()}
+        {this.renderRelated()}
 
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-          <Text style={[{color: this.state.colors['darkSlate']}, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
+        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>OVERVIEW</Text>
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>SHARES OUTSTANDING</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{formattedSharesOutstanding}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>SHARES OUTSTANDING</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{formattedSharesOutstanding}</Text>
             </View>
             <View style={chart.statsColumn}>
 
-                {/* TODO: get this data, don't have anything for last stock split */}
+              {/* TODO: get this data, don't have anything for last stock split */}
 
-              <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{formattedLastStockSplit}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>LAST STOCK SPLIT</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{formattedLastStockSplit}</Text>
             </View>
           </View>
 
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
-              <Text style={[{color: this.state.colors['lightGray']}, chart.statsTitle, fonts.hindGunturRg]}>INSTITUTIONAL OWNERSHIP</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chart.statsNum, fonts.hindGunturRg]}>{overview.institutionPercent}%</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>INSTITUTIONAL OWNERSHIP</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{overview.institutionPercent}%</Text>
             </View>
-          </View>
-      </View>
-
-      <View style={[{borderBottomColor: this.state.colors['borderGray']}, chart.profileWrapper]}>
-        <View style={styles.btnRow}>
-          <View style={chart.statsColumn}>
-            <TouchableOpacity style={styles.sellBtn} onPress={() => {this.showOrder('Sell')}}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={chart.statsColumn}>
-            <TouchableOpacity style={styles.buyBtn} onPress={() => {this.showOrder('Buy')}}>
-              <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
-            </TouchableOpacity>
           </View>
         </View>
-      </View>
-    </ScrollView>
-  </View>
+
+        <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, chart.profileWrapper]}>
+          <View style={styles.btnRow}>
+            <View style={chart.statsColumn}>
+              <TouchableOpacity style={styles.sellBtn} onPress={() => { this.showOrder('Sell') }}>
+                <Text style={[{ color: this.state.colors['realWhite'] }, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={chart.statsColumn}>
+              <TouchableOpacity style={styles.buyBtn} onPress={() => { this.showOrder('Buy') }}>
+                <Text style={[{ color: this.state.colors['realWhite'] }, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   }
 
   renderBidListOrNothing(params) {
-    if(params.bid.length === 0) {
+    if (params.bid.length === 0) {
       return <View style={chartland.bid}>
-      <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>No Bids</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>No Bids</Text>
       </View>
     }
     return params.bid.map((elem, i) => {
       return <View style={chartland.bidaskRow}>
-        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>{elem.size}</Text>
-        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>${elem.price}</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskNum]}>{elem.size}</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>${elem.price}</Text>
       </View>
     })
   }
-  
+
   renderAskListOrNothing(params) {
-    if(params.ask.length === 0) {
+    if (params.ask.length === 0) {
       return <View style={chartland.bid}>
-      <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>No Asks</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>No Asks</Text>
       </View>
     }
     return params.ask.map((elem, i) => {
       return <View style={chartland.bidaskRow}>
-        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskNum]}>{elem.size}</Text>
-        <Text style={[{color: this.state.colors['lightGray']}, chartland.bidaskPrice]}>${elem.price}</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskNum]}>{elem.size}</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>${elem.price}</Text>
       </View>
     })
   }
 
   renderBidAsk(params) {
-     return <View style={[chartland.bidAsksWrapper, {marginVertical: 10}]}>
-       <View style={chartland.bid}>
-         <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>BID</Text>
-         {this.renderBidListOrNothing(params)}
-       </View>
-       <View style={chartland.bid}>
-         <Text style={[{color: this.state.colors['darkSlate']}, chartland.sectionTitle]}>ASK</Text>
-         {this.renderAskListOrNothing(params)}
-       </View>
-     </View>
+    return <View style={[chartland.bidAsksWrapper, { marginVertical: 10 }]}>
+      <View style={chartland.bid}>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.sectionTitle]}>BID</Text>
+        {this.renderBidListOrNothing(params)}
+      </View>
+      <View style={chartland.bid}>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.sectionTitle]}>ASK</Text>
+        {this.renderAskListOrNothing(params)}
+      </View>
+    </View>
   }
 
 
@@ -853,30 +861,30 @@ class Chart extends Component {
       animationIn={'fadeIn'}
       animationOut={'fadeOut'}
       style={chartland.fullModal}
-      onModalHide={() => {this.hideIndicators()}}>
+      onModalHide={() => { this.hideIndicators() }}>
       <View style={chartland.radio}>
         <View style={chartland.radioTitleWrap}>
           <Text style={[chartland.radioTitle, fonts.hindGunturBd]}>INDICATORS</Text>
           <Text style={[chartland.radioSubTitle, fonts.hindGunturRg]}>Select up to 5</Text>
         </View>
         <ScrollView style={chartland.radioWrap}>
-      
+
           <View style={styles.checkBoxWrap}>
             <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('VLM')}
-                isChecked={this.checkIndicators('VLM')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'VLM'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Volume'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={vlmImageSrc} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+              style={styles.checkField}
+              onClick={() => this.toggleCheck('VLM')}
+              isChecked={this.checkIndicators('VLM')}
+              isDisabled={this.state.isDisabled}
+              rightTextViewStyle={styles.checkBoxLabelWrap}
+              rightText={'VLM'}
+              rightTextStyle={[styles.checkBoxLabel, fonts.hindGunturBd]}
+              rightSubText={'Volume'}
+              rightSubTextStyle={[styles.checkBoxSubLabel, fonts.hindGunturRg]}
+              checkedImage={<Image source={vlmImageSrc} style={styles.checkBox} />}
+              unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
             />
           </View>
-          
+
           <View style={styles.checkBoxWrap}>
             <CheckBox
                 style={styles.checkField}
@@ -892,7 +900,7 @@ class Chart extends Component {
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
-      
+
           <View style={styles.checkBoxWrap}>
             <CheckBox
                 style={styles.checkField}
@@ -908,20 +916,20 @@ class Chart extends Component {
                 unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
             />
           </View>
-      
+
           <View style={styles.checkBoxWrap}>
             <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('EMA')}
-                isChecked={this.checkIndicators('EMA')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'EMA'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Exponential Moving Average'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={ema_red_blue_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+              style={styles.checkField}
+              onClick={() => this.toggleCheck('EMA')}
+              isChecked={this.checkIndicators('EMA')}
+              isDisabled={this.state.isDisabled}
+              rightTextViewStyle={styles.checkBoxLabelWrap}
+              rightText={'EMA'}
+              rightTextStyle={[styles.checkBoxLabel, fonts.hindGunturBd]}
+              rightSubText={'Exponential Moving Average'}
+              rightSubTextStyle={[styles.checkBoxSubLabel, fonts.hindGunturRg]}
+              checkedImage={<Image source={ema_red_blue_checkbox_image} style={styles.checkBox} />}
+              unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
             />
           </View>
       
@@ -933,35 +941,35 @@ class Chart extends Component {
 
   renderLandscape(params) {
     const {
-        Price,
-        Volume,
-        address,
-        ask,
-        bid,
-        change,
-        changePercent,
-        companyName,
-        exchange,
-        executives,
-        high,
-        keyStats,
-        latestUpdate,
-        low,
-        momentum,
-        open,
-        overview,
-        profile,
-        ticker,
-        website,
-        formattedTime,
-        formattedVolume,
-        formattedPrice,
-        formattedOpen,
-        formattedLow,
-        formattedHigh,
-        formattedSharesOutstanding,
-        formattedChangePercent,
-        formattedChangeDecimal
+      Price,
+      Volume,
+      address,
+      ask,
+      bid,
+      change,
+      changePercent,
+      companyName,
+      exchange,
+      executives,
+      high,
+      keyStats,
+      latestUpdate,
+      low,
+      momentum,
+      open,
+      overview,
+      profile,
+      ticker,
+      website,
+      formattedTime,
+      formattedVolume,
+      formattedPrice,
+      formattedOpen,
+      formattedLow,
+      formattedHigh,
+      formattedSharesOutstanding,
+      formattedChangePercent,
+      formattedChangeDecimal
     } = params;
 
     const { longSide, shortSide } = deviceSizeStore;
@@ -974,206 +982,203 @@ class Chart extends Component {
     let chartWidth = longSide - rightWidth;
 
     return <View style={chartland.landscape}>
-       <View style={chartland.header}>
-           <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
-             <Image
-               source={require('../images/back.png')}
-               style={styles.backImg}
-             />
-           </TouchableOpacity>
-         <View style={chartland.titleContainer}>
-           <Text style={[{color: this.state.colors['darkSlate']}, chartland.name, fonts.hindGunturBd]}>{companyName}</Text>
-           <Text style={[{color: this.state.colors['lightGray']}, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
-         </View>
-         <View style={chartland.currentPrice}>
-           <Text style={[{color: this.state.colors['darkSlate']}, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
+      <View style={chartland.header}>
+        <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
+          <Image
+            source={require('../images/back.png')}
+            style={styles.backImg}
+          />
+        </TouchableOpacity>
+        <View style={chartland.titleContainer}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.name, fonts.hindGunturBd]}>{companyName}</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
+        </View>
+        <View style={chartland.currentPrice}>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
 
-           <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({stockChange: !this.state.stockChange})}>
-             <Text style={[{color: this.state.colors['darkGray']}, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-             {this.state.stockChange ? <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']}, {color: this.state.colors['realWhite']}, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
-           </TouchableOpacity>
-         </View>
-         <View style={chartland.prices}>
-           <View style={chartland.pricePoints}>
+          <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({ stockChange: !this.state.stockChange })}>
+            <Text style={[{ color: this.state.colors['darkGray'] }, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
+            {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
+          </TouchableOpacity>
+        </View>
+        {this.renderWatchListButton(ticker)}
+      </View>
+      <View style={chartland.header_second}>
+      <View style={chartland.prices}>
+        <View style={chartland.pricePoints}>
+          <View style={chartland.priceOpen}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>OPEN: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
+          </View>
+          <View style={chartland.priceHigh}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>HIGH: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
+          </View>
+          <View style={chartland.priceLow}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>LOW: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
+          </View>
+          <View style={chartland.priceVol}>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME: </Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
+          </View>
+        </View>
+      </View>
+      </View>
+      <View style={chartland.chartWrapper}>
+        <View style={[chartland.leftSide]}>
+          <View style={[chartland.chartFPO, { height: chartHeight }]}>
+            <ChartGraph height={chartHeight} width={chartWidth} viewLargeGraph={true} />
+          </View>
 
-             <View style={chartland.priceOpen}>
-               <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
-             </View>
-             <View style={chartland.priceHigh}>
-               <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
-             </View>
-             <View style={chartland.priceLow}>
-               <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
-             </View>
-             <View style={chartland.priceVol}>
-               <Text style={[{color: this.state.colors['lightGray']}, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-               <Text style={[{color: this.state.colors['darkSlate']}, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
-             </View>
-           </View>
-         </View>
-         {this.renderWatchListButton(ticker)}
-
-       </View>
-
-       <View style={chartland.chartWrapper}>
-
-         <View style={[chartland.leftSide]}>
-
-           <View style={[chartland.chartFPO, {height: chartHeight}]}>
-             <ChartGraph height={chartHeight} width={chartWidth} viewLargeGraph={true} />
-           </View>
-
-           <View style={[chartland.options, {flex: 1}]}>
-             <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
-               <View style={chartland.indicatorsWrap}>
-                 <Text style={[{color: this.state.colors['darkSlate']}, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>
-                 <Text style={[{color: this.state.colors['lightGray']}, chartland.indicatorsTxt, fonts.hindGunturRg]}>
-                   {this.state.indicators.length < 1 ?
-                     'Add to graph' : ''}
-                 {
-                   this.state.indicators.map(function(indicate, index) {
-                     if(index < 3) {
-                       return <Text key={index}>{indicate} </Text>
-                     } else if(index == 3) {
-                       return <Text key={index}>...</Text>
-                     }
-                   })
-                 }
-                 {currIndicates}
-                 </Text>
-               </View>
-             </TouchableOpacity>
-             <View style={chartland.timePeriod}>
-                {this.renderTabs()}
-             </View>
-           </View>
+          <View style={[chartland.options, { flex: 1 }]}>
+            <TouchableOpacity style={chartland.indicatorsContainer} onPress={() => this.showIndicators()}>
+              <View style={chartland.indicatorsWrap}>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.indicatorsBtn, fonts.hindGunturBd]}>INDICATORS</Text>
+                <Text style={[{ color: this.state.colors['lightGray'] }, chartland.indicatorsTxt, fonts.hindGunturRg]}>
+                  {this.state.indicators.length < 1 ?
+                    'Add to graph' : ''}
+                  {
+                    this.state.indicators.map(function (indicate, index) {
+                      if (index < 3) {
+                        return <Text key={index}>{indicate} </Text>
+                      } else if (index == 3) {
+                        return <Text key={index}>...</Text>
+                      }
+                    })
+                  }
+                  {currIndicates}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={chartland.timePeriod}>
+              {this.renderTabs()}
+            </View>
+          </View>
 
 
-         </View>
+        </View>
 
-         <View style={chartland.right}>
-          
+        <View style={chartland.right}>
+
           <ScrollView>
             {this.renderPortraitMomentum(params)}
             {this.renderBidAsk(params)}
 
-            <View style={[{borderTopColor: this.state.colors['borderGray']}, {borderBottomColor: this.state.colors['borderGray']}, chartland.symbolPosition]}>
-              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
-              <Text style={[{color: this.state.colors['darkSlate']}, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
+            <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { borderBottomColor: this.state.colors['borderGray'] }, chartland.symbolPosition]}>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
             </View>
             <View style={chartland.profileWrapper}>
               <View style={chartland.statsRow}>
                 <View style={chartland.statsColumn}>
-                  <TouchableOpacity style={styles.sellBtnShort} onPress={() => {this.showOrder('Sell')}}>
-                    <Text style={[{color: this.state.colors['realWhite']}, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
+                  <TouchableOpacity style={styles.sellBtnShort} onPress={() => { this.showOrder('Sell') }}>
+                    <Text style={[{ color: this.state.colors['realWhite'] }, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={chartland.statsColumn}>
-                  <TouchableOpacity style={styles.buyBtnShort} onPress={() => {this.showOrder('Buy')}}>
-                    <Text style={[{color: this.state.colors['realWhite']}, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
+                  <TouchableOpacity style={styles.buyBtnShort} onPress={() => { this.showOrder('Buy') }}>
+                    <Text style={[{ color: this.state.colors['realWhite'] }, styles.buyBtnTxt, fonts.hindGunturBd]}>BUY</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </ScrollView>
-           
-           
-         </View>
-       </View>
-         {this.renderCheckboxModalAndList()}
-     </View>
+
+
+        </View>
+      </View>
+      {this.renderCheckboxModalAndList()}
+    </View>
   }
 
 
 
-  showOrientation(){
+  showOrientation() {
     const { chartLoading, tickerDataJS } = chartStore;
 
     console.log('==========================================================================')
     console.log(tickerDataJS)
 
-    if(!tickerDataJS) {
+    if (!tickerDataJS) {
       return null;
     }
 
     let {
-        Price,
-        Volume,
-        address,
-        ask,
-        bid,
-        change,
-        changePercent,
-        companyName,
-        exchange,
-        executives,
-        high,
-        keyStats,
-        latestUpdate,
-        low,
-        momentum,
-        open,
-        overview,
-        profile,
-        ticker,
-        website,
+      Price,
+      Volume,
+      address,
+      ask,
+      bid,
+      change,
+      changePercent,
+      companyName,
+      exchange,
+      executives,
+      high,
+      keyStats,
+      latestUpdate,
+      low,
+      momentum,
+      open,
+      overview,
+      profile,
+      ticker,
+      website,
     } = tickerDataJS;
 
     //  formatting data
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
     let formattedVolume = millionBillionFormatter(Volume);
-    
+
     // add tofixed
     let formattedPrice = '$' + '---';
-    if(Price) {
+    if (Price) {
       formattedPrice = Price.toFixed(2)
     }
-    
+
     let formattedOpen = '$' + '---';
-    if(open) {
+    if (open) {
       formattedOpen = open.toFixed(2)
     }
-    
+
     let formattedLow = '---';
-    if(low) {
+    if (low) {
       formattedLow = low.toFixed(2)
     }
-    
+
     let formattedHigh = '---';
-    if(high) {
+    if (high) {
       formattedHigh = high.toFixed(2)
     }
-    
+
     let formattedChangePercent = '---' + '%';
-    if(changePercent) {
+    if (changePercent) {
       formattedChangePercent = changePercent.toFixed(2) + '%'
     }
-    
-    
+
+
     let formattedChangeDecimal = '---';
-    if(change) {
+    if (change) {
       formattedChangeDecimal = change.toFixed(2)
     }
-    if(change > 0 && typeof change === 'number') {
+    if (change > 0 && typeof change === 'number') {
       formattedChangeDecimal = '+' + change.toFixed(2);
-    } else if( change < 0) {
+    } else if (change < 0) {
       formattedChangeDecimal = change.toFixed(2);
     }
-    
+
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
-    
+
     let formattedLastStockSplit = 'na';
-    
-    if(overview.lastStockSplit) {
-      if('paymentDate' in overview.lastStockSplit && overview.lastStockSplit.paymentDate !== null) {
+
+    if (overview.lastStockSplit) {
+      if ('paymentDate' in overview.lastStockSplit && overview.lastStockSplit.paymentDate !== null) {
         formattedLastStockSplit = overview.lastStockSplit.paymentDate;
       }
     }
-    
+
     const params = {
       ...tickerDataJS,
       formattedTime,
@@ -1193,9 +1198,9 @@ class Chart extends Component {
         return this.renderPortrait(params)
         break;
       case 'landscape':
-       return this.renderLandscape(params)
+        return this.renderLandscape(params)
         break;
-      }
+    }
   }
 
   renderLoadingOrContent() {
@@ -1203,20 +1208,20 @@ class Chart extends Component {
 
     let newsTicker = null;
     let companyName = null;
-      if(tickerDataJS) {
-        newsTicker = tickerDataJS.ticker;
-        companyName = tickerDataJS.companyName;
-      }
-      // alert(JSON.stringify(tickerDataJS));
+    if (tickerDataJS) {
+      newsTicker = tickerDataJS.ticker;
+      companyName = tickerDataJS.companyName;
+    }
+    // alert(JSON.stringify(tickerDataJS));
 
-    if(chartLoading) {
-      return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={[{color: this.state.colors['lightGray']}, fonts.hindGunturRg]}>Loading...</Text>
+    if (chartLoading) {
+      return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturRg]}>Loading...</Text>
       </View>
     } else {
       return <View style={chart.container}>
         {this.showOrientation()}
-        {
+        {/* {
           this.state.isOrderVisible &&
             <Modal
               isVisible
@@ -1229,7 +1234,7 @@ class Chart extends Component {
                 targetStockData={this.props.navigation.state.params.data}
               />
             </Modal>
-        }
+        } */}
         <Modal
           isVisible={this.state.isNewsVisible}
           animationIn={'slideInUp'}
@@ -1263,7 +1268,7 @@ class Chart extends Component {
   render() {
     var self = this;
     return (
-      <View style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
+      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
 
         {this.renderLoadingOrContent()}
 
@@ -1271,7 +1276,7 @@ class Chart extends Component {
           isVisible={this.state.isSearchVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'} >
-          <Search hideSearch={this.hideSearch} navigation={this.props.navigation}/>
+          <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
         </Modal>
 
       </View>

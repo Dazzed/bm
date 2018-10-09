@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import Button from '../../sharedComponents/Button1';
 import NumericalSelector from '../../sharedComponents/NumericalSelector';
@@ -16,30 +17,47 @@ const SearchCancelLight = require('../../images/searchcancel.png');
 const SearchCancelDark = require('../../images/searchcancel_dark.png');
 import trending from '../../style/trending';
 import fonts from '../../style/fonts';
+import {
+    selectGlobalData
+} from '../../selectors';
+import { colors } from '../../store/store';
 
 @observer
-export default class FundMyAccount extends React.Component {
+class FundMyAccount extends React.Component {
 
-    static navigationOptions = ({ navigation }) => {
-        let title = 'Withdraw funds';
-        if(navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Fund my account'
-        }
-        const { theme } = colorStore;
-        let headerStyleToExtend = generateHeaderStyles(theme);
+    // static navigationOptions = ({ navigation }) => {
+    //     let title = 'Withdraw funds';
+    //     if(navigation.state.params.widthdrawDepositMode === 'deposit') {
+    //         title = 'Fund my account'
+    //     }
+    //     const { theme } = colorStore;
+    //     let headerStyleToExtend = generateHeaderStyles(theme);
 
-        return {
-            title: title,
-            ...headerStyleToExtend
-        };
-    };
+    //     return {
+    //         title: title,
+    //         ...headerStyleToExtend
+    //     };
+    // };
 
     constructor(props) {
         super(props)
         this.state = {
             fundingString: '',
             errorRemainingFunds: false,
-            dropdownOpen: false
+            dropdownOpen: false,
+            colors: colors(props.globalData.isDarkThemeActive)
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        const {
+          globalData: prevGlobalData
+        } = prevProps;
+        const {
+          globalData: currentGlobalData
+        } = this.props;
+        if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
+          this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
         }
     }
 
@@ -84,6 +102,10 @@ export default class FundMyAccount extends React.Component {
             });
         })
         .catch((err) => {
+            this.setState({
+                errorRemainingFunds: true
+            })
+
             console.log('err', err);
         })
     }
@@ -194,7 +216,7 @@ export default class FundMyAccount extends React.Component {
         let height = 25;
         let style = {
             borderWidth: 1,
-            borderColor: theme.inactiveDarkSlate,
+            borderColor: "#999CA5",
             backgroundColor: theme.contentBg,
             height: height,
             flex: 0,
@@ -205,13 +227,13 @@ export default class FundMyAccount extends React.Component {
             marginHorizontal: 30
         };
         let textStyle = {
-            color: theme.inactiveDarkSlate,
+            color: "#999CA5",
             flex: 0
         };
 
         let string = ''
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-            string = 'TO'
+            string = 'To'
         }
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
           return null;
@@ -231,7 +253,7 @@ export default class FundMyAccount extends React.Component {
 
     renderErrorOrNull = () => {
       const { theme } = colorStore;
-      let text = null;;
+      let text = null;
       if(this.state.errorRemainingFunds) {
         text = 'Withdraw amount exceeds funds available'
       }
@@ -344,3 +366,9 @@ export default class FundMyAccount extends React.Component {
         </View>
     }
 }
+
+const mapStateToProps = state => ({
+    globalData: selectGlobalData(state)
+  });
+
+export default connect(mapStateToProps)(FundMyAccount);

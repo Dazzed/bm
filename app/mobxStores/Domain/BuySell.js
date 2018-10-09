@@ -1,11 +1,12 @@
 import { observable, action, computed, toJS } from 'mobx';
+import { numberWithCommas } from '../../utility';
 import {
   buy as buyApiCall,
   sell as sellApiCall,
   cover as coverApiCall,
   short as shortApiCall
 } from '../../api';
-import { chartStore } from '../';
+import { chartStore, myAccountStore } from '../';
 import { validity_props, order_type } from '../../constants';
 
 export default class BuySellStore {
@@ -43,6 +44,11 @@ export default class BuySellStore {
       }
       this.setQuantity(curNums);
     } else if (type === 'price') {
+      if (num === '.') {
+        if (this.price.includes('.')) {
+          return;
+        }
+      }
       if (this.price == null) {
         curNums = num;
       } else {
@@ -79,7 +85,8 @@ export default class BuySellStore {
     const { Price } = tickerDataJS;
     console.log('---- calculate cost', this.quantity, parseInt(this.quantity), Price)
     let calculatedCost = parseInt(this.quantity) * Price;
-    return calculatedCost.toFixed(2);
+    return numberWithCommas(calculatedCost);
+    // return calculatedCost.toFixed(2);
   }
 
   // Constructs the total cost when the price is entered manually
@@ -93,7 +100,7 @@ export default class BuySellStore {
     if (this.price !== 0 && this.price !== '') {
       calculatedCost = parseInt(this.quantity) * this.price;
     }
-    return calculatedCost.toFixed(2);
+    return numberWithCommas(calculatedCost);
   }
 
   @observable transactionType = '';
@@ -210,6 +217,7 @@ export default class BuySellStore {
             }
             return reject('There was an error. Please try again later');
           }
+          myAccountStore.addNewOrder(res.json.result.order);
           return resolve();
         })
         .catch((err) => {
