@@ -310,15 +310,16 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 
 // prevent data beyond time range limit from showing up
 // essentially throwing this data away
-let limitCurrentData = (inputData, count, distance) => {
+let limitCurrentData = (inputData, countOfHowManyLengthsOfTime, lengthOfTimeAsString) => {
   let formattedDataPointsHour = [];
   // extract newest time from list
   const newestDataPoint = inputData[inputData.length - 1];
   let newestTime = returnFormattedTimeStamp(newestDataPoint);
-  let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(count, distance).format('X'));
+  let oneHourFromNewestTime = parseInt(moment(newestTime, 'X').subtract(countOfHowManyLengthsOfTime, lengthOfTimeAsString).format('X'));
   // loop through in reverse
   inputData.reverse().every((elem, i) => {
     let thisDateUnix = returnFormattedTimeStamp(elem);
+    // console.log('every elem', elem, thisDateUnix)
     if(thisDateUnix > oneHourFromNewestTime) {
       formattedDataPointsHour.push(elem);
       return true;
@@ -358,7 +359,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let futureDataPoints = [];
 
     //////////////////////////////////////////////////////////////////////////
-    // seperate future data block from data
+    // seperate future data block from past data
 
     inputData.forEach((elem, i) => {
       // console.log('each modifiedInputData', elem);
@@ -422,10 +423,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       volumeBottomLinesData: null,
       trndMax: 0,
       trndMin: initMaxVal,
-      obvMax: 0,
-      obvMin: initMaxVal,
-      macdMax: 0,
-      macdMin: initMaxVal
     };
 
     //////////////////////////////////////////////////////////////////////////
@@ -434,21 +431,20 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // adds right padding
     width = width * d.xPaddingModifier;
 
-
     //////////////////////////////////////////////////////////////////////////
-    // define x max / min functions
+    // define x and y  max & min functions
     const manipulateXMaxMin = (input) => {
+      // console.log('input', input)
       // don't run if value is null
       if( input === null ) { return }
       if( input > d.xMax ) d.xMax = input;
       if( input < d.xMin ) d.xMin = input;
     }
 
-    const manipulateYMaxMin = (input, ignoreZero) => {
+    const manipulateYMaxMin = (input) => {
       // don't run if value is null
-      if( input === null ) { return }
+      if( input === null || input === 0) { return }
       // don't run if told to ignore zero values
-      if( input === 0 && ignoreZero ) { return }
       if( input > d.yMax ) d.yMax = input;
       if( input < d.yMin ) d.yMin = input;
     }
@@ -460,31 +456,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if( input < d.volumeMin ) d.volumeMin = input;
     }
 
-    const manipulateObvMaxMin = (input) => {
-      // don't run if value is null
-      if( input === null ) { return }
-      if( input > d.obvMax ) d.obvMax = input;
-      if( input < d.obvMin ) d.obvMin = input;
-    }
-
-    const manipulateTrndMaxMin = (input) => {
-      // don't run if value is null
-      if( input === null ) { return }
-      if( input > d.trndMax ) d.trndMax = input;
-      if( input < d.trndMin ) d.trndMin = input;
-    }
-
-    const manipulateMACDMaxMin = (input) => {
-      // don't run if value is null
-      if( input === null ) { return }
-      if( input > d.macdMax ) d.macdMax = input;
-      if( input < d.macdMin ) d.trndMin = input;
-    }
-
     const addLeftPaddingToXGraph = () => {
       return;
       // console.log('--- LEFT PADDING -- ', d.xMin, d.xMax);
-      d.xMin = d.xMin - ( (d.xMax - d.xMin) * .0005);
+      // d.xMin = d.xMin - ( (d.xMax - d.xMin) * .0005);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -493,15 +468,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // we don't want to ever reference a null variable
     // in the line rendering functions
 
-    let bolHasNullValue = false;
     let ema50HasNullValue = false;
     let ema200HasNullValue = false;
-    let rsiHasNullValue = false;
     let volumeHasNullValue = false;
     let ichiHasNullValue = false;
-    let obvHasNullValue = false;
-    let trndHasNullValue = false;
-    let macdHasNullValue = false;
     let sma50HasNullValue = false;
     let sma200HasNullValue = false;
 
@@ -509,76 +479,39 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // loop through and disqualify any null line
     d.dataPoints.forEach((elem, i) => {
 
-      if(elem.bol === null) {
-        console.log('NULLLL!!! bol')
-        bolHasNullValue = true;
-      }
-      if(elem.rsi === null) {
-        console.log('NULLLL!!! rsi')
-        rsiHasNullValue = true;
-      }
       if(elem.ema50 === null) {
-        console.log('NULLLL!!! ema50')
         ema50HasNullValue = true;
       }
       if(elem.ema200 === null) {
-        console.log('NULLLL!!! ema200')
         ema200HasNullValue = true;
       }
       if(elem.volume === null) {
-        console.log('NULLLL!!! volume')
         volumeHasNullValue = true;
       }
-      if(elem.ichi === null) {
-        console.log('NULLLL!!! ichi')
+      // handle this stupid bug where the backend sends a zero instead of an object
+      if(elem.ichi === null || elem.ichi === 0) {
         ichiHasNullValue = true;
       }
-      if(elem.obv === null) {
-        console.log('NULLLL!!! obv')
-        obvHasNullValue = true;
-      }
-      if(elem.trnd === null) {
-        console.log('NULLLL!!! trnd')
-        trndHasNullValue = true;
-      }
-      if(elem.macd === null) {
-        console.log('NULLLL!!! macd')
-        macdHasNullValue = true;
-      }
-
       if(elem.sma50 === null ) {
-        console.log('NULLLL!!! sma50')
         sma50HasNullValue = true;
       }
       if(elem.sma200 === null ) {
-        console.log('NULLLL!!! sma200')
         sma200HasNullValue = true;
       }
-    })
+    });
 
     //////////////////////////////////////////////////////////////////////////
     // setup render variables
-    let renderBol = false;
-    let renderRsi = false;
     let renderVolume = false;
     let renderIchi = false;
-    let renderObv = false;
-    let renderTrnd = false;
     let renderEma50 = false;
     let renderEma200 = false;
-    let renderMacd = false;
     let renderSma = false;
 
     //////////////////////////////////////////////////////////////////////////
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
       // if data is valid, check for indicator list and set render variables
-      if(!rsiHasNullValue) {
-        renderRsi = indicatorsList.indexOf('RSI') > -1;
-      }
-      if(!bolHasNullValue) {
-        renderBol = indicatorsList.indexOf('BOL') > -1;
-      }
       if(!ema50HasNullValue && !ema200HasNullValue) {
         renderEma50 = indicatorsList.indexOf('EMA') > -1;
         renderEma200 = indicatorsList.indexOf('EMA') > -1;
@@ -588,15 +521,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       }
       if(!ichiHasNullValue) {
         renderIchi = indicatorsList.indexOf('ICHI') > -1;
-      }
-      if(!obvHasNullValue) {
-        renderObv = indicatorsList.indexOf('OBV') > -1;
-      }
-      if(!trndHasNullValue) {
-        renderTrnd = indicatorsList.indexOf('TRND') > -1;
-      }
-      if(!macdHasNullValue) {
-        renderMacd = indicatorsList.indexOf('MACD') > -1;
       }
       if(!sma50HasNullValue && !sma200HasNullValue ) {
         renderSma = indicatorsList.indexOf('SMA') > -1;
@@ -623,8 +547,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         if(elem.ichi.conversion !== null) {
           manipulateYMaxMin(elem.ichi.conversion);
         }
-        manipulateYMaxMin(elem.ichi.spanA, true);
-        manipulateYMaxMin(elem.ichi.spanB, true);
+        manipulateYMaxMin(elem.ichi.spanA);
+        manipulateYMaxMin(elem.ichi.spanB);
       }
 
       // conditional rendering based on indicators menu
@@ -634,25 +558,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(renderEma200) {
         manipulateYMaxMin(elem.ema200);
       }
-      if(renderRsi) {
-        manipulateYMaxMin(elem.rsi);
-      }
-      if(renderBol) {
-        manipulateYMaxMin(elem.bol.lower);
-        manipulateYMaxMin(elem.bol.middle);
-        manipulateYMaxMin(elem.bol.upper);
-      }
       if(renderVolume) {
         manipulateVolumeMaxMin(elem.volume);
-      }
-      if(renderObv) {
-        manipulateObvMaxMin(elem.obv)
-      }
-      if(renderTrnd) {
-        manipulateTrndMaxMin(elem.trnd);
-      }
-      if(renderMacd) {
-        manipulateMACDMaxMin(elem.macd.MACD);
       }
       if(renderSma) {
         manipulateYMaxMin(elem.sma50);
@@ -684,8 +591,8 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         if(elem.ichi.conversion !== null) {
           manipulateYMaxMin(elem.ichi.conversion);
         }
-        manipulateYMaxMin(elem.ichi.spanA, true);
-        manipulateYMaxMin(elem.ichi.spanB, true);
+        manipulateYMaxMin(elem.ichi.spanA);
+        manipulateYMaxMin(elem.ichi.spanB);
 
         return {
           ...elem,
@@ -751,7 +658,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       for (let elem of source) {
         let chosenValue = Object.byString(elem, targetValue);
         // console.log('chosen value', chosenValue);
-        if(chosenValue === null) {
+        if(chosenValue === null || chosenValue === 0) {
           continue;
         }
         // console.log('--- ', elem, d.xMin, d.xRange)
@@ -857,14 +764,6 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
     //////////////////////////////////////////////////////////////////////////
     // conditionally render
-    if(renderRsi) {
-      d.formattedLines.push(generateLineData('rsi', '#00FF00', d.dataPoints));
-    }
-    if(renderBol) {
-      d.formattedLines.push(generateLineData('bol.lower', '#800080', d.dataPoints));
-      d.formattedLines.push(generateLineData('bol.middle', '#800080', d.dataPoints));
-      d.formattedLines.push(generateLineData('bol.upper', '#800080', d.dataPoints));
-    }
     if(renderEma50) {
       d.formattedLines.push(generateLineData('ema50', '#0000FF', d.dataPoints));
     }
@@ -879,6 +778,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(futureDataPoints.length > 0) {
         sourceData = d.dataPoints.concat(futureDataPoints);
       }
+      console.log('== render ichi', sourceData)
       let lineA = generateLineData('ichi.spanA', theme.green, sourceData);
       let lineB = generateLineData('ichi.spanB', theme.red, sourceData);
       console.log('-- line a', lineA);
@@ -886,15 +786,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.ichiCloudLines.push(lineA);
       d.ichiCloudLines.push(lineB);
     }
-    if(renderObv) {
-      d.formattedLines.push(generateRelativeLineData('obv', '#FF1493', d.obvMax, d.obvMin));
-    }
-    if(renderTrnd) {
-      d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
-    }
-    if(renderMacd) {
-      d.formattedLines.push(generateRelativeLineData('macd.MACD', '#008000', d.macdMax, d.macdMin));
-    }
+    // if(renderTrnd) {
+    //   d.formattedLines.push(generateRelativeLineData('trnd', '#A52A2A', d.trndMax, d.trndMin));
+    // }
     if(renderSma) {
       d.formattedLines.push(generateLineData('sma50', '#FF8C00', d.dataPoints));
       d.formattedLines.push(generateLineData('sma200', '#FF8C00', d.dataPoints));
@@ -986,7 +880,7 @@ export const modifyTestDataIntoTestPattern = (testData) => {
   let fatBarHeight = 5;
 
   let results = testData.map((elem, i) => {
-    console.log('-----', elem)
+    // console.log('-----', elem)
     if(elem.open) {
       elem.open = 40;
     }

@@ -217,3 +217,5 @@ export const formatPhoneNumber = (numb, type = 'dash') => {
   }
   return numb;
 }
+
+export const generateChartOptionsQuery = require('./generateChartOptions');

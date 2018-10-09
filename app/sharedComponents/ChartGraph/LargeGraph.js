@@ -96,6 +96,24 @@ export default class LargeGraph extends React.Component {
 
     generateCandlestickBars(params, key) {
         const { theme } = colorStore;
+
+        // disqualify before rendering errors
+        let disqualified = false;
+        if(params.open === -1 ||
+          params.close === -1 ||
+          params.high === -1 ||
+          params.low === -1 ||
+          params.open === undefined ||
+          params.close === undefined ||
+          params.high === undefined ||
+          params.low === undefined
+        ) {
+          disqualified = true;
+        }
+        if(disqualified) {
+          return null;
+        }
+
         let thickLineTop = params.closeYPositionCoordinates;
         let thickLineBottom = params.openYPositionCoordinates
         let color = theme.green;
@@ -107,7 +125,7 @@ export default class LargeGraph extends React.Component {
 
         // edit this one
         let lineWidth = 3;
-        
+
         // these are relative calculations
         let thinLineWidth = lineWidth / 2;
         let thickLineWidth = lineWidth * 2;
@@ -145,6 +163,7 @@ export default class LargeGraph extends React.Component {
       let formattedData = params.formattedLineData;
       let lineTargetValue = params.lineTargetValue;
       const { theme } = colorStore;
+      // console.log('params for graph', params)
       if(!formattedData) {
         return null;
       }
@@ -183,7 +202,7 @@ export default class LargeGraph extends React.Component {
         return null;
       }
     }
-    
+
     render() {
         const { theme } = colorStore;
         const { stockChartLoading, chartDetailDataJS, indicatorsListJS } = chartStore;
@@ -242,7 +261,7 @@ export default class LargeGraph extends React.Component {
                 fillOpacity={.2}
             />
         }
-        
+
         const renderPolygonsListOrNull = (polyGonList) => {
           if(!polyGonList) {
             return null;
@@ -282,7 +301,7 @@ export default class LargeGraph extends React.Component {
                 {parsedData.ichiCloudLines.map((elem, i) => {
                   return this.generateGraphPolygon(elem, i)
                 })}
-                
+
                 {renderPolygonsListOrNull(polygonsList)}
 
                 {this.renderBottomVolumeLines(parsedData)}
