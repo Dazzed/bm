@@ -32,7 +32,8 @@ class Search extends React.Component {
       page: 'presets',
       showCancel: 0,
       searchTerm: '',
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
+      loading: false // Fix for watchlist update
     };
   }
 
@@ -43,25 +44,37 @@ class Search extends React.Component {
     });
   }
 
-  addSymbol(ticker) {
+  addSymbol = ticker => {
+    const okCallback = () => {
+      watchListStore.addTickerToWatchList(ticker);
+      this.setState({
+        loading: true
+      }, () => this.setState({ loading: false }));
+    };
     Alert.alert(
       '',
       'Add ' + ticker + ' to your watchlist?',
       [
         { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        { text: 'OK', onPress: () => watchListStore.addTickerToWatchList(ticker) },
+        { text: 'OK', onPress: okCallback },
       ],
       { cancelable: true }
     )
   }
 
-  removeSymbol(ticker) {
+  removeSymbol = ticker => {
+    const okCallback = () => {
+      watchListStore.removeTickerFromWatchList(ticker);
+      this.setState({
+        loading: true
+      }, () => this.setState({ loading: false }));
+    };
     Alert.alert(
       '',
       'Remove ' + ticker + ' from your watchlist?',
       [
         { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        { text: 'OK', onPress: () => watchListStore.removeTickerFromWatchList(ticker) },
+        { text: 'OK', onPress: okCallback },
       ],
       { cancelable: true }
     )
@@ -112,7 +125,7 @@ class Search extends React.Component {
     });
   }
 
-  renderListElement(data, i) {
+  renderListElement = (data, i) => {
     return <TouchableOpacity
       key={i}
       style={watchstyle.symbol}
@@ -136,20 +149,20 @@ class Search extends React.Component {
     </TouchableOpacity>
   }
 
-  renderAddToWatchlistTouchable(ticker) {
+  renderAddToWatchlistTouchable = ticker => {
     const { isTickerInWatchlist } = watchListStore;
     let image = this.state.colors['addImage'];
     let functionToFire = this.addSymbol;
     if (isTickerInWatchlist(ticker)) {
       image = this.state.colors['watchlistAdded'];
-      functionToFire = this.removeSymbol
+      functionToFire = this.removeSymbol;
     }
     return <TouchableOpacity style={styles.rightCta} onPress={functionToFire.bind(this, ticker)}>
       <Image source={image} style={{ width: 23, height: 23 }} />
     </TouchableOpacity>
   }
 
-  renderListOrSearchView() {
+  renderListOrSearchView = () => {
     const { searchData, searchDataJS, isFetchingMoreData } = searchStore;
     const { theme } = colorStore;
     console.log('============= render search view', searchData, searchDataJS)
@@ -188,9 +201,9 @@ class Search extends React.Component {
     }
   }
 
-  renderLoadingWheelOrContent() {
+  renderLoadingWheelOrContent = () => {
     const { searchLoading } = searchStore;
-    if (searchLoading) {
+    if (searchLoading || this.state.loading) {
       return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator />
       </View>
