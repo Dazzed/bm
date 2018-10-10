@@ -39,9 +39,12 @@ export default class Scanner {
   }
 
   @observable currentPage = 1;
+  @observable totalPages = 0;
 
   @action getNewPage = () => {
-    console.log('Get new page')
+    if (this.currentPage === this.totalPages) {
+      return;
+    }
     this.currentPage = this.currentPage + 1;
     this.getScannerDataApiCall(null, true);
   }
@@ -56,6 +59,7 @@ export default class Scanner {
     if(!newPage) {
       this.saveRecentParamaters(params);
       this.currentPage = 1;
+      this.totalPages = null;
     }
 
     let paramsForThisCall = this.savedParams;
@@ -76,6 +80,7 @@ export default class Scanner {
       console.log('account data', res)
       if(res.ok) {
         this.setScannerData(res.json.data.data);
+        this.totalPages = res.json.data.total_pages;
       } else {
         console.log('======= ERROR')
       }
