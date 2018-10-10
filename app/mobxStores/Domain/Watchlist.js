@@ -149,8 +149,9 @@ export default class Watchlist {
     try {
       this.isFetchingWatchlistData = true;
       const deletingItem = this.watchlistDataJS.find(data => data.ticker === ticker);
+      this.watchlistData = this.watchlistDataJS.filter(data => data.ticker !== ticker);
       const deleteResponse = await deleteRequest(`userWatchLists/${deletingItem.id}`);
-      // console.log('delestRs', deleteResponse)
+      // console.info('delestRs', deleteResponse)
       if(deleteResponse.ok) {
         await this.getWatchlistData();
       }
