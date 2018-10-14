@@ -153,7 +153,7 @@ class Watchlists extends React.Component {
     }
   };
 
-  navigateToChart(data) {
+  navigateToChart = data => {
     this.props.navigation.navigate('Chart', { data: data })
   }
 
@@ -170,7 +170,7 @@ class Watchlists extends React.Component {
       <Swipeout right={this.generateSwipeOutBtn(row)} style={watchstyle.delete} buttonWidth={100} autoClose>
         <TouchableOpacity
           style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, watchstyle.symbol]}
-          onPress={() => this.navigateToChart(row)}
+          onPress={this.navigateToChart.bind(this, row)}
           delayLongPress={500}>
           <View style={watchstyle.touchable}>
             <View style={watchstyle.symDetails}>

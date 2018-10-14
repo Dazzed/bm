@@ -61,7 +61,6 @@ export default class MyAccountData {
         console.log('HISTORY res', res);
         if (res.ok) {
           // save the data
-          console.info(67, res.json);
           this.history = res.json.result;
         }
         this.historyLoading = false;

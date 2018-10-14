@@ -67,10 +67,12 @@ export default class Watchlist {
         ...item,
         position: index
       }));
+      console.info('onRowMove -> PRE', toJS(this.watchlistData));
       const { json: watchlistData } = await post('userWatchLists/reorderPosition', {
         id: targetRowId,
         newPosition: indexOfReplacingItem
       });
+      console.info('onRowMove -> response', watchlistData);
       this.watchlistData = watchlistDatatoJS.map(data => {
         const {
           position: thizPosition,
@@ -82,6 +84,7 @@ export default class Watchlist {
           id: thizId
         };
       });
+      console.info('onRowMove -> POST', toJS(this.watchlistData));
     } catch (e) {
       console.log('Error in onRowMove', e);
     }
