@@ -136,6 +136,7 @@ export default TargetComponent => {
           } else if (thizGlobalData.hasUserEnabledBioProtection && error.name === 'LAErrorUserCancel') {
             // this.setState({ inLockedState: true });
             this.props.logoutAction();
+            this.setState({ canRenderTargetComponent: true });
           } else if (thizGlobalData.isInititatingBioProtection === true) {
             this.props.cancelEnablingBioProtection();
             this.setState({ canRenderTargetComponent: true });
@@ -145,6 +146,7 @@ export default TargetComponent => {
           } else if (this.state.fromMinimize && error.name === 'LAErrorUserCancel') {
             // this.setState({ inLockedState: true });
             this.props.logoutAction();
+            this.setState({ canRenderTargetComponent: true });
           } else {
             this.setState(({ touchIdFailCount }) => ({ touchIdFailCount: touchIdFailCount + 1 }), this.initiateBioAuth);
           }
