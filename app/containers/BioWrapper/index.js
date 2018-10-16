@@ -30,6 +30,7 @@ export default TargetComponent => {
       toggleRemindBioProtectionAfterLoggingIn: PropTypes.func.isRequired,
       performEnablingBioProtection: PropTypes.func.isRequired,
       performDisablingBioProtection: PropTypes.func.isRequired,
+      logoutAction: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -133,13 +134,17 @@ export default TargetComponent => {
             this.props.toggleRemindBioProtectionAfterLoggingIn(false);
             this.setState({ canRenderTargetComponent: true });
           } else if (thizGlobalData.hasUserEnabledBioProtection && error.name === 'LAErrorUserCancel') {
-            this.setState({ inLockedState: true });
+            // this.setState({ inLockedState: true });
+            this.props.logoutAction();
           } else if (thizGlobalData.isInititatingBioProtection === true) {
             this.props.cancelEnablingBioProtection();
+            this.setState({ canRenderTargetComponent: true });
           } else if (thizGlobalData.isCancellingBioProtection === true) {
             this.props.cancelDisablingBioProtection();
+            this.setState({ canRenderTargetComponent: true });
           } else if (this.state.fromMinimize && error.name === 'LAErrorUserCancel') {
-            this.setState({ inLockedState: true });
+            // this.setState({ inLockedState: true });
+            this.props.logoutAction();
           } else {
             this.setState(({ touchIdFailCount }) => ({ touchIdFailCount: touchIdFailCount + 1 }), this.initiateBioAuth);
           }
