@@ -11,7 +11,8 @@ import {
   TouchableOpacity,
   TabbedArea,
   TabPane,
-  Dimensions
+  Dimensions,
+  SafeAreaView
 } from 'react-native';
 import Modal from 'react-native-modal'
 import { observer } from 'mobx-react';
@@ -99,7 +100,7 @@ class OrderConf extends React.Component {
     let type = order_type.find(t => t.name === orderTypeName).label;
 
     return (
-      <View>
+      <SafeAreaView>
         <View style={[{ borderBottomColor: this.state.colors['lightGray'], backgroundColor: this.state.colors['white'] }, order.menuBorder]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.props.hideOrderConfirm}>
@@ -164,7 +165,7 @@ class OrderConf extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 }

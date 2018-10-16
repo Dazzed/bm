@@ -261,24 +261,27 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 
     for(let i = 0; i < data.length; i++) {
 
-      const thisDataPoint = data[i];
+      if (data[i].close > 0 ) {
+        console.log(265, data[i])
+        const thisDataPoint = data[i];
 
-      let dataPointIsFuturePoint = isDataPointFuturePoint(thisDataPoint);
-      // console.log('this data point', thisDataPoint, dataPointIsFuturePoint);
+        let dataPointIsFuturePoint = isDataPointFuturePoint(thisDataPoint);
+        // console.log('this data point', thisDataPoint, dataPointIsFuturePoint);
 
-      if(dataPointIsFuturePoint) {
-        continue;
+        if(dataPointIsFuturePoint) {
+          continue;
+        }
+
+        d.lineData.push(data[i].close + d.yMin);
+
+        let dateData = '-';
+        if(displayDateStamps) {
+          dateData = formatDateStamp(thisDataPoint.unixTimeStamp);
+        } else {
+          dateData = formatTimeStamp(thisDataPoint.unixTimeStamp);
+        }
+        d.dateData.push(dateData);
       }
-
-      d.lineData.push(data[i].close + d.yMin);
-
-      let dateData = '-';
-      if(displayDateStamps) {
-        dateData = formatDateStamp(thisDataPoint.unixTimeStamp);
-      } else {
-        dateData = formatTimeStamp(thisDataPoint.unixTimeStamp);
-      }
-      d.dateData.push(dateData);
     }
 
     // Set range

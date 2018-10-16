@@ -5,6 +5,7 @@ import {
   TextInput,
   View,
   ScrollView,
+  SafeAreaView,
   Switch,
   Image,
   TouchableOpacity
@@ -282,7 +283,7 @@ class Settings extends Component {
     const { orderValue, bankTransfersValue, dividendsValue, priceMovementsValue } = settingsStore;
 
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
@@ -570,7 +571,7 @@ class Settings extends Component {
           </Modal>
         }
 
-      </View>
+      </SafeAreaView>
     );
   }
 }

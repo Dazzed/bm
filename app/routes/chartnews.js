@@ -22,7 +22,8 @@ import {
   TabPane,
   TouchableOpacity,
   ActivityIndicator,
-  Linking
+  Linking,
+  SafeAreaView
 } from 'react-native';
 import Modal from 'react-native-modal'
 import Tabs from 'react-native-tabs';
@@ -135,7 +136,7 @@ class ChartNews extends React.Component {
 
   render() {
     return (
-      <View style={[{backgroundColor: this.state.colors['white']}, styles.container]}>
+      <SafeAreaView style={[{backgroundColor: this.state.colors['white']}, styles.container]}>
         <View style={[{borderBottomColor: this.state.colors['borderGray']}, styles.menuBorderptions]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideNews()}>
@@ -148,7 +149,7 @@ class ChartNews extends React.Component {
           </View>
         </View>
           {this.renderList()}
-      </View>
+      </SafeAreaView>
     );
   }
 }

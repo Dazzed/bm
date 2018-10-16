@@ -61,7 +61,7 @@ export default class FundAccountSplash extends Component {
                     {/*</Text>*/}
                     <View style={[{ backgroundColor: theme.white }]}>
                         <View style={[styles_2.registrationFormView]}>
-                            <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', fontSize: 20, marginTop: 15 }]}>
+                            <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', fontSize: 20, marginTop: 30 }]}>
                                 Congratulations!
                             </Text>
                             <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', marginTop: 15 }]}>

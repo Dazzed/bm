@@ -11,6 +11,7 @@ import {
   TextInput,
   View,
   WebView,
+  SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
   Image,
@@ -99,7 +100,7 @@ class EditEmployment extends React.Component {
   render() {
     const { globalData } = this.props;
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
@@ -152,7 +153,7 @@ class EditEmployment extends React.Component {
             <Text> </Text>
           </View>
         </KeyboardAvoidingView>
-      </View>
+      </SafeAreaView>
     )
   }
 }

@@ -10,7 +10,8 @@ import {
   Image,
   TouchableOpacity,
   TabbedArea,
-  TabPane
+  TabPane,
+  SafeAreaView
 } from 'react-native';
 import Modal from 'react-native-modal'
 import { observer } from 'mobx-react';
@@ -95,7 +96,7 @@ class OrderShort extends React.Component {
     const activeBorderBottomStyle = { borderBottomColor: this.state.colors['darkSlate'] };
 
     return (
-      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
         <View style={order.details}>
           <View
             style={activeInputName === 'quantity' ? [order.detailsFirstRow, activeBorderBottomStyle] : [order.detailsFirstRow]}
@@ -234,8 +235,7 @@ class OrderShort extends React.Component {
             />
           </View>
         </Modal>
-
-      </View>
+      </SafeAreaView>
     )
   }
 }

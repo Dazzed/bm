@@ -13,7 +13,8 @@ import {
   TabbedArea,
   TabPane,
   Alert,
-  Dimensions
+  Dimensions,
+  SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { observer } from 'mobx-react';
@@ -262,7 +263,7 @@ class Watchlists extends React.Component {
     let dataSource = watchlistDataJS;
 
     return (
-      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={[styles.menuContainer]}>
 
@@ -370,7 +371,7 @@ class Watchlists extends React.Component {
               />
             </View>
           </Modal>}
-      </View>
+      </SafeAreaView>
     );
   }
 }

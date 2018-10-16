@@ -8,6 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Alert,
+  SafeAreaView,
   ActionSheetIOS
 } from 'react-native';
 import { bindActionCreators } from 'redux';
@@ -121,7 +122,7 @@ class EditEmail extends React.Component {
     } = this.state;
 
     return (
-      <View style={{ flex: 1, backgroundColor: theme.contentBg }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.contentBg }}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={hideEmail}>
@@ -158,7 +159,7 @@ class EditEmail extends React.Component {
             style={{marginVertical: 15}}
           />
         </KeyboardAvoidingView>
-      </View>
+      </SafeAreaView>
     );
   }
 }

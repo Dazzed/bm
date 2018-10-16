@@ -108,6 +108,7 @@ export default class AccountStore {
 
         params.options = generateChartOptionsQuery(this.tickerDataJS.ticker, this.range, includeICHI)
 
+
         // conditinally display test data
         if(showGraphTestPattern) {
           console.log('========== largeChartTestData', largeChartTestData);
@@ -118,7 +119,7 @@ export default class AccountStore {
           this.setStockChartLoading(false);
 
         } else {
-
+          console.log(JSON.stringify(params.options));
           getStockChartDetail(params)
           .then((res) => {
             console.log('GET CHART DATA', res);

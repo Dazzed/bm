@@ -14,6 +14,7 @@ import {
   View,
   WebView,
   ScrollView,
+  SafeAreaView,
   Image,
   TouchableOpacity,
   TabbedArea,
@@ -66,7 +67,7 @@ class Faq extends React.Component {
   }
   render() {
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideFaq()}>
@@ -82,7 +83,7 @@ class Faq extends React.Component {
         <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalContainer]}>
           {this.renderFaq()}
         </ScrollView>
-      </View>
+      </SafeAreaView>
     )
   }
 }

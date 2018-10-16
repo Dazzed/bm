@@ -8,7 +8,7 @@ var colors = require('./colors')
 
 const chart = StyleSheet.create({
   container: {
-    paddingBottom: 100,
+    paddingBottom: 55,
     width: '100%'
   },
   portrait: {

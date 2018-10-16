@@ -13,6 +13,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Image,
+  SafeAreaView,
   TouchableOpacity,
   TouchableHighlight,
   TabbedArea,
@@ -166,7 +167,7 @@ class EditAddress extends React.Component {
     }
     
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackButtonPress}>
@@ -275,7 +276,7 @@ class EditAddress extends React.Component {
             <Text> </Text>
           </View>
         </KeyboardAvoidingView>
-      </View>
+      </SafeAreaView>
     )
   }
 }

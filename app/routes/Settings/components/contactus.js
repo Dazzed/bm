@@ -16,6 +16,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Image,
+  SafeAreaView,
   TouchableOpacity,
   TabbedArea,
   TabPane,
@@ -44,7 +45,8 @@ class ContactUs extends React.Component {
       email: '',
       name: '',
       issue_type: 'Feedback',
-      colors: colors(props.globalData.isDarkThemeActive)
+      colors: colors(props.globalData.isDarkThemeActive),
+      error: ''
     };
   }
   componentDidMount() {
@@ -80,14 +82,20 @@ class ContactUs extends React.Component {
       issueType: this.state.issue_type,
       message: this.state.message
     }
-    const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-    const res = await axios.post(`${API_URL}/api/contacts?access_token=${accessToken}`, contact) 
-    this.props.hideContact()
+    if (this.state.subject === '' || this.state.message === '') {
+      this.setState({
+        error: "Please enter all fields."
+      })
+    } else {
+      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+      const res = await axios.post(`${API_URL}/api/contacts?access_token=${accessToken}`, contact)
+      this.props.hideContact()
+    }
   }
 
   render() {
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideContact()}>
@@ -124,9 +132,14 @@ class ContactUs extends React.Component {
             <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={() => this.submitContact()}>
               <Text style={[{ color: this.state.colors['white'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>SUBMIT</Text>
             </TouchableOpacity>
+            {
+              this.state.error ?
+                <Text style={[fonts.hindGunturRg, { color: 'red', marginTop: 5 }]}><Text style={fonts.hindGunturBd}>Error: </Text>{this.state.error}</Text> :
+                null
+            }
           </View>
         </KeyboardAvoidingView>
-      </View>
+      </SafeAreaView>
     )
   }
 }

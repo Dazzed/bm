@@ -13,7 +13,8 @@ import {
   TouchableHighlight,
   TabbedArea,
   TabPane,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import Modal from 'react-native-modal'
 import RadioForm, {
@@ -272,7 +273,7 @@ class Trade extends React.Component {
       activeComponent
     } = this.state;
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, order.accContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, order.accContainer]}>
         <View
           style={[
             { backgroundColor: this.state.colors['white'], display: activeComponent === 'trading' ? 'flex' : 'none' },
@@ -314,7 +315,7 @@ class Trade extends React.Component {
           {this.renderOrderTypeModal()}
         </ScrollView> */}
         {this.renderActiveComponent()}
-      </View>
+      </SafeAreaView>
     );
   }
 }

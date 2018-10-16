@@ -10,7 +10,8 @@ import {
   Image,
   TouchableOpacity,
   TabbedArea,
-  TabPane
+  TabPane,
+  SafeAreaView
 } from 'react-native';
 import Modal from 'react-native-modal'
 import RadioForm, {
@@ -110,7 +111,7 @@ class OrderBuy extends Component {
     const { activeInputName } = this.state;
     const activeBorderBottomStyle = { borderBottomColor: this.state.colors['darkSlate'] };
     return (
-      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
         <View style={order.details}>
           <View
             style={activeInputName === 'quantity' ? [order.detailsFirstRow] : [order.detailsFirstRow]}
@@ -250,7 +251,7 @@ class OrderBuy extends Component {
             />
           </View>
         </Modal>
-      </View>
+      </SafeAreaView>
     )
   }
 }

@@ -3,7 +3,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -361,7 +362,7 @@ class FundMyAccount extends React.Component {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Account funded'
         }
-        return <View style={{height: '100%', padding: 0}}>
+        return <SafeAreaView style={{height: '100%', padding: 0}}>
             <View style={{flex: 1, backgroundColor: theme.contentBg}}>
                 <View style={styles.menuBorder}>
                     <View style={styles.menuContainer}>
@@ -385,7 +386,7 @@ class FundMyAccount extends React.Component {
                     {this.renderButton()}
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     }
 }
 

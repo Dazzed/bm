@@ -25,7 +25,8 @@ import {
   TabbedArea,
   TabPane,
   SegmentedControlIOS,
-  ActivityIndicator
+  ActivityIndicator,
+  SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal'
@@ -540,7 +541,7 @@ class Scanner extends React.Component {
 
   render() {
     return (
-      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
@@ -572,7 +573,7 @@ class Scanner extends React.Component {
           animationOut={'slideOutDown'} >
           <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
         </Modal>
-      </View>
+      </SafeAreaView>
     );
   }
 }

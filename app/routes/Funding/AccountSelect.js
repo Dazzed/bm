@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import Button from '../../sharedComponents/Button1';
@@ -282,9 +282,9 @@ class AccountSelect extends React.Component {
     }
 
     render() {
-        return <View>
+        return <SafeAreaView>
             {this.renderButtonAndContent()}
-        </View>
+        </SafeAreaView>
     }
 }
 

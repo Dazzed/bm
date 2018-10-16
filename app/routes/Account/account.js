@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   TabbedArea,
   TabPane,
+  SafeAreaView,
   Dimensions,
   ActivityIndicator,
   RefreshControl
@@ -111,7 +112,7 @@ class Account extends Component {
       todayChangeColor = 'red';
     }
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
@@ -161,7 +162,7 @@ class Account extends Component {
           animationOut={'slideOutDown'} >
           <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
         </Modal>
-      </View>
+      </SafeAreaView>
     );
   }
 }

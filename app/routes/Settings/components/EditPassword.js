@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
   Image,
+  SafeAreaView,
   TouchableOpacity,
   ScrollView
 } from 'react-native';
@@ -94,7 +95,7 @@ class EditPassword extends Component {
       hidePassword
     } = this.props;
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={hidePassword}>
@@ -158,7 +159,7 @@ class EditPassword extends Component {
             </TouchableOpacity>
           </ScrollView>
         </KeyboardAvoidingView>
-      </View>
+      </SafeAreaView>
     );
   }
 }

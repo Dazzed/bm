@@ -20,7 +20,8 @@ import {
   Alert,
   Dimensions,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal'
@@ -538,7 +539,7 @@ class Trending extends React.Component {
 
   render() {
     return (
-      <View style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <View style={styles.leftCta}></View>
@@ -562,7 +563,7 @@ class Trending extends React.Component {
           animationOut={'slideOutDown'} >
           <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
         </Modal>
-      </View>
+      </SafeAreaView>
     );
   }
 }

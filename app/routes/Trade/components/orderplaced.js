@@ -13,7 +13,8 @@ import {
   TabbedArea,
   TabPane,
   Dimensions,
-  Linking
+  Linking,
+  SafeAreaView
 } from 'react-native';
 import {
   shareOnTwitter
@@ -106,7 +107,7 @@ class OrderPlaced extends React.Component {
     }
 
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, order.menuBorder]}>
           <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order placed</Text>
         </View>
@@ -148,7 +149,7 @@ class OrderPlaced extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 }

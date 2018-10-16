@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
   ScrollView,
+  SafeAreaView,
   Image,
   TouchableOpacity,
   Dimensions, Platform
@@ -154,7 +155,8 @@ class SignIn extends Component {
     const { loginErrorPresent, loginLoading, isVerifyingAuth } = authStore
 
     return (
-      <ScrollView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]} keyboardShouldPersistTaps='handled'>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]} keyboardShouldPersistTaps='handled'>
+        <ScrollView>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => { authStore.setLoginErrorPresent(false);authStore.setLoginErrorMessage(null); this.props.navigation.goBack() }}>
@@ -231,7 +233,8 @@ class SignIn extends Component {
           </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }

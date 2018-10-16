@@ -24,19 +24,19 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.contentBg,
   },
   menuBorder: {
-    height: 50,
-    paddingTop: 30
+    height: 30,
+    paddingTop: 0
   },
   menuBorderptions: {
     borderBottomWidth:0.5,
     // borderBottomColor: colors.borderGray,
-    height: 65,
-    paddingTop: 25,
+    height: 35,
+    paddingTop: 0,
     // backgroundColor: colors.white
   },
   menuContainer: {
     width: '100%',
-    height: 75,
+    height: 30,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 
 import Button from '../../sharedComponents/Button1';
@@ -89,7 +89,7 @@ class Success extends React.Component {
       if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
           title = 'Account funded'
       }
-        return <View style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 15}}>
+        return <SafeAreaView style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 15}}>
           <View style={styles.menuBorder}>
             <View style={styles.menuContainer}>
               <TouchableOpacity style={styles.leftCta} onPress={() => this.props.navigation.goBack()}>
@@ -116,7 +116,7 @@ class Success extends React.Component {
           <View style={{flex: 0, width: '100%'}}>
             <Button {...this.props} title="START TRADING" onPress={() => this.navToTradingView()}/>
           </View>
-        </View>
+        </SafeAreaView>
     }
 }
 

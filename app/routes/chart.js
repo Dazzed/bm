@@ -16,7 +16,8 @@ import {
   Dimensions,
   Alert,
   Linking,
-  AppState
+  AppState,
+  SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from '../components/react-native-modal'
@@ -621,7 +622,7 @@ class Chart extends Component {
         <View style={chart.header}>
           <View style={chart.titleContainer}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange.replace("CM", '').replace("GM", '')}</Text>
           </View>
           <TouchableOpacity style={[{ borderColor: this.state.colors['lightGray'] }, chart.newsBtn]} onPress={() => this.showNews()}>
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
@@ -996,7 +997,7 @@ class Chart extends Component {
         </TouchableOpacity>
         <View style={chartland.titleContainer}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.name, fonts.hindGunturBd]}>{companyName}</Text>
-          <Text style={[{ color: this.state.colors['lightGray'] }, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange}</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange.replace("CM", '').replace("GM", '')}</Text>
         </View>
         <View style={chartland.currentPrice}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
@@ -1273,7 +1274,7 @@ class Chart extends Component {
   render() {
     var self = this;
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
 
         {this.renderLoadingOrContent()}
 
@@ -1284,7 +1285,7 @@ class Chart extends Component {
           <Search hideSearch={this.hideSearch} navigation={this.props.navigation} />
         </Modal>
 
-      </View>
+      </SafeAreaView>
     );
   }
 }

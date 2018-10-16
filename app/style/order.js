@@ -11,13 +11,13 @@ const order = StyleSheet.create({
     // backgroundColor: colors.white,
     flex: 1,
     justifyContent: 'flex-start',
-    paddingTop: 15
+    paddingTop: 0
 
   },
   accInfoContainer: {
     alignItems: 'center',
     // backgroundColor: colors.white,
-    paddingTop: 35,
+    paddingTop: 0,
     flex: 1,
     maxHeight: 100
   },

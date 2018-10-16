@@ -7,7 +7,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    SafeAreaView
 } from 'react-native';
 
 import SharedText from '../../sharedComponents/Text';
@@ -67,7 +68,7 @@ export default class ForgotPassword extends React.Component {
         const { theme } = colorStore;
         const { resetLoading } = authStore;
 
-        return <View style={{flex: 1, backgroundColor: theme.contentBg}}>
+        return <SafeAreaView style={{flex: 1, backgroundColor: theme.contentBg}}>
             <View style={styles.menuBorder}>
                 <View style={styles.menuContainer}>
                     <TouchableOpacity style={styles.leftCta} onPress={() => { this.props.navigation.goBack() }}>
@@ -100,6 +101,6 @@ export default class ForgotPassword extends React.Component {
                   title={resetLoading ? "LOADING..." : "RESET"}
                 />
             </KeyboardAvoidingView>
-        </View>
+        </SafeAreaView>
     }
 }

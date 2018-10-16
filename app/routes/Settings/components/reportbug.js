@@ -16,6 +16,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Image,
+  SafeAreaView,
   TouchableOpacity,
   TabbedArea,
   TabPane,
@@ -42,6 +43,7 @@ class ReportBug extends React.Component {
       email: '',
       name: '',
       issue_type: 'Issue',
+      error: '',
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
@@ -78,14 +80,21 @@ class ReportBug extends React.Component {
       issueType: this.state.issue_type,
       message: this.state.message
     }
-    const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
-    const res = await axios.post(`${API_URL}/api/contacts?access_token=${accessToken}`, contact);
-    this.props.hideBug()
+
+    if (this.state.message === '') {
+      this.setState({
+        error: "Please enter all fields."
+      })
+    } else {
+      const accessToken = await AsyncStorage.getItem(ACCESS_TOKEN_KEY);
+      const res = await axios.post(`${API_URL}/api/contacts?access_token=${accessToken}`, contact);
+      this.props.hideBug()
+    }
   }
 
   render() {
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideBug()}>
@@ -116,9 +125,14 @@ class ReportBug extends React.Component {
             <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={() => this.submitBug()}>
               <Text style={[{ color: this.state.colors['white'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>SUBMIT</Text>
             </TouchableOpacity>
+            {
+              this.state.error ?
+                <Text style={[fonts.hindGunturRg, { color: 'red', marginTop: 5 }]}><Text style={fonts.hindGunturBd}>Error: </Text>{this.state.error}</Text> :
+                null
+            }
           </View>
         </KeyboardAvoidingView>
-      </View>
+      </SafeAreaView>
     )
   }
 }

@@ -10,6 +10,7 @@ import {
   WebView,
   Image,
   Alert,
+  SafeAreaView,
   TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -171,7 +172,7 @@ class RegistrationPage extends React.Component {
     }
     
     return (
-      <View style={[{ backgroundColor: backgroundColor }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: backgroundColor }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackwardStep}>
@@ -190,7 +191,7 @@ class RegistrationPage extends React.Component {
           </View>
         </View>
         {this.renderStepComponent()}
-      </View>
+      </SafeAreaView>
     );
   }
 }

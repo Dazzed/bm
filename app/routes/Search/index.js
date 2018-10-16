@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  SafeAreaView,
   ActivityIndicator
 } from 'react-native';
 import { observer } from 'mobx-react';
@@ -221,7 +222,7 @@ class Search extends React.Component {
 
   render() {
     return (
-      <View style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
         <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, { backgroundColor: this.state.colors['white'] }, styles.menuBorder, styles.menuBorderptions]}>
           <View style={styles.menuContainer}>
             <View style={search.leftCta}>
@@ -251,7 +252,7 @@ class Search extends React.Component {
           </View>
         </View>
         {this.renderLoadingWheelOrContent()}
-      </View>
+      </SafeAreaView>
     )
   }
 }

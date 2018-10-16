@@ -24,7 +24,8 @@ import {
   TouchableOpacity,
   TabbedArea,
   TabPane,
-  Dimensions
+  Dimensions,
+  SafeAreaView
 } from 'react-native';
 
 import Modal from 'react-native-modal'
@@ -79,7 +80,7 @@ class Terms extends React.Component {
   render() {
     const {height, width} = Dimensions.get('window');
     return(
-      <View style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
+      <SafeAreaView style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideTerms()}>
@@ -100,7 +101,7 @@ class Terms extends React.Component {
           <Text style={[{color: this.state.colors['white']}, styles.fullBtnTxt, fonts.hindGunturBd]}>AGREE</Text>
         </TouchableOpacity>            
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 }
