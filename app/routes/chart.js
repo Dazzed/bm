@@ -541,7 +541,8 @@ class Chart extends Component {
       formattedSharesOutstanding,
       formattedChangePercent,
       formattedChangeDecimal,
-      formattedLastStockSplit
+      formattedLastStockSplit,
+      isPosNeg
     } = params;
 
     return <View>
@@ -633,7 +634,7 @@ class Chart extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.stockPrice, fonts.hindGunturRg]}>${formattedPrice}</Text>
           <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({ stockChange: !this.state.stockChange })}>
             <Text style={[{ color: this.state.colors['darkGray'] }, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-            {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
+            {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors[isPosNeg] }, { borderColor: this.state.colors[isPosNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors[isPosNeg] }, { borderColor: this.state.colors[isPosNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
           </TouchableOpacity>
         </View>
 
@@ -975,7 +976,8 @@ class Chart extends Component {
       formattedHigh,
       formattedSharesOutstanding,
       formattedChangePercent,
-      formattedChangeDecimal
+      formattedChangeDecimal,
+      isPosNeg
     } = params;
 
     const { longSide, shortSide } = deviceSizeStore;
@@ -1004,7 +1006,7 @@ class Chart extends Component {
 
           <TouchableOpacity style={chartland.priceInfo} onPress={() => this.setState({ stockChange: !this.state.stockChange })}>
             <Text style={[{ color: this.state.colors['darkGray'] }, chartland.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
-            {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
+            {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors[isPosNeg] }, { borderColor: this.state.colors[isPosNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors[isPosNeg] }, { borderColor: this.state.colors[isPosNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
           </TouchableOpacity>
         </View>
         {this.renderWatchListButton(ticker)}
@@ -1165,6 +1167,7 @@ class Chart extends Component {
     }
 
 
+    let isPosNeg = 'green';
     let formattedChangeDecimal = '---';
     if (change) {
       formattedChangeDecimal = change.toFixed(2)
@@ -1172,6 +1175,7 @@ class Chart extends Component {
     if (change > 0 && typeof change === 'number') {
       formattedChangeDecimal = '+' + change.toFixed(2);
     } else if (change < 0) {
+      isPosNeg = 'red';
       formattedChangeDecimal = change.toFixed(2);
     }
 
@@ -1196,7 +1200,8 @@ class Chart extends Component {
       formattedSharesOutstanding,
       formattedChangePercent,
       formattedChangeDecimal,
-      formattedLastStockSplit
+      formattedLastStockSplit,
+      isPosNeg
     }
 
     switch (this.state.orientation) {

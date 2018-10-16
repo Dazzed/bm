@@ -479,7 +479,9 @@ class Trending extends React.Component {
         {trendingDataJS.map((data, i) => {
           let formattedDataChange = data.change
           if(data.change > 0) {
-            formattedDataChange = '+' + data.change
+            formattedDataChange = '+' + data.change.toFixed(2)
+          } else {
+            formattedDataChange = data.change.toFixed(2)
           }
           if(data.change === 0) {
             formattedDataChange = '0.00'
