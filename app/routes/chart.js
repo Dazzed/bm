@@ -568,7 +568,7 @@ class Chart extends Component {
 
       {/* Bottom Menu nav bar */}
 
-      <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { backgroundColor: this.state.colors['white'] }, chart.fakeTabNav]}>
+      {/* <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { backgroundColor: this.state.colors['white'] }, chart.fakeTabNav]}>
         <TouchableOpacity style={chart.fakeTab} onPress={() => this.goBack('Account')}>
           <View style={chart.fakeIcon}>
             <Image
@@ -614,7 +614,7 @@ class Chart extends Component {
           </View>
           <Text style={[{ color: this.state.colors['lightGray'] }, chart.fakeTabLabel]}>Settings</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
 
       <ScrollView style={chart.wrapper}>

@@ -63,10 +63,12 @@ export default class Watchlist {
       const indexOfReplacingItem = evt.to;
       const watchlistDatatoJS = toJS(this.watchlistData);
       watchlistDatatoJS.move(indexOfMovingItem, indexOfReplacingItem);
+      console.info('before re-ordering class prop', toJS(this.watchlistData));
       this.watchlistData = watchlistDatatoJS.map((item, index) => ({
         ...item,
         position: index
       }));
+      console.info('after re-ordering class prop', toJS(this.watchlistData));
       console.info('onRowMove -> PRE', toJS(this.watchlistData));
       const { json: watchlistData } = await post('userWatchLists/reorderPosition', {
         id: targetRowId,

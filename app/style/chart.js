@@ -82,7 +82,8 @@ const chart = StyleSheet.create({
     marginLeft: '4%',
     width: '92%',
     padding: 20,
-    marginBottom: 70
+    marginBottom: 0 // commented out to ged rid of extra space the footer occupies
+    // marginBottom: 70
   },
   titleContainer: {
     flex: 3,
@@ -145,7 +146,7 @@ const chart = StyleSheet.create({
     padding: 5,
     marginTop: 5,
     maxWidth: 50,
-    maxHeight: 25    
+    maxHeight: 25
   },
   pricePoints: {
     flex: 1,
@@ -164,7 +165,7 @@ const chart = StyleSheet.create({
     height: 15,
   },
   priceNum: {
-    fontSize:15,
+    fontSize: 15,
     // color: colors.darkSlate,    
   },
   priceHigh: {
@@ -202,7 +203,7 @@ const chart = StyleSheet.create({
     textAlign: 'center',
   },
   tabBtns: {
-    backgroundColor:colors.white,
+    backgroundColor: colors.white,
     justifyContent: 'space-between',
     width: '100%',
     height: 50
@@ -234,7 +235,7 @@ const chart = StyleSheet.create({
     overflow: 'hidden',
     height: 21,
     paddingLeft: 5,
-    paddingRight:5 ,
+    paddingRight: 5,
     paddingTop: 1,
     fontSize: 12,
     // color: colors.white
