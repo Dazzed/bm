@@ -11,6 +11,11 @@ import {
 } from '../../constants';
 export const PREFIX = 'APP_GLOBAL';
 
+export function dummyUpdate() {
+  return {
+    type: `${PREFIX}_DUMMY_UPDATE`
+  };
+}
 
 export function startLoggingIn() {
   return {

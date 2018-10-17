@@ -96,6 +96,17 @@ export default TargetComponent => {
       }
     }
 
+    // HACK: If the user fails touch id for 5 times, Navigate them to the login page.
+    // Set the shouldNavigateToLogin state prop to true and after 100 millis set it to false
+    // The child component will capture the prop in componentDidUpdate
+    toggleShouldNavigateToLogin = () => {
+      this.setState({ shouldNavigateToLogin: true }, () => {
+        setTimeout(() => {
+          this.setState({ shouldNavigateToLogin: false });
+        }, 200);
+      });
+    }
+
     initiateBioAuth = () => {
       const {
         globalData: thizGlobalData
@@ -136,7 +147,7 @@ export default TargetComponent => {
           } else if (thizGlobalData.hasUserEnabledBioProtection && error.name === 'LAErrorUserCancel') {
             // this.setState({ inLockedState: true });
             this.props.logoutAction();
-            this.setState({ canRenderTargetComponent: true });
+            this.setState({ canRenderTargetComponent: true }, this.toggleShouldNavigateToLogin);
           } else if (thizGlobalData.isInititatingBioProtection === true) {
             this.props.cancelEnablingBioProtection();
             this.setState({ canRenderTargetComponent: true });
@@ -146,7 +157,7 @@ export default TargetComponent => {
           } else if (this.state.fromMinimize && error.name === 'LAErrorUserCancel') {
             // this.setState({ inLockedState: true });
             this.props.logoutAction();
-            this.setState({ canRenderTargetComponent: true });
+            this.setState({ canRenderTargetComponent: true }, this.toggleShouldNavigateToLogin);
           } else {
             this.setState(({ touchIdFailCount }) => ({ touchIdFailCount: touchIdFailCount + 1 }), this.initiateBioAuth);
           }
@@ -179,14 +190,18 @@ export default TargetComponent => {
     }
 
     render() {
-      const { canRenderTargetComponent, inLockedState } = this.state;
+      const {
+        canRenderTargetComponent,
+        inLockedState,
+        shouldNavigateToLogin
+      } = this.state;
       const { globalData } = this.props;
       if (globalData.isLoggingOut) {
         return <View></View>;
       } else if (inLockedState) {
         return <LockComponent onUnlockApp={this.onUnlockApp} globalData={globalData} />;
       }
-      return canRenderTargetComponent ? <TargetComponent /> : <View></View>
+      return canRenderTargetComponent ? <TargetComponent shouldNavigateToLogin={shouldNavigateToLogin} /> : <View></View>
     }
   }
 

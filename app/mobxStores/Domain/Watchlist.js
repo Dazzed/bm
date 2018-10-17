@@ -92,13 +92,14 @@ export default class Watchlist {
     }
   }
 
-  @action removeFromWatchlist = async itemToDelete => {
+  @action removeFromWatchlist = async (itemToDelete, callback) => {
     try {
       this.deletingRecordId = itemToDelete.id;
       this.isFetchingWatchlistData = true;
       await deleteRequest(`userWatchLists/${itemToDelete.id}`);
       await this.getWatchlistData();
       this.deletingRecordId = null;
+      if (typeof callback === 'function') callback();
     } catch (e) {
       console.log('Error in removeFromWatchlist', e);
     }

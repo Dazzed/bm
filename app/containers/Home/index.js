@@ -67,7 +67,6 @@ class HomeScreen extends Component {
         });
       }
     }
-    
   }
 
   componentDidUpdate(prevProps) {
@@ -82,6 +81,11 @@ class HomeScreen extends Component {
 
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
+    }
+
+    // Refer BioWrapper toggleShouldNavigateToLogin
+    if (prevProps.shouldNavigateToLogin === false && this.props.shouldNavigateToLogin === true) {
+      this.props.navigation.navigate('Login');
     }
 
     // if (prevGlobalData.isAuthenticated === true && currentGlobalData.isAuthenticated === false) {
@@ -178,7 +182,8 @@ HomeScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
   setThemeFromLocal: PropTypes.func.isRequired,
   globalData: PropTypes.object.isRequired,
-  // verifyAuth: PropTypes.func.isRequired
+  // verifyAuth: PropTypes.func.isRequired,
+  shouldNavigateToLogin: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

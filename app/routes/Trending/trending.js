@@ -92,6 +92,9 @@ class SubMenu extends React.Component {
     if (prevGlobalData.isDarkThemeActive !== currentGlobalData.isDarkThemeActive) {
       this.setState({ colors: colors(currentGlobalData.isDarkThemeActive) });
     }
+    if (prevGlobalData.dummyUpdatedAt !== currentGlobalData.dummyUpdatedAt) {
+      this.forceUpdate();
+    }
   }
 
   showScan() {

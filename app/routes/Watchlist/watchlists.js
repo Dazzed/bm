@@ -16,6 +16,7 @@ import {
   Dimensions,
   SafeAreaView
 } from 'react-native';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { observer } from 'mobx-react';
 import Modal from 'react-native-modal'
@@ -36,6 +37,8 @@ import navstyle from '../../style/nav';
 import watchstyle from '../../style/watchlist';
 import { watchListStore } from '../../mobxStores';
 import { kFormatter, zacksRatingFormatter } from '../../utility';
+
+import { dummyUpdate } from '../../store/actions/global';
 
 @observer
 class Watchlists extends React.Component {
@@ -131,12 +134,13 @@ class Watchlists extends React.Component {
 
   deleteWatch = rowToRemove => {
     const { removeFromWatchlist } = watchListStore;
+    const { dummyUpdate } = this.props;
     Alert.alert(
       'Delete',
       'Are you sure you want to delete this?',
       [
         { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-        { text: 'OK', onPress: () => removeFromWatchlist(rowToRemove) },
+        { text: 'OK', onPress: () => removeFromWatchlist(rowToRemove, dummyUpdate) },
       ],
       { cancelable: true }
     )
@@ -379,10 +383,13 @@ class Watchlists extends React.Component {
 Watchlists.propTypes = {
   navigation: PropTypes.object.isRequired,
   globalData: PropTypes.object.isRequired,
+  dummyUpdate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   globalData: selectGlobalData(state)
 });
 
-export default connect(mapStateToProps, null)(Watchlists);
+const mapDispatchToProps = bindActionCreators.bind(this, { dummyUpdate });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Watchlists);

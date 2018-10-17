@@ -18,7 +18,8 @@ const initialState = {
     // bio for settings page
   isInititatingBioProtection: false,
   isCancellingBioProtection: false,
-  loginData: null
+  loginData: null,
+  dummyUpdatedAt: Date.now()
 }
 
 export default (state = initialState, action) => {
@@ -167,6 +168,11 @@ export default (state = initialState, action) => {
         ...state,
         loginData: action.payload
       };
+    case `${PREFIX}_DUMMY_UPDATE`:
+      return {
+        ...state,
+        dummyUpdatedAt: Date.now()
+      }
   }
   return state;
 };
