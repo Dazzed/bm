@@ -282,7 +282,8 @@ class AccountSelect extends React.Component {
     }
 
     render() {
-        return <SafeAreaView>
+        const { theme } = colorStore;
+        return <SafeAreaView style={{ flex: 1, backgroundColor: theme.contentBg }}>
             {this.renderButtonAndContent()}
         </SafeAreaView>
     }

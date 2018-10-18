@@ -623,7 +623,7 @@ class Chart extends Component {
         <View style={chart.header}>
           <View style={chart.titleContainer}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {exchange.replace("CM", '').replace("GM", '')}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {(exchange)? exchange.replace("CM", '').replace("GM", '').replace("GS", ''): ''}</Text>
           </View>
           <TouchableOpacity style={[{ borderColor: this.state.colors['lightGray'] }, chart.newsBtn]} onPress={() => this.showNews()}>
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>

@@ -191,7 +191,7 @@ class OrderCover extends React.Component {
             <View style={order.purchaseDetailsWrap}>
               {
                 orderTypeName !== 'market' ? <Fragment>
-                  <Text style={[{ color: this.state.colors['darkGray'] }, order.purchaseTxtLeft, fonts.hindGunturRg]}>Validity</Text>
+                  <Text style={[{ color: this.state.colors['darkGray'] }, order.purchaseTxtLeft, fonts.hindGunturRg]}>Time in Force</Text>
                   <Text style={[{ color: this.state.colors['darkGray'] }, order.purchaseTxt, fonts.hindGunturRg]}>{validity_props[validityIndex].label}</Text>
                   <Text style={[{ color: this.state.colors['darkGray'] }, order.purchaseTxtBtn, fonts.hindGunturBd]} onPress={() => { this.showOrderTypes(); }}>EDIT</Text>
                 </Fragment> : null

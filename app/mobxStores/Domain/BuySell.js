@@ -85,7 +85,7 @@ export default class BuySellStore {
     const { Price } = tickerDataJS;
     console.log('---- calculate cost', this.quantity, parseInt(this.quantity), Price)
     let calculatedCost = parseInt(this.quantity) * Price;
-    return numberWithCommas(calculatedCost);
+    return numberWithCommas(calculatedCost,2);
     // return calculatedCost.toFixed(2);
   }
 
@@ -100,7 +100,7 @@ export default class BuySellStore {
     if (this.price !== 0 && this.price !== '') {
       calculatedCost = parseInt(this.quantity) * this.price;
     }
-    return numberWithCommas(calculatedCost);
+    return numberWithCommas(calculatedCost,2);
   }
 
   @observable transactionType = '';

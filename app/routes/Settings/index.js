@@ -317,7 +317,7 @@ class Settings extends Component {
           {this.renderOption('Number of dependents', globalData.currentUser.dependents, this.toggleModal.bind(this, 'isDependentsVisible'))}
           {this.renderOption('Employment status', globalData.currentUser.employment, this.toggleModal.bind(this, 'isEmploymentStatusVisible'))}
           {this.renderOption('Investment experience', globalData.currentUser.experience, this.toggleModal.bind(this, 'isExperienceVisible'))}
-          {this.renderOption('Country of citizenship', globalData.currentUser.country)}
+          {this.renderOption('Country of citizenship', (globalData.currentUser.country == 'US' ? 'United States' : globalData.currentUser.country))}
 
           {/* Color Scheme */}
 

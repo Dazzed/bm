@@ -203,7 +203,7 @@ const account = StyleSheet.create({
     flex: 2,
     textAlign: 'right',
     fontSize: 14,
-    lineHeight: 20
+    lineHeight: 22
   },
   symbolRow: {
     flex: 1,

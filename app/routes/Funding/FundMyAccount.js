@@ -362,7 +362,7 @@ class FundMyAccount extends React.Component {
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Account funded'
         }
-        return <SafeAreaView style={{height: '100%', padding: 0}}>
+        return <SafeAreaView style={{ height: '100%', padding: 0, backgroundColor: theme.contentBg}}>
             <View style={{flex: 1, backgroundColor: theme.contentBg}}>
                 <View style={styles.menuBorder}>
                     <View style={styles.menuContainer}>

@@ -121,7 +121,7 @@ class OrderConf extends React.Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>{numberWithCommas(quantity)} {sharesOrShareText} of {ticker}</Text>
             <Text style={order.confSpacing}></Text>
             <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>Each share is ${numberWithCommas(pricePerShare, 2)}</Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>for a total of <Text style={styles.greentTxt}>${numberWithCommas(totalPrice, 2)}</Text></Text>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, order.confTxt, fonts.hindGunturLt]}>for a total of <Text style={styles.greentTxt}>${totalPrice}</Text></Text>
             <Text style={order.confSpacing}></Text>
           </View>
           <View style={order.confirmContainer}>
@@ -139,10 +139,10 @@ class OrderConf extends React.Component {
             </View>
             <View style={order.confirmRow}>
               <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>ESTIMATED COST</Text>
-              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>${numberWithCommas(totalPrice, 2)}</Text>
+              <Text style={[order.confirmColRight, fonts.hindGunturRg]}>${totalPrice}</Text>
             </View>
             <View style={order.confirmRow}>
-              <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>VALIDITY</Text>
+              <Text style={[order.confirmColLeft, fonts.hindGunturRg]}>TIME IN FORCE</Text>
               <Text style={[order.confirmColRight, fonts.hindGunturRg]}>{validity}</Text>
             </View>
             <View style={order.confirmRow}>
