@@ -121,17 +121,17 @@ class OrderShort extends React.Component {
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
-              MARKET PRICE
+              MARKET PRICE $
             </Text>
             <Text
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]} onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               {
                 orderTypeName === 'market' ?
-                  `$${tickerDataJS.Price}` :
+                  `${tickerDataJS.Price}` :
                   (activeInputName === 'price' ?
                     (price || tickerDataJS.Price) :
-                    `$${price || tickerDataJS.Price}`)
+                    `${price || tickerDataJS.Price}`)
               }
             </Text>
           </View>
@@ -177,7 +177,7 @@ class OrderShort extends React.Component {
                 <Text style={[{ color: this.state.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum('.') }}>.</Text>}
               <Text style={[{ color: this.state.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.addNum(0); }}>0</Text>
               <Text style={[{ color: this.state.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturRg]} onPress={() => { this.removeNum(); }}>
-                <Text> </Text>
+                <Text style={[{ fontSize: 22 }]}> </Text>
                 <Image
                   source={this.state.colors['deleteImg']}
                   style={{ width: 40, height: 26 }}

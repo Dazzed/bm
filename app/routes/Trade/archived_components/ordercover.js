@@ -122,7 +122,7 @@ class OrderCover extends React.Component {
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
-              MARKET PRICE
+              MARKET PRICE $
             </Text>
             <Text
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]}
@@ -130,10 +130,10 @@ class OrderCover extends React.Component {
             >
               { 
                 orderTypeName === 'market' ? 
-                  `$${tickerDataJS.Price}` : 
+                  `${tickerDataJS.Price}` : 
                     (activeInputName === 'price' ? 
                       (price || tickerDataJS.Price) : 
-                      `$${price || tickerDataJS.Price}`) 
+                      `${price || tickerDataJS.Price}`) 
               }
             </Text>
           </View>
