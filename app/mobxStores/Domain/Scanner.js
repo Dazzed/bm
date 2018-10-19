@@ -15,7 +15,7 @@ export default class Scanner {
     }
   }
 
-  @action setScannerData = (data) => {
+  @action setScannerData = data => {
     if(this.currentPage > 1) {
       this.scannerData = toJS(this.scannerData).concat(data);
     } else {

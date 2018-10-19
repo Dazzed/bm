@@ -376,7 +376,7 @@ class Chart extends Component {
     } else {
       return <View>
         {executives.map((elem, i) => {
-          return <View key={i} style={chart.profileTxt}>
+          return <View key={`chart_executive_${i}`} style={chart.profileTxt}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTxtDrk, fonts.hindGunturRg]}>{elem.title}</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxtSm, fonts.hindGunturRg]}>{elem.role}</Text>
           </View>
@@ -392,7 +392,7 @@ class Chart extends Component {
       </View>
     } else {
       return list.map((elem, i) => {
-        return <View style={chart.profileTxt}>
+        return <View style={chart.profileTxt} key={`chart_related_list_${i}`}>
           <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxtSymbol, fonts.hindGunturRg]}>TICKER</Text>
           <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxtSm, fonts.hindGunturRg]}>Company Name</Text>
         </View>
@@ -484,7 +484,7 @@ class Chart extends Component {
         if (selected) {
           inlineStyle.backgroundColor = this.state.colors['grayTwo'];
         }
-        return <TouchableOpacity name={elem.query} style={[inlineStyle, fonts.hindGunturBd, chart.timeSelected]} onPress={() => this.setRange(elem.query)}>
+        return <TouchableOpacity key={`chart_range_option_${i}`} name={elem.query} style={[inlineStyle, fonts.hindGunturBd, chart.timeSelected]} onPress={() => this.setRange(elem.query)}>
           <Text name={elem.query} style={[{ color: this.state.colors['lightGray'] }, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>
         </TouchableOpacity>
       })}
@@ -817,7 +817,7 @@ class Chart extends Component {
       </View>
     }
     return params.bid.map((elem, i) => {
-      return <View style={chartland.bidaskRow}>
+      return <View style={chartland.bidaskRow} key={`chart_bid_list_${i}`}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskNum]}>{elem.size}</Text>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>${elem.price}</Text>
       </View>
@@ -831,7 +831,7 @@ class Chart extends Component {
       </View>
     }
     return params.ask.map((elem, i) => {
-      return <View style={chartland.bidaskRow}>
+      return <View style={chartland.bidaskRow} key={`chart_ask_list_${i}`}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskNum]}>{elem.size}</Text>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>${elem.price}</Text>
       </View>

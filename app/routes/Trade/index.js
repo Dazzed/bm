@@ -154,7 +154,7 @@ class Trade extends React.Component {
 
   getTabView = () => {
     const propsToPass = {
-      hideOrder: this.hideOrderChild,
+      hideOrder: this.goBack,
       showOrderConfirm: this.showOrderConfirm
     };
     const Wrapper = ({ children }) => (
@@ -225,7 +225,8 @@ class Trade extends React.Component {
 
   renderOrderTypeModal = () => {
     const orderTypeOptions = this.generateOrderTypeOptions();
-    let initialValueIndex = orderTypeOptions.findIndex(o => o.name === this.state.orderTypeName);
+    const { orderTypeName } = buySellStore;
+    let initialValueIndex = orderTypeOptions.findIndex(o => o.name === orderTypeName);
     if (initialValueIndex === -1) {
       initialValueIndex = 0;
     }

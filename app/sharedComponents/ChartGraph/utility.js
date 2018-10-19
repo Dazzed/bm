@@ -262,7 +262,6 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
     for(let i = 0; i < data.length; i++) {
 
       if (data[i].close > 0 ) {
-        console.log(265, data[i])
         const thisDataPoint = data[i];
 
         let dataPointIsFuturePoint = isDataPointFuturePoint(thisDataPoint);
