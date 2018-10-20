@@ -178,7 +178,9 @@ class Chart extends Component {
   }
 
   componentDidMount() {
-    const { initIndicatorsList } = chartStore;
+    const { initIndicatorsList, setRange } = chartStore;
+    setRange(this.state.page)
+
     Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
     AppState.addEventListener('change', this._handleAppStateChange);
