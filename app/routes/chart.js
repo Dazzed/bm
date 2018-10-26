@@ -41,6 +41,7 @@ import { selectGlobalData } from '../selectors';
 import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
+import { numberWithCommas } from '../utility';
 import {
   chartStore,
   watchListStore,
@@ -941,6 +942,22 @@ class Chart extends Component {
               unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
             />
           </View>
+
+          <View style={styles.checkBoxWrap}>
+            <CheckBox
+              style={styles.checkField}
+              onClick={() => this.toggleCheck('BOL')}
+              isChecked={this.checkIndicators('BOL')}
+              isDisabled={this.state.isDisabled}
+              rightTextViewStyle={styles.checkBoxLabelWrap}
+              rightText={'BOL'}
+              rightTextStyle={[styles.checkBoxLabel, fonts.hindGunturBd]}
+              rightSubText={'Bollinger Bands'}
+              rightSubTextStyle={[styles.checkBoxSubLabel, fonts.hindGunturRg]}
+              checkedImage={<Image source={_000000_checkbox_image} style={styles.checkBox} />}
+              unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
+            />
+          </View>
       
         </ScrollView>
       </View>
@@ -972,6 +989,7 @@ class Chart extends Component {
       website,
       formattedTime,
       formattedVolume,
+      formattedVolumeWithCommas,
       formattedPrice,
       formattedOpen,
       formattedLow,
@@ -985,8 +1003,11 @@ class Chart extends Component {
     const { longSide, shortSide } = deviceSizeStore;
 
     let headerHeight = 58;
-    let footerHeight = 35;
+    let footerHeight = 45;
     let rightWidth = 220;
+    if (longSide > 800) {
+      rightWidth = 301;
+    }
 
     let chartHeight = shortSide - headerHeight - footerHeight;
     let chartWidth = longSide - rightWidth;
@@ -1001,7 +1022,7 @@ class Chart extends Component {
         </TouchableOpacity>
         <View style={chartland.titleContainer}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.name, fonts.hindGunturBd]}>{companyName}</Text>
-          <Text style={[{ color: this.state.colors['lightGray'] }, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {exchange.replace("CM", '').replace("GM", '')}</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chartland.symbol, fonts.hindGunturRg]}>{ticker}: {(exchange) ? exchange.replace("CM", '').replace("GM", '').replace("GS", '') : ''}</Text>
         </View>
         <View style={chartland.currentPrice}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
@@ -1030,7 +1051,7 @@ class Chart extends Component {
           </View>
           <View style={chartland.priceVol}>
             <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME: </Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolumeWithCommas}</Text>
           </View>
         </View>
       </View>
@@ -1142,6 +1163,7 @@ class Chart extends Component {
     let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
     let formattedVolume = millionBillionFormatter(Volume);
 
+    let formattedVolumeWithCommas = numberWithCommas(Volume);
     // add tofixed
     let formattedPrice = '$' + '---';
     if (Price) {
@@ -1195,6 +1217,7 @@ class Chart extends Component {
       ...tickerDataJS,
       formattedTime,
       formattedVolume,
+      formattedVolumeWithCommas,
       formattedPrice,
       formattedOpen,
       formattedLow,

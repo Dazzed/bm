@@ -153,7 +153,8 @@ const account = StyleSheet.create({
     lineHeight: 24,
     // color: colors.lightGray,
     width: 80,
-    marginLeft: 10
+    marginRight: 5,
+    textAlign: 'right'
   },
   titlePrc: {
     fontSize: 10,
@@ -196,14 +197,14 @@ const account = StyleSheet.create({
   sectionLabel: {
     flex:2,
     // color: colors.lightGray,
-    lineHeight: 20,
-    fontSize: 12
+    lineHeight: 26,
+    fontSize: 16
   },
   sectionDetail: {
     flex: 2,
     textAlign: 'right',
-    fontSize: 14,
-    lineHeight: 22
+    fontSize: 16,
+    lineHeight: 26
   },
   symbolRow: {
     flex: 1,

@@ -53,7 +53,7 @@ export default class LargeGraph extends React.Component {
             <TextSvg
               key={Math.random() + key}
               fontSize={12}
-              fill={theme.borderGray}
+              //fill={theme.borderGray}
               stroke={theme.borderGray}
               y={'95%'}
               x={ position }
@@ -83,13 +83,13 @@ export default class LargeGraph extends React.Component {
           <TextSvg
             key={Math.random() + key}
             fontSize={12}
-            fill={theme.borderGray}
+            // fill={theme.borderGray}
             stroke={theme.borderGray}
-            x={'95%'}
+            x={'94%'}
             y={ position + verticalOffset}
             textAnchor="middle"
           >
-            {label}
+            {label} 
           </TextSvg>
         </G>
     }
@@ -124,7 +124,7 @@ export default class LargeGraph extends React.Component {
         }
 
         // edit this one
-        let lineWidth = 3;
+        let lineWidth = 2;
 
         // these are relative calculations
         let thinLineWidth = lineWidth / 2;
@@ -179,7 +179,7 @@ export default class LargeGraph extends React.Component {
     }
 
     generateVerticalBottomBars(params, key) {
-      let barWidth = .01;
+      let barWidth = 4;
       return <Rect
         x={params.xCoord - (barWidth / 2)}
         y={params.yCoord}

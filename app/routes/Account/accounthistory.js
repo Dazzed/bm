@@ -135,9 +135,10 @@ class AccountHist extends Component {
     const { isCancellingOrder, cancellingOrderId } = myAccountStore;
     return (
       <View>
-        <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>
-          PENDING
-        </Text>
+        {pendingOrders.length ?
+          <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>
+            PENDING
+          </Text>: null }
         {pendingOrders.length ?
           pendingOrders.map((eachDate, i) => {
             return <View key={'eachDate' + i}>
@@ -189,7 +190,7 @@ class AccountHist extends Component {
                 </View>
               </View>
             </View>
-          }) : <Text style={[account.noOrdersText, fonts.hindGunturBd]}>You have no pending trades.</Text>}
+          }) : null }
         <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>
           FILLED
         </Text>

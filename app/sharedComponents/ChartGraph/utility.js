@@ -26,6 +26,17 @@ const shouldDisplayDateStamps = (max, min, range) => {
   }
 }
 
+const formatDateStamp5Year = (unixInput) => {
+  return moment.unix(unixInput).format('YYYY');
+}
+
+const formatDateStamp12Year = (unixInput) => {
+  return moment.unix(unixInput).format('MMM YYYY');
+}
+const formatDateStamp1M6M = (unixInput) => {
+  return moment.unix(unixInput).format('MM/DD');
+}
+
 const formatDateStamp = (unixInput) => {
   return moment.unix(unixInput).format('MM-DD-YY');
 }
@@ -355,6 +366,30 @@ const isLineValid = (lineData) => {
 
 export const parseLargeGraphData = (inputData, height, width, indicatorsList, theme, range) => {
 
+  var maxVal = 0;
+  for (let i = 0; i < inputData.length; i++) {
+    if (inputData[i].high && inputData[i].high > maxVal) {
+      maxVal = inputData[i].high;
+    }
+  }
+  let processed = false;
+  if (maxVal > 100000) {
+    width -= 28;
+    processed = true;
+  }
+  if (maxVal > 10000 && processed == false) {
+    width -= 21;
+    processed = true;
+  }
+  if (maxVal > 1000 && processed == false) {
+    width -= 14;
+    processed = true;
+  }
+  if (maxVal > 100 && processed == false) {
+    width -= 7;
+    processed = true;
+  }
+
     //////////////////////////////////////////////////////////////////////////
     // init data
     let modifiedInputData = [];
@@ -431,7 +466,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // adds bottom padding
     height = height * d.yPaddingModifier;
     // adds right padding
+    console.log(445, width);
     width = width * d.xPaddingModifier;
+  console.log(447, width);
 
     //////////////////////////////////////////////////////////////////////////
     // define x and y  max & min functions
@@ -476,6 +513,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let ichiHasNullValue = false;
     let sma50HasNullValue = false;
     let sma200HasNullValue = false;
+    let bolHasNullValue = false;
 
     //////////////////////////////////////////////////////////////////////////
     // loop through and disqualify any null line
@@ -497,8 +535,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(elem.sma50 === null ) {
         sma50HasNullValue = true;
       }
-      if(elem.sma200 === null ) {
+      if (elem.sma200 === null) {
         sma200HasNullValue = true;
+      }
+      if (elem.bol === null || elem.bol === 0) {
+        bolHasNullValue = true;
       }
     });
 
@@ -509,6 +550,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderEma50 = false;
     let renderEma200 = false;
     let renderSma = false;
+    let renderBol = false;
 
     //////////////////////////////////////////////////////////////////////////
     // add date stamp and calculate maximums and minimums
@@ -521,8 +563,11 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       if(!volumeHasNullValue) {
         renderVolume = indicatorsList.indexOf('VLM') > -1;
       }
-      if(!ichiHasNullValue) {
+      if (!ichiHasNullValue) {
         renderIchi = indicatorsList.indexOf('ICHI') > -1;
+      }
+      if (!bolHasNullValue) {
+        renderBol = indicatorsList.indexOf('BOL') > -1;
       }
       if(!sma50HasNullValue && !sma200HasNullValue ) {
         renderSma = indicatorsList.indexOf('SMA') > -1;
@@ -542,15 +587,27 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.high);
       manipulateYMaxMin(elem.low);
 
-      if(renderIchi) {
-        if(elem.ichi.base !== null) {
+      if (renderIchi) {
+        if (elem.ichi.base !== null) {
           manipulateYMaxMin(elem.ichi.base);
         }
-        if(elem.ichi.conversion !== null) {
+        if (elem.ichi.conversion !== null) {
           manipulateYMaxMin(elem.ichi.conversion);
         }
         manipulateYMaxMin(elem.ichi.spanA);
         manipulateYMaxMin(elem.ichi.spanB);
+      }
+
+      if (renderBol) {
+        if (elem.bol && elem.bol.middle !== null && elem.bol.middle !== 0) {
+          manipulateYMaxMin(elem.bol.middle);
+        }
+        if (elem.bol && elem.bol.lower !== null && elem.bol.lower !== 0) {
+          manipulateYMaxMin(elem.bol.lower);
+        }
+        if (elem.bol && elem.bol.upper !== null && elem.bol.upper !== 0) {
+          manipulateYMaxMin(elem.bol.upper);
+        }
       }
 
       // conditional rendering based on indicators menu
@@ -660,7 +717,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       for (let elem of source) {
         let chosenValue = Object.byString(elem, targetValue);
         // console.log('chosen value', chosenValue);
-        if(chosenValue === null || chosenValue === 0) {
+        if (!chosenValue || chosenValue === null || chosenValue === 0) {
           continue;
         }
         // console.log('--- ', elem, d.xMin, d.xRange)
@@ -686,6 +743,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         result.formattedLineData = formattedLineData;
       }
 
+      // console.log(result.formattedLineData);
       return result;
     }
 
@@ -696,7 +754,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
 
       for (let elem of d.dataPoints) {
         let chosenValue = Object.byString(elem, targetValue);
-        if(chosenValue === null) {
+        if (!chosenValue || chosenValue === null) {
           continue;
         }
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
@@ -795,6 +853,13 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.formattedLines.push(generateLineData('sma50', '#FF8C00', d.dataPoints));
       d.formattedLines.push(generateLineData('sma200', '#FF8C00', d.dataPoints));
     }
+    if (renderBol) {
+      d.formattedLines.push(generateLineData('bol.upper', '#000000', d.dataPoints));
+      d.formattedLines.push(generateLineData('bol.middle', '#000000', d.dataPoints));
+      d.formattedLines.push(generateLineData('bol.lower', '#000000', d.dataPoints));
+    }
+
+    console.log(d);
     const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range);
 
 
@@ -842,7 +907,15 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       // otherwise, show times
 
       if(displayDateStamps) {
-        label = formatDateStamp( unixPoint );
+        if (range === '5y') {
+          label = formatDateStamp5Year(unixPoint);          
+        } else if (range === '1y' || range === '2y') {
+          label = formatDateStamp12Year(unixPoint);      
+        } else if (range === '1m' || range === '6m') {    
+          label = formatDateStamp1M6M(unixPoint);      
+        } else {
+          label = formatDateStamp(unixPoint);
+        }
       } else {
         label = formatTimeStamp( unixPoint );
       }

@@ -42,7 +42,9 @@ export default class BuySellStore {
       } else {
         curNums = this.quantity + '' + num;
       }
-      this.setQuantity(curNums);
+      if (parseFloat(curNums) < 1000000000) {
+        this.setQuantity(curNums);
+      }
     } else if (type === 'price') {
       if (num === '.') {
         if (this.price.includes('.')) {
@@ -54,7 +56,9 @@ export default class BuySellStore {
       } else {
         curNums = this.price + '' + num;
       }
-      this.setPrice(curNums);
+      if (parseFloat(curNums) < 10000000) {
+        this.setPrice(curNums);
+      }
     } else {
       throw new Error(`Domain/BuySell.js addNumber(), Expected one of quantity or price. Received '${type}'`)
     }

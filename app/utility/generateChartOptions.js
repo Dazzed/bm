@@ -2,13 +2,17 @@ const generateChartOptionsQuery = (ticker, range, includeICHI) => {
 
   let options = {
       'ticker': ticker,
-      'indicator': ['EMA', 'RSI', 'SMA'],
+      'indicator': ['EMA', 'RSI', 'SMA', 'BOL'],
       'parameters':{
         'ICHI': {
           'conversionPeriod': 9,
           'basePeriod': 26,
           'spanPeriod': 52,
           'displacement': 26
+        },
+        'BOL': {
+          'period': 20,
+          'stdDev': 2
         },
         'EMA': {
           'period':50
@@ -26,12 +30,12 @@ const generateChartOptionsQuery = (ticker, range, includeICHI) => {
     if(range == '1h') {
       // one hour
       options.range = '1d';
-      options.interval = { periodType: "m", period: 1 }
+      options.interval = { periodType: "m", period: 2 }
     } else if (range == '1d') {
       // five days
       options.range = '1d';
       // options.data_point = 120;
-      options.interval = {periodType: "m", period: 10}
+      options.interval = {periodType: "m", period: 13}
     } else if (range == '5d') {
       // five days
       options.range = '5d';
@@ -43,7 +47,7 @@ const generateChartOptionsQuery = (ticker, range, includeICHI) => {
     } else if (range == '6m') {
       // six months
       options.range = '6m';
-      options.data_point = 60;
+      options.data_point = 45;
     } else if (range == '1y') {
       // one year
       options.range = '1y';

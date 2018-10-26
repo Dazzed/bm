@@ -86,24 +86,24 @@ const chart = StyleSheet.create({
     // color: colors.lightGray,
   },
   currentPrice: {
-    flex: 1.75,
+    flex: 2.75,
     flexDirection: 'row',
-    maxWidth: 175
+    maxWidth: 250
   },
   prices: {
     flex:3,
     flexDirection: 'row',
-    paddingLeft: 45
+    paddingLeft: 65
   },
   stockPrice: {
     fontSize: 38,
     lineHeight: 60,
     height: 40,
     // color: colors.darkSlate,
-    flex: 1
+    flex: 2.5
   },
   priceInfo: {
-    flex: 0.5
+    flex: 0.75
   },
   priceTime: {
     fontSize: 11,
@@ -147,7 +147,7 @@ const chart = StyleSheet.create({
     flexDirection: 'column'
   },
   timePeriod: {
-    marginTop: 5,
+    marginTop: 2,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
