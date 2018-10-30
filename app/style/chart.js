@@ -178,7 +178,7 @@ const chart = StyleSheet.create({
     flex: 1
   },
   verticalChart: {
-    marginTop: 35,
+    marginTop: 5,
     flex: 1,
     flexDirection: 'column'
   },
@@ -252,7 +252,7 @@ const chart = StyleSheet.create({
     marginTop: 10
   },
   momentumWrapper: {
-    marginTop: 25,
+    marginTop: 5,
     marginBottom: 0,
     flex: 1,
     flexDirection: 'row',

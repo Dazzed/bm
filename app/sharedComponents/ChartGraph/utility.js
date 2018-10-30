@@ -267,6 +267,23 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
       }
     }
 
+    if (range === '1d') {
+      if (data.length > 0) {
+        let firstData = data[0];
+        if (firstData) {
+          let priceDate = parseInt(moment(data[0].date, "YYYYMMDD").format('X'));
+          let maxPriceTime = priceDate + 960;
+          if (d.xMax < maxPriceTime) {
+            d.xMax = maxPriceTime;
+          }
+          let minPriceTime = d.xMax - 960;
+          if (minPriceTime < d.xMin) {
+            d.xMin = minPriceTime;
+          }
+        }
+      }
+    }
+
     let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range)
     // console.log('====== SMALL GRAPH', displayDateStamps)
 
@@ -466,9 +483,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // adds bottom padding
     height = height * d.yPaddingModifier;
     // adds right padding
-    console.log(445, width);
     width = width * d.xPaddingModifier;
-  console.log(447, width);
 
     //////////////////////////////////////////////////////////////////////////
     // define x and y  max & min functions
@@ -665,7 +680,17 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     // Save range
     d.xRange = d.xMax - d.xMin;
     d.yRange = d.yMax - d.yMin;
-
+    if (range === '1m') {
+      let diff = d.xMax - d.xMin;
+      let singleDay = diff / d.dataPoints.length;
+      d.dataPoints = d.dataPoints.map((elem, i) => {
+        let dateUnix = d.xMin + (i * singleDay);
+        return {
+          ...elem,
+          dateUnix
+        }
+      });
+    }
     //////////////////////////////////////////////////////////////////////////
     // add relative and coordinate positional data to all pertinent points
     d.dataPoints = d.dataPoints.map((elem, i) => {
