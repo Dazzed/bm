@@ -22,33 +22,30 @@ export default class Index extends React.Component {
     }
   }
 
-  renderLargeGraphOrSmallGraph() {
+  renderLargeGraphOrSmallGraph = () => {
     const { chartDetailDataJS } = chartStore;
     const { theme } = colorStore;
-
     // console.log('===================== THIS PROPS HEIGHT', this.props.height);
 
-    if(this.props.viewLargeGraph) {
-      return <LargeGraph data={chartDetailDataJS} height={this.props.height} width={this.props.width} {...this.props}/>
+    if (this.props.viewLargeGraph) {
+      return <LargeGraph data={chartDetailDataJS} height={this.props.height} width={this.props.width} {...this.props} />
     } else {
-      return <SmallGraph data={chartDetailDataJS} height={this.state.height} width={this.state.width} {...this.props}/>
+      return <SmallGraph data={chartDetailDataJS} height={this.state.height} width={this.state.width} {...this.props} />
     }
   }
 
   onLayout = event => {
-      if (this.state.dimensions) return // layout was already called
-      let {width, height} = event.nativeEvent.layout
-      // console.log('======================= on layout height width', height, width)
-      this.setState({dimensions: {width, height}})
+    if (this.state.dimensions) return // layout was already called
+    let { width, height } = event.nativeEvent.layout
+    // console.log('======================= on layout height width', height, width)
+    this.setState({ dimensions: { width, height } })
   }
 
-  renderLoadingOrContent() {
-      return <View>
-        {this.renderLargeGraphOrSmallGraph()}
-      </View>
+  renderLoadingOrContent = () => {
+    return <View>
+      {this.renderLargeGraphOrSmallGraph()}
+    </View>
   }
-
-
 
   render() {
     let inlineStyle = {
@@ -60,7 +57,7 @@ export default class Index extends React.Component {
       // position: 'relative'
     }
     return <View style={inlineStyle} onLayout={(event) => this.onLayout(event)}>
-        {this.renderLoadingOrContent()}
+      {this.renderLoadingOrContent()}
     </View>
   }
 }

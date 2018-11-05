@@ -150,7 +150,6 @@ export default class Trending {
 
     getTrendingDataApi(params)
     .then((res) => {
-      console.log('trending data', res)
       if(res.ok) {
         this.setTrendingData(res.json.data)
       } else {

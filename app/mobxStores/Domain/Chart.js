@@ -88,7 +88,7 @@ export default class AccountStore {
         this.chartDetailData = newData;
     }
     @computed get chartDetailDataJS() {
-        return toJS(this.chartDetailData)
+        return toJS(this.chartDetailData);
     }
 
     @action getStockChartDetails = () => {

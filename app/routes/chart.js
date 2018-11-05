@@ -106,17 +106,12 @@ class Chart extends Component {
       colors: colors(props.globalData.isDarkThemeActive),
       appState: AppState.currentState
     };
-    this.orientationDidChange = this._orientationDidChange.bind(this);
-    this.hideNews = this.hideNews.bind(this);
-    this.hideOrder = this.hideOrder.bind(this);
-    this.showSearch = this.showSearch.bind(this);
-    this.hideSearch = this.hideSearch.bind(this);
 
     this.smallGraphHeight = 150;
     this.largeGraphHeight = 300;
   }
 
-  _orientationDidChange(orientation) {
+  orientationDidChange = orientation => {
     if (orientation == 'LANDSCAPE') {
       this.setState({ orientation: 'landscape' })
 
@@ -147,7 +142,7 @@ class Chart extends Component {
     // })
   }
 
-  addSymbol(ticker) {
+  addSymbol = ticker => {
     Alert.alert(
       '',
       'Add ' + ticker + ' to your watchlist?',
@@ -159,7 +154,7 @@ class Chart extends Component {
     )
   }
 
-  removeSymbol(ticker) {
+  removeSymbol = ticker => {
     Alert.alert(
       '',
       'Remove ' + ticker + ' from your watchlist?',
@@ -198,7 +193,7 @@ class Chart extends Component {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       Orientation.unlockAllOrientations();
       Orientation.addOrientationListener(this.orientationDidChange);
-    }    
+    }
     this.setState({ appState: nextAppState });
   }
 
@@ -242,33 +237,33 @@ class Chart extends Component {
     });
   }
 
-  hideOrder() {
+  hideOrder = () => {
     Orientation.unlockAllOrientations();
     this.setState({ isOrderVisible: false })
   }
-  showNews() {
+  showNews = () => {
     this.setState({ isNewsVisible: true })
     Orientation.lockToPortrait();
   }
-  hideNews() {
+  hideNews = () => {
     this.setState({ isNewsVisible: false })
     Orientation.unlockAllOrientations();
   }
-  showSearch() {
+  showSearch = () => {
     this.setState({ isSearchVisible: true });
     Orientation.lockToPortrait();
   }
-  hideSearch() {
+  hideSearch = () => {
     this.setState({ isSearchVisible: false });
     Orientation.unlockAllOrientations();
   }
-  showIndicators() {
+  showIndicators = () => {
     this.setState({ isIndicatorsVisible: true });
   }
-  hideIndicators() {
+  hideIndicators = () => {
     this.setState({ isIndicatorsVisible: false });
   }
-  toggleCheck(value) {
+  toggleCheck = value => {
     const { setIndicatorsList } = chartStore;
     var indicates = this.state.indicators;
     var exists = false;
@@ -323,7 +318,7 @@ class Chart extends Component {
       })
     }
   }
-  checkIndicators(value) {
+  checkIndicators = value => {
     var indicates = this.state.indicators;
     var exister = false;
     for (var i = 0; i < indicates.length; i++) {
@@ -333,7 +328,7 @@ class Chart extends Component {
     }
     return exister;
   }
-  goBack(tab) {
+  goBack = tab => {
     this.props.navigation.goBack();
     var that = this;
     setTimeout(function () { that.props.navigation.navigate(tab) }, 15);
@@ -341,7 +336,10 @@ class Chart extends Component {
 
 
 
-  setRange(name) {
+  setRange = name => {
+    if (this.state.page === name) {
+      return;
+    }
     const { setRange } = chartStore;
     this.setState({
       page: name
@@ -360,7 +358,7 @@ class Chart extends Component {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  renderExecutives(executives) {
+  renderExecutives = executives => {
     // {/* TODO: get executives list. Not in this data yet */}
 
     // executives = [
@@ -388,7 +386,7 @@ class Chart extends Component {
     }
   }
 
-  renderRelatedListOrNot(list) {
+  renderRelatedListOrNot = list => {
     if (!list || list.length === 0) {
       return <View style={chart.profileTxt}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxtSm, fonts.hindGunturRg]}>No Results</Text>
@@ -427,7 +425,7 @@ class Chart extends Component {
     </View>
   }
 
-  renderWatchListButton(ticker) {
+  renderWatchListButton = ticker => {
     const { isTickerInWatchlist, watchlistDataJS } = watchListStore;
     let image = this.state.colors['addImage'];
     let functionToFire = this.addSymbol;
@@ -440,7 +438,7 @@ class Chart extends Component {
     </TouchableOpacity>
   }
 
-  renderPortraitMomentum(params) {
+  renderPortraitMomentum = params => {
     if (params.momentum == 'na') {
       return null
     } else {
@@ -459,7 +457,7 @@ class Chart extends Component {
     }
   }
 
-  renderTabs() {
+  renderTabs = () => {
     let style = {
       display: 'flex',
       alignItems: 'center',
@@ -487,9 +485,21 @@ class Chart extends Component {
         if (selected) {
           inlineStyle.backgroundColor = this.state.colors['grayTwo'];
         }
-        return <TouchableOpacity key={`chart_range_option_${i}`} name={elem.query} style={[inlineStyle, fonts.hindGunturBd, chart.timeSelected]} onPress={() => this.setRange(elem.query)}>
-          <Text name={elem.query} style={[{ color: this.state.colors['lightGray'] }, chartland.time, fonts.hindGunturRg]}>{elem.title}</Text>
-        </TouchableOpacity>
+        return (
+          <TouchableOpacity
+            key={`chart_range_option_${i}`}
+            name={elem.query}
+            style={[inlineStyle, fonts.hindGunturBd, chart.timeSelected]}
+            onPress={this.setRange.bind(this, elem.query)}
+          >
+            <Text
+              name={elem.query}
+              style={[{ color: this.state.colors['lightGray'] }, chartland.time, fonts.hindGunturRg]}
+            >
+              {elem.title}
+            </Text>
+          </TouchableOpacity>
+        );
       })}
     </View>
 
@@ -513,7 +523,7 @@ class Chart extends Component {
 
   }
 
-  renderPortrait(params) {
+  renderPortrait = params => {
     let {
       Price,
       Volume,
@@ -623,11 +633,11 @@ class Chart extends Component {
       </View> */}
 
 
-      <ScrollView style={[chart.wrapper, { backgroundColor: this.state.colors['white']}]}>
+      <ScrollView style={[chart.wrapper, { backgroundColor: this.state.colors['white'] }]}>
         <View style={chart.header}>
           <View style={chart.titleContainer}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {(exchange)? exchange.replace("CM", '').replace("GM", '').replace("GS", ''): ''}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.symbol, fonts.hindGunturRg]}>{ticker}: {(exchange) ? exchange.replace("CM", '').replace("GM", '').replace("GS", '') : ''}</Text>
           </View>
           <TouchableOpacity style={[{ borderColor: this.state.colors['lightGray'] }, chart.newsBtn]} onPress={() => this.showNews()}>
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.newsBtnTxt, fonts.hindGunturRg]}>News</Text>
@@ -690,11 +700,11 @@ class Chart extends Component {
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52-WK HIGH</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52high,2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52high, 2)}</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52-WK LOW</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52low,2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52low, 2)}</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
@@ -708,11 +718,11 @@ class Chart extends Component {
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO (TTM)</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.peRatio,2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.peRatio, 2)}</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>EPS (TTM)</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.eps,2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.eps, 2)}</Text>
             </View>
           </View>
           <View style={chart.statsRow}>
@@ -724,11 +734,11 @@ class Chart extends Component {
 
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.dividendRate,2)}%</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.dividendRate, 2)}%</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>BETA</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.beta,2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.beta, 2)}</Text>
             </View>
           </View>
           <View style={chart.statsRow}>
@@ -769,7 +779,7 @@ class Chart extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <TouchableOpacity onPress={() => this.navToLink(website)}>
             <View style={chart.profileTxt}>
-              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website ? "http://": "" }{website}</Text>
+              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website ? "http://" : ""}{website}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -815,7 +825,7 @@ class Chart extends Component {
     </View>
   }
 
-  renderBidListOrNothing(params) {
+  renderBidListOrNothing = params => {
     if (params.bid.length === 0) {
       return <View style={chartland.bid}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>No Bids</Text>
@@ -829,7 +839,7 @@ class Chart extends Component {
     })
   }
 
-  renderAskListOrNothing(params) {
+  renderAskListOrNothing = params => {
     if (params.ask.length === 0) {
       return <View style={chartland.bid}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>No Asks</Text>
@@ -843,7 +853,7 @@ class Chart extends Component {
     })
   }
 
-  renderBidAsk(params) {
+  renderBidAsk = params => {
     return <View style={[chartland.bidAsksWrapper, { marginVertical: 10 }]}>
       <View style={chartland.bid}>
         <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.sectionTitle]}>BID</Text>
@@ -865,7 +875,7 @@ class Chart extends Component {
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  renderCheckboxModalAndList() {
+  renderCheckboxModalAndList = () => {
     const { themeType } = colorStore;
     let vlmImageSrc = red_blue_checkbox_image;
     return <Modal
@@ -873,7 +883,7 @@ class Chart extends Component {
       animationIn={'fadeIn'}
       animationOut={'fadeOut'}
       style={chartland.fullModal}
-      onModalHide={() => { this.hideIndicators() }}>
+      onModalHide={this.hideIndicators}>
       <View style={chartland.radio}>
         <View style={chartland.radioTitleWrap}>
           <Text style={[chartland.radioTitle, fonts.hindGunturBd]}>INDICATORS</Text>
@@ -899,33 +909,33 @@ class Chart extends Component {
 
           <View style={styles.checkBoxWrap}>
             <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('ICHI')}
-                isChecked={this.checkIndicators('ICHI')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'ICHI'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Ichimoku Cloud'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={require('../images/checkbox_split.png')} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+              style={styles.checkField}
+              onClick={() => this.toggleCheck('ICHI')}
+              isChecked={this.checkIndicators('ICHI')}
+              isDisabled={this.state.isDisabled}
+              rightTextViewStyle={styles.checkBoxLabelWrap}
+              rightText={'ICHI'}
+              rightTextStyle={[styles.checkBoxLabel, fonts.hindGunturBd]}
+              rightSubText={'Ichimoku Cloud'}
+              rightSubTextStyle={[styles.checkBoxSubLabel, fonts.hindGunturRg]}
+              checkedImage={<Image source={require('../images/checkbox_split.png')} style={styles.checkBox} />}
+              unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
             />
           </View>
 
           <View style={styles.checkBoxWrap}>
             <CheckBox
-                style={styles.checkField}
-                onClick={()=>this.toggleCheck('SMA')}
-                isChecked={this.checkIndicators('SMA')}
-                isDisabled={this.state.isDisabled}
-                rightTextViewStyle={styles.checkBoxLabelWrap}
-                rightText={'SMA'}
-                rightTextStyle={[styles.checkBoxLabel,fonts.hindGunturBd]}
-                rightSubText={'Simple Moving Average'}
-                rightSubTextStyle={[styles.checkBoxSubLabel,fonts.hindGunturRg]}
-                checkedImage={<Image source={_FF8C00_checkbox_image} style={styles.checkBox}/>}
-                unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox}/>}
+              style={styles.checkField}
+              onClick={() => this.toggleCheck('SMA')}
+              isChecked={this.checkIndicators('SMA')}
+              isDisabled={this.state.isDisabled}
+              rightTextViewStyle={styles.checkBoxLabelWrap}
+              rightText={'SMA'}
+              rightTextStyle={[styles.checkBoxLabel, fonts.hindGunturBd]}
+              rightSubText={'Simple Moving Average'}
+              rightSubTextStyle={[styles.checkBoxSubLabel, fonts.hindGunturRg]}
+              checkedImage={<Image source={_FF8C00_checkbox_image} style={styles.checkBox} />}
+              unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
             />
           </View>
 
@@ -960,14 +970,14 @@ class Chart extends Component {
               unCheckedImage={<Image source={require('../images/checkbox_outline.png')} style={styles.checkBox} />}
             />
           </View>
-      
+
         </ScrollView>
       </View>
     </Modal>
   }
 
 
-  renderLandscape(params) {
+  renderLandscape = params => {
     const {
       Price,
       Volume,
@@ -1037,26 +1047,26 @@ class Chart extends Component {
         {this.renderWatchListButton(ticker)}
       </View>
       <View style={chartland.header_second}>
-      <View style={chartland.prices}>
-        <View style={chartland.pricePoints}>
-          <View style={chartland.priceOpen}>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>OPEN: </Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
-          </View>
-          <View style={chartland.priceHigh}>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>HIGH: </Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
-          </View>
-          <View style={chartland.priceLow}>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>LOW: </Text>
-            <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
-          </View>
-          <View style={chartland.priceVol}>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME: </Text>
+        <View style={chartland.prices}>
+          <View style={chartland.pricePoints}>
+            <View style={chartland.priceOpen}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>OPEN: </Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
+            </View>
+            <View style={chartland.priceHigh}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>HIGH: </Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
+            </View>
+            <View style={chartland.priceLow}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>LOW: </Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
+            </View>
+            <View style={chartland.priceVol}>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chartland.priceLabel, fonts.hindGunturRg]}>VOLUME: </Text>
               <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.priceNum, fonts.hindGunturRg]}>{formattedVolumeWithCommas}</Text>
+            </View>
           </View>
         </View>
-      </View>
       </View>
       <View style={chartland.chartWrapper}>
         <View style={[chartland.leftSide]}>
@@ -1128,7 +1138,7 @@ class Chart extends Component {
 
 
 
-  showOrientation() {
+  showOrientation = () => {
     const { chartLoading, tickerDataJS } = chartStore;
 
     console.log('==========================================================================')
@@ -1169,22 +1179,22 @@ class Chart extends Component {
     // add tofixed
     let formattedPrice = '$' + '---';
     if (Price) {
-      formattedPrice = numberWithCommasFixed(Price,2)
+      formattedPrice = numberWithCommasFixed(Price, 2)
     }
 
     let formattedOpen = '$' + '---';
     if (open) {
-      formattedOpen = numberWithCommasFixed(open,2);
+      formattedOpen = numberWithCommasFixed(open, 2);
     }
 
     let formattedLow = '---';
     if (low) {
-      formattedLow = numberWithCommasFixed(low,2)
+      formattedLow = numberWithCommasFixed(low, 2)
     }
 
     let formattedHigh = '---';
     if (high) {
-      formattedHigh = numberWithCommasFixed(high,2)
+      formattedHigh = numberWithCommasFixed(high, 2)
     }
 
     let formattedChangePercent = '---' + '%';
@@ -1196,13 +1206,13 @@ class Chart extends Component {
     let isPosNeg = 'green';
     let formattedChangeDecimal = '---';
     if (change) {
-      formattedChangeDecimal = numberWithCommasFixed(change,2)
+      formattedChangeDecimal = numberWithCommasFixed(change, 2)
     }
     if (change > 0 && typeof change === 'number') {
-      formattedChangeDecimal = '+' + numberWithCommasFixed(change,2);
+      formattedChangeDecimal = '+' + numberWithCommasFixed(change, 2);
     } else if (change < 0) {
       isPosNeg = 'red';
-      formattedChangeDecimal = numberWithCommasFixed(change,2);
+      formattedChangeDecimal = numberWithCommasFixed(change, 2);
     }
 
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
@@ -1241,7 +1251,7 @@ class Chart extends Component {
     }
   }
 
-  renderLoadingOrContent() {
+  renderLoadingOrContent = () => {
     const { chartLoading, tickerDataJS } = chartStore;
 
     let newsTicker = null;
@@ -1304,7 +1314,6 @@ class Chart extends Component {
   }
 
   render() {
-    var self = this;
     return (
       <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
 
