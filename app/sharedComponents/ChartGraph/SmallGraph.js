@@ -1,7 +1,9 @@
 import React from 'react';
 import { chartStore, colorStore } from "../../mobxStores";
 import { observer } from "mobx-react";
-import { LineChart, Grid, YAxis, XAxis } from 'react-native-svg-charts'
+import { LineChart, Path, Grid, YAxis, XAxis } from 'react-native-svg-charts'
+import { ClipPath, Defs, Rect } from 'react-native-svg'
+
 import {
     View,
     Text,
@@ -43,12 +45,13 @@ export default class SmallGraph extends React.Component {
             marginTop: 18
         }
         const { tickerDataJS, range } = chartStore;
-        const { Price } = tickerDataJS;
+        const { Price, previousClose } = tickerDataJS;
         const { height } = this.props.height;
 
+        console.log(49, tickerDataJS);
         let xAxisHeight = 20;
         let graphHeight = this.props.height - xAxisHeight;
-        const data = parseSmallGraphData(this.props.data, Price, graphHeight, range);
+        const data = parseSmallGraphData(this.props.data, previousClose, graphHeight, range);
         let lineYPosition = flipYAxisValue(graphHeight, data.priceLineHeight);
 
         // prevent y line from hitting top or bottom of graph
@@ -77,6 +80,39 @@ export default class SmallGraph extends React.Component {
         }
         let xAxisData = data.dateData;
         let textColor = theme.darkSlate;
+        const indexToClipFrom = data.lineData.length
+        if (range === "1d") {
+            if (data.lineData.length < 31) {
+                let currentLength = data.lineData.length;
+                for (var i = currentLength; i < 31; i++) {
+                    data.lineData.push(Price);
+                }
+            }
+        }
+
+        const Clips = ({ x, width }) => (
+            <Defs key={'clips'}>
+                <ClipPath id="clip-path-1">
+                    <Rect x={'0'} y={'0'} width={x(indexToClipFrom)} height={'100%'} />
+                </ClipPath>
+                <ClipPath id={'clip-path-2'}>
+                    <Rect x={x(indexToClipFrom)} y={'0'} width={width - x(indexToClipFrom)} height={'100%'} />
+                </ClipPath>
+            </Defs>
+        )
+
+        // Line extras:
+        const DashedLine = ({ line }) => (
+            <Path
+                key={'line-1'}
+                d={line}
+                stroke={'rgb(255, 255, 255)'}
+                strokeWidth={2}
+                fill={'none'}
+                strokeDasharray={[10, 0]}
+                clipPath={'url(#clip-path-2)'}
+            />
+        )
 
         return <View style={inlineContainerStyle}>
             <View style={inlineGraphContainerStyle}>
@@ -87,7 +123,9 @@ export default class SmallGraph extends React.Component {
                         svg={{ stroke: theme.green }}
                         contentInset={{ top: 20, bottom: 20 }}
                     >
-                        <HorizontalLine height={height} yVal={lineYPosition} title={Price} />
+                        <Clips />
+                        <DashedLine />
+                        <HorizontalLine height={height} yVal={lineYPosition} title={"PREV CLOSE " + previousClose} />
                     </LineChart>
                 </View>
             </View>

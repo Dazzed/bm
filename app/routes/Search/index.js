@@ -129,7 +129,7 @@ class Search extends React.Component {
   renderListElement = (data, i) => {
     return <TouchableOpacity
       key={i}
-      style={watchstyle.symbol}
+      style={[{ borderBottomColor: this.state.colors['borderGray'] }, watchstyle.symbol]}
       onPress={() => this.goToChart(data)}>
       <View style={watchstyle.touchable}>
         <View style={search.symDetails}>
@@ -188,7 +188,7 @@ class Search extends React.Component {
           .concat(
             <TouchableOpacity
               key={'search_list_loading'}
-              style={watchstyle.symbol}
+            style={[{ borderBottomColor: this.state.colors['borderGray'] }, watchstyle.symbol]}
             >
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <ActivityIndicator />

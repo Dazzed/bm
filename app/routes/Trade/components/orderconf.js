@@ -92,7 +92,7 @@ class OrderConf extends React.Component {
 
     let purchaseAction = transactionType + 'ing';
     let sharesOrShareText = 'shares';
-    if (quantity === 1) {
+    if (parseInt(quantity) === 1) {
       sharesOrShareText = 'share';
     }
 

@@ -114,6 +114,10 @@ class OrderCover extends React.Component {
             >
               {quantity}
             </Text>
+            {activeInputName === 'quantity' ? <Image
+              source={require('../../../images/cursor.gif')}
+              style={{ width: 3, height: 34, marginTop: 3 }}
+            /> : null}            
           </View>
           <View
             style={orderTypeName !== 'market' ? [order.detailsFirstRow] : order.detailsRow}
@@ -136,6 +140,10 @@ class OrderCover extends React.Component {
                     `${price || tickerDataJS.Price}`)
               }
             </Text>
+            {activeInputName === 'price' ? <Image
+              source={require('../../../images/cursor.gif')}
+              style={{ width: 3, height: 34, marginTop: 3 }}
+            /> : null}
           </View>
           <View style={order.detailsRow}>
             <Text style={[{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}>COMMISSION</Text>
@@ -231,7 +239,7 @@ class OrderCover extends React.Component {
               animation={false}
               labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
               radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-              labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+              labelWrapStyle={[{ borderTopColor: this.state.colors['borderGray'] }, ordertypes.radioLabelWrap]}
               onPress={(value) => { this.setOrderTypes(value) }}
               style={ordertypes.radioField}
             />

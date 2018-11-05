@@ -30,6 +30,7 @@ const OrderTypes = StyleSheet.create({
   },
   radioField: {
     padding: 25,
+    paddingTop: 0
   },
   radioTitle: {
     textAlign: 'left',
@@ -42,6 +43,11 @@ const OrderTypes = StyleSheet.create({
     paddingTop: 10, 
     paddingBottom: 10,
     marginBottom: 2
+  },
+  radioLabelWrap: {
+    width: 50,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    // borderBottomColor: colors.borderGray    
   },
 
 

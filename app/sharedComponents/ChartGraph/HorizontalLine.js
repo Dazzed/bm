@@ -28,7 +28,7 @@ export default class HorizontalLine extends React.Component {
         let yVal = this.props.yVal;
 
         let lineYVal = 0;
-        let boxWidth = 50;
+        let boxWidth = 125;
         let boxHeight = 9;
         let pointOffset = 10;
         let xPosition = 5;

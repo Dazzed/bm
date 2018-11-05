@@ -21,6 +21,30 @@ const styles = StyleSheet.create({
     paddingTop: 24
 
   },
+  fullBtnFunding: {
+    marginTop: 25,
+    // backgroundColor: colors.green,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    // borderColor: colors.green,
+    flex: 1,
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%'
+  },
+
+  fullBtnSettings: {
+    marginTop: 25,
+    // backgroundColor: colors.green,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    // borderColor: colors.green,
+    flex: 1,
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%'
+  },
+
   fullBtn: {
     marginTop: 25,
     // backgroundColor: colors.green,

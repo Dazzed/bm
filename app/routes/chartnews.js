@@ -105,15 +105,18 @@ class ChartNews extends React.Component {
                 let parsedTime = moment(elem.publishedAt).format('X');
 
                 let secondsAway = currentMoment - parsedTime;
+                let minutesAway = secondsAway/60;
                 let hoursAway = secondsAway / 3600;
                 let daysAway = hoursAway / 24;
 
-                if(hoursAway > 24 && hoursAway < 48) {
-                  formattedTime = parseInt(daysAway) + ' day ago'
-                } else if(hoursAway > 48) {
-                  formattedTime = parseInt(daysAway) + ' days ago'
-                } else {
-                  formattedTime = parseInt(hoursAway) + 'h ago'
+                if (minutesAway < 1) {
+                  formattedTime = '1 minute ago';
+                } else if (minutesAway < 60) {
+                  formattedTime = parseInt(minutesAway) + ' minutes ago'
+                } else if (hoursAway < 24) {
+                  formattedTime = parseInt(hoursAway) + ' hours ago'
+                } else if(hoursAway > 24) {
+                  formattedTime = moment(elem.publishedAt).format("ddd, DD MMM 'YY");
                 }
 
                 return <View key={i} style={[{borderBottomColor: this.state.colors['borderGray']}, chartnews.row]}>
@@ -137,7 +140,7 @@ class ChartNews extends React.Component {
   render() {
     return (
       <SafeAreaView style={[{backgroundColor: this.state.colors['white']}, styles.container]}>
-        <View style={[{borderBottomColor: this.state.colors['borderGray']}, styles.menuBorderptions]}>
+        <View style={[{borderBottomColor: this.state.colors['white']}, styles.menuBorderptions]}>
           <View style={styles.menuContainer}>
             <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideNews()}>
               <Image

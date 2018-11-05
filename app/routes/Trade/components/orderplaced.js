@@ -77,6 +77,9 @@ class OrderPlaced extends React.Component {
       'link': 'http://blumartini.com/download',
     },
       (results) => {
+        if (results === 'not_available') {
+          alert("Please go to app store to download Twitter");
+        }
         console.info(results);
       }
     );
@@ -109,11 +112,11 @@ class OrderPlaced extends React.Component {
     return (
       <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
         <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, order.menuBorder]}>
-          <Text style={[{ color: this.state.colors['darkSlate'], top: 15, fontSize: 16 }, fonts.hindGunturBd]}>Order placed</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'], top: 0, fontSize: 16 }, fonts.hindGunturBd]}>Order placed</Text>
         </View>
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContent]}>
           <View style={order.placeDetails}>
-            <View style={styles.landingIcon}>
+            <View style={styles.landingIconOrderPlaced}>
               <Image
                 source={this.state.colors['logoImage']}
                 style={styles.appIcon}

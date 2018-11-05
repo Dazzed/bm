@@ -62,8 +62,14 @@ export default class FundAccountSplash extends Component {
                     <View style={[{ backgroundColor: theme.white }]}>
                         <View style={[styles_2.registrationFormView]}>
                             <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', fontSize: 20, marginTop: 30 }]}>
-                                Congratulations!
+                                <TouchableOpacity style={[styles.leftCta, {paddingLeft: 2, paddingRight: 20, paddingTop: 10}]} onPress={() => this.props.navigation.goBack()}>
+                                    <Image
+                                        source={require('../../../images/back.png')}
+                                        style={styles.backImg}
+                                    />
+                                </TouchableOpacity>
                             </Text>
+                            <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', fontSize: 20, marginTop: 30 }]}>Congratulations!</Text>
                             <Text style={[{ color: theme.darkSlate }, styles.fullBtnTxt, fonts.hindGunturRg, { textAlign: 'left', marginTop: 15 }]}>
                                 We are working with banking regulators to allow us to connect to real accounts. As we finalize that approval, we have created a mock account to simulate how easy this process will be.
                             </Text>
@@ -75,7 +81,7 @@ export default class FundAccountSplash extends Component {
                     </View>
                 </ScrollView>
                 <View style={{ backgroundColor: theme.white, shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                    <TouchableHighlight onPress={() => this.navToFunding()} style={[{ backgroundColor: theme.green, borderColor: theme.green }, styles_2.fullBtn, { height: 80 }]}>
+                    <TouchableHighlight onPress={() => this.navToFunding()} style={[{ backgroundColor: theme.green, borderColor: theme.green }, styles_2.fullBtnFunding, { height: 80 }]}>
                         <Text style={[{ color: theme.realWhite }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>FUND MY ACCOUNT</Text>
                     </TouchableHighlight>
                     <Text> </Text>

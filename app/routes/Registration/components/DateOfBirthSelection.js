@@ -94,6 +94,8 @@ export default class DateOfBirthSelection extends Component {
     getPrelimDisabledList() {
         const { registrationDataJS } = registrationStore;
         let disabledList = [];
+        return disabledList;
+
         if(registrationDataJS.dateField.length < 1) {
             // prevent first digit from being anything but 0, 1 or 2
             disabledList = [2, 3, 4, 5, 6, 7, 8, 9];
@@ -129,7 +131,7 @@ export default class DateOfBirthSelection extends Component {
 
     getDisabledList() {
       let prelimDisabledList = this.getPrelimDisabledList();
-      prelimDisabledList.push('.');
+    //   prelimDisabledList.push('.');
       return prelimDisabledList;
     }
 
@@ -161,7 +163,7 @@ export default class DateOfBirthSelection extends Component {
                                 editable={false}
                               />
                           </View>
-                          <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={this.getDisabledList()}/>
+                          <NumericalSelector hideDot={true} onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={this.getDisabledList()}/>
                         </View>
                     </View>
                 </ScrollView>

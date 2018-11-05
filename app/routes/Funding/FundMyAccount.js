@@ -189,10 +189,10 @@ class FundMyAccount extends React.Component {
               textAlign: 'center'
             }
             return <View style={{height: '100%', justifyContent: 'center', backgroundColor: theme.contentBg}}>
-                <View style={{marginVertical: 5}}></View>
+                <View style={{marginVertical: 10}}></View>
                 <Text style={[trending.symbolsTxtDetail, fonts.hindGunturRg, textStyle]}>{selectedAccount.title}</Text>
-                <Text style={[trending.symbolsTxtDetail, fonts.hindGunturRg, subtitleStyle]}>{selectedAccount.subtitle}</Text>
-                <View style={{marginVertical: 5}}></View>
+                
+                <View style={{marginVertical: 0}}></View>
                 {this.renderAccountDropdown()}
                 {this.renderDroppedDownView()}
             </View>;
@@ -243,7 +243,7 @@ class FundMyAccount extends React.Component {
             string = 'To'
         }
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
-          return null;
+            string = '';
         }
         
         return <TouchableOpacity disabled={true} onPress={() => this.toggleDropdown()} style={style}>
@@ -360,7 +360,7 @@ class FundMyAccount extends React.Component {
       const { theme } = colorStore;
         let title = 'Funds withdrawn';
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
-            title = 'Account funded'
+            title = 'Fund my account'
         }
         return <SafeAreaView style={{ height: '100%', padding: 0, backgroundColor: theme.contentBg}}>
             <View style={{flex: 1, backgroundColor: theme.contentBg}}>

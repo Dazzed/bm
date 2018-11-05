@@ -281,7 +281,8 @@ const account = StyleSheet.create({
     fontSize: 16
   },
   historyDataLabel: {
-    fontSize: 16
+    fontSize: 16,
+    marginTop: 8
   },
   mktChange: {
     backgroundColor: colors.green,

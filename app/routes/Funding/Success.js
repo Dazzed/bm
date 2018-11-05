@@ -87,7 +87,7 @@ class Success extends React.Component {
       let circleSize = 150;
       let title = 'Funds withdrawn';
       if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
-          title = 'Account funded'
+        title = 'Fund my account'
       }
         return <SafeAreaView style={{backgroundColor: theme.contentBg, alignItems: 'center', flex: 1, padding: 15}}>
           <View style={styles.menuBorder}>

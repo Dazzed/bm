@@ -7,6 +7,12 @@ export const numberWithCommas = (x, decimalPlaces = 0) => {
   });
 };
 
+export const numberWithCommasFixed = (x, decimalPlaces = 0) => {
+  return parseFloat(x).toFixed(decimalPlaces).toString().replace(/(^|[^\w.])(\d{4,})/g, function ($0, $1, $2) {
+    return $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, "$&,");
+  });
+};
+
 export const numberWithCommasFunding = (x) => {
   return x.toString().replace(/(^|[^\w.])(\d{4,})/g, function ($0, $1, $2) {
     return $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, "$&,");
@@ -41,17 +47,17 @@ export const millionBillionFormatter = (inputNumber) => {
     // format for thousands
     stringAppend = 'K';
     let dividedBy1000 = inputNumber / 1000;
-    return dividedBy1000.toFixed(1) + stringAppend;
+    return dividedBy1000.toFixed(2) + stringAppend;
   } else if (inputNumber >= 100000 && inputNumber <= 999999999) {
     // handle millions
     stringAppend = 'M';
     let dividedBy1000000 = inputNumber / 1000000;
-    return dividedBy1000000.toFixed(1) + stringAppend;
+    return dividedBy1000000.toFixed(2) + stringAppend;
   } else if (inputNumber >= 1000000000 && inputNumber <= 999999999999) {
     // handle billions
     stringAppend = 'B';
     let dividedBy1000000000 = inputNumber / 1000000000;
-    return dividedBy1000000000.toFixed(1) + stringAppend;
+    return dividedBy1000000000.toFixed(2) + stringAppend;
   } else {
     return inputNumber;
   }

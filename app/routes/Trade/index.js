@@ -158,7 +158,7 @@ class Trade extends React.Component {
       showOrderConfirm: this.showOrderConfirm
     };
     const Wrapper = ({ children }) => (
-      <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContainer]}>
+      <ScrollView style={[{ backgroundColor: this.state.colors['white'] }, order.tabContainer]}>
         {children}
         {this.renderOrderTypeModal()}
       </ScrollView>
@@ -251,10 +251,10 @@ class Trade extends React.Component {
             animation={false}
             labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
             radioLabelActive={[{ color: this.state.colors['lightGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-            labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+            labelWrapStyle={[{ borderTopColor: this.state.colors['borderGray'] }, ordertypes.radioLabelWrap]}
             onPress={(value) => { this.setOrderValidity(value) }}
             style={ordertypes.radioField}
-          />
+          /> 
         </View>
       </Modal>
     );

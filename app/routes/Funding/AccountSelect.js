@@ -161,7 +161,7 @@ class AccountSelect extends React.Component {
 
         let masterRadius = 5;
 
-        return <ScrollView style={containerStyle}>
+        return <View style={containerStyle}>
             {accountListJS.map((elem, i) => {
                 let thisTitleStyle = {...titleStyle}
                 if(selectedAccountIndex === i) {
@@ -202,7 +202,7 @@ class AccountSelect extends React.Component {
                     {renderDivider(i)}
                 </View>
             })}
-        </ScrollView>
+        </View>
     }
 
     renderBackgroundImage = () => {

@@ -106,7 +106,7 @@ const watchstyle = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   bottomModal: {
-    width: 375,
+    width: 500,
     maxHeight: 200,
     left: 0,
     top: '55%',

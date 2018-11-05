@@ -138,7 +138,7 @@ class EditEmail extends React.Component {
 
 
         <KeyboardAvoidingView behavior={'height'} style={{ flex: 1, paddingVertical: 60, width: '100%', alignItems: 'center', padding: 20, justifyContent: 'center' }}>
-          <Text style={[{ fontSize: 30, width: '100%', color: theme.darkSlate }]}>Change Email</Text>
+          <Text style={[{ fontSize: 30, width: '100%', color: theme.darkSlate, textAlign: 'center' }]}>Change Email</Text>
           <Text style={{ width: '100%', color: theme.darkGray, marginVertical: 25 }}>You will be logged out and we will send you a confirmation link to the new email.</Text>
           <StyledTextInput
             value={email}

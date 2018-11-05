@@ -145,7 +145,7 @@ class EditEmployment extends React.Component {
             </View>
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-            <TouchableHighlight disabled={globalData.isPatchingUser} onPress={this.updateEmploymentStatus} style={[styles_2.fullBtn, { height: 80 }, styles_2.formValid]}>
+            <TouchableHighlight disabled={globalData.isPatchingUser} onPress={this.updateEmploymentStatus} style={[styles_2.fullBtnSettings, { height: 80 }, styles_2.formValid]}>
               <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
                 {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
               </Text>

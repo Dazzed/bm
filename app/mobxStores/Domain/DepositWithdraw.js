@@ -26,7 +26,7 @@ export default class DepositWithdraw {
                 formattedParams = {
                     options: JSON.stringify({
                         ...options,
-                        account: params.account.subtitle == 'Mock Bank Checking-1234' ? 'checking' : 'savings'
+                        account: params.account.subtitle == 'Mock Checking - 1234' ? 'checking' : 'savings'
                     })
                 };
             } else {

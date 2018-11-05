@@ -41,7 +41,7 @@ import { selectGlobalData } from '../selectors';
 import trending from '../style/trending';
 import ChartGraph from '../sharedComponents/ChartGraph/index';
 import DialIndicator from '../sharedComponents/DialIndicator';
-import { numberWithCommas } from '../utility';
+import { numberWithCommas, numberWithCommasFixed } from '../utility';
 import {
   chartStore,
   watchListStore,
@@ -537,6 +537,7 @@ class Chart extends Component {
       website,
       formattedTime,
       formattedVolume,
+      formattedVolumeWithCommas,
       formattedPrice,
       formattedOpen,
       formattedLow,
@@ -622,7 +623,7 @@ class Chart extends Component {
       </View> */}
 
 
-      <ScrollView style={chart.wrapper}>
+      <ScrollView style={[chart.wrapper, { backgroundColor: this.state.colors['white']}]}>
         <View style={chart.header}>
           <View style={chart.titleContainer}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, chart.name, fonts.hindGunturBd]}>{companyName}</Text>
@@ -657,7 +658,7 @@ class Chart extends Component {
             </View>
             <View style={chart.priceVol}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedVolume}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedVolumeWithCommas}</Text>
             </View>
           </View>
         </View>
@@ -671,7 +672,7 @@ class Chart extends Component {
 
         {this.renderPortraitMomentum(params)}
 
-        <View style={chart.profileWrapper}>
+        <View style={[chart.profileWrapper, { borderBottomColor: this.state.colors['borderGray'] }]}>
           <View style={chart.statsRow}>
             <TouchableOpacity style={styles.sellBtn} onPress={() => { this.showOrder('Sell') }}>
               <Text style={[{ color: this.state.colors['realWhite'] }, styles.sellBtnTxt, fonts.hindGunturBd]}>SELL</Text>
@@ -688,16 +689,16 @@ class Chart extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>KEY STATS</Text>
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52WK HIGH</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52high}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52-WK HIGH</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52high,2)}</Text>
             </View>
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52WK LOW</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${keyStats.week52low}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52-WK LOW</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52low,2)}</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.avgTotalVolume)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.avgTotalVolume)}</Text>
             </View>
           </View>
           <View style={chart.statsRow}>
@@ -706,28 +707,28 @@ class Chart extends Component {
               <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.mktCap)}</Text>
             </View>
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.peRatio}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>P/E RATIO (TTM)</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.peRatio,2)}</Text>
             </View>
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>EPS</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.eps}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>EPS (TTM)</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.eps,2)}</Text>
             </View>
           </View>
           <View style={chart.statsRow}>
 
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>FLOAT</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{millionBillionFormatter(keyStats.float)}</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.divYield, 2)}</Text>
             </View>
 
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.divYield}%</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.dividendRate,2)}%</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>BETA</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{keyStats.beta}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.beta,2)}</Text>
             </View>
           </View>
           <View style={chart.statsRow}>
@@ -756,9 +757,10 @@ class Chart extends Component {
 
             {/* TODO: there is no state or country in the data.. */}
 
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address2}, {address.hq_address_city}</Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_address_postal_code}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}
+              {address.hq_address2 ? ", " : ""}{address.hq_address2}
+            </Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_state} {address.hq_address_postal_code}</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}></Text>
           </View>
         </View>
@@ -767,7 +769,7 @@ class Chart extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <TouchableOpacity onPress={() => this.navToLink(website)}>
             <View style={chart.profileTxt}>
-              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website}</Text>
+              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website ? "http://": "" }{website}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -1160,29 +1162,29 @@ class Chart extends Component {
     } = tickerDataJS;
 
     //  formatting data
-    let formattedTime = moment.unix(latestUpdate).tz("America/New_York").format('h:mm A z');
+    let formattedTime = moment.unix((latestUpdate / 1000)).tz("America/New_York").format('h:mm A z');
     let formattedVolume = millionBillionFormatter(Volume);
 
     let formattedVolumeWithCommas = numberWithCommas(Volume);
     // add tofixed
     let formattedPrice = '$' + '---';
     if (Price) {
-      formattedPrice = Price.toFixed(2)
+      formattedPrice = numberWithCommasFixed(Price,2)
     }
 
     let formattedOpen = '$' + '---';
     if (open) {
-      formattedOpen = open.toFixed(2)
+      formattedOpen = numberWithCommasFixed(open,2);
     }
 
     let formattedLow = '---';
     if (low) {
-      formattedLow = low.toFixed(2)
+      formattedLow = numberWithCommasFixed(low,2)
     }
 
     let formattedHigh = '---';
     if (high) {
-      formattedHigh = high.toFixed(2)
+      formattedHigh = numberWithCommasFixed(high,2)
     }
 
     let formattedChangePercent = '---' + '%';
@@ -1194,18 +1196,18 @@ class Chart extends Component {
     let isPosNeg = 'green';
     let formattedChangeDecimal = '---';
     if (change) {
-      formattedChangeDecimal = change.toFixed(2)
+      formattedChangeDecimal = numberWithCommasFixed(change,2)
     }
     if (change > 0 && typeof change === 'number') {
-      formattedChangeDecimal = '+' + change.toFixed(2);
+      formattedChangeDecimal = '+' + numberWithCommasFixed(change,2);
     } else if (change < 0) {
       isPosNeg = 'red';
-      formattedChangeDecimal = change.toFixed(2);
+      formattedChangeDecimal = numberWithCommasFixed(change,2);
     }
 
     let formattedSharesOutstanding = millionBillionFormatter(overview.sharesOutstanding);
 
-    let formattedLastStockSplit = 'na';
+    let formattedLastStockSplit = 'N/A';
 
     if (overview.lastStockSplit) {
       if ('paymentDate' in overview.lastStockSplit && overview.lastStockSplit.paymentDate !== null) {
@@ -1304,7 +1306,7 @@ class Chart extends Component {
   render() {
     var self = this;
     return (
-      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
 
         {this.renderLoadingOrContent()}
 

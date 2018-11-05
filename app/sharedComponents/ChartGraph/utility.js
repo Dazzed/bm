@@ -272,20 +272,18 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
         let firstData = data[0];
         if (firstData) {
           let priceDate = parseInt(moment(data[0].date, "YYYYMMDD").format('X'));
-          let maxPriceTime = priceDate + 960;
+          let maxPriceTime = priceDate + 57600;
           if (d.xMax < maxPriceTime) {
             d.xMax = maxPriceTime;
           }
-          let minPriceTime = d.xMax - 960;
+          let minPriceTime = d.xMax - 57600;
           if (minPriceTime < d.xMin) {
             d.xMin = minPriceTime;
           }
         }
       }
     }
-
     let displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range)
-    // console.log('====== SMALL GRAPH', displayDateStamps)
 
     for(let i = 0; i < data.length; i++) {
 
@@ -311,6 +309,9 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
       }
     }
 
+    if (range === '1d') {
+      d.dateData = ["9:30 AM", "9:43 AM", "9:56 AM", "10:09 AM", "10:22 AM", "10:35 AM", "10:48 AM", "11:01 AM", "11:14 AM", "11:27 AM", "11:40 AM", "11:53 AM", "12:06 PM", "12:19 PM", "12:32 PM", "12:45 PM", "12:58 PM", "1:11 PM", "1:24 PM", "1:37 PM", "1:50 PM", "2:03 PM", "2:16 PM", "2:29 PM", "2:42 PM", "2:55 PM", "3:08 PM", "3:21 PM", "3:34 PM", "3:47 PM", "4:00 PM"];
+    }
     // Set range
     d.yRange = d.yMax - d.yMin;
 
@@ -567,6 +568,23 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     let renderSma = false;
     let renderBol = false;
 
+    if (range === '1d') {
+      if (d.dataPoints.length < 31) {
+        let currentLength = d.dataPoints.length;
+        let minuteList = ["9:30", "9:43", "9:56", "10:09", "10:22", "10:35", "10:48", "11:01", "11:14", "11:27", "11:40", "11:53", "12:06", "12:19", "12:32", "12:45", "12:58", "13:11", "13:24", "13:37", "13:50", "14:03", "14:16", "14:29", "14:42", "14:55", "15:08", "15:21", "15:34", "15:47", "16:00"];
+        for (let i = currentLength; i < 31; i++) {
+          let dataObj = {
+            "close": d.dataPoints[0].close,
+            "date": d.dataPoints[0].date,
+            "minute": minuteList[i]
+          };
+          let dateUnix = returnFormattedTimeStamp(dataObj);
+          dataObj.dateUnix = dateUnix;
+          dataObj.unixTimeStamp = dateUnix;
+          d.dataPoints.push(dataObj);
+        }
+      }
+    }
     //////////////////////////////////////////////////////////////////////////
     // add date stamp and calculate maximums and minimums
     d.dataPoints = d.dataPoints.map((elem, i) => {
@@ -603,14 +621,16 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       manipulateYMaxMin(elem.low);
 
       if (renderIchi) {
-        if (elem.ichi.base !== null) {
-          manipulateYMaxMin(elem.ichi.base);
+        if (elem.ichi) {
+          if (elem.ichi.base !== null) {
+            manipulateYMaxMin(elem.ichi.base);
+          }
+          if (elem.ichi.conversion !== null) {
+            manipulateYMaxMin(elem.ichi.conversion);
+          }
+          manipulateYMaxMin(elem.ichi.spanA);
+          manipulateYMaxMin(elem.ichi.spanB);
         }
-        if (elem.ichi.conversion !== null) {
-          manipulateYMaxMin(elem.ichi.conversion);
-        }
-        manipulateYMaxMin(elem.ichi.spanA);
-        manipulateYMaxMin(elem.ichi.spanB);
       }
 
       if (renderBol) {
@@ -659,15 +679,16 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         // time / x value
         manipulateXMaxMin(dateUnix);
 
-        if(elem.ichi.base !== null) {
-          manipulateYMaxMin(elem.ichi.base);
+        if (elem.ichi) {
+          if(elem.ichi.base !== null) {
+            manipulateYMaxMin(elem.ichi.base);
+          }
+          if(elem.ichi.conversion !== null) {
+            manipulateYMaxMin(elem.ichi.conversion);
+          }
+          manipulateYMaxMin(elem.ichi.spanA);
+          manipulateYMaxMin(elem.ichi.spanB);
         }
-        if(elem.ichi.conversion !== null) {
-          manipulateYMaxMin(elem.ichi.conversion);
-        }
-        manipulateYMaxMin(elem.ichi.spanA);
-        manipulateYMaxMin(elem.ichi.spanB);
-
         return {
           ...elem,
           dateUnix
@@ -855,6 +876,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
     if(renderEma200) {
       d.formattedLines.push(generateLineData('ema200', '#FF0000', d.dataPoints));
     }
+
     if(renderVolume) {
       d.volumeBottomLinesData = generateVolumeBottomLinesData('volume')
     }
@@ -884,6 +906,9 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       d.formattedLines.push(generateLineData('bol.lower', '#000000', d.dataPoints));
     }
 
+    if (range === "1d") {
+      d.formattedLines.push(generateLineData('close', 'rgba(255,255,255,0)', d.dataPoints));
+    }
     console.log(d);
     const displayDateStamps = shouldDisplayDateStamps(d.xMax, d.xMin, range);
 

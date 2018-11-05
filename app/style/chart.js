@@ -79,9 +79,12 @@ const chart = StyleSheet.create({
     alignItems: 'flex-start'
   },
   wrapper: {
-    marginLeft: '4%',
-    width: '92%',
-    padding: 20,
+    marginLeft: '0%',
+    width: '100%',
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
     marginBottom: 0 // commented out to ged rid of extra space the footer occupies
     // marginBottom: 70
   },
@@ -124,7 +127,7 @@ const chart = StyleSheet.create({
   stockPrice: {
     fontSize: 44,
     // color: colors.darkSlate,
-    height: 50,
+    height: 55,
     marginTop: -12,
     marginRight: 10
   },
@@ -154,7 +157,7 @@ const chart = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 15,
-    maxWidth: 285
+    maxWidth: 315
   },
   priceOpen: {
     flex: 1

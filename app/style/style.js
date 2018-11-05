@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 112,
     fontSize: 16,
-    top: 15,
+    top: 0,
     textAlign: 'center',
     // color: colors.darkSlate
   },
@@ -232,17 +232,21 @@ const styles = StyleSheet.create({
   },  
   //landing
   landingTT: {
-    flex: 1,
+    flex: 0.6,
     alignItems: 'center',
   },
   landingIcon: {
     paddingTop: 100,
-    flex: 2
+    flex: 1.25
   },
   landingIconLogin: {
     paddingTop: 50,
-    paddingBottom: 50,
+    paddingBottom: 0,
     alignItems: 'center',
+  },
+  landingIconOrderPlaced: {
+    paddingTop: 100,
+    flex: 1.1
   },
   landingTTLogin: {
     paddingTop: 10,
@@ -303,7 +307,7 @@ const styles = StyleSheet.create({
   legal: {
     fontSize: 12,
     color: colors.lightGray,
-    flex: 1,
+    flex: 0.35,
     marginTop: 25
   },
   legalLink: {

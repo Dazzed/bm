@@ -223,22 +223,22 @@ const order = StyleSheet.create({
     backgroundColor: colors.white,
   },
   menuBorder: {
-    maxHeight: 60,
+    maxHeight: 30,
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 5,
+    paddingTop: 0,
     marginBottom: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
     // borderBottomColor: colors.lightGray
   },
    placeDetails: {
-    flex: 3,
+    flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
     paddingLeft: 25,
     paddingRight: 25,
-    paddingBottom: 25,
+    paddingBottom: 0,
   },
   placeTxt: {
     fontSize: 22,

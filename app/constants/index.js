@@ -358,12 +358,12 @@ const chartRangeOptions = [
   // one month
   {
     query: '1m',
-    title: '1M',
+    title: '1m',
   },
   // six months
   {
     query: '6m',
-    title: '6M',
+    title: '6m',
   },
   // one year
   {

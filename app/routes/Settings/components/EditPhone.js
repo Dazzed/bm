@@ -158,7 +158,7 @@ class PhoneSelection extends Component {
             </View>
           </ScrollView>
           <View style={{ backgroundColor: this.state.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-            <TouchableHighlight disabled={!this.formValid() || globalData.isPatchingUser} onPress={this.patchPhone} style={[styles_2.fullBtn, { height: 80 }, this.returnFormValidClass()]}>
+            <TouchableHighlight disabled={!this.formValid() || globalData.isPatchingUser} onPress={this.patchPhone} style={[styles_2.fullBtnSettings, { height: 80 }, this.returnFormValidClass()]}>
               <Text style={[{ color: this.state.colors['realWhite'] }, styles.fullBtnTxt, fonts.hindGunturBd, { marginTop: 15 }]}>
                 {globalData.isPatchingUser ? 'LOADING' : 'SAVE'}
               </Text>
