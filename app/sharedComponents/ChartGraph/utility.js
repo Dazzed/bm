@@ -301,7 +301,15 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
 
         let dateData = '-';
         if(displayDateStamps) {
-          dateData = formatDateStamp(thisDataPoint.unixTimeStamp);
+          if (range === '5y') {
+            dateData = formatDateStamp5Year(thisDataPoint.unixTimeStamp);
+          } else if (range === '1y' || range === '2y') {
+            dateData = formatDateStamp12Year(thisDataPoint.unixTimeStamp);
+          } else if (range === '1m' || range === '6m') {
+            dateData = formatDateStamp1M6M(thisDataPoint.unixTimeStamp);
+          } else {
+            dateData = formatDateStamp(thisDataPoint.unixTimeStamp);
+          }
         } else {
           dateData = formatTimeStamp(thisDataPoint.unixTimeStamp);
         }

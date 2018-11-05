@@ -114,6 +114,8 @@ export default class SmallGraph extends React.Component {
             />
         )
 
+        let title = "PREV CLOSE " + previousClose;
+
         return <View style={inlineContainerStyle}>
             <View style={inlineGraphContainerStyle}>
                 <View style={{ flex: 1,height: graphHeight}}>
@@ -123,9 +125,9 @@ export default class SmallGraph extends React.Component {
                         svg={{ stroke: theme.green }}
                         contentInset={{ top: 20, bottom: 20 }}
                     >
-                        <Clips />
-                        <DashedLine />
-                        <HorizontalLine height={height} yVal={lineYPosition} title={"PREV CLOSE " + previousClose} />
+                        {range === '1d' ? <Clips /> : null}
+                        {range === '1d' ? <DashedLine /> : null}
+                        <HorizontalLine height={height} yVal={lineYPosition} title={title}  />
                     </LineChart>
                 </View>
             </View>
