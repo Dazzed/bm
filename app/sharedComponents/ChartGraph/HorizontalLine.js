@@ -29,7 +29,33 @@ export default class HorizontalLine extends React.Component {
         let yVal = this.props.yVal;
 
         let lineYVal = 0;
-        let boxWidth = 125;
+
+        let boxWidth = 105;
+
+        let processed = false;
+        let maxVal = this.props.value;
+        if (this.props.value > 100000) {
+            boxWidth = 145;
+            processed = true;
+        }
+        if (maxVal > 10000 && processed == false) {
+            boxWidth = 135;
+            processed = true;
+        }
+        if (maxVal > 1000 && processed == false) {
+            boxWidth = 130;
+            processed = true;
+        }
+        if (maxVal > 100 && processed == false) {
+            boxWidth = 120;
+            processed = true;
+        }
+        if (maxVal > 10 && processed == false) {
+            boxWidth = 110;
+            processed = true;
+        }
+
+
         let boxHeight = 9;
         let pointOffset = 10;
         let xPosition = 5;

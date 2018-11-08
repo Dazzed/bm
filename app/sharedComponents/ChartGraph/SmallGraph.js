@@ -3,6 +3,7 @@ import { chartStore, colorStore } from "../../mobxStores";
 import { observer } from "mobx-react";
 import { LineChart, Path, Grid, YAxis, XAxis } from 'react-native-svg-charts'
 import { ClipPath, Defs, Rect } from 'react-native-svg'
+import { numberWithCommasFixed } from '../../utility'
 
 import {
     View,
@@ -46,6 +47,7 @@ export default class SmallGraph extends React.Component {
         }
         const { tickerDataJS, range } = chartStore;
         const { Price, previousClose } = tickerDataJS;
+        let previousCloseFormatted = numberWithCommasFixed(previousClose, 2);
         const { height } = this.props.height;
 
         console.log(49, tickerDataJS);
@@ -114,7 +116,7 @@ export default class SmallGraph extends React.Component {
             />
         )
 
-        let title = "PREV CLOSE " + previousClose;
+        let title = "PREV CLOSE " + previousCloseFormatted;
 
         return <View style={inlineContainerStyle}>
             <View style={inlineGraphContainerStyle}>
@@ -127,7 +129,7 @@ export default class SmallGraph extends React.Component {
                     >
                         {range === '1d' ? <Clips /> : null}
                         {range === '1d' ? <DashedLine /> : null}
-                        <HorizontalLine height={height} yVal={lineYPosition} title={title}  />
+                        <HorizontalLine height={height} yVal={lineYPosition} title={title} value={previousClose}  />
                     </LineChart>
                 </View>
             </View>
@@ -139,7 +141,7 @@ export default class SmallGraph extends React.Component {
                         return xAxisData[value]
                     }}
                     numberOfTicks={ 3 }
-                    contentInset={{ left: 30, right: 10 }}
+                    contentInset={{ left: 30, right: 20 }}
                     svg={{ fontSize: 10, fill: textColor }}
                 />
             </View>
