@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     height: 25,
     flex: 1,
     paddingLeft: 20,
-    paddingTop: 5
+    paddingTop: 0
   },
   leftCtaTxt: {
     // color: colors.lightGray
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     height: 25,
     flex: 1,
     paddingRight: 15,
-    paddingTop: 3,
+    paddingTop: 0,
     alignItems: 'flex-end'
   },
   rightCtaTxt: {
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     letterSpacing: 1,
     color: colors.blue,
-    marginTop: -3
+    marginTop: -5
   },
   //legal
   legalPageTitle: {

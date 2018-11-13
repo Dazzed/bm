@@ -31,6 +31,7 @@ import styles from '../../../style/style';
 import order from '../../../style/order';
 import ordertypes from '../../../style/ordertypes';
 import numbers from '../../../style/numbers';
+import { numberWithCommasFixed } from '../../../utility';
 
 import fonts from '../../../style/fonts';
 import {
@@ -49,6 +50,11 @@ class OrderSell extends React.Component {
       colors: colors(props.globalData.isDarkThemeActive),
       activeInputName: 'quantity'
     };
+
+    const { tickerDataJS } = chartStore;
+    const { setPrice
+    } = buySellStore;
+    setPrice(tickerDataJS.Price.toString()); 
   }
 
   componentDidUpdate(prevProps) {
@@ -135,17 +141,17 @@ class OrderSell extends React.Component {
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputLabelQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.inputLabel, fonts.hindGunturRg]}
               onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
-              {orderTypeName.replace('_', '').toUpperCase()} PRICE $
+              {orderTypeName.replace('_', '').toUpperCase().replace("LOSS","")} PRICE $
             </Text>
             <Text
               style={orderTypeName !== 'market' ? [{ color: this.state.colors['darkSlate'] }, order.inputQty, fonts.hindGunturRg] : [{ color: this.state.colors['lightGray'] }, order.input, fonts.hindGunturRg]} onPress={orderTypeName !== 'market' ? this.changeActiveInputName.bind(this, 'price') : () => false}
             >
               {
                 orderTypeName === 'market' ?
-                  `${tickerDataJS.Price}` :
+                  `${numberWithCommasFixed(tickerDataJS.Price, 2)}` :
                   (activeInputName === 'price' ?
-                    (price || tickerDataJS.Price) :
-                    `${price || tickerDataJS.Price}`)
+                    (price || numberWithCommasFixed(tickerDataJS.Price, 2)) :
+                    `${price || numberWithCommasFixed(tickerDataJS.Price, 2)}`)
               }
             </Text>
             {activeInputName === 'price' ? <Image

@@ -88,6 +88,7 @@ export default class DependentSelection extends Component {
                         <View style={[styles_2.registrationFormView, {marginTop: 45, paddingBottom: 30}]}>
                             <TextInput placeholder="XX" placeholderTextColor={this.props.colors['lightGray']} value={registrationDataJS.dependentField}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
+                                selectionColor="#00CEEF"
                             />
                         </View>
                         <NumericalSelector hideDot={true} onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={['.']}/>

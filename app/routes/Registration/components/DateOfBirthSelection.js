@@ -156,6 +156,7 @@ export default class DateOfBirthSelection extends Component {
                           <View style={[styles_2.registrationFormView]}>
                               <TextInput
                                 placeholder="MM/DD/YYYY"
+                                selectionColor="#00CEEF"
                                 placeholderTextColor={this.props.colors['lightGray']}
                                 value={this.formatDate(registrationDataJS.dateField)}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.getNumFieldClass()]}

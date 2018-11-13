@@ -118,6 +118,7 @@ class EditPassword extends Component {
               <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>CURRENT PASSWORD</Text>
               <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
                 placeholder=""
+                selectionColor="#00CEEF"
                 placeholderTextColor={this.state.colors['lightGray']}
                 value={this.state.password}
                 onChangeText={currentPassword => this.setState({ currentPassword })}
@@ -128,6 +129,7 @@ class EditPassword extends Component {
               <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>NEW PASSWORD</Text>
               <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
                 placeholder=""
+                selectionColor="#00CEEF"
                 placeholderTextColor={this.state.colors['lightGray']}
                 value={this.state.newPassword}
                 onChangeText={newPassword => this.setState({ newPassword })}
@@ -138,6 +140,7 @@ class EditPassword extends Component {
               <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>CONFIRM NEW PASSWORD</Text>
               <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
                 placeholder=""
+                selectionColor="#00CEEF"
                 placeholderTextColor={this.state.colors['lightGray']}
                 value={this.state.confirmNewPassword}
                 onChangeText={confirmNewPassword => this.setState({ confirmNewPassword })}

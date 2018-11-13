@@ -21,6 +21,7 @@ import RadioForm, {
   RadioButtonLabel
 } from 'react-native-simple-radio-button';
 import { observer } from 'mobx-react';
+import { numberWithCommasFixed } from '../../../utility';
 
 import { selectGlobalData } from '../../../selectors';
 import {
@@ -54,6 +55,11 @@ class OrderBuy extends Component {
       colors: colors(props.globalData.isDarkThemeActive),
       activeInputName: 'quantity'
     };
+
+    const { tickerDataJS } = chartStore;
+    const { setPrice
+    } = buySellStore;
+    setPrice(tickerDataJS.Price.toString()); 
   }
 
   componentDidUpdate(prevProps) {
@@ -150,10 +156,10 @@ class OrderBuy extends Component {
             >
               {
                 orderTypeName === 'market' ?
-                  `${tickerDataJS.Price}` :
+                  `${numberWithCommasFixed(tickerDataJS.Price,2)}` :
                   (activeInputName === 'price' ?
-                    (price || tickerDataJS.Price) :
-                    `${price || tickerDataJS.Price}`)
+                    (price || numberWithCommasFixed(tickerDataJS.Price,2)) :
+                    `${price || numberWithCommasFixed(tickerDataJS.Price,2)}`)
               }
             </Text>
             {activeInputName === 'price' ? <Image

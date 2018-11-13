@@ -188,6 +188,7 @@ export default class AddressSelection extends Component {
                 <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
                 <TextInput
                     onBlur={() => this.onBlur('addressOneClass')}
+                    selectionColor="#00CEEF"
                     onFocus={() => this.onFocus('addressOneClass')}
                     style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressOneClass]}
                     onChange={(event) => this.onTextChange(event, 'address')}
@@ -196,6 +197,7 @@ export default class AddressSelection extends Component {
                 <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
                 <TextInput
                     onBlur={() => this.onBlur('addressTwoClass')}
+                    selectionColor="#00CEEF"
                     onFocus={() => this.onFocus('addressTwoClass')}
                     style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressTwoClass]}
                     onChange={(event) => this.onTextChange(event, 'address2')}
@@ -204,6 +206,7 @@ export default class AddressSelection extends Component {
                 <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>CITY</Text>
                 <TextInput
                     onBlur={() => this.onBlur('cityClass')}
+                    selectionColor="#00CEEF"
                     onFocus={() => this.onFocus('cityClass')}
                     style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.cityClass]}
                     onChange={(event) => this.onTextChange(event, 'city')}
@@ -258,6 +261,7 @@ export default class AddressSelection extends Component {
                 <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>ZIP CODE</Text>
                 <TextInput
                     onBlur={() => this.onBlur('zipClass')}
+                    selectionColor="#00CEEF"
                     onFocus={() => this.onFocus('zipClass')}
                     style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.zipClass]}
                     onChange={(event) => this.onTextChange(event, 'zip')}

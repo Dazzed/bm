@@ -149,6 +149,7 @@ class EditDependents extends React.Component {
             <View style={[{ backgroundColor: this.state.colors['white'], marginTop: 25, paddingTop: 40 }]}>
               <View style={[styles_2.registrationFormView]}>
                 <TextInput placeholder="XX" placeholderTextColor={this.state.colors['grey']} value={this.state.dependentField}
+                  selectionColor="#00CEEF"
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
                 />
               </View>

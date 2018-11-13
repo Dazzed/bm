@@ -55,7 +55,8 @@ import {
   initialIndicators,
   indicatorProps,
   initialChartRangeIndicator,
-  chartRangeOptions
+  chartRangeOptions,
+  statesHash
 } from '../constants';
 
 var currIndicates = [];
@@ -770,7 +771,7 @@ class Chart extends Component {
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address1}
               {address.hq_address2 ? ", " : ""}{address.hq_address2}
             </Text>
-            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {address.hq_state} {address.hq_address_postal_code}</Text>
+            <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}>{address.hq_address_city}, {statesHash[address.hq_state]} {address.hq_address_postal_code}</Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, chart.sectionTxt, fonts.hindGunturRg]}></Text>
           </View>
         </View>
@@ -779,7 +780,7 @@ class Chart extends Component {
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.sectionTitle, fonts.hindGunturBd]}>WEBSITE</Text>
           <TouchableOpacity onPress={() => this.navToLink(website)}>
             <View style={chart.profileTxt}>
-              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website ? "http://" : ""}{website}</Text>
+              <Text style={[{ color: this.state.colors['blue'] }, chart.sectionTxt, fonts.hindGunturRg]}>{website ? "http://" : ""}{website}{website ? "/" : ""}</Text>
             </View>
           </TouchableOpacity>
         </View>

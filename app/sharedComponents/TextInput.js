@@ -63,6 +63,7 @@ export default class StyledTextInput extends React.Component {
         return <View style={{width: '100%', marginVertical: 5}}>
             <TextInput
                 {...this.props}
+                selectionColor="#00CEEF"
                 style={inlineStyle}
                 placeholderTextColor={theme.lightGray}
             />

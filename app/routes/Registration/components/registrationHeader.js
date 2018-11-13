@@ -62,6 +62,7 @@ export default class RegistrationHeader extends React.Component {
     
     let imageStyle = {
       width: shortSide,
+      height: 175,
       position: 'relative',
       right: -rightSpacing + paddingExists,
       // borderWidth: 1,

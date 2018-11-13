@@ -123,6 +123,7 @@ class PhoneSelection extends Component {
               <View style={[styles_2.registrationFormView]}>
                 <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.state.colors['grey']} value={formatPhoneNumber(phone)}
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={2} editable={false}
+                  selectionColor="#00CEEF"
                 />
               </View>
               <View style={[{ backgroundColor: this.state.colors['white'], marginTop: 25, borderBottomWidth: 0, borderBottomColor: this.state.colors['white'] }, styles_2.numContainer]}>

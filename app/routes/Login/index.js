@@ -189,6 +189,7 @@ class SignIn extends Component {
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>EMAIL</Text>
             <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
               placeholder="your@email.com"
+              selectionColor="#00CEEF"
               placeholderTextColor={this.state.colors['lightGray']}
               value={this.state.email}
               onChangeText={(email) => this.setState({ email })}
@@ -198,7 +199,7 @@ class SignIn extends Component {
           <View style={[{ borderBottomColor: this.state.colors['lightGray'] }, styles.inputWrap]}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.inputLabel, fonts.hindGunturMd]}>PASSWORD</Text>
             <TextInput style={[{ color: this.state.colors['darkSlate'] }, styles.input, fonts.hindGunturRg]}
-              placeholder="password"
+              placeholder="password" selectionColor="#00CEEF"
               placeholderTextColor={this.state.colors['lightGray']}
               value={this.state.password}
               onChangeText={(password) => this.setState({ password })}

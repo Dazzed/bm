@@ -70,7 +70,7 @@ const chart = StyleSheet.create({
     padding: 20
   },
   titleContainer: {
-    flex:2.5,
+    flex:4.5,
     marginRight: 15
   },
   name: {
@@ -100,7 +100,9 @@ const chart = StyleSheet.create({
     lineHeight: 60,
     height: 40,
     // color: colors.darkSlate,
-    flex: 2.5
+    marginRight: 5,
+    textAlign: 'right',
+    flex: 1.5
   },
   priceInfo: {
     flex: 0.75

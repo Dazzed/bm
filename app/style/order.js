@@ -31,7 +31,7 @@ const order = StyleSheet.create({
     height: 25,
     position: 'absolute',
     left: 15,
-    top: 20,
+    top: 15,
   },
   mainCta: {
     height: 25,
@@ -56,7 +56,7 @@ const order = StyleSheet.create({
   rightCta: {
     height: 25,
     position: 'absolute',
-    top: 15,
+    top: 10,
     right: 10,
     // color: colors.lightGray
   },

@@ -56,7 +56,7 @@ class AccountPos extends React.Component {
 
   renderHeader() {
     return <View style={account.titleWrap}>
-      <Text style={[{color: this.state.colors['darkSlate']}, account.securityTitle, fonts.hindGunturBd]}>EQUITY</Text>
+      <Text style={[{color: this.state.colors['darkSlate']}, account.securityTitle, fonts.hindGunturBd]}>SYMBOL</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>QTY</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, fonts.hindGunturRg]}>PRICE/CHG</Text>
       <Text style={[{color: this.state.colors['lightGray']}, account.titleSm, account.titleLast, fonts.hindGunturRg]}>MKT VALUE</Text>

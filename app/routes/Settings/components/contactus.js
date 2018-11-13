@@ -120,6 +120,7 @@ class ContactUs extends React.Component {
             />
             <TextInput
               style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles.contact_us_field]}
+              selectionColor="#00CEEF"
               onChange={(event) => this.onTextChange(event, 'message')}
               multiline={true}
               onFocus={() => this.ScrollView_Reference.scrollToEnd()}

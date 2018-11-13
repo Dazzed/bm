@@ -237,6 +237,7 @@ class Search extends React.Component {
                 autoFocus={true}
                 value={this.state.searchTerm}
                 onChangeText={this.textInputChanged}
+                selectionColor="#00CEEF"
               />
               <View style={[search.searchcancel, { opacity: this.state.showCancel }]}>
                 <TouchableOpacity onPress={() => this.showSearchPreset('presets')}>

@@ -90,7 +90,7 @@ const trending = StyleSheet.create({
   },
   halfModal: {
     position:'absolute',
-    top: 45,
+    top: 120,
     left: 0,
     right: 0,
     height: 305
@@ -99,7 +99,7 @@ const trending = StyleSheet.create({
     position: 'absolute',
     // backgroundColor: colors.white,
     left: 0,
-    top: 75,
+    top: 0,
     width: 185,
     height: 70,
     padding: 25,
@@ -108,7 +108,7 @@ const trending = StyleSheet.create({
     position: 'absolute',
     // backgroundColor: colors.white,
     right: 0,
-    top: 76,
+    top: 0,
     width: 189,
     height: 69,
     padding: 20,
@@ -117,7 +117,7 @@ const trending = StyleSheet.create({
     // backgroundColor: colors.white,
     height: 500,
     position: 'absolute',
-    top: 145,
+    top: 45,
     left: 0,
     right: 0
   },

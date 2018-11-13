@@ -16,6 +16,7 @@ import {
 import Modal from 'react-native-modal'
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import { observer } from 'mobx-react';
+import { numberWithCommasFixed } from '../../../utility';
 
 import { selectGlobalData } from '../../../selectors';
 import { setTheme, getTheme, colors } from '../../../store/store';
@@ -40,6 +41,11 @@ class OrderCover extends React.Component {
       colors: colors(props.globalData.isDarkThemeActive),
       activeInputName: 'quantity'
     };
+
+    const { tickerDataJS } = chartStore;
+    const { setPrice
+    } = buySellStore;
+    setPrice(tickerDataJS.Price.toString()); 
   }
 
   componentDidUpdate(prevProps) {
@@ -134,10 +140,10 @@ class OrderCover extends React.Component {
             >
               {
                 orderTypeName === 'market' ?
-                  `${tickerDataJS.Price}` :
+                  `${numberWithCommasFixed(tickerDataJS.Price, 2)}` :
                   (activeInputName === 'price' ?
-                    (price || tickerDataJS.Price) :
-                    `${price || tickerDataJS.Price}`)
+                    (price || numberWithCommasFixed(tickerDataJS.Price, 2)) :
+                    `${price || numberWithCommasFixed(tickerDataJS.Price, 2)}`)
               }
             </Text>
             {activeInputName === 'price' ? <Image

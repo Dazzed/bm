@@ -208,6 +208,7 @@ export default class AccountSelection extends Component {
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.getEmailClass()]}
                                 keyboardType="email-address"
                                 autoCapitalize='none'
+                                selectionColor="#00CEEF"
                                 onChange={(event) => this.onEmailChange(event, 'email')}
                                 value={registrationDataJS.email}
                             />
@@ -217,6 +218,7 @@ export default class AccountSelection extends Component {
                             <Text style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>PASSWORD</Text>
                             <TextInput
                                 onBlur={() => this.onBlur('passwordClass')}
+                                selectionColor="#00CEEF"
                                 onFocus={() => this.onFocus('passwordClass')}
                                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.getPasswordClass()]}
                                 secureTextEntry={true}

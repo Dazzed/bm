@@ -94,6 +94,7 @@ export default class PhoneSelection extends Component {
             <View style={[styles_2.registrationFormView]}>
               <TextInput placeholder="XXX-XXX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={formatPhoneNumber(registrationDataJS.phoneField)}
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField]} maxLength={12} editable={false}
+                selectionColor="#00CEEF"
               />
             </View>
             <NumericalSelector onChange={(value) => this.addNum(value)} onDelete={this.removeNum} disabledList={['.']} hideDot={true} />

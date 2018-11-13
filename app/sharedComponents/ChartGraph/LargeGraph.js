@@ -167,15 +167,29 @@ export default class LargeGraph extends React.Component {
       if(!formattedData) {
         return null;
       }
-      return <Polyline
-        key={Math.random() + key}
-        points={formattedData}
-        fill={'none'}
-        stroke={params.color}
-        strokeWidth={2}
-        strokeLinejoin={'round'}
-        opacity={.8}
-      />
+
+      if (lineTargetValue === 'bol.middle') {
+        return <Polyline
+          key={Math.random() + key}
+          points={formattedData}
+          fill={'none'}
+          stroke={params.color}
+          strokeWidth={2}
+          strokeDasharray={[5, 5]}
+          strokeLinejoin={'round'}
+          opacity={.8}
+        />
+      } else {
+        return <Polyline
+          key={Math.random() + key}
+          points={formattedData}
+          fill={'none'}
+          stroke={params.color}
+          strokeWidth={2}
+          strokeLinejoin={'round'}
+          opacity={.8}
+        />
+      }
     }
 
     generateVerticalBottomBars(params, key) {

@@ -160,9 +160,20 @@ class Settings extends Component {
         </View>
       </TouchableOpacity>
       <View style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, settings.field]}>
-        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>My Accounts</Text>
-        <View>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>2</Text>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>
+          My Accounts
+        </Text>
+        <View style={{
+          height: 30,
+          marginRight: 10,
+          marginTop: 10,
+          paddingTop: 0,
+          paddingBottom: 0,
+          backgroundColor: '#f3f3f3',
+          borderRadius: 15,
+          borderWidth: 1,
+          borderColor: '#fff'}}>
+          <Text style={[{ marginTop: -12, color: this.state.colors['darkSlate'] }, settings.inputLabel, fonts.hindGunturRg]}>2</Text>
         </View>
       </View>
     </View>

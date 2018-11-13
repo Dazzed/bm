@@ -103,6 +103,7 @@ export default class NameSelection extends Component {
               <TextInput
                 onBlur={() => this.onBlur('firstNameClass')}
                 onFocus={() => this.onFocus('firstNameClass')}
+                selectionColor="#00CEEF"
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.firstNameClass]}
                 onChange={(event) => this.onTextChange(event, 'firstName')}
                 value={registrationDataJS.firstName}
@@ -111,6 +112,7 @@ export default class NameSelection extends Component {
               <TextInput
                 onBlur={() => this.onBlur('lastNameClass')}
                 onFocus={() => this.onFocus('lastNameClass')}
+                selectionColor="#00CEEF"
                 style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.lastNameClass]}
                 onChange={(event) => this.onTextChange(event, 'lastName')}
                 value={registrationDataJS.lastName}

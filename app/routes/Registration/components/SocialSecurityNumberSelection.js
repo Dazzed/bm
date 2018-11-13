@@ -120,6 +120,7 @@ export default class SocialSecurityNumberSelection extends Component {
                       <View style={[styles_2.registrationFormView]}>
                         <TextInput placeholder="XXX-XX-XXXX" placeholderTextColor={this.props.colors['lightGray']} value={this.formatSSN(registrationDataJS.ssnField)}
                             style={[{ color: this.props.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, styles_2.registrationFormKeypadField, this.state.numFieldClass]} maxLength={111} editable={false}
+                            selectionColor="#00CEEF"
                        />
                       </View>
                       <NumericalSelector hideDot={true} onChange={(value) => this.addNum(value)} onDelete={() => this.removeNum()} disabledList={['.']}/>

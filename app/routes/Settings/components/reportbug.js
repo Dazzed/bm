@@ -115,6 +115,7 @@ class ReportBug extends React.Component {
             <TextInput
               style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles.report_bug_field]}
               multiline={true}
+              selectionColor="#00CEEF"
               placeholder="Message"
               placeholderTextColor={this.state.colors['lightGray']}
               onFocus={() => this.ScrollView_Reference.scrollToEnd()}

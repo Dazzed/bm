@@ -305,10 +305,10 @@ class Trade extends React.Component {
           </Text>
           <Tabs selected={this.state.page} style={[{ backgroundColor: this.state.colors['white'] }, { borderBottomColor: this.state.colors['borderGray'] }, order.tabBtns]}
             selectedStyle={{ color: this.state.colors['blue'] }} onSelect={el => this.setPageType(el)}>
-            <Text name="Buy" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Buy</Text>
-            <Text name="Sell" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Sell</Text>
-            <Text name="Short" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Short</Text>
-            <Text name="Cover" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: colors.blue }}>Cover</Text>
+            <Text name="Buy" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>Buy</Text>
+            <Text name="Sell" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>Sell</Text>
+            <Text name="Short" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>Short</Text>
+            <Text name="Cover" style={[{ color: this.state.colors['lightGray'] }, fonts.hindGunturBd]} selectedIconStyle={{ borderBottomWidth: 1, borderBottomColor: this.state.colors['blue'] }}>Cover</Text>
           </Tabs>
         </View>
         {/* <ScrollView style={[{ backgroundColor: this.state.colors['contentBg'] }, order.tabContainer]}>

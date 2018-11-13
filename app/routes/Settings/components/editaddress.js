@@ -189,6 +189,7 @@ class EditAddress extends React.Component {
                 <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS</Text>
                 <TextInput
                   onBlur={() => this.onBlur('addressOneClass')}
+                  selectionColor="#00CEEF"
                   onFocus={() => this.onFocus('addressOneClass')}
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressOneClass]}
                   onChange={(event) => this.onTextChange(event, 'address')}
@@ -197,6 +198,7 @@ class EditAddress extends React.Component {
                 <Text style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturMd, styles_2.registrationFormLabel]}>HOME ADDRESS (LINE 2)</Text>
                 <TextInput
                   onBlur={() => this.onBlur('addressTwoClass')}
+                  selectionColor="#00CEEF"
                   onFocus={() => this.onFocus('addressTwoClass')}
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.addressTwoClass]}
                   onChange={(event) => this.onTextChange(event, 'address2')}
@@ -206,6 +208,7 @@ class EditAddress extends React.Component {
                 <TextInput
                   onBlur={() => this.onBlur('cityClass')}
                   onFocus={() => this.onFocus('cityClass')}
+                  selectionColor="#00CEEF"
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.cityClass]}
                   onChange={(event) => this.onTextChange(event, 'city')}
                   value={this.state.city}
@@ -260,6 +263,7 @@ class EditAddress extends React.Component {
                 <TextInput
                   onBlur={() => this.onBlur('zipClass')}
                   onFocus={() => this.onFocus('zipClass')}
+                  selectionColor="#00CEEF"
                   style={[{ color: this.state.colors['darkSlate'] }, fonts.hindGunturRg, styles_2.registrationFormField, this.state.zipClass]}
                   onChange={(event) => this.onTextChange(event, 'zipCode')}
                   value={this.state.zipCode}

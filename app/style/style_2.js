@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center', paddingTop: 2.5, paddingLeft: 2.5, paddingRight: 5, paddingBottom: 3
   },
   whyWeAskText: {
-    marginVertical: 30,
+    marginTop: 30,
     lineHeight: 30,
     fontSize: 20
   },
