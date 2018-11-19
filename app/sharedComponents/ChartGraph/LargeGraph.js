@@ -45,7 +45,7 @@ export default class LargeGraph extends React.Component {
               x1={ position }
               x2={ position }
               y1={ '0%' }
-              y2={ '100%' }
+              y2={ '85%' }
               stroke={ theme.borderGray }
               strokeDasharray={ [ 4, 8 ] }
               strokeWidth={ 1 }
@@ -53,8 +53,9 @@ export default class LargeGraph extends React.Component {
             <TextSvg
               key={Math.random() + key}
               fontSize={12}
-              //fill={theme.borderGray}
+              // fill={theme.borderGray}
               stroke={theme.borderGray}
+              strokeWidth={0.35}
               y={'95%'}
               x={ position }
               textAnchor="middle"
@@ -75,7 +76,7 @@ export default class LargeGraph extends React.Component {
             y1={ position }
             y2={ position }
             x1={ '0%' }
-            x2={ '95%' }
+            x2={ '88%' }
             stroke={ theme.borderGray }
             strokeDasharray={ [ 4, 8 ] }
             strokeWidth={ 1 }
@@ -85,6 +86,7 @@ export default class LargeGraph extends React.Component {
             fontSize={12}
             // fill={theme.borderGray}
             stroke={theme.borderGray}
+            strokeWidth={0.35}
             x={'94%'}
             y={ position + verticalOffset}
             textAnchor="middle"
@@ -134,7 +136,7 @@ export default class LargeGraph extends React.Component {
           {/* Thin line -  high / low */}
           <Rect
             key={Math.random() + key}
-            x={params.xPositionCoordinates - (thinLineWidth / 2)}
+            x={params.xPositionCoordinates - (thinLineWidth / 2) + 3}
             y={params.lowYPositionCoordinates}
             width={thinLineWidth}
             height={params.highYPositionCoordinates - params.lowYPositionCoordinates}
@@ -146,7 +148,7 @@ export default class LargeGraph extends React.Component {
 
           {/* Thick line - open / close */}
           <Rect
-            x={params.xPositionCoordinates - (thickLineWidth / 2)}
+            x={params.xPositionCoordinates - (thickLineWidth / 2) + 3}
             y={thickLineBottom}
             key={Math.random() + key}
             width={thickLineWidth}
@@ -195,7 +197,7 @@ export default class LargeGraph extends React.Component {
     generateVerticalBottomBars(params, key) {
       let barWidth = 4;
       return <Rect
-        x={params.xCoord - (barWidth / 2)}
+        x={params.xCoord - (barWidth / 2) + 3}
         y={params.yCoord}
         width={barWidth}
         key={Math.random() + key}

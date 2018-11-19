@@ -49,7 +49,6 @@ const numbers = StyleSheet.create({
     fontSize: 40,
     textAlign: 'right',
     width: '100%',
-    paddingRight: 30,
     height: 47,
     marginTop: 0,
     // color: colors.darkSlate

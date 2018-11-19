@@ -236,7 +236,7 @@ class Trade extends React.Component {
         animationIn={'slideInUp'}
         animationOut={'slideOutDown'}
         style={order.modal}
-        onModalHide={() => false}>
+        onModalHide={() => this.toggleOrderType()}>
         <View style={[{ backgroundColor: this.state.colors['contentBg'] }, ordertypes.tabContent]}>
           <RadioForm
             radio_props={orderTypeOptions}

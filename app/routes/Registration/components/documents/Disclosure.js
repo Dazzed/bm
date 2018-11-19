@@ -7,9 +7,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectGlobalData } from '../selectors';
+import { selectGlobalData } from '../../../../selectors';
 import axios from 'axios';
-import { API_URL } from '../config';
+import { API_URL } from '../../../../config';
 
 import {
   AppRegistry,
@@ -30,24 +30,24 @@ import {
 
 import Modal from 'react-native-modal'
 
-import styles from '../style/style';
-import fonts from '../style/fonts';
+import styles from '../../../../style/style';
+import fonts from '../../../../style/fonts';
 
-import {setTheme, getTheme, colors} from '../store/store';
+import { setTheme, getTheme, colors } from '../../../../store/store';
 
-class Terms extends React.Component {
+class Disclosure extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       page: 'presets',
-      commonHtml: ``,  
+      commonHtml: ``,
       colors: colors(props.globalData.isDarkThemeActive)
     };
   }
 
   componentDidMount() {
     // { "where": { "page": "tnc" } }
-    axios.get(`${API_URL}/api/staticContents/findOne?filter={ "where": { "page": "tnc" } }`).then(res => {
+    axios.get(`${API_URL}/api/staticContents/findOne?filter={ "where": { "page": "disclosure" } }`).then(res => {
       const style_tag = `<style>
               @font-face {font-family: 'HindGuntur-Regular';src: url('file:///assets/fonts/HindGuntur-Regular.ttf') format('truetype');};
                </style><body style="color: ${this.state.colors['darkSlate']}; background: ${this.state.colors['white']}">`;
@@ -78,36 +78,19 @@ class Terms extends React.Component {
   }
 
   render() {
-    const {height, width} = Dimensions.get('window');
-    return(
-      <SafeAreaView style={[{backgroundColor: this.state.colors['white']}, styles.pageContainer]}>
-        <View style={styles.menuBorder}>
-          <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideTerms()}>
-              <Image 
-                source={require('../images/close.png')}
-                style={styles.closeImg}
-              />
-            </TouchableOpacity>
-            <Text style={[{color: this.state.colors['darkSlate']}, styles.legalPageTitle, fonts.hindGunturBd]}>Terms & Conditions</Text>
-            <Text style={styles.rightCta}></Text>
-          </View>
-        </View>
-        <ScrollView style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalContainer, {paddingTop: 10}]}>
-         <WebView style={{width: (width - 40), height: (height - 160)}} source={{html: this.state.commonHtml}} />
+    const { height, width } = Dimensions.get('window');
+    return (
+      <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+        <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalContainer, { paddingTop: 10 }]}>
+          <WebView style={{ width: (width - 80), height: (height - 160) }} source={{ html: this.state.commonHtml }} />
         </ScrollView>
-        <View style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalAgree]}>
-        <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']},  styles.fullBtn]} onPress={() => this.props.hideTerms()}>
-          <Text style={[{color: this.state.colors['white']}, styles.fullBtnTxt, fonts.hindGunturBd]}>AGREE</Text>
-        </TouchableOpacity>            
-        </View>
       </SafeAreaView>
     )
   }
 }
 
 // export default Terms;
-Terms.propTypes = {
+Disclosure.propTypes = {
   globalData: PropTypes.object.isRequired,
 };
 
@@ -115,4 +98,4 @@ const mapStateToProps = state => ({
   globalData: selectGlobalData(state)
 });
 
-export default connect(mapStateToProps, null)(Terms);
+export default connect(mapStateToProps, null)(Disclosure);

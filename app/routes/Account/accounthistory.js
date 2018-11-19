@@ -81,8 +81,8 @@ class AccountHist extends Component {
     const symbolRowHistory = {
       flex: 1,
       flexDirection: 'row',
-      borderBottomColor: colors.borderGray,
-      borderBottomWidth: 0.5,
+      // borderBottomColor: this.state.colors['borderGray'],
+      // borderBottomWidth: 0.5,
       marginTop: 15,
       maxHeight: 70,
       height: 70,
@@ -133,6 +133,8 @@ class AccountHist extends Component {
     }
 
     const { isCancellingOrder, cancellingOrderId } = myAccountStore;
+    let dateStamp = '';
+    let pendingDateStamp = '';
     return (
       <View>
         {pendingOrders.length ?
@@ -142,12 +144,14 @@ class AccountHist extends Component {
         {pendingOrders.length ?
           pendingOrders.map((eachDate, i) => {
             return <View key={'eachDate' + i}>
-              <View style={account.titleWrap}>
+
+              {pendingDateStamp !== eachDate.datestamp ? <View style={account.titleWrap}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFQ, fonts.hindGunturRg]}>QTY</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFA, fonts.hindGunturRg]}>TOTAL</Text>
-              </View>
+                {i == 0 ? <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>: null }
+                {i == 0 ? <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFQ, fonts.hindGunturRg]}>QTY</Text> : null}
+                {i == 0 ? <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFA, fonts.hindGunturRg]}>TOTAL</Text> : null}
+              </View>: null }
+              {pendingDateStamp = eachDate.datestamp}
               <View style={[account.sectionFull, { backgroundColor: this.state.colors['white'] }]}>
                 {eachDate.values.map((elem, i) => {
                   return <View key={'eachDateEntry' + i} style={symbolRowHistoryPending}>
@@ -191,18 +195,18 @@ class AccountHist extends Component {
               </View>
             </View>
           }) : null }
-        <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>
-          FILLED
-        </Text>
-        {filledOrders.length ?
+
+          {filledOrders.length ?
           filledOrders.map((eachDate, i) => {
             return <View key={'eachDate' + i}>
-              <View style={account.titleWrap}>
+
+              { dateStamp !== eachDate.datestamp ? <View style={account.titleWrap}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, account.sectionDate, fonts.hindGunturBd]}>{eachDate.datestamp}</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFQ, fonts.hindGunturRg]}>QTY</Text>
-                <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFA, fonts.hindGunturRg]}>TOTAL</Text>
-              </View>
+                { i == 0 ? <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmF, fonts.hindGunturRg]}>COST BASIS</Text>: null }
+                {i == 0 ? <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFQ, fonts.hindGunturRg]}>QTY</Text>: null }
+                {i == 0 ? <Text style={[{ color: this.state.colors['lightGray'] }, account.titleHistorySmFA, fonts.hindGunturRg]}>TOTAL</Text>: null }
+              </View> : null }
+              { dateStamp  = eachDate.datestamp}
               <View style={[account.sectionFull, { backgroundColor: this.state.colors['white'] }]}>
                 {eachDate.values.map((elem, i) => {
                   return <View key={'eachDateEntry' + i} style={symbolRowHistory}>

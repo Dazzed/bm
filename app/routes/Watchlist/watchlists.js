@@ -354,7 +354,7 @@ class Watchlists extends React.Component {
             animationOut={'slideOutDown'}
             style={watchstyle.bottomModal}
             onModalHide={this.hideSort}>
-            <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, watchstyle.bottomModal]}>
+            <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio]}>
               <RadioForm
                 radio_props={watchListStore.sort_props}
                 initial={sortByIndex}
@@ -369,7 +369,7 @@ class Watchlists extends React.Component {
                 animation={false}
                 labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                 radioLabelActive={[styles.activeRadioLabel, fonts.hindGunturBd]}
-                labelWrapStyle={styles.radioLabelWrap}
+                labelWrapStyle={[styles.radioLabelWrapTop, { borderTopColor: this.state.colors['borderGray'] }]}
                 onPress={this.hideSort}
                 style={styles.radioField}
               />

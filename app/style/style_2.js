@@ -129,10 +129,10 @@ const styles = StyleSheet.create({
   //menu modals,
   fullModal: {
     position: 'absolute',
-    top: 50,
+    top: 295,
     left: 0,
     right: 0,
-    height: 335
+    height: 80
   },
   downArrow: {
     width: 12,
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.white,
     height: 400,
     position: 'absolute',
-    top: 245,
+    top: 0,
     left: 0,
     right: 0
   },
@@ -235,6 +235,12 @@ const styles = StyleSheet.create({
   },
   inactiveNumber: {
     color: '#888888'
+  },
+  radioLabelWrapTop: {
+    width: 50,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    height: 60
+    // borderBottomColor: colors.borderGray
   },
   radioLabelWrap: {
     width: 50,

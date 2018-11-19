@@ -129,7 +129,7 @@ class HomeScreen extends Component {
     if (verifyingAuth) {
       return (
         <View style={[{ backgroundColor: this.state.colors['white'] }, styles.container]}>
-          <View style={styles.landingIcon}>
+          <View style={[styles.landingIcon, {justifyContent: 'flex-start', alignItems: 'flex-start'}]}>
             <Image
               source={this.state.colors['logoImage']}
               style={styles.appIcon}
@@ -152,7 +152,7 @@ class HomeScreen extends Component {
             BLUMARTINI
           </Text>
         </View>
-        <Text style={[{ color: this.state.colors['darkSlate'] }, styles.tagline, fonts.hindGunturLt]}>
+        <Text style={[{ color: this.state.colors['darkSlate'] }, styles.tagline, fonts.hindGunturLt, {marginTop: 10}]}>
           The premier stock trading platform with zero commissions.
         </Text>
         {this.renderAppPreviewButton()}

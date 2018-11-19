@@ -431,7 +431,7 @@ class Settings extends Component {
               source={require('../../images/arrowblue.png')}
               style={[settings.downArrowOpen]}
             />
-            <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio, styles.bottomModalTall]}>
+            <View style={[{ backgroundColor: this.state.colors['white'] }, styles.radio]}>
               <RadioForm
                 radio_props={sort_props}
                 initial={targetIndex}
@@ -445,7 +445,7 @@ class Settings extends Component {
                 animation={false}
                 labelStyle={[{ color: this.state.colors['lightGray'] }, styles.radioLabel, fonts.hindGunturRg]}
                 radioLabelActive={[{ color: this.state.colors['darkGray'] }, styles.activeRadioLabel, fonts.hindGunturBd]}
-                labelWrapStyle={[{ borderBottomColor: this.state.colors['borderGray'] }, styles.radioLabelWrap]}
+                labelWrapStyle={[{ borderTopColor: this.state.colors['borderGray'] }, styles.radioLabelWrapTop]}
                 onPress={(value) => { this.setAutoLog(value) }}
                 style={styles.radioField}
               />

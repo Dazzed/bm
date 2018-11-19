@@ -137,8 +137,14 @@ class NumPad extends Component {
           }}
         />
         <View style={[{ borderBottomColor: this.state.colors['borderGray'] }, numbers.rowLabel]}>
-          <Text style={[{ color: this.state.colors['lightGray'] }, numbers.inputLabel, fonts.hindGunturRg]}>STOCK PRICE</Text>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, numbers.input, fonts.hindGunturRg]}>{this.state.numField}</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, numbers.inputLabel, fonts.hindGunturRg]}>STOCK PRICE $</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, numbers.input, fonts.hindGunturRg]}>{this.state.numField}
+            <Image
+              resizeMode={'contain'}
+              source={require('../images/cursor.gif')}
+              style={{ width: 4, height: 75, marginTop: 10, top: 0 }}
+            />          
+          </Text>
         </View>
         <View style={numbers.row}>
           <Text style={[{ color: this.state.colors['darkSlate'] }, numbers.numbers, fonts.hindGunturLt]} onPress={() => { this.addNum(1); }}>1</Text>

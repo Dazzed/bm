@@ -14,7 +14,7 @@ import fonts from '../../style/fonts';
 class Success extends React.Component {
 
     // static navigationOptions = ({ navigation }) => {
-    //     let title = 'Funds withdrawn';
+    //     let title = 'Withdraw funds';
     //     if(navigation.state.params.widthdrawDepositMode === 'deposit') {
     //         title = 'Account funded'
     //     }
@@ -85,7 +85,7 @@ class Success extends React.Component {
     render() {
       const { theme } = colorStore
       let circleSize = 150;
-      let title = 'Funds withdrawn';
+      let title = 'Withdraw funds';
       if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
         title = 'Fund my account'
       }

@@ -75,7 +75,7 @@ class FundMyAccount extends React.Component {
         list.push('.')
         let afterDecimalLength = this.state.fundingString.split('.')[1].length
         if(afterDecimalLength >= 2) {
-             list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']
+            //  list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.']
         }
       }
       return list;
@@ -118,7 +118,7 @@ class FundMyAccount extends React.Component {
     }
 
     numberChange = newValue => {
-        if(this.state.fundingString.length >= 8) {
+        if (parseFloat((this.state.fundingString + newValue)) > 100000) {
             return
         } else {
 
@@ -340,7 +340,7 @@ class FundMyAccount extends React.Component {
         let buttonTitle = 'FUND ACCOUNT';
 
         if(this.props.navigation.state.params.widthdrawDepositMode === 'withdraw') {
-            buttonTitle = 'MAKE WITHDRAW';
+            buttonTitle = 'WITHDRAW';
         }
 
         let disabled = false;
@@ -358,7 +358,7 @@ class FundMyAccount extends React.Component {
 
     render() {
       const { theme } = colorStore;
-        let title = 'Funds withdrawn';
+        let title = 'Withdraw funds';
         if(this.props.navigation.state.params.widthdrawDepositMode === 'deposit') {
             title = 'Fund my account'
         }

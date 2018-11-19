@@ -164,7 +164,7 @@ class Search extends React.Component {
   }
 
   renderListOrSearchView = () => {
-    const { searchData, searchDataJS, isFetchingMoreData } = searchStore;
+    const { searchData, searchDataJS, isFetchingMoreData, customLists } = searchStore;
     const { theme } = colorStore;
     console.log('============= render search view', searchData, searchDataJS)
     if (searchData === null) {
@@ -177,8 +177,24 @@ class Search extends React.Component {
       );
     }
     if (!searchDataJS || searchDataJS.result.length === 0) {
-      return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: 200 }}>
-        <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg]}>No Results</Text>
+      return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: 400 }}>
+        <View style={[{ backgroundColor: this.state.colors['contentBg'] }, search.presetContainer, {paddingTop: 50}]}>
+          <Text style={[{ color: theme.lightGray }, trending.symbolsTxtDetail, fonts.hindGunturRg, {textAlign: 'center', paddingBottom: 30}]}>
+            No match found for "{this.state.searchTerm}" {'\n'}Please try your search again</Text>
+          {
+            customLists.map((cl, i) => (
+              <TouchableOpacity
+                key={`search_page_cl_${i}`}
+                style={styles.bluebtn}
+                onPress={this.onTapSearchHelper.bind(this, cl)}
+              >
+                <Text style={[styles.touchblueOption, fonts.hindGunturMd]}>
+                  {cl.name.trim()}
+                </Text>
+              </TouchableOpacity>
+            ))
+          }
+        </View>
       </View>
     } else {
       if (isFetchingMoreData) {

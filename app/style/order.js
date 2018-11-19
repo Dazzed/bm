@@ -56,7 +56,7 @@ const order = StyleSheet.create({
   rightCta: {
     height: 25,
     position: 'absolute',
-    top: 10,
+    top: 15,
     right: 10,
     // color: colors.lightGray
   },
@@ -270,6 +270,13 @@ const order = StyleSheet.create({
     color: colors.lightGray,
     fontSize: 14
   },
+  modal: {
+    width: 414,
+    maxHeight: 150,
+    left: 0,
+    top: '80%',
+    justifyContent: 'flex-start',
+  },
   confirmColRight: {
     flex: 1,
     textAlign: 'right',
@@ -311,14 +318,14 @@ const order = StyleSheet.create({
     alignItems: 'center'
   },
   searchingImg: {
-    maxWidth: 18,
-    maxHeight: 18,
+    maxWidth: 22,
+    maxHeight: 22,
     paddingRight: 15,
     paddingTop: 15,
   },
   twitterImg: {
     maxWidth: 22,
-    maxHeight: 18,
+    maxHeight: 22,
     paddingRight: 15,
     paddingTop: 15,
   },

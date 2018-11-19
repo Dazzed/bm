@@ -134,7 +134,7 @@ class OrderPlaced extends React.Component {
               </TouchableHighlight>
             </View>
           </View>
-          <View style={[{ backgroundColor: this.state.colors['white'] }, order.shareContainer]}>
+          <View style={[{ backgroundColor: this.state.colors['contentBg'] }, order.shareContainer]}>
             <TouchableHighlight style={styles.fullBtnStocktwits} onPress={() => Linking.openURL(`https://stocktwits.com/symbol/${targetStockData.ticker}`)}>
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <Image source={require('../../../images/search_white.png')} style={order.searchingImg} />

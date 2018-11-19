@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { LineChart, Path, Grid, YAxis, XAxis } from 'react-native-svg-charts'
 import { ClipPath, Defs, Rect } from 'react-native-svg'
 import { numberWithCommasFixed } from '../../utility'
-
+import { StyleSheet } from 'react-native'
 import {
     View,
     Text,
@@ -83,17 +83,18 @@ export default class SmallGraph extends React.Component {
         let xAxisData = data.dateData;
         let textColor = theme.darkSlate;
         const indexToClipFrom = data.lineData.length
+        let transparentLine = JSON.parse(JSON.stringify(data.lineData));
         if (range === "1d") {
             if (data.lineData.length < 31) {
                 let currentLength = data.lineData.length;
                 for (var i = currentLength; i < 31; i++) {
-                    data.lineData.push(Price);
+                    transparentLine.push(Price);
                 }
             }
         }
 
         const Clips = ({ x, width }) => (
-            <Defs key={'clips'}>
+            <Defs key={'clips' + Math.random()}>
                 <ClipPath id="clip-path-1">
                     <Rect x={'0'} y={'0'} width={x(indexToClipFrom)} height={'100%'} />
                 </ClipPath>
@@ -106,7 +107,7 @@ export default class SmallGraph extends React.Component {
         // Line extras:
         const DashedLine = ({ line }) => (
             <Path
-                key={'line-1'}
+                key={'line-' + Math.random()}
                 d={line}
                 stroke={'rgb(255, 255, 255)'}
                 strokeWidth={2}
@@ -121,16 +122,24 @@ export default class SmallGraph extends React.Component {
         return <View style={inlineContainerStyle}>
             <View style={inlineGraphContainerStyle}>
                 <View style={{ flex: 1,height: graphHeight}}>
+                    {range === '1d' ?
+                        <LineChart
+                            style={{ height: graphHeight }}
+                            data={transparentLine}
+                            svg={{ stroke: theme.green }}
+                            contentInset={{ top: 20, bottom: 20 }}
+                        >
+                            <Clips />
+                            <DashedLine />
+                        </LineChart> :
                     <LineChart
                         style={{ height: graphHeight }}
-                        data={ data.lineData }
+                        data={ transparentLine }
                         svg={{ stroke: theme.green }}
                         contentInset={{ top: 20, bottom: 20 }}
                     >
-                        {range === '1d' ? <Clips /> : null}
-                        {range === '1d' ? <DashedLine /> : null}
                         <HorizontalLine height={height} yVal={lineYPosition} title={title} value={previousClose}  />
-                    </LineChart>
+                    </LineChart> }
                 </View>
             </View>
             <View style={inlineTimeStampContainerStyle}>

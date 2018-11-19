@@ -94,6 +94,7 @@ const account = StyleSheet.create({
   },
   titleWrap: {
     flex: 1,
+    marginTop: 10,
     flexDirection: 'row',
     width: '100%'
   },
@@ -186,7 +187,7 @@ const account = StyleSheet.create({
   },
   sectionFull: {
     // backgroundColor: colors.white,
-    marginBottom:20,
+    marginBottom:0,
     flex: 1
   },
   sectionWrap: {

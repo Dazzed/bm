@@ -71,6 +71,7 @@ const watchstyle = StyleSheet.create({
   },  
   symCost: {
     alignItems: 'flex-end',
+    width: 75
   },
   symPrice: {
     textAlign: 'right',
@@ -107,9 +108,9 @@ const watchstyle = StyleSheet.create({
   },
   bottomModal: {
     width: 500,
-    maxHeight: 200,
+    height: 300,
     left: 0,
-    top: '55%',
+    top: '65%',
     justifyContent: 'flex-start',
 
   }

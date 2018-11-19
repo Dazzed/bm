@@ -23,6 +23,8 @@ import { observer } from 'mobx-react';
 import { colorStore, registrationStore } from '../../../mobxStores';
 import TermsAndConditions from './documents/TermsAndConditions';
 import PrivacyPolicy from './documents/PrivacyPolicy';
+import Disclosure from './documents/Disclosure';
+import Agreement from './documents/Agreement';
 import RegistrationHeader from './registrationHeader';
 import Button from '../../../sharedComponents/Button1';
 
@@ -63,13 +65,9 @@ export default class Declaration extends Component {
         } else if(whichPopOver == 'pp') {
             return <PrivacyPolicy />
         } else if(whichPopOver == 'ca') {
-            return <View>
-                <Text>ca</Text>
-            </View>
+            return <Agreement />
         } else if(whichPopOver == 'rdn') {
-            return <View>
-                <Text>rdn</Text>
-            </View>
+            return <Disclosure />
         } else {
             return null
         }
@@ -79,13 +77,6 @@ export default class Declaration extends Component {
         const { theme } = colorStore;
         if(this.state.whichPopOver) {
             return <View style={[{position: 'absolute', top: 0, width: '100%', height: '85%', backgroundColor: theme.white}]}>
-                <TouchableOpacity style={{paddingVertical: 10}} onPress={() => this.newWin(null)}>
-                    <Image
-                        style={{height: 25, width: 25, margin: 5}}
-                        resizeMode="contain"
-                        source={require('../../../images/close.png')}
-                    />
-                </TouchableOpacity>
                 <ScrollView style={{flex: 1, paddingHorizontal: 5, marginVertical: 5}}>
                     {this.renderChosenContent()}
                 </ScrollView>

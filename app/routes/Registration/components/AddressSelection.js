@@ -228,7 +228,7 @@ export default class AddressSelection extends Component {
                       animationIn={'fadeIn'}
                       animationOut={'fadeOut'}
                       style={styles_2.fullModal}
-                      // onModalHide={() => { this.hideState() }}
+                      onModalHide={() => { this.hideState() }}
                   >
                     <View style={[{ backgroundColor: this.props.colors['white'] }, styles_2.subMenuFullModal]}>
                       { //<Image source={require('../../../images/arrowblue.png')} style={[styles_2.downArrow]}/>

@@ -443,13 +443,29 @@ class Chart extends Component {
     if (params.momentum == 'na') {
       return null
     } else {
+      let momentum_label = '';
+      if (params.momentum >= 0 && params.momentum < 0.2) {
+        momentum_label = 'STRONG SELL'
+      }
+      if (params.momentum >= 0.2 && params.momentum < 0.4) {
+        momentum_label = 'SELL'
+      }
+      if (params.momentum >= 0.4 && params.momentum < 0.6) {
+        momentum_label = 'NEUTRAL'
+      }
+      if (params.momentum >= 0.6 && params.momentum < 0.8) {
+        momentum_label = 'BUY'
+      }
+      if (params.momentum >= 0.8) {
+        momentum_label = 'STRONG BUY'
+      }
       return <View style={[chart.momentumWrapper, { width: '100%' }]}>
         <View style={[chart.momentumInfo, { flex: 1 }]}>
 
           {/* TODO: what does this mean, momentum, how does it map to my value, 'na'     'Strong Buying Frenzy' */}
 
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
-          <Text style={[{ color: this.state.colors['lightGray'] }, chart.momentumSubTitle, fonts.hindGunturRg]}>{''}</Text>
+          <Text style={[{ color: this.state.colors['lightGray'] }, chart.momentumSubTitle, fonts.hindGunturRg]}>{momentum_label}</Text>
         </View>
         <View style={{ flex: 1 }}>
           <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={params.momentum} />
@@ -646,7 +662,7 @@ class Chart extends Component {
         </View>
 
         <View style={chart.prices}>
-          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.stockPrice, fonts.hindGunturRg]}>${formattedPrice}</Text>
+          <Text style={[{ color: this.state.colors['darkSlate'] }, chart.stockPrice, fonts.hindGunturRg]}>{formattedPrice}</Text>
           <TouchableOpacity style={chart.priceInfo} onPress={() => this.setState({ stockChange: !this.state.stockChange })}>
             <Text style={[{ color: this.state.colors['darkGray'] }, chart.priceTime, fonts.hindGunturRg]}>{formattedTime}</Text>
             {this.state.stockChange ? <Text style={[{ backgroundColor: this.state.colors[isPosNeg] }, { borderColor: this.state.colors[isPosNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangeDecimal}</Text> : <Text style={[{ backgroundColor: this.state.colors[isPosNeg] }, { borderColor: this.state.colors[isPosNeg] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}>{formattedChangePercent}</Text>}
@@ -657,15 +673,15 @@ class Chart extends Component {
           <View style={chart.pricePoints}>
             <View style={chart.priceOpen}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>OPEN</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedOpen}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedOpen}</Text>
             </View>
             <View style={chart.priceHigh}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>HIGH</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedHigh}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedHigh}</Text>
             </View>
             <View style={chart.priceLow}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>LOW</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>${formattedLow}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.priceNum, fonts.hindGunturRg]}>{formattedLow}</Text>
             </View>
             <View style={chart.priceVol}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.priceLabel, fonts.hindGunturRg]}>VOLUME</Text>
@@ -701,11 +717,11 @@ class Chart extends Component {
           <View style={chart.statsRow}>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52-WK HIGH</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52high, 2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.week52high, 2)}</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>52-WK LOW</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>${numberWithCommasFixed(keyStats.week52low, 2)}</Text>
+              <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.week52low, 2)}</Text>
             </View>
             <View style={chart.statsColumn}>
               <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>AVG VOLUME</Text>
@@ -835,7 +851,7 @@ class Chart extends Component {
     return params.bid.map((elem, i) => {
       return <View style={chartland.bidaskRow} key={`chart_bid_list_${i}`}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskNum]}>{elem.size}</Text>
-        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>${elem.price}</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>{elem.price}</Text>
       </View>
     })
   }
@@ -849,7 +865,7 @@ class Chart extends Component {
     return params.ask.map((elem, i) => {
       return <View style={chartland.bidaskRow} key={`chart_ask_list_${i}`}>
         <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskNum]}>{elem.size}</Text>
-        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>${elem.price}</Text>
+        <Text style={[{ color: this.state.colors['lightGray'] }, chartland.bidaskPrice]}>{elem.price}</Text>
       </View>
     })
   }
@@ -1178,12 +1194,12 @@ class Chart extends Component {
 
     let formattedVolumeWithCommas = numberWithCommas(Volume);
     // add tofixed
-    let formattedPrice = '$' + '---';
+    let formattedPrice = '' + '---';
     if (Price) {
       formattedPrice = numberWithCommasFixed(Price, 2)
     }
 
-    let formattedOpen = '$' + '---';
+    let formattedOpen = '' + '---';
     if (open) {
       formattedOpen = numberWithCommasFixed(open, 2);
     }

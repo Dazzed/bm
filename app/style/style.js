@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   leftCta: {
     width: 50,
-    height: 25,
+    height: 30,
     flex: 1,
     paddingLeft: 20,
     paddingTop: 0
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rightCta: {
-    height: 25,
+    height: 30,
     flex: 1,
     paddingRight: 15,
     paddingTop: 0,
@@ -68,13 +68,16 @@ const styles = StyleSheet.create({
   },
   rightCtaTxt2: {
     // color: colors.lightGray,
+    paddingTop: 0,
+    top: 0,
     fontSize: 15
   },
   rightCta2: {
-    height: 25,
+    height: 30,
     flex: 1,
     paddingRight: 20,
-    alignItems: 'flex-end'
+    paddingTop: 0,
+    alignItems: 'flex-start'
   },
   mainCta: {
     height: 25,
@@ -232,12 +235,17 @@ const styles = StyleSheet.create({
   },  
   //landing
   landingTT: {
-    flex: 0.6,
-    alignItems: 'center',
+    flex: 1,
+    marginTop: 10,
+    maxHeight: 80,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   },
   landingIcon: {
-    paddingTop: 100,
-    flex: 1.25
+    paddingTop: 75,
+    flex: 1,
+    alignItems:'flex-end',
+    justifyContent: 'flex-end'
   },
   landingIconLogin: {
     paddingTop: 50,
@@ -246,7 +254,7 @@ const styles = StyleSheet.create({
   },
   landingIconOrderPlaced: {
     paddingTop: 100,
-    flex: 1.1
+    flex: 1.5
   },
   landingTTLogin: {
     paddingTop: 10,
@@ -354,10 +362,12 @@ const styles = StyleSheet.create({
   //radio modal
   radio: {
     flex: 1,
+    maxWidth:414,
+    paddingRight: 100
     // backgroundColor: colors.white,
   },
   radioField: {
-    paddingTop: 25,
+    paddingTop: 0,
     paddingLeft: 35,
   },
   radioTitle: {
@@ -376,6 +386,11 @@ const styles = StyleSheet.create({
   activeRadioLabel: {
     // color: colors.darkGray
   },
+  radioLabelWrapTop: {
+    width: 50,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    // borderBottomColor: colors.borderGray    
+  },
   radioLabelWrap: {
     width: 50,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -390,9 +405,9 @@ const styles = StyleSheet.create({
   },
   bottomModalTall: {
     width: 414,
-    maxHeight: 300,
+    maxHeight: 175,
     left: 0,
-    top: '43%',
+    top: '75%',
     justifyContent: 'flex-start',
   },
   //checkbox

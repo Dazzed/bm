@@ -318,7 +318,9 @@ export const parseSmallGraphData = (data, Price, graphHeight, range) => {
     }
 
     if (range === '1d') {
-      d.dateData = ["9:30 AM", "9:43 AM", "9:56 AM", "10:09 AM", "10:22 AM", "10:35 AM", "10:48 AM", "11:01 AM", "11:14 AM", "11:27 AM", "11:40 AM", "11:53 AM", "12:06 PM", "12:19 PM", "12:32 PM", "12:45 PM", "12:58 PM", "1:11 PM", "1:24 PM", "1:37 PM", "1:50 PM", "2:03 PM", "2:16 PM", "2:29 PM", "2:42 PM", "2:55 PM", "3:08 PM", "3:21 PM", "3:34 PM", "3:47 PM", "4:00 PM"];
+      if (data.length > 0) {
+        d.dateData = ["9:30 AM", "9:43 AM", "9:56 AM", "10:09 AM", "10:22 AM", "10:35 AM", "10:48 AM", "11:01 AM", "11:14 AM", "11:27 AM", "11:40 AM", "11:53 AM", "12:06 PM", "12:19 PM", "12:32 PM", "12:45 PM", "12:58 PM", "1:11 PM", "1:24 PM", "1:37 PM", "1:50 PM", "2:03 PM", "2:16 PM", "2:29 PM", "2:42 PM", "2:55 PM", "3:08 PM", "3:21 PM", "3:34 PM", "3:47 PM", "4:00 PM"];
+      }
     }
     // Set range
     d.yRange = d.yMax - d.yMin;
@@ -851,10 +853,10 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
         let xRel = (elem.dateUnix - d.xMin) / (d.xRange);
         let xCoord = xRel * width;
         // percentage of total height to allow max
-        let maxLineHeightModifier = .3;
+        let maxLineHeightModifier = .1;
         let lineHeightRel = volumeValue / d.volumeMax;
         let lineHeightCoords = (maxLineHeightModifier * height) * lineHeightRel;
-        let bottomAdjust = height * .1;
+        let bottomAdjust = height * .125;
         let yCoord = ( height + bottomAdjust ) - lineHeightCoords;
         let color = theme.red;
         if(closeValue > openValue) {
@@ -941,7 +943,7 @@ export const parseLargeGraphData = (inputData, height, width, indicatorsList, th
       let flippedYPosition = flipYAxisValue(height, yPosition);
       let relativeYPosition = flippedYPosition / height;
       let calculatedValue = (relativeYPosition * d.yRange) + d.yMin;
-      let formattedLabel = '$' + calculatedValue.toFixed(2);
+      let formattedLabel = '' + calculatedValue.toFixed(2);
       const yObj = {
         label: formattedLabel,
         position: yPosition

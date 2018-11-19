@@ -149,9 +149,7 @@ class OrderSell extends React.Component {
               {
                 orderTypeName === 'market' ?
                   `${numberWithCommasFixed(tickerDataJS.Price, 2)}` :
-                  (activeInputName === 'price' ?
-                    (price || numberWithCommasFixed(tickerDataJS.Price, 2)) :
-                    `${price || numberWithCommasFixed(tickerDataJS.Price, 2)}`)
+                  (price !== '' ? numberWithCommasFixed(price, 2) : numberWithCommasFixed(tickerDataJS.Price, 2))
               }
             </Text>
             {activeInputName === 'price' ? <Image
