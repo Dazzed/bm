@@ -54,7 +54,7 @@ import HomeScreen from './app/containers/Home';
 import ForgotPassword from './app/routes/Forgot';
 import { firstNavDefaultRoute } from './app/devControlPanel';
 
-const LostAvenue = BioWrapper(StackNavigator({
+const BluMartini = BioWrapper(StackNavigator({
   Home: { screen: HomeScreen },
   ForgotPassword: { screen: ForgotPassword },
   Login: { screen: Login },
@@ -68,8 +68,8 @@ const LostAvenue = BioWrapper(StackNavigator({
 
 const WithProvider = () => (
   <Provider store={store}>
-    <LostAvenue />
+    <BluMartini />
   </Provider>
 );
 
-AppRegistry.registerComponent('LostAvenue', () => WithProvider);
+AppRegistry.registerComponent('BluMartini', () => WithProvider);

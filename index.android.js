@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class LostAvenue extends Component {
+export default class BluMartini extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('LostAvenue', () => LostAvenue);
+AppRegistry.registerComponent('BluMartini', () => BluMartini);

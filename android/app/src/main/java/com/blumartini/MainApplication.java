@@ -1,4 +1,4 @@
-package com.lostavenue;
+package com.blumartini;
 
 import android.app.Application;
 
