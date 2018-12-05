@@ -41,7 +41,6 @@ const chart = StyleSheet.create({
     paddingTop: 3,
   },
   symbolColumnPrice: {
-    color: colors.green,
     fontSize: 11,
     paddingTop: 3,
     fontWeight: 'bold'
@@ -155,7 +154,7 @@ const chart = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     // borderRightColor: colors.borderGray,
-    borderRightWidth: StyleSheet.hairlineWidth,
+    borderRightWidth: 0,
     // paddingTop: 20
   },
   timeSelected: {

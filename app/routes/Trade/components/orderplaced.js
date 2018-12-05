@@ -73,8 +73,8 @@ class OrderPlaced extends React.Component {
     }
 
     shareOnTwitter({
-      'text': `I just ${purchaseAction} ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
-      'link': 'http://blumartini.com/download',
+      'text': `I just ${purchaseAction} ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - https://blumartini.com/`,
+      'link': 'https://blumartini.com/',
     },
       (results) => {
         if (results === 'not_available') {

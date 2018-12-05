@@ -121,12 +121,25 @@ class FundMyAccount extends React.Component {
         if (parseFloat((this.state.fundingString + newValue)) > 100000) {
             return
         } else {
-
-            this.setState({
-                fundingString: this.state.fundingString + newValue,
-            }, () => {
-                this.calculateError()
-            })
+            let containsDecimal = this.state.fundingString.indexOf('.') !== -1;
+            if (containsDecimal) {
+                let afterDecimalLength = this.state.fundingString.split('.')[1].length
+                if (afterDecimalLength >= 2) {
+                    //  Do not append
+                } else {
+                    this.setState({
+                        fundingString: this.state.fundingString + newValue,
+                    }, () => {
+                        this.calculateError()
+                    })
+                }
+            } else {
+                this.setState({
+                    fundingString: this.state.fundingString + newValue,
+                }, () => {
+                    this.calculateError()
+                })
+            }
         }
     }
 

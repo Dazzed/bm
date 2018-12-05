@@ -58,6 +58,11 @@ const watchstyle = StyleSheet.create({
     maxWidth: 140,
     flex: 1
   },
+  symDetailsEdit: {
+    height: 175,
+    maxWidth: 220,
+    flex: 2
+  },
   symMomentum: {
     flex: 1,
   },

@@ -55,8 +55,8 @@ class OrderPlaced extends React.Component {
       quantityPurchased
     } = this.props;
     shareOnTwitter({
-        'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - http://blumartini.com/download`,
-        'link': 'http://blumartini.com/download',
+        'text': `I just bought ${quantityPurchased} ${quantityPurchased < 2 ? 'share' : 'shares'} of ${targetStockData.ticker} on BluMartini - https://blumartini.com/`,
+        'link': 'https://blumartini.com/',
       },
       (results) => {
         console.info(results);

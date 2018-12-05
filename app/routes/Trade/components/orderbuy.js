@@ -78,6 +78,11 @@ class OrderBuy extends Component {
     if (this.state.activeInputName === name) {
       return;
     }
+    if (name === 'price') {
+      const { setPrice
+      } = buySellStore;
+      setPrice('');
+    }
     this.setState({ activeInputName: name });
   };
 
@@ -116,6 +121,10 @@ class OrderBuy extends Component {
       validityIndex,
       price
     } = buySellStore;
+    if (orderTypeName.toUpperCase() === 'STOP_LOSS') {
+      const { setOrderTypeName } = buySellStore;
+      setOrderTypeName('market');
+    }
     const { activeInputName } = this.state;
     const activeBorderBottomStyle = { borderBottomColor: this.state.colors['darkSlate'] };
     return (
@@ -156,8 +165,7 @@ class OrderBuy extends Component {
             >
               {
                 orderTypeName === 'market' ?
-                  `${numberWithCommasFixed(tickerDataJS.Price,2)}` :
-                  (price !== '' ? numberWithCommasFixed(price, 2): numberWithCommasFixed(tickerDataJS.Price,2))
+                  `${numberWithCommasFixed(tickerDataJS.Price,2)}` : numberWithCommasFixed(price, 2)
               }
             </Text>
             {activeInputName === 'price' ? <Image

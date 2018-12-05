@@ -2,7 +2,7 @@ import { observable, action, computed, toJS } from 'mobx';
 import { searchStocks } from '../../api';
 import { get } from '../../api/apiUtility';
 
-export default class Trending {
+export default class Search {
   page = 1;
   @observable searchData = null;
   @observable searchLoading = false;

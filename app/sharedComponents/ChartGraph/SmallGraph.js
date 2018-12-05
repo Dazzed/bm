@@ -50,7 +50,6 @@ export default class SmallGraph extends React.Component {
         let previousCloseFormatted = numberWithCommasFixed(previousClose, 2);
         const { height } = this.props.height;
 
-        console.log(49, tickerDataJS);
         let xAxisHeight = 20;
         let graphHeight = this.props.height - xAxisHeight;
         const data = parseSmallGraphData(this.props.data, previousClose, graphHeight, range);
@@ -128,9 +127,9 @@ export default class SmallGraph extends React.Component {
                             data={transparentLine}
                             svg={{ stroke: theme.green }}
                             contentInset={{ top: 20, bottom: 20 }}
+                            
                         >
-                            <Clips />
-                            <DashedLine />
+                            <HorizontalLine height={height} yVal={lineYPosition} title={title} value={previousClose} />
                         </LineChart> :
                     <LineChart
                         style={{ height: graphHeight }}

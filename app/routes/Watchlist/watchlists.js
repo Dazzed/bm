@@ -63,7 +63,7 @@ class Watchlists extends React.Component {
       isSortVisible: false,
       // sortVal: 0,
       colors: colorObj,
-      showWatchListPercent: []
+      showWatchListPercent: false
     };
     this.showSearch = this.showSearch.bind(this);
     this.hideSearch = this.hideSearch.bind(this);
@@ -146,16 +146,10 @@ class Watchlists extends React.Component {
     )
   }
 
-  toggleWatchListPercent = id => {
-    if (this.state.showWatchListPercent.some(p => p === id)) {
-      this.setState(({ showWatchListPercent }) => ({
-        showWatchListPercent: showWatchListPercent.filter(p => p !== id)
-      }));
-    } else {
-      this.setState(({ showWatchListPercent }) => ({
-        showWatchListPercent: showWatchListPercent.concat(id)
-      }));
-    }
+  toggleWatchListPercent = () => {
+    this.setState({
+      showWatchListPercent: !this.state.showWatchListPercent
+    });
   };
 
   navigateToChart = data => {
@@ -191,11 +185,13 @@ class Watchlists extends React.Component {
             </View>
             <TouchableOpacity
               style={watchstyle.symCost}
-              onPress={this.toggleWatchListPercent.bind(this, row.id)}
+              onPress={() => this.toggleWatchListPercent()}
             >
               <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symPrice, fonts.hindGunturRg]}>${Number(row['latestPrice']).toFixed(2)}</Text>
-              <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.symTime, fonts.hindGunturRg]}>{moment.unix(row['latestUpdate']).format('h:mm A PT')}</Text>
-              {this.state.showWatchListPercent.includes(row.id) ?
+              <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.symTime, fonts.hindGunturRg]}>{moment.unix(row['latestUpdate'] / 1000).tz("America/New_York").format('h:mm A z')}
+              
+              </Text>
+              {this.state.showWatchListPercent ?
                 <Text
                   style={[{ backgroundColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { borderColor: Number(row['changePercent']) < 0 ? this.state.colors['red'] : this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, fonts.hindGunturBd]}
                 >
@@ -237,15 +233,14 @@ class Watchlists extends React.Component {
               style={[watchstyle.dragDelete]}
             />
           </TouchableOpacity>
-          <View style={watchstyle.symDetails}>
+          <View style={watchstyle.symDetailsEdit}>
             <Text style={[{ color: this.state.colors['darkSlate'] }, watchstyle.symName, fonts.hindGunturRg]}>
               {row['ticker']}
             </Text>
             <Text style={[{ color: this.state.colors['lightGray'] }, watchstyle.coName, fonts.hindGunturRg]}>
-              {row['companyName'].length > 23 ? `${row['companyName'].slice(0, 20)}...` : row['companyName']}
+              {row['companyName'].length > 40 ? `${row['companyName'].slice(0, 37)}...` : row['companyName']}
             </Text>
           </View>
-          <View style={watchstyle.symMomentum}></View>
           <View style={watchstyle.symCost}>
             <Image
               source={require('../../images/drag.png')}

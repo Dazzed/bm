@@ -272,9 +272,9 @@ const order = StyleSheet.create({
   },
   modal: {
     width: 414,
-    maxHeight: 150,
+    maxHeight: 175,
     left: 0,
-    top: '80%',
+    top: '75%',
     justifyContent: 'flex-start',
   },
   confirmColRight: {

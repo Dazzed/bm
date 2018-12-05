@@ -393,6 +393,13 @@ const chart = StyleSheet.create({
   },
   modal: {
   },
+  newsModal: {
+    width: 414,
+    maxHeight: '100%',
+    left: 0,
+    top: 0,
+    justifyContent: 'flex-start',
+  },
 
 
 });

@@ -55,7 +55,8 @@ class Terms extends React.Component {
       html = html.replace(/<h1/g, '<h1 style="line-height: 1.1; font-family: HindGuntur-Regular; font-size: 88; font-weight:100"');
       html = html.replace(/<h2/g, '<h2 style="line-height: 1.1; font-family: HindGuntur-Regular; font-size: 72; font-weight:100"');
       html = html.replace(/<h3/g, '<h3 style="line-height: 1.1; font-family: HindGuntur-Regular; font-size: 64; font-weight:100"');
-      html = html.replace(/<p/g, '<p style="line-height: 1.4; font-family: HindGuntur-Regular; font-size: 48; font-weight:100"');
+      html = html.replace(/<p/g, '<p style="white-space: pre-wrap; line-height: 1.4; font-family: HindGuntur-Regular; font-size: 48; font-weight:100"');
+      html = html.replace(/<a/g, '<a style="white-space: pre-wrap;" ');
       html = html.replace(/<strong>/g, '');
       html = html.replace(/<\/strong>/g, '');
       html = style_tag + html + '</body>';
@@ -94,7 +95,7 @@ class Terms extends React.Component {
           </View>
         </View>
         <ScrollView style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalContainer, {paddingTop: 10}]}>
-         <WebView style={{width: (width - 40), height: (height - 160)}} source={{html: this.state.commonHtml}} />
+         <WebView style={{width: (width - 80), height: (height - 180)}} source={{html: this.state.commonHtml}} />
         </ScrollView>
         <View style={[{borderTopColor: this.state.colors['borderGray']}, styles.legalAgree]}>
         <TouchableOpacity style={[{backgroundColor: this.state.colors['green']}, {borderColor: this.state.colors['green']},  styles.fullBtn]} onPress={() => this.props.hideTerms()}>

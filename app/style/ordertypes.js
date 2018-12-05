@@ -12,7 +12,7 @@ const OrderTypes = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    height: 150,
+    height: 175,
     width: '100%',
     bottom: 0,
     left: 0,

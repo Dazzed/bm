@@ -602,6 +602,11 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 25
   },
+  rotateImgPortrait: {
+    width: 25,
+    height: 25,
+    marginTop: 20
+  },
   //images
   closeImg: {
     width: 15,

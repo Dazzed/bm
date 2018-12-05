@@ -461,12 +461,16 @@ class Chart extends Component {
       }
       return <View style={[chart.momentumWrapper, { width: '100%' }]}>
         <View style={[chart.momentumInfo, { flex: 1 }]}>
-
-          {/* TODO: what does this mean, momentum, how does it map to my value, 'na'     'Strong Buying Frenzy' */}
-
           <Text style={[{ color: this.state.colors['darkSlate'] }, chart.momentumTitle, fonts.hindGunturBd]}>MOMENTUM</Text>
           <Text style={[{ color: this.state.colors['lightGray'] }, chart.momentumSubTitle, fonts.hindGunturRg]}>{momentum_label}</Text>
         </View>
+        {this.state.orientation === 'portrait' ?
+        <View style={{ flex: 0.25}}>
+          <Image
+            source={require('../images/turnphone.png')}
+            style={styles.rotateImgPortrait}
+          />
+        </View> : null }
         <View style={{ flex: 1 }}>
           <DialIndicator showArrow={true} width={100} height={50} displayText={true} textLine1={null} textLine2={null} position={params.momentum} />
         </View>
@@ -559,6 +563,7 @@ class Chart extends Component {
       momentum,
       open,
       overview,
+      position,
       profile,
       ticker,
       website,
@@ -1013,6 +1018,7 @@ class Chart extends Component {
       momentum,
       open,
       overview,
+      position,
       profile,
       ticker,
       website,
@@ -1040,7 +1046,7 @@ class Chart extends Component {
 
     let chartHeight = shortSide - headerHeight - footerHeight;
     let chartWidth = longSide - rightWidth;
-
+    console.log(1049, position)
     return <View style={chartland.landscape}>
       <View style={chartland.header}>
         <TouchableOpacity style={chartland.leftCtaSpacer} onPress={() => this.props.navigation.goBack()}>
@@ -1120,16 +1126,25 @@ class Chart extends Component {
         </View>
 
         <View style={chartland.right}>
-
+                
           <ScrollView>
             {this.renderPortraitMomentum(params)}
             {this.renderBidAsk(params)}
+            { position.map(( posi, x ) => {
+              let totalSpent = posi.totalAmountSpent;
+              let currentValue = posi.shares * Price;
 
-            <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { borderBottomColor: this.state.colors['borderGray'] }, chartland.symbolPosition]}>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>You are long</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>2000 x $152.67</Text>
-              <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumnPrice, fonts.hindGunturBd]}>+265.78</Text>
-            </View>
+              let gainLoss = currentValue - totalSpent;
+              let posNeg = 'green';
+              if (gainLoss < 0) {
+                posNeg = 'red';
+              }
+              return <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { borderBottomColor: this.state.colors['borderGray'] }, chartland.symbolPosition]}>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>You are {posi.type}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>{posi.shares} x ${formattedPrice}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumnPrice, fonts.hindGunturBd, { color: this.state.colors[posNeg] }]}>{gainLoss}</Text>
+              </View>
+            })}
             <View style={chartland.profileWrapper}>
               <View style={chartland.statsRow}>
                 <View style={chartland.statsColumn}>
@@ -1183,6 +1198,7 @@ class Chart extends Component {
       momentum,
       open,
       overview,
+      position,
       profile,
       ticker,
       website,
@@ -1238,7 +1254,7 @@ class Chart extends Component {
 
     if (overview.lastStockSplit) {
       if ('paymentDate' in overview.lastStockSplit && overview.lastStockSplit.paymentDate !== null) {
-        formattedLastStockSplit = overview.lastStockSplit.paymentDate;
+        formattedLastStockSplit = moment(overview.lastStockSplit.paymentDate).format('MM/DD/YYYY');
       }
     }
 
@@ -1304,7 +1320,7 @@ class Chart extends Component {
           isVisible={this.state.isNewsVisible}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}
-          style={order.modal}>
+          style={chart.newsModal}>
           <ChartNews
             ticker={newsTicker}
             companyName={companyName}
@@ -1322,7 +1338,7 @@ class Chart extends Component {
                 style={styles.rotateImg}
               />
               <Text style={[styles.rotateFont, fonts.hindGunturBd]}>Please rotate your phone</Text>
-              <Text style={[styles.rotateFont, fonts.hindGunturBd]}>to buy APPL stocks</Text>
+              <Text style={[styles.rotateFont, fonts.hindGunturBd]}>to buy {newsTicker} stocks</Text>
             </View>
           </View>
         </Modal>

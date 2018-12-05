@@ -94,7 +94,7 @@ export default class DateOfBirthSelection extends Component {
     getPrelimDisabledList() {
         const { registrationDataJS } = registrationStore;
         let disabledList = [];
-        return disabledList;
+        // return disabledList;
 
         if(registrationDataJS.dateField.length < 1) {
             // prevent first digit from being anything but 0, 1 or 2
