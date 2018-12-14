@@ -92,6 +92,9 @@ class AccountPos extends React.Component {
           let formattedPriceChangePercentage = elem.priceChangePercentage;
           if(formattedPriceChangePercentage) {
             formattedPriceChangePercentage = formattedPriceChangePercentage.toFixed(2);
+            if (elem.priceChangePercentage >= 0) {
+              formattedPriceChangePercentage = "+" + formattedPriceChangePercentage;
+            }
           }
           
           let formattedCompanyAbbreviation = elem.companyAbbreviation;
@@ -121,16 +124,25 @@ class AccountPos extends React.Component {
           let formattedPriceChangeDecimal = elem.priceChangeDecimal;
           if(formattedPriceChangeDecimal) {
             formattedPriceChangeDecimal = formattedPriceChangeDecimal.toFixed(2);
+            if (elem.priceChangeDecimal >= 0) {
+              formattedPriceChangeDecimal = "+" + formattedPriceChangeDecimal;
+            }
           }
           
           let formattedMarketChangeDecimal = elem.marketChangeDecimal;
           if(formattedMarketChangeDecimal) {
             formattedMarketChangeDecimal = formattedMarketChangeDecimal.toFixed(2);
+            if (elem.marketChangeDecimal >= 0) {
+              formattedMarketChangeDecimal = "+" + formattedMarketChangeDecimal;
+            }
           }
           
           let formattedMarketChangePercentage = elem.marketChangePercentage;
           if(formattedMarketChangePercentage) {
             formattedMarketChangePercentage = formattedMarketChangePercentage.toFixed(2);
+            if (elem.marketChangePercentage >= 0) {
+              formattedMarketChangePercentage = "+" + formattedMarketChangePercentage;
+            }
           }
                     
           return <View key={'each-position' + i} style={[{backgroundColor: this.state.colors['white']}, {borderBottomColor: this.state.colors['borderGray']}, account.symbolRow]}>

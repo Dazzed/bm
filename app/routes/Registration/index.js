@@ -90,7 +90,7 @@ class RegistrationPage extends React.Component {
 
     switch (this.state.step) {
       case 0:
-        return <CountrySelection  progress={progressWidthPercentage} {...propsToPass} />;
+        return <CountrySelection progress={progressWidthPercentage} {...propsToPass} />;
       case 1:
         return <NameSelection  progress={progressWidthPercentage} {...propsToPass} />;
       case 2:
@@ -175,12 +175,13 @@ class RegistrationPage extends React.Component {
       <SafeAreaView style={[{ backgroundColor: backgroundColor }, styles.pageContainer]}>
         <View style={styles.menuBorder}>
           <View style={styles.menuContainer}>
+            { this.state.step !== 12 ?
             <TouchableOpacity style={styles.leftCta} onPress={this.onBackwardStep}>
               <Image
                 source={require('../../images/back.png')}
                 style={styles.backImg}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> : <Text style={styles.leftCta}> </Text> }
             <Text style={[{ color: this.state.colors['darkSlate'] }, styles.mainCta, fonts.gothamBld]}>{this.renderHeadingText()}</Text>
             <TouchableOpacity style={styles.rightCta} onPress={() => this.props.navigation.goBack()}>
               <Image

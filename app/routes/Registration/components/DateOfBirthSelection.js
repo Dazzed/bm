@@ -170,9 +170,8 @@ export default class DateOfBirthSelection extends Component {
                 </ScrollView>
 
                 <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-
                     <View style={{padding: 20}}>
-                      <Button title={'NEXT'} onPress={this.props.onForwardStep} />
+                      <Button title={'NEXT'} disabled={!this.isFormValid()} onPress={this.props.onForwardStep} />
                     </View>
 
                 </View>

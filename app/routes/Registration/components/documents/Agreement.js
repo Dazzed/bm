@@ -82,9 +82,26 @@ class Agreement extends React.Component {
     const { height, width } = Dimensions.get('window');
     return (
       <SafeAreaView style={[{ backgroundColor: this.state.colors['white'] }, styles.pageContainer]}>
+        <View style={styles.menuBorder}>
+          <View style={styles.menuContainer}>
+            <TouchableOpacity style={styles.leftCta} onPress={() => this.props.hideAgreement()}>
+              <Image
+                source={require('../../../../images/close.png')}
+                style={styles.closeImg}
+              />
+            </TouchableOpacity>
+            <Text style={[{ color: this.state.colors['darkSlate'] }, styles.legalPageTitle, fonts.hindGunturBd]}>Basic Info</Text>
+            <Text style={styles.rightCta}></Text>
+          </View>
+        </View>
         <ScrollView style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalContainer, { paddingTop: 10 }]}>
-          <WebView style={{ width: (width - 80), height: (height - 230) }} source={{ html: this.state.commonHtml }} />
+          <WebView style={{ width: (width - 80), height: (height - 180) }} source={{ html: this.state.commonHtml }} />
         </ScrollView>
+        <View style={[{ borderTopColor: this.state.colors['borderGray'] }, styles.legalAgree]}>
+          <TouchableOpacity style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, styles.fullBtn]} onPress={() => this.props.hideAgreement()}>
+            <Text style={[{ color: this.state.colors['white'] }, styles.fullBtnTxt, fonts.hindGunturBd]}>AGREE</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     )
   }

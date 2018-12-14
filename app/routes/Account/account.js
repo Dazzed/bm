@@ -72,14 +72,13 @@ class Account extends Component {
   }
 
   componentDidMount() {
-      myAccountStore.getMyAccountData()
-      
+    myAccountStore.resetPendingAndFilledOrders();
+    myAccountStore.getMyAccountData()
   }
-
 
   getTabView() {
     const { anythingLoading } = myAccountStore;
-    if(anythingLoading) {
+    if (anythingLoading) {
       return null;
     }
     switch (this.state.page) {
@@ -99,12 +98,12 @@ class Account extends Component {
   hideSearch() {
     this.setState({ isSearchVisible: false });
   }
-  
+
   _onRefresh() {
     const { getMyAccountData } = myAccountStore;
     getMyAccountData();
   }
-  
+
   render() {
     const { anythingLoading, todayChangeJS, accountValueJS, changePercentJS, todayChangeChangePercent } = myAccountStore;
     let todayChangeColor = 'green';

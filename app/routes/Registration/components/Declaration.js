@@ -20,6 +20,7 @@ import styles_2 from '../../../style/style_2';
 import fonts from '../../../style/fonts';
 import documentImage from '../../../images/document.png';
 import { observer } from 'mobx-react';
+import Modal from '../../../components/react-native-modal'
 import { colorStore, registrationStore } from '../../../mobxStores';
 import TermsAndConditions from './documents/TermsAndConditions';
 import PrivacyPolicy from './documents/PrivacyPolicy';
@@ -46,15 +47,32 @@ export default class Declaration extends Component {
         super(props);
         this.state = {
             loading: false,
-            whichPopOver: null
+            whichPopOver: null,
+            isTermsVisible: false,
+            isPpVisible: false,
+            isAgreementVisible: false,
+            isDisclosureVisible: false,
         };
     }
 
     newWin(win) {
         console.log('set win', win)
-        this.setState({
-            whichPopOver: win,
-        })
+        // this.setState({
+        //     whichPopOver: win,
+        // })
+
+        if (win  === 'tnc') {
+            this.showTerms();
+        }
+        if (win === 'pp') {
+            this.showPp();
+        }
+        if (win === 'ca') {
+            this.showAgreement();
+        }
+        if (win === 'rdn') {
+            this.showDisclosure();
+        }
     }
 
     renderChosenContent() {
@@ -71,6 +89,38 @@ export default class Declaration extends Component {
         } else {
             return null
         }
+    }
+
+    showTerms() {
+        this.setState({ isTermsVisible: true })
+    }
+
+    hideTerms() {
+        this.setState({ isTermsVisible: false })
+    }
+
+    showPp() {
+        this.setState({ isPpVisible: true })
+    }
+
+    hidePp() {
+        this.setState({ isPpVisible: false })
+    }
+
+    showAgreement() {
+        this.setState({ isAgreementVisible: true })
+    }
+
+    hideAgreement() {
+        this.setState({ isAgreementVisible: false })
+    }
+
+    showDisclosure() {
+        this.setState({ isDisclosureVisible: true })
+    }
+
+    hideDisclosure() {
+        this.setState({ isDisclosureVisible: false })
     }
 
     renderPopOver() {
@@ -103,8 +153,32 @@ export default class Declaration extends Component {
         })
     }
 
+    renderGeneralErrorMessage() {
+        const { registrationErrorDataJS } = registrationStore;
+        if (registrationErrorDataJS && 'message' in registrationErrorDataJS) {
+            return <View style={{ marginTop: 10 }}>
+                <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.message}</Text>
+            </View>
+        } else {
+            return null;
+        }
+    }
+
     nextView() {
-      this.props.onForwardStep();
+        const { registrationDataJS } = registrationStore;
+        console.log('HANDLE FORWARD STEP ASYNC');
+        registrationStore.submitRegistration()
+        .then((res) => {
+            console.log('submit res', res)
+            if (res.ok) {
+                this.props.onForwardStep();
+            } else {
+                console.log('============== registration error', res)
+            }
+        })
+        .catch((err) => {
+            console.log('subimt err', err)
+        })
     }
 
     render() {
@@ -123,11 +197,37 @@ export default class Declaration extends Component {
                       <View style={[styles_2.registrationFormView]}>
                           {this.renderLinks()}
                       </View>
+                      <View style={[styles_2.registrationFormView]}>
+                          {this.renderGeneralErrorMessage()}
+                      </View>
                   </View>
               </ScrollView>
-              {this.renderPopOver()}
+              <Modal
+                  isVisible={this.state.isTermsVisible}
+                  animationIn={'slideInUp'}
+                  animationOut={'slideOutDown'}>
+                  <TermsAndConditions hideTerms={() => this.hideTerms()} />
+              </Modal>
+              <Modal
+                  isVisible={this.state.isPpVisible}
+                  animationIn={'slideInUp'}
+                  animationOut={'slideOutDown'}>
+                  <PrivacyPolicy hidePp={() => this.hidePp()} />
+              </Modal>
+              <Modal
+                  isVisible={this.state.isAgreementVisible}
+                  animationIn={'slideInUp'}
+                  animationOut={'slideOutDown'}>
+                  <Agreement hideAgreement={() => this.hideAgreement()} />
+              </Modal>
+              <Modal
+                  isVisible={this.state.isDisclosureVisible}
+                  animationIn={'slideInUp'}
+                  animationOut={'slideOutDown'}>
+                  <Disclosure hideDisclosure={() => this.hideDisclosure()} />
+              </Modal>
+
               <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-                  
                   <View style={{padding: 20}}>
                     <Button title={this.state.loading ? 'LOADING...' : 'I AGREE'} onPress={() => this.nextView()} />
                   </View>

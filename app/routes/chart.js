@@ -750,12 +750,12 @@ class Chart extends Component {
           <View style={chart.statsRow}>
 
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
               <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.divYield, 2)}</Text>
             </View>
 
             <View style={chart.statsColumn}>
-              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV YIELD</Text>
+              <Text style={[{ color: this.state.colors['lightGray'] }, chart.statsTitle, fonts.hindGunturRg]}>DIV</Text>
               <Text style={[{ color: this.state.colors['darkSlate'] }, chart.statsNum, fonts.hindGunturRg]}>{numberWithCommasFixed(keyStats.dividendRate, 2)}%</Text>
             </View>
             <View style={chart.statsColumn}>
@@ -1139,10 +1139,11 @@ class Chart extends Component {
               if (gainLoss < 0) {
                 posNeg = 'red';
               }
+              let formattedGainLoss = numberWithCommasFixed(gainLoss,2);
               return <View style={[{ borderTopColor: this.state.colors['borderGray'] }, { borderBottomColor: this.state.colors['borderGray'] }, chartland.symbolPosition]}>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>You are {posi.type}</Text>
                 <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumn, fonts.hindGunturRg]}>{posi.shares} x ${formattedPrice}</Text>
-                <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumnPrice, fonts.hindGunturBd, { color: this.state.colors[posNeg] }]}>{gainLoss}</Text>
+                <Text style={[{ color: this.state.colors['darkSlate'] }, chartland.symbolColumnPrice, fonts.hindGunturBd, { color: this.state.colors[posNeg] }]}>{formattedGainLoss}</Text>
               </View>
             })}
             <View style={chartland.profileWrapper}>
@@ -1234,14 +1235,16 @@ class Chart extends Component {
     if (changePercent) {
       formattedChangePercent = changePercent.toFixed(2) + '%'
     }
-
+    if (changePercent >= 0 && typeof changePercent === 'number') {
+      formattedChangePercent = '+' + changePercent.toFixed(2) + '%';
+    } 
 
     let isPosNeg = 'green';
     let formattedChangeDecimal = '---';
     if (change) {
       formattedChangeDecimal = numberWithCommasFixed(change, 2)
     }
-    if (change > 0 && typeof change === 'number') {
+    if (change >= 0 && typeof change === 'number') {
       formattedChangeDecimal = '+' + numberWithCommasFixed(change, 2);
     } else if (change < 0) {
       isPosNeg = 'red';

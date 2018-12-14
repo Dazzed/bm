@@ -14,7 +14,8 @@ import {
   TabPane,
   Alert,
   Dimensions,
-  SafeAreaView
+  SafeAreaView,
+  RefreshControl
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -252,6 +253,10 @@ class Watchlists extends React.Component {
     );
   }
 
+  _onRefreshWatchlist() {
+    watchListStore.getWatchlistData();
+  }
+
   render() {
     const {
       isFetchingWatchlistData,
@@ -259,7 +264,13 @@ class Watchlists extends React.Component {
       watchlistDataJS,
       sortByIndex
     } = watchListStore;
-    let dataSource = watchlistDataJS;
+    let dataSource = [];
+    
+    if (isFetchingWatchlistData) {
+      dataSource = [];
+    } else {
+      dataSource = watchlistDataJS;
+    }
 
     return (
       <SafeAreaView style={[{ backgroundColor: this.state.colors['contentBg'] }, styles.pageContainer]}>
@@ -319,6 +330,7 @@ class Watchlists extends React.Component {
             disableSorting={false}
             navigation={this.props.navigation}
             renderRow={this.renderRow}
+            refreshControl={<RefreshControl refreshing={isFetchingWatchlistData} onRefresh={this._onRefreshWatchlist} />}
           />
         }
 

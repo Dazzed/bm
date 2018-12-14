@@ -47,6 +47,7 @@ export default class Watchlist {
   /* END IMPORTANT */
   @action getWatchlistData = async () => {
     try {
+      this.isFetchingWatchlistData = true;
       const { json: watchlistData } = await get('userWatchLists');
       this.watchlistData = watchlistData;
       this.isFetchingWatchlistData = false;

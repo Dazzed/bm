@@ -97,7 +97,7 @@ export default class MyAccountData {
       return '0.00'
     }
     let plusString = '';
-    if (this.todayChangeChangePercent > 0) {
+    if (this.todayChangeChangePercent >= 0) {
       plusString = '+';
     }
     return plusString + this.todayChangeChangePercent.toFixed(2) + '%';
@@ -234,9 +234,17 @@ export default class MyAccountData {
   @observable filledOrders = [];
   hasCalculatedPendingAndFilledOrders = false;
 
+  @action resetPendingAndFilledOrders = () => {
+    this.history = [];
+    this.pendingOrders = [];
+    this.filledOrders = [];
+    this.hasCalculatedPendingAndFilledOrders = false;
+  }
+
   @computed get historyJS() {
     const pendingOrders = this.pendingOrders;
     const filledOrders = this.filledOrders;
+    console.log(247, 'My Account/historyJS', { pendingOrders, filledOrders, hasCalc: this.hasCalculatedPendingAndFilledOrders});
     if (this.hasCalculatedPendingAndFilledOrders) {
       return { pendingOrders, filledOrders };
     }

@@ -53,6 +53,7 @@ export default class AccountSelection extends Component {
         super(props);
         this.state = {
             showWhyWeAsk: false,
+            emailExists: false,
         }
     }
 
@@ -107,9 +108,9 @@ export default class AccountSelection extends Component {
 
       console.log('=============== regis', registrationErrorDataJS)
 
-      if(registrationErrorDataJS && 'details' in registrationErrorDataJS && 'email' in registrationErrorDataJS.details.messages && registrationErrorDataJS.details.messages.email.length > 0 ) {
+      if (this.state.emailExists) {
         return <View style={{ marginTop: 10 }}>
-            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.details.messages.email[0]}</Text>
+            <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>Email already exists</Text>
         </View>
       } else {
         return null;
@@ -129,7 +130,7 @@ export default class AccountSelection extends Component {
 
     renderGeneralErrorMessage() {
       const { registrationErrorDataJS } = registrationStore;
-      if(registrationErrorDataJS && 'message' in registrationErrorDataJS ) {
+      if(registrationErrorDataJS && 'message' in registrationErrorDataJS) {
         return <View style={{ marginTop: 10 }}>
             <Text style={{ color: 'red' }}><Text style={fonts.hindGunturBd}>Error: </Text>{registrationErrorDataJS.message}</Text>
         </View>
@@ -168,20 +169,30 @@ export default class AccountSelection extends Component {
     }
 
     handleForwardStep = async () => {
-      const { registrationDataJS } = registrationStore;
-      console.log('HANDLE FORWARD STEP ASYNC', );
-      registrationStore.submitRegistration()
-      .then((res) => {
-        console.log('submit res', res)
-        if(res.ok) {
-          this.props.onForwardStep();
-        } else {
-          console.log('============== registration error', res)
-        }
-      })
-      .catch((err) => {
-          console.log('subimt err', err)
-      })
+        //validate email exists
+        const { registrationDataJS } = registrationStore;
+        const { email } = registrationDataJS;
+        this.setState({
+            emailExists: false
+        })
+        isEmailAlreadyInUse(email)
+            .then((res) => {
+                if (!res) {
+                    this.props.onForwardStep();
+                } else {
+                    console.log('============== registration error', res)
+                    this.setState({
+                        emailExists: true
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log('subimt err', err)
+                this.setState({
+                    emailExists: true
+                })
+            })
+        
     }
 
 
@@ -232,14 +243,11 @@ export default class AccountSelection extends Component {
                     </View>
                     <PasswordChecklist password={registrationDataJS.password}/>
                 </ScrollView>
-
-                  <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
-
+                <View style={{ backgroundColor: this.props.colors['white'], shadowOpacity: 0.30, paddingTop: 0, shadowColor: '#10121a', height: 100 }}>
                     <View style={{padding: 20}}>
-                      <Button title={'NEXT'} disabled={!this.isFormValid()} onPress={this.handleForwardStep} />
+                        <Button title={'NEXT'} disabled={!this.isFormValid()} onPress={this.handleForwardStep} />
                     </View>
-
-                  </View>
+                </View>
             </KeyboardAvoidingView>
         )
     }

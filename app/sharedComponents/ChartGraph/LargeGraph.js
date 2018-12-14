@@ -53,9 +53,9 @@ export default class LargeGraph extends React.Component {
             <TextSvg
               key={Math.random() + key}
               fontSize={12}
-              // fill={theme.borderGray}
-              stroke={theme.borderGray}
-              strokeWidth={0.35}
+              fill={theme.chartLandscapeLabel}
+              stroke={theme.chartLandscapeLabel}
+              strokeWidth={0.25}
               y={'95%'}
               x={ position }
               textAnchor="middle"
@@ -84,9 +84,9 @@ export default class LargeGraph extends React.Component {
           <TextSvg
             key={Math.random() + key}
             fontSize={12}
-            // fill={theme.borderGray}
-            stroke={theme.borderGray}
-            strokeWidth={0.35}
+            fill={theme.chartLandscapeLabel}
+            stroke={theme.chartLandscapeLabel}
+            strokeWidth={0.25}
             x={'94%'}
             y={ position + verticalOffset}
             textAnchor="middle"

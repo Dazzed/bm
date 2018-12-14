@@ -67,6 +67,10 @@ class AccountHist extends Component {
 
   renderDateList = () => {
 
+    if (myAccountStore.historyLoading) {
+      return <Text>Loading...</Text>;
+    }
+
     let renderBuyOrSell = (buyBoolean) => {
       if (buyBoolean) {
         return (<Text style={[{ backgroundColor: this.state.colors['green'] }, { borderColor: this.state.colors['green'] }, { color: this.state.colors['realWhite'] }, styles.smallGrnBtn, styles.smallBtnTxt, fonts.hindGunturBd]}>BUY</Text>);
