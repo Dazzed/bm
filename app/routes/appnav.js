@@ -13,6 +13,7 @@ import AccountSelect from './Funding/AccountSelect';
 import FundMyAccount from './Funding/FundMyAccount';
 import Success from './Funding/Success';
 import Trade from './Trade';
+import { watchListStore, myAccountStore, trendingStore, scannerStore } from '../mobxStores';
 import FundAccountSplash from './Registration/components/FundAccountSplash';
 import { colors } from '../store/store';
 import {
@@ -53,6 +54,19 @@ const AppNavTabs = TabNavigator({
     },
     navigationOptions: {
       tabBarOnPress: ({ jumpToIndex, scene }) => {
+        if (scene.index === 0) {
+          myAccountStore.getMyAccountData();
+        }
+        if (scene.index === 1) {
+          watchListStore.getWatchlistData();
+        }
+        if (scene.index === 2) {
+          trendingStore.getTrendingDataWithPageNumber()
+        }
+        if (scene.index === 3) {
+          scannerStore.getScannerData(scannerStore.savedParams)
+        }
+
         return jumpToIndex(scene.index);
       },
     },

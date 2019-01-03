@@ -445,7 +445,7 @@ class Scanner extends React.Component {
     header: null,
     gesturesEnabled: false,
     tabBarIcon: ({ tintColor }) => (
-      <Image
+      <Image onPress={() => function() { console.log(448, "scanner pressed")} }
         source={require('../images/scanner.png')}
         style={[navstyle.iconBig, { tintColor: tintColor }]}
       />

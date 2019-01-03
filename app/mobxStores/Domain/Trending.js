@@ -91,7 +91,7 @@ export default class Trending {
           ...data,
           latestPriceFormatted: formatPrice(Number(data.latestPrice || 0)),
           latestVolumeFormatted: millionBillionFormatter(data.latestVolume),
-          posNegColor: data.change > 0 ? theme.green : theme.red
+          posNegColor: data.changePercent > 0 ? theme.green : theme.red
         }
         if(watchListItems.length > 0) {
           parseData.inWatchList = watchListItems.some(({ ticker }) => ticker === data.ticker)
